@@ -34,7 +34,7 @@
         <ButtonStyled>
           <button @click="modal.hide()">
             <XIcon />
-            Cancel
+            取消
           </button>
         </ButtonStyled>
       </div>

@@ -66,7 +66,7 @@ async function setIcon() {
 }
 
 const editProfileObject = computed(() => ({
-  name: title.value.trim().substring(0, 32) ?? 'Instance',
+  name: title.value.trim().substring(0, 32) ?? '实例',
   groups: groups.value.map((x) => x.trim().substring(0, 32)).filter((x) => x.length > 0),
 }))
 
@@ -112,73 +112,73 @@ async function removeProfile() {
 const messages = defineMessages({
   name: {
     id: 'instance.settings.tabs.general.name',
-    defaultMessage: 'Name',
+    defaultMessage: '名称',
   },
   libraryGroups: {
     id: 'instance.settings.tabs.general.library-groups',
-    defaultMessage: 'Library groups',
+    defaultMessage: '分组',
   },
   libraryGroupsDescription: {
     id: 'instance.settings.tabs.general.library-groups.description',
     defaultMessage:
-      'Library groups allow you to organize your instances into different sections in your library.',
+      '在实例管理中将实例分类到不同分组内。',
   },
   libraryGroupsEnterName: {
     id: 'instance.settings.tabs.general.library-groups.enter-name',
-    defaultMessage: 'Enter group name',
+    defaultMessage: '输入分组名称',
   },
   libraryGroupsCreate: {
     id: 'instance.settings.tabs.general.library-groups.create',
-    defaultMessage: 'Create new group',
+    defaultMessage: '创建新的分组',
   },
   editIcon: {
     id: 'instance.settings.tabs.general.edit-icon',
-    defaultMessage: 'Edit icon',
+    defaultMessage: '修改图标',
   },
   selectIcon: {
     id: 'instance.settings.tabs.general.edit-icon.select',
-    defaultMessage: 'Select icon',
+    defaultMessage: '选择图标',
   },
   replaceIcon: {
     id: 'instance.settings.tabs.general.edit-icon.replace',
-    defaultMessage: 'Replace icon',
+    defaultMessage: '替换图标',
   },
   removeIcon: {
     id: 'instance.settings.tabs.general.edit-icon.remove',
-    defaultMessage: 'Remove icon',
+    defaultMessage: '移除图标',
   },
   duplicateInstance: {
     id: 'instance.settings.tabs.general.duplicate-instance',
-    defaultMessage: 'Duplicate instance',
+    defaultMessage: '复制实例',
   },
   duplicateInstanceDescription: {
     id: 'instance.settings.tabs.general.duplicate-instance.description',
-    defaultMessage: 'Creates a copy of this instance, including worlds, configs, mods, etc.',
+    defaultMessage: '创建一个该实例的副本，包括世界，配置，模组等。',
   },
   duplicateButtonTooltipInstalling: {
     id: 'instance.settings.tabs.general.duplicate-button.tooltip.installing',
-    defaultMessage: 'Cannot duplicate while installing.',
+    defaultMessage: '无法在安装过程中复制。',
   },
   duplicateButton: {
     id: 'instance.settings.tabs.general.duplicate-button',
-    defaultMessage: 'Duplicate',
+    defaultMessage: '复制',
   },
   deleteInstance: {
     id: 'instance.settings.tabs.general.delete',
-    defaultMessage: 'Delete instance',
+    defaultMessage: '删除实例',
   },
   deleteInstanceDescription: {
     id: 'instance.settings.tabs.general.delete.description',
     defaultMessage:
-      'Permanently deletes an instance from your device, including your worlds, configs, and all installed content. Be careful, as once you delete a instance there is no way to recover it.',
+      '永久从您的设备删除一个实例，包括您的世界，配置，和所有已安装的资源。请注意，一旦删除了实例，就没有办法恢复它。',
   },
   deleteInstanceButton: {
     id: 'instance.settings.tabs.general.delete.button',
-    defaultMessage: 'Delete instance',
+    defaultMessage: '删除实例',
   },
   deletingInstanceButton: {
     id: 'instance.settings.tabs.general.deleting.button',
-    defaultMessage: 'Deleting...',
+    defaultMessage: '删除中...',
   },
 })
 </script>
@@ -186,10 +186,10 @@ const messages = defineMessages({
 <template>
   <ConfirmModalWrapper
     ref="deleteConfirmModal"
-    title="Are you sure you want to delete this instance?"
-    description="If you proceed, all data for your instance will be permanently erased, including your worlds. You will not be able to recover it."
+    title="您确定要删除此实例吗？"
+    description="如果您继续，您的实例的所有数据将被永久删除，包括您的世界，配置，和所有已安装的资源。您将无法恢复它。"
     :has-to-type="false"
-    proceed-label="Delete"
+    proceed-label="删除"
     :show-ad-on-close="false"
     @proceed="removeProfile"
   />

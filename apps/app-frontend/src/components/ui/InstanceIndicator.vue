@@ -44,7 +44,7 @@ defineProps<{
     </router-link>
     <ButtonStyled>
       <router-link :to="`/instance/${encodeURIComponent(instance.path)}`">
-        <LeftArrowIcon /> Back to instance
+        <LeftArrowIcon /> 返回实例
       </router-link>
     </ButtonStyled>
   </div>

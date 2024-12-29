@@ -10865,7 +10865,7 @@ checksum = "1e9df38ee2d2c3c5948ea468a8406ff0db0b29ae1ffde1bcf20ef305bcc95c51"
 [[package]]
 name = "wry"
 version = "0.47.2"
-source = "git+https://github.com/modrinth/wry?rev=cdbf938#cdbf9384263db4e692e22dcf9bf6085e334a10f3"
+source = "git+https://kkgithub.com/modrinth/wry?rev=cdbf938#cdbf9384263db4e692e22dcf9bf6085e334a10f3"
 dependencies = [
  "base64 0.22.1",
  "block2",

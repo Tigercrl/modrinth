@@ -16,7 +16,7 @@ const filter = ref('')
 const route = useRoute()
 const breadcrumbs = useBreadcrumbs()
 
-breadcrumbs.setRootContext({ name: 'Home', link: route.path })
+breadcrumbs.setRootContext({ name: '主页', link: route.path })
 
 const recentInstances = ref([])
 
@@ -102,13 +102,13 @@ onUnmounted(() => {
 
 <template>
   <div class="p-6 flex flex-col gap-2">
-    <h1 v-if="recentInstances" class="m-0 text-2xl">Welcome back!</h1>
-    <h1 v-else class="m-0 text-2xl">Welcome to Modrinth App!</h1>
+    <h1 v-if="recentInstances" class="m-0 text-2xl">欢迎回来！</h1>
+    <h1 v-else class="m-0 text-2xl">欢迎使用 Modrinth App！</h1>
     <RowDisplay
       v-if="total > 0"
       :instances="[
         {
-          label: 'Recently played',
+          label: '最近游玩',
           route: '/library',
           instances: recentInstances,
           instance: true,
@@ -116,13 +116,13 @@ onUnmounted(() => {
           compact: true,
         },
         {
-          label: 'Discover a modpack',
+          label: '探索整合包',
           route: '/browse/modpack',
           instances: featuredModpacks,
           downloaded: false,
         },
         {
-          label: 'Discover mods',
+          label: '探索模组',
           route: '/browse/mod',
           instances: featuredMods,
           downloaded: false,

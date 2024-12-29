@@ -6,7 +6,7 @@
         <input
           v-model="searchFilter"
           type="text"
-          :placeholder="`Search ${filteredProjects.length} project${filteredProjects.length === 1 ? '' : 's'}...`"
+          :placeholder="`搜索 ${filteredProjects.length} 个资源...`"
           class="text-input search-input"
           autocomplete="off"
         />
@@ -90,7 +90,7 @@
             color-fill="text"
             hover-color-fill="text"
           >
-            <button @click="updateSelected()"><DownloadIcon /> Update</button>
+            <button @click="updateSelected()"><DownloadIcon /> 更新</button>
           </ButtonStyled>
           <ButtonStyled>
             <OverflowMenu
@@ -113,21 +113,21 @@
                 },
               ]"
             >
-              <ShareIcon /> Share <DropdownIcon />
-              <template #share-names> <TextInputIcon /> Project names </template>
-              <template #share-file-names> <FileIcon /> File names </template>
-              <template #share-urls> <LinkIcon /> Project links </template>
-              <template #share-markdown> <CodeIcon /> Markdown links </template>
+              <ShareIcon /> 分享 <DropdownIcon />
+              <template #share-names> <TextInputIcon /> 资源名称 </template>
+              <template #share-file-names> <FileIcon /> 文件名称 </template>
+              <template #share-urls> <LinkIcon /> 资源链接 </template>
+              <template #share-markdown> <CodeIcon /> Markdown链接 </template>
             </OverflowMenu>
           </ButtonStyled>
           <ButtonStyled v-if="selectedProjects.some((m) => m.disabled)">
-            <button @click="enableAll()"><CheckCircleIcon /> Enable</button>
+            <button @click="enableAll()"><CheckCircleIcon /> 启用</button>
           </ButtonStyled>
           <ButtonStyled v-if="selectedProjects.some((m) => !m.disabled)">
-            <button @click="disableAll()"><SlashIcon /> Disable</button>
+            <button @click="disableAll()"><SlashIcon /> 禁用</button>
           </ButtonStyled>
           <ButtonStyled color="red">
-            <button @click="deleteSelected()"><TrashIcon /> Remove</button>
+            <button @click="deleteSelected()"><TrashIcon /> 删除</button>
           </ButtonStyled>
         </div>
       </template>
@@ -135,7 +135,7 @@
         <ButtonStyled type="transparent" color-fill="text" hover-color-fill="text">
           <button :disabled="refreshingProjects" class="w-max" @click="refreshProjects">
             <UpdatedIcon />
-            Refresh
+            刷新
           </button>
         </ButtonStyled>
         <ButtonStyled
@@ -146,7 +146,7 @@
           hover-color-fill="text"
           @click="updateAll"
         >
-          <button class="w-max"><DownloadIcon /> Update all</button>
+          <button class="w-max"><DownloadIcon /> 更新全部</button>
         </ButtonStyled>
         <ButtonStyled
           v-if="canUpdatePack"
@@ -156,7 +156,7 @@
           hover-color-fill="text"
         >
           <button class="w-max" :disabled="installing" @click="modpackVersionModal.show()">
-            <DownloadIcon /> Update pack
+            <DownloadIcon /> 更新整合包
           </button>
         </ButtonStyled>
       </template>
@@ -168,7 +168,7 @@
           circular
         >
           <button
-            v-tooltip="`Update`"
+            v-tooltip="`更新`"
             :disabled="(item.data as any).updating"
             @click="updateProject(item.data)"
           >
@@ -183,7 +183,7 @@
           @update:model-value="toggleDisableMod(item.data)"
         />
         <ButtonStyled type="transparent" circular>
-          <button v-tooltip="'Remove'" @click="removeMod(item)">
+          <button v-tooltip="'删除'" @click="removeMod(item)">
             <TrashIcon />
           </button>
         </ButtonStyled>
@@ -204,8 +204,8 @@
             direction="left"
           >
             <MoreVerticalIcon />
-            <template #show-file> <ExternalIcon /> Show file </template>
-            <template #copy-link> <ClipboardCopyIcon /> Copy link </template>
+            <template #show-file> <ExternalIcon /> 查看文件 </template>
+            <template #copy-link> <ClipboardCopyIcon /> 复制链接 </template>
           </OverflowMenu>
         </ButtonStyled>
       </template>
@@ -225,7 +225,7 @@
       <div class="flex items-center gap-6 w-[32rem] mx-auto">
         <img src="@/assets/sad-modrinth-bot.webp" class="h-24" />
         <span class="text-contrast font-bold text-xl"
-          >You haven't added any content to this instance yet.</span
+          >此实例当前没有安装任何资源</span
         >
       </div>
     </div>
@@ -236,8 +236,8 @@
   </div>
   <ShareModalWrapper
     ref="shareModal"
-    share-title="Sharing modpack content"
-    share-text="Check out the projects I'm using in my modpack!"
+    share-title="分享整合包的资源"
+    share-text="看看我在整合包中使用的资源！"
     :open-in-new-tab="false"
   />
   <ExportModal v-if="projects.length > 0" ref="exportModal" :instance="instance" />
@@ -459,11 +459,11 @@ type FilterOption = {
 const messages = defineMessages({
   updatesAvailableFilter: {
     id: 'instance.filter.updates-available',
-    defaultMessage: 'Updates available',
+    defaultMessage: '更新可用',
   },
   disabledFilter: {
     id: 'instance.filter.disabled',
-    defaultMessage: 'Disabled projects',
+    defaultMessage: '已禁用资源',
   },
 })
 
@@ -480,7 +480,7 @@ const filterOptions: ComputedRef<FilterOption[]> = computed(() => {
   types.forEach((type) => {
     options.push({
       id: type,
-      formattedName: formatProjectType(type) + 's',
+      formattedName: formatProjectType(type),
     })
   })
 

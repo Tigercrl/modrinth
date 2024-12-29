@@ -89,23 +89,23 @@ watch(
 const messages = defineMessages({
   javaInstallation: {
     id: 'instance.settings.tabs.java.java-installation',
-    defaultMessage: 'Java installation',
+    defaultMessage: 'Java 路径',
   },
   javaArguments: {
     id: 'instance.settings.tabs.java.java-arguments',
-    defaultMessage: 'Java arguments',
+    defaultMessage: 'Java 参数',
   },
   javaEnvironmentVariables: {
     id: 'instance.settings.tabs.java.environment-variables',
-    defaultMessage: 'Environment variables',
+    defaultMessage: '环境变量',
   },
   javaMemory: {
     id: 'instance.settings.tabs.java.java-memory',
-    defaultMessage: 'Memory allocated',
+    defaultMessage: '内存分配',
   },
   hooks: {
     id: 'instance.settings.tabs.java.hooks',
-    defaultMessage: 'Hooks',
+    defaultMessage: '钩子',
   },
 })
 </script>
@@ -115,26 +115,24 @@ const messages = defineMessages({
     <h2 id="project-name" class="m-0 mb-1 text-lg font-extrabold text-contrast block">
       {{ formatMessage(messages.javaInstallation) }}
     </h2>
-    <Checkbox v-model="overrideJavaInstall" label="Custom Java installation" class="mb-2" />
+    <Checkbox v-model="overrideJavaInstall" label="自定义 Java 路径" class="mb-2" />
     <template v-if="!overrideJavaInstall">
       <div class="flex my-2 items-center gap-2 font-semibold">
         <template v-if="javaInstall">
           <CheckCircleIcon class="text-brand-green h-4 w-4" />
-          <span>Using default Java {{ optimalJava.major_version }} installation:</span>
+          <span>正在使用默认 Java {{ optimalJava.major_version }} 路径：</span>
         </template>
         <template v-else-if="optimalJava">
           <XCircleIcon class="text-brand-red h-5 w-5" />
-          <span
-            >Could not find a default Java {{ optimalJava.major_version }} installation. Please set
-            one below:</span
-          >
+          <span>
+            无法找到默认 Java {{ optimalJava.major_version }} 路径。请在下方设置一个：
+          </span>
         </template>
         <template v-else>
           <XCircleIcon class="text-brand-red h-5 w-5" />
-          <span
-            >Could not automatically determine a Java installation to use. Please set one
-            below:</span
-          >
+          <span>
+            无法自动选择合适的默认 Java 路径。请在下方设置一个：
+          </span>
         </template>
       </div>
       <div
@@ -148,7 +146,7 @@ const messages = defineMessages({
     <h2 id="project-name" class="mt-4 mb-1 text-lg font-extrabold text-contrast block">
       {{ formatMessage(messages.javaMemory) }}
     </h2>
-    <Checkbox v-model="overrideMemorySettings" label="Custom memory allocation" class="mb-2" />
+    <Checkbox v-model="overrideMemorySettings" label="自定义内存分配" class="mb-2" />
     <Slider
       id="max-memory"
       v-model="memory.maximum"
@@ -161,7 +159,7 @@ const messages = defineMessages({
     <h2 id="project-name" class="mt-4 mb-1 text-lg font-extrabold text-contrast block">
       {{ formatMessage(messages.javaArguments) }}
     </h2>
-    <Checkbox v-model="overrideJavaArgs" label="Custom java arguments" class="my-2" />
+    <Checkbox v-model="overrideJavaArgs" label="自定义 Java 参数" class="my-2" />
     <input
       id="java-args"
       v-model="javaArgs"
@@ -169,12 +167,12 @@ const messages = defineMessages({
       :disabled="!overrideJavaArgs"
       type="text"
       class="w-full"
-      placeholder="Enter java arguments..."
+      placeholder="请输入 Java 参数..."
     />
     <h2 id="project-name" class="mt-4 mb-1 text-lg font-extrabold text-contrast block">
       {{ formatMessage(messages.javaEnvironmentVariables) }}
     </h2>
-    <Checkbox v-model="overrideEnvVars" label="Custom environment variables" class="mb-2" />
+    <Checkbox v-model="overrideEnvVars" label="自定义环境变量" class="mb-2" />
     <input
       id="env-vars"
       v-model="envVars"
@@ -182,7 +180,7 @@ const messages = defineMessages({
       :disabled="!overrideEnvVars"
       type="text"
       class="w-full"
-      placeholder="Enter environmental variables..."
+      placeholder="请输入环境变量..."
     />
   </div>
 </template>

@@ -11,7 +11,7 @@
       <span class="gallery-time">
         <CalendarIcon />
         {{
-          new Date(image.created).toLocaleDateString('en-US', {
+          new Date(image.created).toLocaleDateString('zh-CN', {
             year: 'numeric',
             month: 'long',
             day: 'numeric',
@@ -109,7 +109,6 @@ const zoomedIn = ref(false)
 
 const hideImage = () => {
   expandedGalleryItem.value = null
-  show_ads_window()
 }
 
 const nextImage = () => {
@@ -137,7 +136,6 @@ const previousImage = () => {
 }
 
 const expandImage = (item, index) => {
-  hide_ads_window()
   expandedGalleryItem.value = item
   expandedGalleryIndex.value = index
   zoomedIn.value = false

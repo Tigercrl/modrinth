@@ -53,9 +53,9 @@ export const computeVersions = (versions, members) => {
     .map((version, index) => {
       const nextVersion = returnVersions[index + 1]
       if (nextVersion && version.changelog && nextVersion.changelog === version.changelog) {
-        return { duplicate: true, ...version }
+        return {duplicate: true, ...version}
       }
-      return { duplicate: false, ...version }
+      return {duplicate: false, ...version}
     })
     .sort((a, b) => dayjs(b.date_published) - dayjs(a.date_published))
 }
@@ -124,55 +124,176 @@ export const formatWallet = (name) => {
 }
 
 export const formatProjectType = (name) => {
-  if (name === 'resourcepack') {
-    return 'Resource Pack'
-  } else if (name === 'datapack') {
-    return 'Data Pack'
+  switch (name) {
+    case 'resourcepack':
+      return '资源包'
+    case 'datapack':
+      return '数据包'
+    case 'shader':
+      return '光影'
+    case 'mod':
+      return '模组'
+    case 'modpack':
+      return '整合包'
   }
 
   return capitalizeString(name)
 }
 
 export const formatCategory = (name) => {
-  if (name === 'modloader') {
-    return "Risugami's ModLoader"
-  } else if (name === 'bungeecord') {
-    return 'BungeeCord'
-  } else if (name === 'liteloader') {
-    return 'LiteLoader'
-  } else if (name === 'neoforge') {
-    return 'NeoForge'
-  } else if (name === 'game-mechanics') {
-    return 'Game Mechanics'
-  } else if (name === 'worldgen') {
-    return 'World Generation'
-  } else if (name === 'core-shaders') {
-    return 'Core Shaders'
-  } else if (name === 'gui') {
-    return 'GUI'
-  } else if (name === '8x-') {
-    return '8x or lower'
-  } else if (name === '512x+') {
-    return '512x or higher'
-  } else if (name === 'kitchen-sink') {
-    return 'Kitchen Sink'
-  } else if (name === 'path-tracing') {
-    return 'Path Tracing'
-  } else if (name === 'pbr') {
-    return 'PBR'
-  } else if (name === 'datapack') {
-    return 'Data Pack'
-  } else if (name === 'colored-lighting') {
-    return 'Colored Lighting'
-  } else if (name === 'optifine') {
-    return 'OptiFine'
+  switch (name) {
+    case 'modloader':
+      return "Risugami's ModLoader"
+    case 'bungeecord':
+      return 'BungeeCord'
+    case 'liteloader':
+      return 'LiteLoader'
+    case 'neoforge':
+      return 'NeoForge'
+    case 'optifine':
+      return 'OptiFine'
+    case 'pbr':
+      return 'PBR'
+    case 'gui':
+      return '界面'
+    case 'adventure':
+      return '冒险'
+    case 'combat':
+      return '战斗'
+    case 'cursed':
+      return '古怪'
+    case 'decoration':
+      return '装饰'
+    case 'modded':
+      return '模组支持'
+    case 'realistic':
+      return '现实'
+    case 'simplistic':
+      return '简约'
+    case 'themed':
+      return '主题'
+    case 'tweaks':
+      return '调整'
+    case 'utility':
+      return '工具'
+    case 'vanilla-like':
+      return '类原版'
+    case 'vanilla':
+      return '原版'
+    case 'game-mechanics':
+      return '游戏机制'
+    case 'worldgen':
+      return '世界生成'
+    case 'core-shaders':
+      return '核心着色器'
+    case '8x-':
+      return '8x 或更低'
+    case '512x+':
+      return '512x 或更高'
+    case 'kitchen-sink':
+      return '综合'
+    case 'path-tracing':
+      return '光线追踪'
+    case 'datapack':
+      return '数据包'
+    case 'colored-lighting':
+      return '彩色照明'
+    case 'cartoon':
+      return '卡通'
+    case 'fantasy':
+      return '幻想'
+    case 'semi-realistic':
+      return '半现实'
+    case 'economy':
+      return '经济'
+    case 'equipment':
+      return '武器装备'
+    case 'food':
+      return '食物'
+    case 'library':
+      return '前置库'
+    case 'magic':
+      return '魔法'
+    case 'management':
+      return '管理'
+    case 'minigame':
+      return '小游戏'
+    case 'mobs':
+      return '生物'
+    case 'optimization':
+      return '优化'
+    case 'social':
+      return '社交'
+    case 'storage':
+      return '存储'
+    case 'technology':
+      return '科技'
+    case 'transportation':
+      return '交通'
+    case 'audio':
+      return '音频'
+    case 'blocks':
+      return '方块'
+    case 'entities':
+      return '实体'
+    case 'environment':
+      return '环境'
+    case 'fonts':
+      return '字体'
+    case 'items':
+      return '物品'
+    case 'locale':
+      return '语言'
+    case 'models':
+      return '模型'
+    case 'atmosphere':
+      return '天空'
+    case 'bloom':
+      return '泛光'
+    case 'foliage':
+      return '树叶'
+    case 'reflections':
+      return '反射'
+    case 'shadows':
+      return '阴影'
+    case 'challenging':
+      return '挑战'
+    case 'lightweight':
+      return '轻量'
+    case 'multiplayer':
+      return '多人'
+    case 'quests':
+      return '任务'
+    case 'high':
+      return '高'
+    case 'low':
+      return '低'
+    case 'medium':
+      return '中'
+    case 'potato':
+      return '土豆服务器'
+    case 'screenshot':
+      return '别人的世界'
+    default:
+      break;
   }
 
   return capitalizeString(name)
 }
 
 export const formatCategoryHeader = (name) => {
-  return capitalizeString(name)
+  switch (name) {
+    case 'categories':
+      return '分类'
+    case 'features':
+      return '功能'
+    case 'resolutions':
+      return '分辨率'
+    case 'performance impact':
+      return '性能影响'
+    default:
+      return capitalizeString(name)
+  }
 }
 
 export const formatProjectStatus = (name) => {
@@ -267,7 +388,7 @@ export function cycleValue(value, values) {
 }
 
 export const fileIsValid = (file, validationOptions) => {
-  const { maxSize, alertOnInvalid } = validationOptions
+  const {maxSize, alertOnInvalid} = validationOptions
   if (maxSize !== null && maxSize !== undefined && file.size > maxSize) {
     if (alertOnInvalid) {
       alert(`File ${file.name} is too big! Must be less than ${formatBytes(maxSize)}`)

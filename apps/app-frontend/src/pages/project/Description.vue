@@ -17,6 +17,6 @@ defineProps({
 
 <script>
 export default {
-  name: 'Description',
+  name: '介绍',
 }
 </script>

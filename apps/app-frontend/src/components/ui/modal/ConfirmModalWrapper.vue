@@ -17,12 +17,12 @@ const props = defineProps({
   },
   title: {
     type: String,
-    default: 'No title defined',
+    default: '无标题',
     required: true,
   },
   description: {
     type: String,
-    default: 'No description defined',
+    default: '无内容',
     required: true,
   },
   proceedIcon: {
@@ -31,13 +31,9 @@ const props = defineProps({
   },
   proceedLabel: {
     type: String,
-    default: 'Proceed',
+    default: '继续',
   },
   danger: {
-    type: Boolean,
-    default: true,
-  },
-  showAdOnClose: {
     type: Boolean,
     default: true,
   },
@@ -48,20 +44,13 @@ const modal = ref(null)
 
 defineExpose({
   show: () => {
-    hide_ads_window()
     modal.value.show()
   },
   hide: () => {
-    onModalHide()
     modal.value.hide()
   },
 })
 
-function onModalHide() {
-  if (props.showAdOnClose) {
-    show_ads_window()
-  }
-}
 
 function proceed() {
   emit('proceed')
@@ -77,7 +66,6 @@ function proceed() {
     :description="description"
     :proceed-icon="proceedIcon"
     :proceed-label="proceedLabel"
-    :on-hide="onModalHide"
     :noblur="!themeStore.advancedRendering"
     :danger="danger"
     @proceed="proceed"

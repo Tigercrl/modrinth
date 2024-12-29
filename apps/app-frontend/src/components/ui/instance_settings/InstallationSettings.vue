@@ -265,112 +265,112 @@ async function repairModpack() {
 const messages = defineMessages({
   cannotWhileInstalling: {
     id: 'instance.settings.tabs.installation.tooltip.cannot-while-installing',
-    defaultMessage: 'Cannot {action} while installing',
+    defaultMessage: '无法在安装时{action}',
   },
   cannotWhileOffline: {
     id: 'instance.settings.tabs.installation.tooltip.cannot-while-offline',
-    defaultMessage: 'Cannot {action} while offline',
+    defaultMessage: '无法在离线时{action}',
   },
   cannotWhileRepairing: {
     id: 'instance.settings.tabs.installation.tooltip.cannot-while-repairing',
-    defaultMessage: 'Cannot {action} while repairing',
+    defaultMessage: '无法在修复时{action}',
   },
   currentlyInstalled: {
     id: 'instance.settings.tabs.installation.currently-installed',
-    defaultMessage: 'Currently installed',
+    defaultMessage: '当前版本',
   },
   platform: {
     id: 'instance.settings.tabs.installation.platform',
-    defaultMessage: 'Platform',
+    defaultMessage: '加载器',
   },
   gameVersion: {
     id: 'instance.settings.tabs.installation.game-version',
-    defaultMessage: 'Game version',
+    defaultMessage: '游戏版本',
   },
   loaderVersion: {
     id: 'instance.settings.tabs.installation.loader-version',
-    defaultMessage: '{loader} version',
+    defaultMessage: '{loader} 版本',
   },
   showAllVersions: {
     id: 'instance.settings.tabs.installation.show-all-versions',
-    defaultMessage: 'Show all versions',
+    defaultMessage: '显示所有版本（快照等）',
   },
   install: {
     id: 'instance.settings.tabs.installation.install',
-    defaultMessage: 'Install',
+    defaultMessage: '安装',
   },
   resetSelections: {
     id: 'instance.settings.tabs.installation.reset-selections',
-    defaultMessage: 'Reset to current',
+    defaultMessage: '重置为当前选项',
   },
   unknownVersion: {
     id: 'instance.settings.tabs.installation.unknown-version',
-    defaultMessage: '(unknown version)',
+    defaultMessage: '（未知版本）',
   },
   repairConfirmTitle: {
     id: 'instance.settings.tabs.installation.repair.confirm.title',
-    defaultMessage: 'Repair instance?',
+    defaultMessage: '修复实例？',
   },
   repairConfirmDescription: {
     id: 'instance.settings.tabs.installation.repair.confirm.description',
     defaultMessage:
-      'Repairing reinstalls Minecraft dependencies and checks for corruption. This may resolve issues if your game is not launching due to launcher-related errors, but will not resolve issues or crashes related to installed mods.',
+      '修复实例会重新安装 Minecraft 及其依赖并检查是否损坏。如果您的游戏由于启动相关错误而无法启动，这可能会解决问题，但无法解决与模组等的相关问题或崩溃。',
   },
   repairButton: {
     id: 'instance.settings.tabs.installation.repair.button',
-    defaultMessage: 'Repair',
+    defaultMessage: '修复实例',
   },
   repairingButton: {
     id: 'instance.settings.tabs.installation.repair.button.repairing',
-    defaultMessage: 'Repairing',
+    defaultMessage: '修复中',
   },
   repairInProgress: {
     id: 'instance.settings.tabs.installation.repair.in-progress',
-    defaultMessage: 'Repair in progress',
+    defaultMessage: '正在修复',
   },
   repairAction: {
     id: 'instance.settings.tabs.installation.tooltip.action.repair',
-    defaultMessage: 'repair',
+    defaultMessage: '修复实例',
   },
   changeVersionCannotWhileFetching: {
     id: 'instance.settings.tabs.installation.change-version.cannot-while-fetching',
-    defaultMessage: 'Fetching modpack versions',
+    defaultMessage: '获取整合包版本',
   },
   changeVersionButton: {
     id: 'instance.settings.tabs.installation.change-version.button',
-    defaultMessage: 'Change version',
+    defaultMessage: '更改版本',
   },
   changeVersionAction: {
     id: 'instance.settings.tabs.installation.tooltip.action.change-version',
-    defaultMessage: 'change version',
+    defaultMessage: '更改版本',
   },
   installingButton: {
     id: 'instance.settings.tabs.installation.change-version.button.installing',
-    defaultMessage: 'Installing',
+    defaultMessage: '安装中',
   },
   installInProgress: {
     id: 'instance.settings.tabs.installation.install.in-progress',
-    defaultMessage: 'Installation in progress',
+    defaultMessage: '正在安装',
   },
   installButton: {
     id: 'instance.settings.tabs.installation.change-version.button.install',
-    defaultMessage: 'Install',
+    defaultMessage: '安装',
   },
   alreadyInstalledVanilla: {
     id: 'instance.settings.tabs.installation.change-version.already-installed.vanilla',
-    defaultMessage: 'Vanilla {game_version} already installed',
+    defaultMessage: 'Minecraft {game_version} 已安装',
   },
   alreadyInstalledModded: {
     id: 'instance.settings.tabs.installation.change-version.already-installed.modded',
-    defaultMessage: '{platform} {version} for Minecraft {game_version} already installed',
+    defaultMessage: 'Minecraft {game_version} 和 {platform} {version} 已安装',
   },
   installAction: {
     id: 'instance.settings.tabs.installation.tooltip.action.install',
-    defaultMessage: 'install',
+    defaultMessage: '进行安装',
   },
   installingNewVersion: {
     id: 'instance.settings.tabs.installation.change-version.in-progress',
-    defaultMessage: 'Installing new version',
+    defaultMessage: '安装新版本中',
   },
   minecraftVersion: {
     id: 'instance.settings.tabs.installation.minecraft-version',
@@ -378,73 +378,73 @@ const messages = defineMessages({
   },
   noLoaderVersions: {
     id: 'instance.settings.tabs.installation.no-loader-versions',
-    defaultMessage: '{loader} is not available for Minecraft {version}. Try another mod loader.',
+    defaultMessage: '{loader} 与 Minecraft 版本 {version} 不兼容。请尝试其他加载器。',
   },
   noConnection: {
     id: 'instance.settings.tabs.installation.no-connection',
-    defaultMessage: 'Cannot fetch linked modpack details. Please check your internet connection.',
+    defaultMessage: '无法获取实例链接的整合包的详细信息。请检查您的网络连接。',
   },
   noModpackFound: {
     id: 'instance.settings.tabs.installation.no-modpack-found',
     defaultMessage:
-      'This instance is linked to a modpack, but the modpack could not be found on Modrinth.',
+      '该实例链接到一个整合包，但是在 Modrinth 上找不到该整合包。',
   },
   debugInformation: {
     id: 'instance.settings.tabs.installation.debug-information',
-    defaultMessage: 'Debug information:',
+    defaultMessage: '调试信息：',
   },
   fetchingModpackDetails: {
     id: 'instance.settings.tabs.installation.fetching-modpack-details',
-    defaultMessage: 'Fetching modpack details',
+    defaultMessage: '获取整合包详细信息中',
   },
   unlinkInstanceTitle: {
     id: 'instance.settings.tabs.installation.unlink.title',
-    defaultMessage: 'Unlink from modpack',
+    defaultMessage: '解除整合包链接',
   },
   unlinkInstanceDescription: {
     id: 'instance.settings.tabs.installation.unlink.description',
-    defaultMessage: `This instance is linked to a modpack, which means mods can't be updated and you can't change the mod loader or Minecraft version. Unlinking will permanently disconnect this instance from the modpack.`,
+    defaultMessage: `这个实例链接到一个整合包，这意味着模组不能进行更新，您不能改变加载器或Minecraft版本。解除整合包链接将永久断开该实例与整合包的链接。`,
   },
   unlinkInstanceButton: {
     id: 'instance.settings.tabs.installation.unlink.button',
-    defaultMessage: 'Unlink instance',
+    defaultMessage: '解除整合包链接',
   },
   unlinkInstanceConfirmTitle: {
     id: 'instance.settings.tabs.installation.unlink.confirm.title',
-    defaultMessage: 'Are you sure you want to unlink this instance?',
+    defaultMessage: '您确定要解除整合包链接吗？',
   },
   unlinkInstanceConfirmDescription: {
     id: 'instance.settings.tabs.installation.unlink.confirm.description',
     defaultMessage:
-      'If you proceed, you will not be able to re-link it without creating an entirely new instance. You will no longer receive modpack updates and it will become a normal.',
+      '如果继续，则必须创建一个新的实例才能重新链接整合包。您将不再收到整合包更新，它将成为一个正常的实例。',
   },
   reinstallModpackConfirmTitle: {
     id: 'instance.settings.tabs.installation.reinstall.confirm.title',
-    defaultMessage: 'Are you sure you want to reinstall this instance?',
+    defaultMessage: '您确定要重装整合包吗？',
   },
   reinstallModpackConfirmDescription: {
     id: 'instance.settings.tabs.installation.reinstall.confirm.description',
-    defaultMessage: `Reinstalling will reset all installed or modified content to what is provided by the modpack, removing any mods or content you have added on top of the original installation. This may fix unexpected behavior if changes have been made to the instance, but if your worlds now depend on additional installed content, it may break existing worlds.`,
+    defaultMessage: `重装整合包会将所有新安装或修改的资源重置为整合包提供的资源，删除您在原始整合包之上添加的任何模组或其他资源。如果您不小心对实例进行了更改，这可能会修复意外行为，但如果您的世界现在依赖于额外安装的资源，则可能会破坏现有的世界。`,
   },
   reinstallModpackTitle: {
     id: 'instance.settings.tabs.installation.reinstall.title',
-    defaultMessage: 'Reinstall modpack',
+    defaultMessage: '重装整合包',
   },
   reinstallModpackDescription: {
     id: 'instance.settings.tabs.installation.reinstall.description',
-    defaultMessage: `Resets the instance's content to its original state, removing any mods or content you have added on top of the original modpack.`,
+    defaultMessage: `重置整合包的资源到它的原始状态，删除您在原始整合包上添加的任何模组或其他资源。`,
   },
   reinstallModpackButton: {
     id: 'instance.settings.tabs.installation.reinstall.button',
-    defaultMessage: 'Reinstall modpack',
+    defaultMessage: '重装整合包',
   },
   reinstallingModpackButton: {
     id: 'instance.settings.tabs.installation.reinstall.button.reinstalling',
-    defaultMessage: 'Reinstalling modpack',
+    defaultMessage: '重装整合包中',
   },
   reinstallAction: {
     id: 'instance.settings.tabs.installation.tooltip.action.reinstall',
-    defaultMessage: 'reinstall',
+    defaultMessage: '重装整合包',
   },
 })
 </script>
@@ -528,7 +528,7 @@ const messages = defineMessages({
             <WrenchIcon v-else />
           </div>
           <div class="flex flex-col gap-2 justify-center">
-            <span class="font-semibold leading-none">
+            <span class="font-semibold leading-none w-60">
               {{
                 modpackProject
                   ? modpackProject.title

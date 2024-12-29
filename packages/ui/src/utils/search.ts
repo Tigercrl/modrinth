@@ -153,7 +153,7 @@ export function useSearch(
       {
         id: 'environment',
         formatted_name: formatMessage(
-          defineMessage({ id: 'search.filter_type.environment', defaultMessage: 'Environment' }),
+          defineMessage({ id: 'search.filter_type.environment', defaultMessage: '运行环境' }),
         ),
         supported_project_types: ['mod', 'modpack'],
         display: 'all',
@@ -166,7 +166,7 @@ export function useSearch(
             formatted_name: formatMessage(
               defineMessage({
                 id: 'search.filter_type.environment.client',
-                defaultMessage: 'Client',
+                defaultMessage: '客户端',
               }),
             ),
             icon: ClientIcon,
@@ -178,7 +178,7 @@ export function useSearch(
             formatted_name: formatMessage(
               defineMessage({
                 id: 'search.filter_type.environment.server',
-                defaultMessage: 'Server',
+                defaultMessage: '服务器',
               }),
             ),
             icon: ServerIcon,
@@ -190,7 +190,7 @@ export function useSearch(
       {
         id: 'game_version',
         formatted_name: formatMessage(
-          defineMessage({ id: 'search.filter_type.game_version', defaultMessage: 'Game version' }),
+          defineMessage({ id: 'search.filter_type.game_version', defaultMessage: '游戏版本' }),
         ),
         supported_project_types: ALL_PROJECT_TYPES,
         display: 'scrollable',
@@ -202,7 +202,7 @@ export function useSearch(
             formatted_name: formatMessage(
               defineMessage({
                 id: 'search.filter_type.game_version.all_versions',
-                defaultMessage: 'Show all versions',
+                defaultMessage: '显示所有版本（快照等）',
               }),
             ),
             query_param: 'h',
@@ -221,7 +221,7 @@ export function useSearch(
       {
         id: 'mod_loader',
         formatted_name: formatMessage(
-          defineMessage({ id: 'search.filter_type.mod_loader', defaultMessage: 'Loader' }),
+          defineMessage({ id: 'search.filter_type.mod_loader', defaultMessage: '加载器' }),
         ),
         supported_project_types: ['mod'],
         display: 'expandable',
@@ -250,7 +250,7 @@ export function useSearch(
       {
         id: 'modpack_loader',
         formatted_name: formatMessage(
-          defineMessage({ id: 'search.filter_type.modpack_loader', defaultMessage: 'Loader' }),
+          defineMessage({ id: 'search.filter_type.modpack_loader', defaultMessage: '加载器' }),
         ),
         supported_project_types: ['modpack'],
         display: 'all',
@@ -272,7 +272,7 @@ export function useSearch(
       {
         id: 'plugin_loader',
         formatted_name: formatMessage(
-          defineMessage({ id: 'search.filter_type.plugin_loader', defaultMessage: 'Loader' }),
+          defineMessage({ id: 'search.filter_type.plugin_loader', defaultMessage: '加载器' }),
         ),
         supported_project_types: ['plugin'],
         display: 'all',
@@ -320,7 +320,7 @@ export function useSearch(
       {
         id: 'shader_loader',
         formatted_name: formatMessage(
-          defineMessage({ id: 'search.filter_type.shader_loader', defaultMessage: 'Loader' }),
+          defineMessage({ id: 'search.filter_type.shader_loader', defaultMessage: '加载器' }),
         ),
         supported_project_types: ['shader'],
         display: 'all',
@@ -342,7 +342,7 @@ export function useSearch(
       {
         id: 'license',
         formatted_name: formatMessage(
-          defineMessage({ id: 'search.filter_type.license', defaultMessage: 'License' }),
+          defineMessage({ id: 'search.filter_type.license', defaultMessage: '许可证' }),
         ),
         supported_project_types: ['mod', 'modpack', 'resourcepack', 'shader', 'plugin', 'datapack'],
         query_param: 'l',
@@ -355,7 +355,7 @@ export function useSearch(
             formatted_name: formatMessage(
               defineMessage({
                 id: 'search.filter_type.license.open_source',
-                defaultMessage: 'Open source',
+                defaultMessage: '开源',
               }),
             ),
             method: 'and',

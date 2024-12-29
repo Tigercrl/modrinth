@@ -34,19 +34,19 @@ const colorTheme = defineMessages({
   },
   system: {
     id: 'settings.display.theme.system',
-    defaultMessage: 'Sync with system',
+    defaultMessage: '跟随系统',
   },
   light: {
     id: 'settings.display.theme.light',
-    defaultMessage: 'Light',
+    defaultMessage: '浅色模式',
   },
   dark: {
     id: 'settings.display.theme.dark',
-    defaultMessage: 'Dark',
+    defaultMessage: '深色模式',
   },
   oled: {
     id: 'settings.display.theme.oled',
-    defaultMessage: 'OLED',
+    defaultMessage: '高对比度',
   },
   retro: {
     id: 'settings.display.theme.retro',

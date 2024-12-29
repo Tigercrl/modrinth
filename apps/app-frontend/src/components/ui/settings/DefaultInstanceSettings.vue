@@ -47,13 +47,13 @@ watch(
 
 <template>
   <div>
-    <h2 class="m-0 text-lg font-extrabold text-contrast">Window size</h2>
+    <h2 class="m-0 text-lg font-extrabold text-contrast">窗口大小</h2>
 
     <div class="flex items-center justify-between gap-4">
       <div>
-        <h3 class="mt-2 m-0 text-base font-extrabold text-primary">Fullscreen</h3>
+        <h3 class="mt-2 m-0 text-base font-extrabold text-primary">全屏</h3>
         <p class="m-0 mt-1 mb-2 leading-tight text-secondary">
-          Overwrites the options.txt file to start in full screen when launched.
+          让游戏全屏启动（通过更改 Minecraft 内的视频选项）。
         </p>
       </div>
 
@@ -71,9 +71,9 @@ watch(
 
     <div class="flex items-center justify-between gap-4">
       <div>
-        <h3 class="mt-2 m-0 text-base font-extrabold text-primary">Width</h3>
+        <h3 class="mt-2 m-0 text-base font-extrabold text-primary">宽度</h3>
         <p class="m-0 mt-1 mb-2 leading-tight text-secondary">
-          The width of the game window when launched.
+          启动时游戏窗口的宽度。
         </p>
       </div>
 
@@ -83,15 +83,15 @@ watch(
         :disabled="settings.force_fullscreen"
         autocomplete="off"
         type="number"
-        placeholder="Enter width..."
+        placeholder="请输入宽度..."
       />
     </div>
 
     <div class="flex items-center justify-between gap-4">
       <div>
-        <h3 class="mt-2 m-0 text-base font-extrabold text-primary">Height</h3>
+        <h3 class="mt-2 m-0 text-base font-extrabold text-primary">高度</h3>
         <p class="m-0 mt-1 mb-2 leading-tight text-secondary">
-          The height of the game window when launched.
+          启动时游戏窗口的高度。
         </p>
       </div>
 
@@ -102,14 +102,14 @@ watch(
         autocomplete="off"
         type="number"
         class="input"
-        placeholder="Enter height..."
+        placeholder="请输入高度..."
       />
     </div>
 
     <hr class="mt-4 bg-button-border border-none h-[1px]" />
 
-    <h2 class="mt-4 m-0 text-lg font-extrabold text-contrast">Memory allocated</h2>
-    <p class="m-0 mt-1 leading-tight">The memory allocated to each instance when it is ran.</p>
+    <h2 class="mt-4 m-0 text-lg font-extrabold text-contrast">内存分配</h2>
+    <p class="m-0 mt-1 leading-tight">每个实例运行时分配给它的内存。</p>
     <Slider
       id="max-memory"
       v-model="settings.memory.maximum"
@@ -119,62 +119,62 @@ watch(
       unit="MB"
     />
 
-    <h2 class="mt-4 mb-2 text-lg font-extrabold text-contrast">Java arguments</h2>
+    <h2 class="mt-4 mb-2 text-lg font-extrabold text-contrast">Java 参数</h2>
     <input
       id="java-args"
       v-model="settings.launchArgs"
       autocomplete="off"
       type="text"
-      placeholder="Enter java arguments..."
+      placeholder="请输入 Java 参数..."
       class="w-full"
     />
 
-    <h2 class="mt-4 mb-2 text-lg font-extrabold text-contrast">Environmental variables</h2>
+    <h2 class="mt-4 mb-2 text-lg font-extrabold text-contrast">环境变量</h2>
     <input
       id="env-vars"
       v-model="settings.envVars"
       autocomplete="off"
       type="text"
-      placeholder="Enter environmental variables..."
+      placeholder="请输入环境变量..."
       class="w-full"
     />
 
     <hr class="mt-4 bg-button-border border-none h-[1px]" />
 
-    <h2 class="mt-4 m-0 text-lg font-extrabold text-contrast">Hooks</h2>
+    <h2 class="mt-4 m-0 text-lg font-extrabold text-contrast">钩子</h2>
 
-    <h3 class="mt-2 m-0 text-base font-extrabold text-primary">Pre launch</h3>
-    <p class="m-0 mt-1 mb-2 leading-tight text-secondary">Ran before the instance is launched.</p>
+    <h3 class="mt-2 m-0 text-base font-extrabold text-primary">启动前</h3>
+    <p class="m-0 mt-1 mb-2 leading-tight text-secondary">在实例启动前运行</p>
     <input
       id="pre-launch"
       v-model="settings.hooks.pre_launch"
       autocomplete="off"
       type="text"
-      placeholder="Enter pre-launch command..."
+      placeholder="请输入命令..."
       class="w-full"
     />
 
-    <h3 class="mt-2 m-0 text-base font-extrabold text-primary">Wrapper</h3>
+    <h3 class="mt-2 m-0 text-base font-extrabold text-primary">包装命令</h3>
     <p class="m-0 mt-1 mb-2 leading-tight text-secondary">
-      Wrapper command for launching Minecraft.
+      Minecraft 启动时的包装命令
     </p>
     <input
       id="wrapper"
       v-model="settings.hooks.wrapper"
       autocomplete="off"
       type="text"
-      placeholder="Enter wrapper command..."
+      placeholder="请输入命令..."
       class="w-full"
     />
 
-    <h3 class="mt-2 m-0 text-base font-extrabold text-primary">Post exit</h3>
-    <p class="m-0 mt-1 mb-2 leading-tight text-secondary">Ran after the game closes.</p>
+    <h3 class="mt-2 m-0 text-base font-extrabold text-primary">停止后</h3>
+    <p class="m-0 mt-1 mb-2 leading-tight text-secondary">在游戏停止后运行</p>
     <input
       id="post-exit"
       v-model="settings.hooks.post_exit"
       autocomplete="off"
       type="text"
-      placeholder="Enter post-exit command..."
+      placeholder="请输入命令..."
       class="w-full"
     />
   </div>

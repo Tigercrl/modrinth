@@ -32,14 +32,14 @@ const devModeCounter = ref(0)
 
 const developerModeEnabled = defineMessage({
   id: 'app.settings.developer-mode-enabled',
-  defaultMessage: 'Developer mode enabled.',
+  defaultMessage: '开发者模式已开启',
 })
 
 const tabs = [
   {
     name: defineMessage({
       id: 'app.settings.tabs.appearance',
-      defaultMessage: 'Appearance',
+      defaultMessage: '外观',
     }),
     icon: PaintBrushIcon,
     content: AppearanceSettings,
@@ -47,7 +47,7 @@ const tabs = [
   {
     name: defineMessage({
       id: 'app.settings.tabs.privacy',
-      defaultMessage: 'Privacy',
+      defaultMessage: '隐私',
     }),
     icon: ShieldIcon,
     content: PrivacySettings,
@@ -55,7 +55,7 @@ const tabs = [
   {
     name: defineMessage({
       id: 'app.settings.tabs.java-installations',
-      defaultMessage: 'Java installations',
+      defaultMessage: 'Java 路径',
     }),
     icon: CoffeeIcon,
     content: JavaSettings,
@@ -63,7 +63,7 @@ const tabs = [
   {
     name: defineMessage({
       id: 'app.settings.tabs.default-instance-options',
-      defaultMessage: 'Default instance options',
+      defaultMessage: '全局实例设置',
     }),
     icon: GameIcon,
     content: DefaultInstanceSettings,
@@ -71,7 +71,7 @@ const tabs = [
   {
     name: defineMessage({
       id: 'app.settings.tabs.resource-management',
-      defaultMessage: 'Resource management',
+      defaultMessage: '资源管理',
     }),
     icon: GaugeIcon,
     content: ResourceManagementSettings,
@@ -79,7 +79,7 @@ const tabs = [
   {
     name: defineMessage({
       id: 'app.settings.tabs.feature-flags',
-      defaultMessage: 'Feature flags',
+      defaultMessage: '功能开关',
     }),
     icon: ReportIcon,
     content: FeatureFlagSettings,
@@ -127,7 +127,7 @@ function devModeCount() {
   <ModalWrapper ref="modal">
     <template #title>
       <span class="flex items-center gap-2 text-lg font-extrabold text-contrast">
-        <SettingsIcon /> Settings
+        <SettingsIcon /> 设置
       </span>
     </template>
 
@@ -146,7 +146,7 @@ function devModeCount() {
               <ModrinthIcon class="w-6 h-6" />
             </button>
             <div>
-              <p class="m-0">Modrinth App {{ version }}</p>
+              <p class="m-0">Modrinth App {{ version }} （由 Tigercrl 汉化）</p>
               <p class="m-0">
                 <span v-if="osPlatform === 'macos'">MacOS</span>
                 <span v-else class="capitalize">{{ osPlatform }}</span>

@@ -1,23 +1,23 @@
 <script setup>
 import Instance from '@/components/ui/Instance.vue'
-import { computed, ref } from 'vue'
+import {computed, ref} from 'vue'
 import {
   ClipboardCopyIcon,
+  EyeIcon,
   FolderOpenIcon,
   PlayIcon,
   PlusIcon,
-  TrashIcon,
-  StopCircleIcon,
-  EyeIcon,
   SearchIcon,
+  StopCircleIcon,
+  TrashIcon,
   XIcon,
 } from '@modrinth/assets'
-import { Button, DropdownSelect } from '@modrinth/ui'
-import { formatCategoryHeader } from '@modrinth/utils'
+import {Button, DropdownSelect} from '@modrinth/ui'
+import {formatCategoryHeader} from '@modrinth/utils'
 import ContextMenu from '@/components/ui/ContextMenu.vue'
 import dayjs from 'dayjs'
-import { duplicate, remove } from '@/helpers/profile.js'
-import { handleError } from '@/store/notifications.js'
+import {duplicate, remove} from '@/helpers/profile.js'
+import {handleError} from '@/store/notifications.js'
 import ConfirmModalWrapper from '@/components/ui/modal/ConfirmModalWrapper.vue'
 
 const props = defineProps({
@@ -54,13 +54,13 @@ async function duplicateProfile(p) {
 const handleRightClick = (event, profilePathId) => {
   const item = instanceComponents.value.find((x) => x.instance.path === profilePathId)
   const baseOptions = [
-    { name: 'add_content' },
-    { type: 'divider' },
-    { name: 'edit' },
-    { name: 'duplicate' },
-    { name: 'open' },
-    { name: 'copy' },
-    { type: 'divider' },
+    {name: 'add_content'},
+    {type: 'divider'},
+    {name: 'edit'},
+    {name: 'duplicate'},
+    {name: 'open'},
+    {name: 'copy'},
+    {type: 'divider'},
     {
       name: 'delete',
       color: 'danger',
@@ -72,19 +72,19 @@ const handleRightClick = (event, profilePathId) => {
     item,
     item.playing
       ? [
-          {
-            name: 'stop',
-            color: 'danger',
-          },
-          ...baseOptions,
-        ]
+        {
+          name: 'stop',
+          color: 'danger',
+        },
+        ...baseOptions,
+      ]
       : [
-          {
-            name: 'play',
-            color: 'primary',
-          },
-          ...baseOptions,
-        ],
+        {
+          name: 'play',
+          color: 'primary',
+        },
+        ...baseOptions,
+      ],
   )
 }
 
@@ -220,32 +220,62 @@ const filteredResults = computed(() => {
 <template>
   <div class="flex gap-2">
     <div class="iconified-input flex-1">
-      <SearchIcon />
-      <input v-model="search" type="text" placeholder="Search" />
+      <SearchIcon/>
+      <input v-model="search" type="text" placeholder="搜索"/>
       <Button class="r-btn" @click="() => (search = '')">
-        <XIcon />
+        <XIcon/>
       </Button>
     </div>
     <DropdownSelect
       v-slot="{ selected }"
       v-model="sortBy"
-      name="Sort Dropdown"
+      name="分类下拉菜单"
       class="max-w-[16rem]"
       :options="['Name', 'Last played', 'Date created', 'Date modified', 'Game version']"
-      placeholder="Select..."
+      :display-name="(option) => {
+        switch(option){
+          case 'Name':
+            return '实例名称'
+          case 'Last played':
+            return '上次游玩'
+          case 'Date created':
+            return '创建日期'
+          case 'Date modified':
+            return '修改日期'
+          case 'Game version':
+            return '游戏版本'
+          default:
+            return option
+        }
+      }"
+      placeholder="请选择..."
     >
-      <span class="font-semibold text-primary">Sort by: </span>
+      <span class="font-semibold text-primary">排列方式：</span>
       <span class="font-semibold text-secondary">{{ selected }}</span>
     </DropdownSelect>
     <DropdownSelect
       v-slot="{ selected }"
       v-model="group"
       class="max-w-[16rem]"
-      name="Group Dropdown"
+      name="分组下拉菜单"
       :options="['Group', 'Loader', 'Game version', 'None']"
-      placeholder="Select..."
+      :display-name="(option) => {
+        switch (option) {
+          case 'Group':
+            return '分组'
+          case 'Loader':
+            return '加载器'
+          case 'Game version':
+            return '游戏版本'
+          case 'None':
+            return '无'
+          default:
+            return option
+        }
+      }"
+      placeholder="请选择..."
     >
-      <span class="font-semibold text-primary">Group by: </span>
+      <span class="font-semibold text-primary">分类方式：</span>
       <span class="font-semibold text-secondary">{{ selected }}</span>
     </DropdownSelect>
   </div>
@@ -259,7 +289,7 @@ const filteredResults = computed(() => {
   >
     <div v-if="instanceSection.key !== 'None'" class="divider">
       <p>{{ instanceSection.key }}</p>
-      <hr aria-hidden="true" />
+      <hr aria-hidden="true"/>
     </div>
     <section class="instances">
       <Instance
@@ -273,21 +303,45 @@ const filteredResults = computed(() => {
   </div>
   <ConfirmModalWrapper
     ref="confirmModal"
-    title="Are you sure you want to delete this instance?"
-    description="If you proceed, all data for your instance will be removed. You will not be able to recover it."
+    title="您确定要删除此实例吗？"
+    description="如果您继续，您的实例的所有数据将被永久删除，包括您的世界，配置，和所有已安装的资源。您将无法恢复它。"
     :has-to-type="false"
-    proceed-label="Delete"
+    proceed-label="删除"
     @proceed="deleteProfile"
   />
   <ContextMenu ref="instanceOptions" @option-clicked="handleOptionsClick">
-    <template #play> <PlayIcon /> Play </template>
-    <template #stop> <StopCircleIcon /> Stop </template>
-    <template #add_content> <PlusIcon /> Add content </template>
-    <template #edit> <EyeIcon /> View instance </template>
-    <template #duplicate> <ClipboardCopyIcon /> Duplicate instance</template>
-    <template #delete> <TrashIcon /> Delete </template>
-    <template #open> <FolderOpenIcon /> Open folder </template>
-    <template #copy> <ClipboardCopyIcon /> Copy path </template>
+    <template #play>
+      <PlayIcon/>
+      启动
+    </template>
+    <template #stop>
+      <StopCircleIcon/>
+      停止
+    </template>
+    <template #add_content>
+      <PlusIcon/>
+      安装资源
+    </template>
+    <template #edit>
+      <EyeIcon/>
+      查看实例
+    </template>
+    <template #duplicate>
+      <ClipboardCopyIcon/>
+      复制实例
+    </template>
+    <template #delete>
+      <TrashIcon/>
+      删除实例
+    </template>
+    <template #open>
+      <FolderOpenIcon/>
+      打开文件夹
+    </template>
+    <template #copy>
+      <ClipboardCopyIcon/>
+      复制路径
+    </template>
   </ContextMenu>
 </template>
 <style lang="scss" scoped>

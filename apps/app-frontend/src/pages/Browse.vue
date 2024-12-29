@@ -27,6 +27,7 @@ import InstanceIndicator from '@/components/ui/InstanceIndicator.vue'
 import { defineMessages, useVIntl } from '@vintl/vintl'
 import ContextMenu from '@/components/ui/ContextMenu.vue'
 import { openUrl } from '@tauri-apps/plugin-opener'
+import {formatProjectType} from "@modrinth/utils";
 
 const { formatMessage } = useVIntl()
 
@@ -169,7 +170,7 @@ window.addEventListener('online', () => {
 })
 
 const breadcrumbs = useBreadcrumbs()
-breadcrumbs.setContext({ name: 'Discover content', link: route.path, query: route.query })
+breadcrumbs.setContext({ name: '探索资源', link: route.path, query: route.query })
 
 const loading = ref(true)
 
@@ -241,7 +242,7 @@ async function refreshSearch() {
   }
 
   breadcrumbs.setContext({
-    name: 'Discover content',
+    name: '探索资源',
     link: `/browse/${projectType.value}`,
     query: params,
   })
@@ -275,7 +276,7 @@ watch(
 
     projectType.value = newType
 
-    currentSortType.value = { display: 'Relevance', name: 'relevance' }
+    currentSortType.value = { display: '相关性', name: 'relevance' }
     query.value = ''
   },
 )
@@ -312,11 +313,11 @@ const selectableProjectTypes = computed(() => {
   }
 
   const links = [
-    { label: 'Modpacks', href: `/browse/modpack`, shown: modpacks },
-    { label: 'Mods', href: `/browse/mod`, shown: mods },
-    { label: 'Resource Packs', href: `/browse/resourcepack` },
-    { label: 'Data Packs', href: `/browse/datapack`, shown: dataPacks },
-    { label: 'Shaders', href: `/browse/shader` },
+    { label: '整合包', href: `/browse/modpack`, shown: modpacks },
+    { label: '模组', href: `/browse/mod`, shown: mods },
+    { label: '资源包', href: `/browse/resourcepack` },
+    { label: '数据包', href: `/browse/datapack`, shown: dataPacks },
+    { label: '光影', href: `/browse/shader` },
   ]
 
   if (params) {
@@ -337,19 +338,19 @@ const selectableProjectTypes = computed(() => {
 const messages = defineMessages({
   gameVersionProvidedByInstance: {
     id: 'search.filter.locked.instance-game-version.title',
-    defaultMessage: 'Game version is provided by the instance',
+    defaultMessage: '游戏版本已跟随实例',
   },
   modLoaderProvidedByInstance: {
     id: 'search.filter.locked.instance-loader.title',
-    defaultMessage: 'Loader is provided by the instance',
+    defaultMessage: '加载器类型已跟随实例',
   },
   providedByInstance: {
     id: 'search.filter.locked.instance',
-    defaultMessage: 'Provided by the instance',
+    defaultMessage: '跟随实例',
   },
   syncFilterButton: {
     id: 'search.filter.locked.instance.sync',
-    defaultMessage: 'Sync with instance',
+    defaultMessage: '跟随实例',
   },
 })
 
@@ -388,7 +389,7 @@ await refreshSearch()
     >
       <Checkbox
         v-model="instanceHideInstalled"
-        label="Hide installed content"
+        label="隐藏已安装资源"
         class="filter-checkbox"
         @update:model-value="onSearchChangeToTop()"
         @click.prevent.stop
@@ -425,7 +426,7 @@ await refreshSearch()
   <div ref="searchWrapper" class="flex flex-col gap-3 p-6">
     <template v-if="instance">
       <InstanceIndicator :instance="instance" />
-      <h1 class="m-0 mb-1 text-xl">Install content to instance</h1>
+      <h1 class="m-0 mb-1 text-xl">安装资源至实例</h1>
     </template>
     <NavTabs :links="selectableProjectTypes" />
     <div class="iconified-input">
@@ -436,7 +437,7 @@ await refreshSearch()
         autocomplete="off"
         spellcheck="false"
         type="text"
-        :placeholder="`Search ${projectType}s...`"
+        :placeholder="`搜索${formatProjectType(projectType)}...`"
       />
       <Button v-if="query" class="r-btn" @click="() => clearSearch()">
         <XIcon />
@@ -447,21 +448,36 @@ await refreshSearch()
         v-slot="{ selected }"
         v-model="currentSortType"
         class="max-w-[16rem]"
-        name="Sort by"
+        name="分类方式"
         :options="sortTypes as any"
-        :display-name="(option: SortType | undefined) => option?.display"
+        :display-name="(option: SortType | undefined) => {
+          switch (option?.display) {
+            case 'Relevance':
+              return '相关性'
+            case 'Downloads':
+              return '下载量'
+            case 'Followers':
+              return '关注者'
+            case 'Date published':
+              return '发布时间'
+            case 'Date updated':
+              return '更新时间'
+            default:
+              return option?.display
+          }
+        }"
       >
-        <span class="font-semibold text-primary">Sort by: </span>
+        <span class="font-semibold text-primary">分类方式：</span>
         <span class="font-semibold text-secondary">{{ selected }}</span>
       </DropdownSelect>
       <DropdownSelect
         v-slot="{ selected }"
         v-model="maxResults"
-        name="Max results"
+        name="显示数目"
         :options="[5, 10, 15, 20, 50, 100]"
-        class="max-w-[9rem]"
+        class="max-w-[10rem]"
       >
-        <span class="font-semibold text-primary">View: </span>
+        <span class="font-semibold text-primary">显示数目：</span>
         <span class="font-semibold text-secondary">{{ selected }}</span>
       </DropdownSelect>
       <Pagination :page="currentPage" :count="pageCount" class="ml-auto" @switch-page="setPage" />
@@ -478,7 +494,7 @@ await refreshSearch()
         <LoadingIndicator />
       </section>
       <section v-else-if="offline && results.total_hits === 0" class="offline">
-        You are currently offline. Connect to the internet to browse Modrinth!
+        您当前处于离线状态。连接到互联网以浏览 Modrinth！
       </section>
       <section v-else class="project-list display-mode--list instance-results" role="list">
         <SearchCard
@@ -506,8 +522,8 @@ await refreshSearch()
           @contextmenu.prevent.stop="(event) => handleRightClick(event, result)"
         />
         <ContextMenu ref="options" @option-clicked="handleOptionsClick">
-          <template #open_link> <GlobeIcon /> Open in Modrinth <ExternalIcon /> </template>
-          <template #copy_link> <ClipboardCopyIcon /> Copy link </template>
+          <template #open_link> <GlobeIcon /> 在 Modrinth 中打开 <ExternalIcon /> </template>
+          <template #copy_link> <ClipboardCopyIcon /> 复制链接 </template>
         </ContextMenu>
       </section>
       <div class="flex justify-end">

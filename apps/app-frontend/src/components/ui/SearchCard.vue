@@ -19,7 +19,7 @@
         <span class="text-lg font-extrabold text-contrast m-0 leading-none">
           {{ project.title }}
         </span>
-        <span v-if="project.author" class="text-secondary"> by {{ project.author }}</span>
+        <span v-if="project.author" class="text-secondary"> 作者：{{ project.author }}</span>
       </div>
       <div class="m-0 line-clamp-2">
         {{ project.description }}
@@ -31,7 +31,7 @@
           class="text-sm font-semibold text-secondary flex gap-1 px-[0.375rem] py-0.5 bg-button-bg rounded-full"
         >
           <template v-if="project.client_side === 'optional' && project.server_side === 'optional'">
-            Client or server
+            双端任一安装
           </template>
           <template
             v-else-if="
@@ -39,7 +39,7 @@
               (project.server_side === 'optional' || project.server_side === 'unsupported')
             "
           >
-            Client
+            客户端
           </template>
           <template
             v-else-if="
@@ -47,19 +47,19 @@
               (project.client_side === 'optional' || project.client_side === 'unsupported')
             "
           >
-            Server
+            服务器
           </template>
           <template
             v-else-if="
               project.client_side === 'unsupported' && project.server_side === 'unsupported'
             "
           >
-            Unsupported
+            双端均不支持
           </template>
           <template
             v-else-if="project.client_side === 'required' && project.server_side === 'required'"
           >
-            Client and server
+            双端均需安装
           </template>
         </div>
         <div
@@ -76,14 +76,14 @@
         <DownloadIcon class="shrink-0" />
         <span>
           {{ formatNumber(project.downloads) }}
-          <span class="text-secondary">downloads</span>
+          <span class="text-secondary">下载</span>
         </span>
       </div>
       <div class="flex items-center gap-2">
         <HeartIcon class="shrink-0" />
         <span>
           {{ formatNumber(project.follows ?? project.followers) }}
-          <span class="text-secondary">followers</span>
+          <span class="text-secondary">关注</span>
         </span>
       </div>
       <div class="mt-auto relative">
@@ -101,12 +101,12 @@
               <CheckIcon v-else />
               {{
                 installing
-                  ? 'Installing'
+                  ? '安装中'
                   : installed
-                    ? 'Installed'
+                    ? '已安装'
                     : modpack || instance
-                      ? 'Install'
-                      : 'Add to an instance'
+                      ? '安装'
+                      : '添加到实例'
               }}
             </button>
           </ButtonStyled>

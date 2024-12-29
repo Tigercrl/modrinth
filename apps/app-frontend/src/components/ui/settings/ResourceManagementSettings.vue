@@ -57,10 +57,9 @@ async function findLauncherDir() {
 </script>
 
 <template>
-  <h2 class="m-0 text-lg font-extrabold text-contrast">App directory</h2>
+  <h2 class="m-0 text-lg font-extrabold text-contrast">数据目录</h2>
   <p class="m-0 mt-1 mb-2 leading-tight text-secondary">
-    The directory where the launcher stores all of its files. Changes will be applied after
-    restarting the launcher.
+    Modrinth App 存储所有文件的目录。（需要重启应用程序才能生效）
   </p>
 
   <div class="m-1 my-2">
@@ -76,29 +75,27 @@ async function findLauncherDir() {
   <div>
     <ConfirmModalWrapper
       ref="purgeCacheConfirmModal"
-      title="Are you sure you want to purge the cache?"
-      description="If you proceed, your entire cache will be purged. This may slow down the app temporarily."
+      title="您确定要清除缓存吗？"
+      description="如果您继续，所有缓存将被清除。这可能会使应用程序暂时变卡顿。"
       :has-to-type="false"
       proceed-label="Purge cache"
       :show-ad-on-close="false"
       @proceed="purgeCache"
     />
 
-    <h2 class="m-0 text-lg font-extrabold text-contrast">App cache</h2>
+    <h2 class="m-0 text-lg font-extrabold text-contrast">缓存</h2>
     <p class="m-0 mt-1 mb-2 leading-tight text-secondary">
-      The Modrinth app stores a cache of data to speed up loading. This can be purged to force the
-      app to reload data. This may slow down the app temporarily.
+      Modrinth App 使用缓存以加快加载速度。这可以清除所有缓存以强制应用程序重新加载数据。这可能会使应用程序暂时变卡顿。
     </p>
   </div>
   <button id="purge-cache" class="btn min-w-max" @click="$refs.purgeCacheConfirmModal.show()">
     <TrashIcon />
-    Purge cache
+    清除缓存
   </button>
 
-  <h2 class="m-0 text-lg font-extrabold text-contrast mt-4">Maximum concurrent downloads</h2>
+  <h2 class="m-0 text-lg font-extrabold text-contrast mt-4">最大并发下载</h2>
   <p class="m-0 mt-1 mb-2 leading-tight text-secondary">
-    The maximum amount of files the launcher can download at the same time. Set this to a lower
-    value if you have a poor internet connection. (app restart required to take effect)
+    Modrinth App 可以同时下载文件的最大数量。如果您的网络连接较差，请将此值设置为较低的值。（需要重启应用程序才能生效）
   </p>
   <Slider
     id="max-downloads"
@@ -108,10 +105,9 @@ async function findLauncherDir() {
     :step="1"
   />
 
-  <h2 class="mt-4 m-0 text-lg font-extrabold text-contrast">Maximum concurrent writes</h2>
+  <h2 class="mt-4 m-0 text-lg font-extrabold text-contrast">最大并发写入</h2>
   <p class="m-0 mt-1 mb-2 leading-tight text-secondary">
-    The maximum amount of files the launcher can write to the disk at once. Set this to a lower
-    value if you are frequently getting I/O errors. (app restart required to take effect)
+    Modrinth App 可以同时将文件写入磁盘的最大数量。如果经常出现 I/O 错误，请将此值设置为较低的值。（需要重启应用程序才能生效）
   </p>
   <Slider id="max-writes" v-model="settings.max_concurrent_writes" :min="1" :max="50" :step="1" />
 </template>

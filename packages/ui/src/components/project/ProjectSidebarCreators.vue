@@ -14,7 +14,7 @@
               {{ organization.name }}
             </span>
             <span class="text-secondary text-sm font-medium flex items-center gap-1"
-              ><OrganizationIcon /> Organization</span
+              ><OrganizationIcon /> 组织</span
             >
           </div>
         </AutoLink>
@@ -108,11 +108,11 @@ const sortedMembers = computed(() => {
 const messages = defineMessages({
   title: {
     id: 'project.about.creators.title',
-    defaultMessage: 'Creators',
+    defaultMessage: '创作者',
   },
   owner: {
     id: 'project.about.creators.owner',
-    defaultMessage: 'Project owner',
+    defaultMessage: '所有者',
   },
 })
 </script>

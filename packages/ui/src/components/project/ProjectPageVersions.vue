@@ -20,29 +20,29 @@
   >
     <div class="versions-grid-row">
       <div class="w-9 max-sm:hidden"></div>
-      <div class="text-sm font-bold text-contrast max-sm:hidden">Name</div>
+      <div class="text-sm font-bold text-contrast max-sm:hidden">名称</div>
       <div
         class="text-sm font-bold text-contrast max-sm:hidden sm:max-xl:collapse sm:max-xl:hidden"
       >
-        Game version
+        游戏版本
       </div>
       <div
         class="text-sm font-bold text-contrast max-sm:hidden sm:max-xl:collapse sm:max-xl:hidden"
       >
-        Platforms
+        加载器
       </div>
       <div
         class="text-sm font-bold text-contrast max-sm:hidden sm:max-xl:collapse sm:max-xl:hidden"
       >
-        Published
+        发布时间
       </div>
       <div
         class="text-sm font-bold text-contrast max-sm:hidden sm:max-xl:collapse sm:max-xl:hidden"
       >
-        Downloads
+        下载量
       </div>
       <div class="text-sm font-bold text-contrast max-sm:hidden xl:collapse xl:hidden">
-        Compatibility
+        兼容性
       </div>
       <div class="text-sm font-bold text-contrast max-sm:hidden xl:collapse xl:hidden">Stats</div>
       <div class="w-9 max-sm:hidden"></div>

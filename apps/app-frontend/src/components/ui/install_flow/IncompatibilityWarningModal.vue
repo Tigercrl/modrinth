@@ -2,9 +2,8 @@
   <ModalWrapper ref="incompatibleModal" header="Incompatibility warning" :on-hide="onInstall">
     <div class="modal-body">
       <p>
-        This {{ versions?.length > 0 ? 'project' : 'version' }} is not compatible with the instance
-        you're trying to install it on. Are you sure you want to continue? Dependencies will not be
-        installed.
+        该{{ versions?.length > 0 ? '资源' : '版本' }}与您尝试安装它的实例不兼容。
+        您确定要继续吗？它的前置将不会被安装。
       </p>
       <table>
         <thead>
@@ -22,7 +21,7 @@
                 v-model="selectedVersion"
                 :options="versions"
                 :searchable="true"
-                placeholder="Select version"
+                placeholder="选择版本"
                 open-direction="top"
                 :show-labels="false"
                 :custom-label="
@@ -48,7 +47,7 @@
       <div class="button-group">
         <Button @click="() => incompatibleModal.hide()"><XIcon />Cancel</Button>
         <Button color="primary" :disabled="installing" @click="install()">
-          <DownloadIcon /> {{ installing ? 'Installing' : 'Install' }}
+          <DownloadIcon /> {{ installing ? '安装中' : '安装' }}
         </Button>
       </div>
     </div>

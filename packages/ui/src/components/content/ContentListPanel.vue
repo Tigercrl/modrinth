@@ -59,7 +59,7 @@ const paginatedItems = computed(() =>
       />
       <slot name="headers">
         <div class="flex items-center gap-2 cursor-pointer" @click="updateSort('Name')">
-          Name
+          名称
           <DropdownIcon
             v-if="sortColumn === 'Name'"
             class="transition-all transform"
@@ -67,7 +67,7 @@ const paginatedItems = computed(() =>
           />
         </div>
         <div class="flex items-center gap-1 max-w-60 cursor-pointer" @click="updateSort('Updated')">
-          Updated
+          上次更新
           <DropdownIcon
             v-if="sortColumn === 'Updated'"
             class="transition-all transform"

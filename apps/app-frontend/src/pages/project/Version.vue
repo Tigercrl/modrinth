@@ -6,7 +6,7 @@
         :link-stack="[
           {
             href: `/project/${route.params.id}/versions`,
-            label: 'Versions',
+            label: '版本列表',
           },
         ]"
       />
@@ -24,15 +24,15 @@
           <CheckIcon v-else />
           {{
             installing
-              ? 'Installing...'
+              ? '安装中...'
               : installed && installedVersion === version.id
-                ? 'Installed'
-                : 'Install'
+                ? '已安装'
+                : '安装'
           }}
         </Button>
         <Button>
           <ReportIcon />
-          Report
+          举报
         </Button>
         <a
           :href="`https://modrinth.com/mod/${route.params.id}/version/${route.params.version}`"
@@ -40,18 +40,18 @@
           class="btn"
         >
           <ExternalIcon />
-          Modrinth website
+          在 Modrinth 中打开
         </a>
       </div>
     </Card>
     <div class="version-container">
       <div class="description-cards">
         <Card>
-          <h3 class="card-title">Changelog</h3>
+          <h3 class="card-title">更新日志</h3>
           <div class="markdown-body" v-html="renderString(version.changelog ?? '')" />
         </Card>
         <Card>
-          <h3 class="card-title">Files</h3>
+          <h3 class="card-title">文件</h3>
           <Card
             v-for="file in version.files"
             :key="file.id"
@@ -65,7 +65,7 @@
                   {{ file.filename }}
                 </span>
                 ({{ formatBytes(file.size) }})
-                <span v-if="file.primary" class="primary-label"> Primary </span>
+                <span v-if="file.primary" class="primary-label"> 主体 </span>
               </span>
             </span>
             <Button
@@ -81,7 +81,7 @@
           </Card>
         </Card>
         <Card v-if="displayDependencies.length > 0">
-          <h2>Dependencies</h2>
+          <h2>前置</h2>
           <div v-for="dependency in displayDependencies" :key="dependency.title">
             <router-link v-if="dependency.link" class="btn dependency" :to="dependency.link">
               <Avatar size="sm" :src="dependency.icon" />
@@ -101,10 +101,10 @@
         </Card>
       </div>
       <Card class="metadata-card">
-        <h3 class="card-title">Metadata</h3>
+        <h3 class="card-title">元数据</h3>
         <div class="metadata">
           <div class="metadata-item">
-            <span class="metadata-label">Release Channel</span>
+            <span class="metadata-label">版本类型</span>
             <span class="metadata-value"
               ><Badge
                 :color="releaseColor(version.version_type)"
@@ -114,11 +114,11 @@
             /></span>
           </div>
           <div class="metadata-item">
-            <span class="metadata-label">Version Number</span>
+            <span class="metadata-label">资源版本</span>
             <span class="metadata-value">{{ version.version_number }}</span>
           </div>
           <div class="metadata-item">
-            <span class="metadata-label">Loaders</span>
+            <span class="metadata-label">加载器</span>
             <span class="metadata-value">{{
               version.loaders
                 .map((loader) => loader.charAt(0).toUpperCase() + loader.slice(1))
@@ -126,26 +126,26 @@
             }}</span>
           </div>
           <div class="metadata-item">
-            <span class="metadata-label">Game Versions</span>
+            <span class="metadata-label">游戏版本</span>
             <span class="metadata-value"> {{ version.game_versions.join(', ') }} </span>
           </div>
           <div class="metadata-item">
-            <span class="metadata-label">Downloads</span>
+            <span class="metadata-label">下载量</span>
             <span class="metadata-value">{{ version.downloads }}</span>
           </div>
           <div class="metadata-item">
-            <span class="metadata-label">Publication Date</span>
+            <span class="metadata-label">发布日期</span>
             <span class="metadata-value">
               {{
-                new Date(version.date_published).toLocaleString('en-US', {
+                new Date(version.date_published).toLocaleString('zh-CN', {
                   month: 'long',
                   day: 'numeric',
                   year: 'numeric',
                 })
               }}
-              at
+              <br>
               {{
-                new Date(version.date_published).toLocaleString('en-US', {
+                new Date(version.date_published).toLocaleString('zh-CN', {
                   hour: 'numeric',
                   minute: 'numeric',
                   second: 'numeric',
@@ -155,7 +155,7 @@
             </span>
           </div>
           <div v-if="author" class="metadata-item">
-            <span class="metadata-label">Author</span>
+            <span class="metadata-label">作者</span>
             <a
               :href="`https://modrinth.com/user/${author.user.username}`"
               rel="external"
@@ -172,7 +172,7 @@
             </a>
           </div>
           <div class="metadata-item">
-            <span class="metadata-label">Version ID</span>
+            <span class="metadata-label">版本 ID</span>
             <span class="metadata-value"><CopyCode class="copycode" :text="version.id" /></span>
           </div>
         </div>
@@ -296,7 +296,7 @@ async function refreshDisplayDependencies() {
         return {
           icon: null,
           title: dependency.file_name,
-          subtitle: `Added via overrides`,
+          subtitle: `通过内置文件添加`,
           link: null,
         }
       }

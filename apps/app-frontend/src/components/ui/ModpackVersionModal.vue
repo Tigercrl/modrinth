@@ -54,7 +54,7 @@ const onHide = () => {
   <ModalWrapper
     ref="modpackVersionModal"
     class="modpack-version-modal"
-    header="Change modpack version"
+    header="更改整合包版本"
     :on-hide="onHide"
   >
     <div class="modal-body">
@@ -62,8 +62,8 @@ const onHide = () => {
         <div class="table">
           <div class="table-row with-columns table-head">
             <div class="table-cell table-text download-cell" />
-            <div class="name-cell table-cell table-text">Name</div>
-            <div class="table-cell table-text">Supports</div>
+            <div class="name-cell table-cell table-text">名称</div>
+            <div class="table-cell table-text">支持版本</div>
           </div>
           <div class="scrollable">
             <div

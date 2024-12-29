@@ -24,28 +24,28 @@
         @click="reinstallJava"
       >
         <DownloadIcon />
-        {{ installingJava ? 'Installing...' : 'Install recommended' }}
+        {{ installingJava ? '安装中...' : '安装 Java' }}
       </Button>
       <Button :disabled="props.disabled" @click="autoDetect">
         <SearchIcon />
-        Detect
+        检测
       </Button>
       <Button :disabled="props.disabled" @click="handleJavaFileInput()">
         <FolderSearchIcon />
-        Browse
+        选择
       </Button>
-      <Button v-if="testingJava" disabled> Testing... </Button>
+      <Button v-if="testingJava" disabled> 测试中... </Button>
       <Button v-else-if="testingJavaSuccess === true">
         <CheckIcon class="test-success" />
-        Success
+        成功
       </Button>
       <Button v-else-if="testingJavaSuccess === false">
         <XIcon class="test-fail" />
-        Failed
+        失败
       </Button>
       <Button v-else :disabled="props.disabled" @click="testJava">
         <PlayIcon />
-        Test
+        测试
       </Button>
     </span>
   </div>

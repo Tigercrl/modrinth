@@ -156,7 +156,7 @@ async function setupApp() {
 
   await warning_listener((e) =>
     notificationsWrapper.value.addNotification({
-      title: 'Warning',
+      title: '警告',
       text: e.message,
       type: 'warn',
     }),
@@ -244,12 +244,7 @@ async function logOut() {
 }
 
 const MIDAS_BITFLAG = 1 << 0
-const hasPlus = computed(
-  () =>
-    credentials.value &&
-    credentials.value.user &&
-    (credentials.value.user.badges & MIDAS_BITFLAG) === MIDAS_BITFLAG,
-)
+const hasPlus = computed(() => true)
 
 const sidebarToggled = ref(true)
 
@@ -261,7 +256,7 @@ const forceSidebar = computed(
   () => route.path.startsWith('/browse') || route.path.startsWith('/project'),
 )
 const sidebarVisible = computed(() => sidebarToggled.value || forceSidebar.value)
-const showAd = computed(() => !(!sidebarVisible.value || hasPlus.value))
+const showAd = computed(() => false)
 
 watch(
   showAd,
@@ -369,11 +364,11 @@ function handleAuxClick(e) {
     <div
       class="app-grid-navbar bg-bg-raised flex flex-col p-[0.5rem] pt-0 gap-[0.5rem] w-[--left-bar-width]"
     >
-      <NavButton v-tooltip.right="'Home'" to="/">
+      <NavButton v-tooltip.right="'主页'" to="/">
         <HomeIcon />
       </NavButton>
       <NavButton
-        v-tooltip.right="'Discover content'"
+        v-tooltip.right="'探索资源'"
         to="/browse/modpack"
         :is-primary="() => route.path.startsWith('/browse') && !route.query.i"
         :is-subpage="(route) => route.path.startsWith('/project') && !route.query.i"
@@ -381,7 +376,7 @@ function handleAuxClick(e) {
         <CompassIcon />
       </NavButton>
       <NavButton
-        v-tooltip.right="'Library'"
+        v-tooltip.right="'实例管理'"
         to="/library"
         :is-subpage="
           () =>
@@ -397,17 +392,17 @@ function handleAuxClick(e) {
         <QuickInstanceSwitcher />
       </suspense>
       <NavButton
-        v-tooltip.right="'Create new instance'"
+        v-tooltip.right="'创建新的实例'"
         :to="() => $refs.installationModal.show()"
         :disabled="offline"
       >
         <PlusIcon />
       </NavButton>
       <div class="flex flex-grow"></div>
-      <NavButton v-if="updateAvailable" v-tooltip.right="'Install update'" :to="() => restartApp()">
+      <NavButton v-if="updateAvailable" v-tooltip.right="'安装更新'" :to="() => restartApp()">
         <DownloadIcon />
       </NavButton>
-      <NavButton v-tooltip.right="'Settings'" :to="() => $refs.settingsModal.show()">
+      <NavButton v-tooltip.right="'设置'" :to="() => $refs.settingsModal.show()">
         <SettingsIcon />
       </NavButton>
       <ButtonStyled v-if="credentials" type="transparent" circular>
@@ -427,12 +422,12 @@ function handleAuxClick(e) {
             size="32px"
             circle
           />
-          <template #sign-out> <LogOutIcon /> Sign out </template>
+          <template #sign-out> <LogOutIcon /> 登出 </template>
         </OverflowMenu>
       </ButtonStyled>
-      <NavButton v-else v-tooltip.right="'Sign in'" :to="() => signIn()">
+      <NavButton v-else v-tooltip.right="'登录'" :to="() => signIn()">
         <LogInIcon />
-        <template #label>Sign in</template>
+        <template #label>登录</template>
       </NavButton>
     </div>
     <div data-tauri-drag-region class="app-grid-statusbar bg-bg-raised h-[--top-bar-height] flex">
@@ -540,7 +535,7 @@ function handleAuxClick(e) {
         <div id="sidebar-teleport-target" class="sidebar-teleport-content"></div>
         <div class="sidebar-default-content" :class="{ 'sidebar-enabled': sidebarVisible }">
           <div class="p-4 border-0 border-b-[1px] border-[--brand-gradient-border] border-solid">
-            <h3 class="text-lg m-0">Playing as</h3>
+            <h3 class="text-lg m-0">当前账户</h3>
             <suspense>
               <AccountsCard ref="accounts" mode="small" />
             </suspense>
@@ -551,7 +546,7 @@ function handleAuxClick(e) {
             </suspense>
           </div>
           <div v-if="news && news.length > 0" class="pt-4 flex flex-col">
-            <h3 class="px-4 text-lg m-0">News</h3>
+            <h3 class="px-4 text-lg m-0">新闻</h3>
             <template v-for="(item, index) in news" :key="`news-${index}`">
               <a
                 :class="`flex flex-col outline-offset-[-4px] hover:bg-[--brand-gradient-border] focus:bg-[--brand-gradient-border] px-4 transition-colors ${index === 0 ? 'pt-2 pb-4' : 'py-4'}`"
@@ -561,7 +556,7 @@ function handleAuxClick(e) {
               >
                 <img
                   :src="item.thumbnail"
-                  alt="News thumbnail"
+                  alt="新闻缩略图"
                   aria-hidden="true"
                   class="w-full aspect-[3/1] object-cover rounded-2xl border-[1px] border-solid border-[--brand-gradient-border]"
                 />
@@ -587,7 +582,7 @@ function handleAuxClick(e) {
           class="absolute bottom-[250px] w-full flex justify-center items-center gap-1 px-4 py-3 text-purple font-medium hover:underline z-10"
           target="_blank"
         >
-          <ArrowBigUpDashIcon class="text-2xl" /> Upgrade to Modrinth+
+          <ArrowBigUpDashIcon class="text-2xl" /> 升级到 Modrinth+（汉化已有）
         </a>
         <PromotionWrapper />
       </template>

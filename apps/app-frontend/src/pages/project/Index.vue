@@ -35,29 +35,29 @@
           <template #actions>
             <ButtonStyled size="large" color="brand">
               <button
-                v-tooltip="installed ? `This project is already installed` : null"
+                v-tooltip="installed ? `该资源已安装` : null"
                 :disabled="installed || installing"
                 @click="install(null)"
               >
                 <DownloadIcon v-if="!installed && !installing" />
                 <CheckIcon v-else-if="installed" />
-                {{ installing ? 'Installing...' : installed ? 'Installed' : 'Install' }}
+                {{ installing ? '安装中...' : installed ? '已安装' : '安装' }}
               </button>
             </ButtonStyled>
             <ButtonStyled size="large" circular type="transparent">
               <OverflowMenu
-                :tooltip="`More options`"
+                :tooltip="`更多选项`"
                 :options="[
                   {
                     id: 'follow',
                     disabled: true,
-                    tooltip: 'Coming soon',
+                    tooltip: '敬请期待',
                     action: () => {},
                   },
                   {
                     id: 'save',
                     disabled: true,
-                    tooltip: 'Coming soon',
+                    tooltip: '敬请期待',
                     action: () => {},
                   },
                   {
@@ -75,13 +75,13 @@
                     link: `https://modrinth.com/report?item=project&itemID=${data.id}`,
                   },
                 ]"
-                aria-label="More options"
+                aria-label="更多选项"
               >
                 <MoreVerticalIcon aria-hidden="true" />
-                <template #open-in-browser> <ExternalIcon /> Open in browser </template>
-                <template #follow> <HeartIcon /> Follow </template>
-                <template #save> <BookmarkIcon /> Save </template>
-                <template #report> <ReportIcon /> Report </template>
+                <template #open-in-browser> <ExternalIcon /> 在浏览器中打开 </template>
+                <template #follow> <HeartIcon /> 关注 </template>
+                <template #save> <BookmarkIcon /> 保存 </template>
+                <template #report> <ReportIcon /> 举报 </template>
               </OverflowMenu>
             </ButtonStyled>
           </template>
@@ -89,11 +89,11 @@
         <NavTabs
           :links="[
             {
-              label: 'Description',
+              label: '介绍',
               href: `/project/${$route.params.id}`,
             },
             {
-              label: 'Versions',
+              label: '版本列表',
               href: {
                 path: `/project/${$route.params.id}/versions`,
                 query: { l: instance?.loader, g: instance?.game_version },
@@ -101,7 +101,7 @@
               subpages: ['version'],
             },
             {
-              label: 'Gallery',
+              label: '图库',
               href: `/project/${$route.params.id}/gallery`,
               shown: data.gallery.length > 0,
             },
@@ -118,12 +118,12 @@
           :installed-version="installedVersion"
         />
       </template>
-      <template v-else> Project data couldn't not be loaded. </template>
+      <template v-else> 无法加载资源数据 </template>
     </div>
     <ContextMenu ref="options" @option-clicked="handleOptionsClick">
-      <template #install> <DownloadIcon /> Install </template>
-      <template #open_link> <GlobeIcon /> Open in Modrinth <ExternalIcon /> </template>
-      <template #copy_link> <ClipboardCopyIcon /> Copy link </template>
+      <template #install> <DownloadIcon /> 安装 </template>
+      <template #open_link> <GlobeIcon /> 在 Modrinth 中打开 <ExternalIcon /> </template>
+      <template #copy_link> <ClipboardCopyIcon /> 复制链接 </template>
     </ContextMenu>
   </div>
 </template>

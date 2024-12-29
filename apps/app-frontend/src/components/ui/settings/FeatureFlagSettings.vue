@@ -25,12 +25,22 @@ watch(
   },
   { deep: true },
 )
+
+function getOptionName(option: string){
+  switch (option){
+    case 'project_background':
+      return '资源背景（在模组等资源页面增加渐变背景）'
+    case 'page_path':
+      return '显示页面路径（左下角）'
+  }
+  return option
+}
 </script>
 <template>
   <div v-for="option in options" :key="option" class="mt-4 flex items-center justify-between">
     <div>
       <h2 class="m-0 text-lg font-extrabold text-contrast capitalize">
-        {{ option }}
+        {{ getOptionName(option) }}
       </h2>
     </div>
 

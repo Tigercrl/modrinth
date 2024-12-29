@@ -42,52 +42,52 @@ watch(
 const messages = defineMessages({
   hooks: {
     id: 'instance.settings.tabs.hooks.title',
-    defaultMessage: 'Game launch hooks',
+    defaultMessage: '钩子',
   },
   hooksDescription: {
     id: 'instance.settings.tabs.hooks.description',
     defaultMessage:
-      'Hooks allow advanced users to run certain system commands before and after launching the game.',
+      '钩子允许用户在启动游戏前后运行某些系统命令。此选项为高级设置，如果您不知道这是什么请不要修改！',
   },
   customHooks: {
     id: 'instance.settings.tabs.hooks.custom-hooks',
-    defaultMessage: 'Custom launch hooks',
+    defaultMessage: '自定义钩子',
   },
   preLaunch: {
     id: 'instance.settings.tabs.hooks.pre-launch',
-    defaultMessage: 'Pre-launch',
+    defaultMessage: '启动前',
   },
   preLaunchDescription: {
     id: 'instance.settings.tabs.hooks.pre-launch.description',
-    defaultMessage: 'Ran before the instance is launched.',
+    defaultMessage: '在实例启动前运行',
   },
   preLaunchEnter: {
     id: 'instance.settings.tabs.hooks.pre-launch.enter',
-    defaultMessage: 'Enter pre-launch command...',
+    defaultMessage: '请输入命令...',
   },
   wrapper: {
     id: 'instance.settings.tabs.hooks.wrapper',
-    defaultMessage: 'Wrapper',
+    defaultMessage: '包装命令',
   },
   wrapperDescription: {
     id: 'instance.settings.tabs.hooks.wrapper.description',
-    defaultMessage: 'Wrapper command for launching Minecraft.',
+    defaultMessage: 'Minecraft 启动时的包装命令',
   },
   wrapperEnter: {
     id: 'instance.settings.tabs.hooks.wrapper.enter',
-    defaultMessage: 'Enter wrapper command...',
+    defaultMessage: '请输入命令...',
   },
   postExit: {
     id: 'instance.settings.tabs.hooks.post-exit',
-    defaultMessage: 'Post-exit',
+    defaultMessage: '停止后',
   },
   postExitDescription: {
     id: 'instance.settings.tabs.hooks.post-exit.description',
-    defaultMessage: 'Ran after the game closes.',
+    defaultMessage: '在游戏停止后运行',
   },
   postExitEnter: {
     id: 'instance.settings.tabs.hooks.post-exit.enter',
-    defaultMessage: 'Enter post-exit command...',
+    defaultMessage: '请输入命令...',
   },
 })
 </script>

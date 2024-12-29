@@ -4,8 +4,8 @@ export const useTheming = defineStore('themeStore', {
   state: () => ({
     themeOptions: ['dark', 'light', 'oled', 'system'],
     advancedRendering: true,
-    selectedTheme: 'dark',
-    toggleSidebar: false,
+    selectedTheme: 'system',
+    toggleSidebar: true,
 
     devMode: false,
     featureFlags: {},

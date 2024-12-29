@@ -17,13 +17,13 @@
       <DropdownIcon class="h-5 w-5 text-secondary" />
       <template #menu>
         <div v-if="search" class="iconified-input mb-2 w-full">
-          <label for="search-input" hidden>Search...</label>
+          <label for="search-input" hidden>搜索...</label>
           <SearchIcon aria-hidden="true" />
           <input
             id="search-input"
             ref="searchInput"
             v-model="searchQuery"
-            placeholder="Search..."
+            placeholder="搜索..."
             type="text"
             @keydown.enter="
               () => {

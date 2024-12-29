@@ -8,7 +8,7 @@
         @change="updateFilters"
       >
         <FilterIcon class="h-5 w-5 text-secondary" />
-        Platform
+        加载器
         <template #option="{ option }">
           {{ formatCategory(option) }}
         </template>
@@ -21,9 +21,9 @@
         @change="updateFilters"
       >
         <FilterIcon class="h-5 w-5 text-secondary" />
-        Game versions
+        游戏版本
         <template #footer>
-          <Checkbox v-model="showSnapshots" class="mx-1" :label="`Show all versions`" />
+          <Checkbox v-model="showSnapshots" class="mx-1" :label="`显示所有版本（快照等）`" />
         </template>
       </ManySelect>
       <ManySelect
@@ -33,9 +33,9 @@
         @change="updateFilters"
       >
         <FilterIcon class="h-5 w-5 text-secondary" />
-        Channels
+        版本类型
         <template #option="{ option }">
-          {{ option === 'release' ? 'Release' : option === 'beta' ? 'Beta' : 'Alpha' }}
+          {{ option === 'release' ? '稳定版' : option === 'beta' ? 'Beta版' : 'Alpha版' }}
         </template>
       </ManySelect>
     </div>
@@ -46,7 +46,7 @@
         :action="clearFilters"
       >
         <XCircleIcon />
-        Clear all filters
+        清除所有过滤器
       </TagItem>
       <TagItem
         v-for="channel in selectedChannels"

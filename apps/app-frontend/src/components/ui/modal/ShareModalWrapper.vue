@@ -9,7 +9,7 @@ const themeStore = useTheming()
 defineProps({
   header: {
     type: String,
-    default: 'Share',
+    default: '分享',
   },
   shareTitle: {
     type: String,

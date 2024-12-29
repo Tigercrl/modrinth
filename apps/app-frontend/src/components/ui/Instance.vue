@@ -130,25 +130,25 @@ onUnmounted(() => unlisten())
         size="48px"
         :src="instance.icon_path ? convertFileSrc(instance.icon_path) : null"
         :tint-by="instance.path"
-        alt="Mod card"
+        alt="实例图标"
       />
       <div class="h-full flex items-center font-bold text-contrast leading-normal">
         <span class="line-clamp-2">{{ instance.name }}</span>
       </div>
       <div class="flex items-center">
         <ButtonStyled v-if="playing" color="red" circular @mousehover="checkProcess">
-          <button v-tooltip="'Stop'" @click="(e) => stop(e, 'InstanceCard')">
+          <button v-tooltip="'停止'" @click="(e) => stop(e, 'InstanceCard')">
             <StopCircleIcon />
           </button>
         </ButtonStyled>
         <ButtonStyled v-else-if="modLoading" color="standard" circular>
-          <button v-tooltip="'Instance is loading...'" disabled>
+          <button v-tooltip="'实例加载中...'" disabled>
             <SpinnerIcon class="animate-spin" />
           </button>
         </ButtonStyled>
         <ButtonStyled v-else :color="first ? 'brand' : 'standard'" circular>
           <button
-            v-tooltip="'Play'"
+            v-tooltip="'启动'"
             @click="(e) => play(e, 'InstanceCard')"
             @mousehover="checkProcess"
           >
@@ -159,7 +159,7 @@ onUnmounted(() => unlisten())
       </div>
       <div class="flex items-center col-span-3 gap-1 text-secondary font-semibold">
         <TimerIcon />
-        <span class="text-sm"> Played {{ dayjs(instance.last_played).fromNow() }} </span>
+        <span class="text-sm"> 上次游玩：{{ dayjs(instance.last_played).fromNow() }} </span>
       </div>
     </div>
   </template>
@@ -174,13 +174,13 @@ onUnmounted(() => unlisten())
           size="48px"
           :src="instance.icon_path ? convertFileSrc(instance.icon_path) : null"
           :tint-by="instance.path"
-          alt="Mod card"
+          alt="实例图标"
           :class="`transition-all ${modLoading || installing ? `brightness-[0.25] scale-[0.85]` : `group-hover:brightness-75`}`"
         />
         <div class="absolute inset-0 flex items-center justify-center">
           <ButtonStyled v-if="playing" size="large" color="red" circular>
             <button
-              v-tooltip="'Stop'"
+              v-tooltip="'停止'"
               :class="{ 'scale-100 opacity-100': playing }"
               class="transition-all scale-75 origin-bottom opacity-0 card-shadow"
               @click="(e) => stop(e, 'InstanceCard')"
@@ -191,13 +191,13 @@ onUnmounted(() => unlisten())
           </ButtonStyled>
           <SpinnerIcon
             v-else-if="modLoading || installing"
-            v-tooltip="modLoading ? 'Instance is loading...' : 'Installing...'"
+            v-tooltip="modLoading ? '实例加载中...' : '安装中...'"
             class="animate-spin w-8 h-8"
             tabindex="-1"
           />
           <ButtonStyled v-else size="large" color="brand" circular>
             <button
-              v-tooltip="'Play'"
+              v-tooltip="'启动'"
               class="transition-all scale-75 group-hover:scale-100 group-focus-within:scale-100 origin-bottom opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 card-shadow"
               @click="(e) => play(e, 'InstanceCard')"
               @mousehover="checkProcess"

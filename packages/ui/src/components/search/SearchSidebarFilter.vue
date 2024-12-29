@@ -71,7 +71,7 @@
           v-model="query"
           class="!min-h-9 text-sm"
           type="text"
-          :placeholder="`Search...`"
+          :placeholder="`搜索...`"
           autocomplete="off"
         />
         <Button v-if="query" class="r-btn" aria-label="Clear search" @click="() => (query = '')">
@@ -316,11 +316,11 @@ function clearFilters() {
 const messages = defineMessages({
   unlockFilterButton: {
     id: 'search.filter.locked.default.unlock',
-    defaultMessage: 'Unlock filter',
+    defaultMessage: '解锁过滤器',
   },
   syncFilterButton: {
     id: 'search.filter.locked.default.sync',
-    defaultMessage: 'Sync filter',
+    defaultMessage: '跟随实例',
   },
   lockedTitle: {
     id: 'search.filter.locked.default.title',
@@ -328,7 +328,7 @@ const messages = defineMessages({
   },
   lockedDescription: {
     id: 'search.filter.locked.default.description',
-    defaultMessage: 'Unlocking this filter may allow you to install incompatible content.',
+    defaultMessage: '解锁此过滤器可能使您安装不兼容的内容。',
   },
 })
 </script>

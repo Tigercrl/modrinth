@@ -17,7 +17,7 @@ export const useNotifications = defineStore('notificationsStore', {
 export const handleError = (err) => {
   const notifs = useNotifications()
   notifs.addNotification({
-    title: 'An error occurred',
+    title: '发生错误',
     text: err.message ?? err,
     type: 'error',
   })

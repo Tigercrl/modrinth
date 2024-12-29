@@ -37,7 +37,7 @@ const handleSearchContent = async () => {
     <ButtonStyled>
       <button @click="handleSearchContent">
         <PlusIcon />
-        Install content
+        安装资源
       </button>
     </ButtonStyled>
     <ButtonStyled>
@@ -52,7 +52,7 @@ const handleSearchContent = async () => {
         <DropdownIcon />
         <template #from_file>
           <FolderOpenIcon />
-          <span class="no-wrap"> Add from file </span>
+          <span class="no-wrap"> 添加文件 </span>
         </template>
       </OverflowMenu>
     </ButtonStyled>

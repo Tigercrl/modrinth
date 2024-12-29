@@ -52,11 +52,11 @@ async function install() {
 <template>
   <ModalWrapper ref="confirmModal" header="Are you sure?" :on-hide="onInstall">
     <div class="modal-body">
-      <p>You already have this modpack installed. Are you sure you want to install it again?</p>
+      <p>您已经安装了该整合包。您确定要再次安装吗？</p>
       <div class="input-group push-right">
-        <Button @click="() => $refs.confirmModal.hide()"><XIcon />Cancel</Button>
+        <Button @click="() => $refs.confirmModal.hide()"><XIcon />取消</Button>
         <Button color="primary" :disabled="installing" @click="install()"
-          ><DownloadIcon /> {{ installing ? 'Installing' : 'Install' }}</Button
+          ><DownloadIcon /> {{ installing ? '安装中' : '安装' }}</Button
         >
       </div>
     </div>

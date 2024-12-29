@@ -14,8 +14,8 @@ const errorModal = ref()
 const error = ref()
 const closable = ref(true)
 
-const title = ref('An error occurred')
-const errorType = ref('unknown')
+const title = ref('发生错误')
+const errorType = ref('未知')
 const supportLink = ref('https://support.modrinth.com')
 const metadata = ref({})
 
@@ -24,7 +24,7 @@ defineExpose({
     closable.value = canClose
 
     if (errorVal.message && errorVal.message.includes('Minecraft authentication error:')) {
-      title.value = 'Unable to sign in to Minecraft'
+      title.value = '无法登录 Minecraft'
       errorType.value = 'minecraft_auth'
       supportLink.value =
         'https://support.modrinth.com/en/articles/9038231-minecraft-sign-in-issues'
@@ -39,11 +39,11 @@ defineExpose({
         metadata.value.hostsFile = true
       }
     } else if (errorVal.message && errorVal.message.includes('User is not logged in')) {
-      title.value = 'Sign in to Minecraft'
+      title.value = '未登录 Minecraft'
       errorType.value = 'minecraft_sign_in'
       supportLink.value = 'https://support.modrinth.com'
     } else if (errorVal.message && errorVal.message.includes('Move directory error:')) {
-      title.value = 'Could not change app directory'
+      title.value = '无法更改数据目录'
       errorType.value = 'directory_move'
       supportLink.value = 'https://support.modrinth.com'
 
@@ -55,17 +55,17 @@ defineExpose({
         metadata.value.notEnoughSpace = true
       }
     } else if (errorVal.message && errorVal.message.includes('No loader version selected for')) {
-      title.value = 'No loader selected'
+      title.value = '未选择加载器'
       errorType.value = 'no_loader_version'
       supportLink.value = 'https://support.modrinth.com'
       metadata.value.profilePath = context.profilePath
     } else if (source === 'state_init') {
-      title.value = 'Error initializing Modrinth App'
+      title.value = '无法初始化 Modrinth App'
       errorType.value = 'state_init'
       supportLink.value = 'https://support.modrinth.com'
     } else {
-      title.value = 'An error occurred'
-      errorType.value = 'unknown'
+      title.value = '发生错误'
+      errorType.value = '未知'
       supportLink.value = 'https://support.modrinth.com'
       metadata.value = {}
     }
@@ -126,42 +126,37 @@ async function repairInstance() {
       <div class="markdown-body">
         <template v-if="errorType === 'minecraft_auth'">
           <template v-if="metadata.network">
-            <h3>Network issues</h3>
+            <h3>网络错误</h3>
             <p>
-              It looks like there were issues with the Modrinth App connecting to Microsoft's
-              servers. This is often the result of a poor connection, so we recommend trying again
-              to see if it works. If issues continue to persist, follow the steps in
+              Modrinth App 连接微软服务器时似乎出现了问题。这通常是网络问题，所以我们建议再试一次，看看它是否有效。如果问题仍然存在，请按照
               <a
                 href="https://support.modrinth.com/en/articles/9038231-minecraft-sign-in-issues#h_e71a5f805f"
               >
-                our support article
+                此文章
               </a>
-              to troubleshoot.
+              中的步骤操作以尝试解决问题。
             </p>
           </template>
           <template v-else-if="metadata.hostsFile">
-            <h3>Network issues</h3>
+            <h3>网络错误</h3>
             <p>
-              The Modrinth App tried to connect to Microsoft / Xbox / Minecraft services, but the
-              remote server rejected the connection. This may indicate that these services are
-              blocked by the hosts file. Please visit
+              Modrinth App 试图连接到 微软 / Xbox / Minecraft 服务，但远程服务器拒绝连接。这可能由于这些服务被 hosts 文件阻止了。请按照
               <a
                 href="https://support.modrinth.com/en/articles/9038231-minecraft-sign-in-issues#h_d694a29256"
               >
-                our support article
+                此文章
               </a>
-              for steps on how to fix the issue.
+              中的步骤操作以尝试解决问题。
             </p>
           </template>
           <template v-else>
-            <h3>Try another Microsoft account</h3>
+            <h3>请更换微软账户</h3>
             <p>
-              Double check you've signed in with the right account. You may own Minecraft on a
-              different Microsoft account.
+              此账户没有 Minecraft：Java 版！再次检查您是否用正确的账户登录。您可以在另一个微软账户上拥有 Minecraft。
             </p>
             <div class="cta-button">
               <button class="btn btn-primary" :disabled="loadingMinecraft" @click="loginMinecraft">
-                <LogInIcon /> Try another account
+                <LogInIcon /> 尝试另一个账户
               </button>
             </div>
             <h3>Using PC Game Pass, coming from Bedrock, or just bought the game?</h3>

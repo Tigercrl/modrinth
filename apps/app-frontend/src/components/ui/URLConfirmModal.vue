@@ -53,11 +53,11 @@ async function install() {
       <div class="button-row">
         <div class="markdown-body">
           <p>
-            Installing <code>{{ version.id }}</code> from Modrinth
+            正在从 Modrinth 安装 <code>{{ version.id }}</code>
           </p>
         </div>
         <div class="button-group">
-          <Button :loading="installing" color="primary" @click="install">Install</Button>
+          <Button :loading="installing" color="primary" @click="install">安装</Button>
         </div>
       </div>
     </div>

@@ -40,7 +40,7 @@
     </div>
     <div v-else class="status">
       <span class="circle stopped" />
-      <span class="running-text"> No instances running </span>
+      <span class="running-text"> 无运行中实例 </span>
     </div>
   </div>
   <transition name="download">
@@ -174,7 +174,7 @@ const refreshInfo = async () => {
   currentLoadingBars.value = Object.values(await progress_bars_list().catch(handleError)).map(
     (x) => {
       if (x.bar_type.type === 'java_download') {
-        x.title = 'Downloading Java ' + x.bar_type.version
+        x.title = '正在下载 Java ' + x.bar_type.version
       }
       if (x.bar_type.profile_path) {
         x.title = x.bar_type.profile_path

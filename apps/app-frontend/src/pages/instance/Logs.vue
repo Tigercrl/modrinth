@@ -13,18 +13,18 @@
         <Button :disabled="!logs[selectedLogIndex]" @click="copyLog()">
           <ClipboardCopyIcon v-if="!copied" />
           <CheckIcon v-else />
-          {{ copied ? 'Copied' : 'Copy' }}
+          {{ copied ? '已复制' : '复制' }}
         </Button>
         <Button color="primary" :disabled="offline || !logs[selectedLogIndex]" @click="share">
           <ShareIcon aria-hidden="true" />
-          Share
+          分享
         </Button>
         <Button
           v-if="logs[selectedLogIndex] && logs[selectedLogIndex].live === true"
           @click="clearLiveLog()"
         >
           <TrashIcon aria-hidden="true" />
-          Clear
+          清空
         </Button>
 
         <Button
@@ -34,7 +34,7 @@
           @click="deleteLog()"
         >
           <TrashIcon aria-hidden="true" />
-          Delete
+          删除
         </Button>
       </div>
     </div>
@@ -45,7 +45,7 @@
         autocomplete="off"
         type="text"
         class="text-filter"
-        placeholder="Type to filter logs..."
+        placeholder="搜索日志..."
       />
       <div class="filter-group">
         <Checkbox
@@ -78,9 +78,9 @@
     </div>
     <ShareModalWrapper
       ref="shareModal"
-      header="Share Log"
-      share-title="Instance Log"
-      share-text="Check out this log from an instance on the Modrinth App"
+      header="分享日志"
+      share-title="实例日志"
+      share-text="看看我 Modrinth App 中的一个实例的日志！"
       :open-in-new-tab="false"
       link
     />
@@ -131,7 +131,7 @@ const props = defineProps({
 
 const currentLiveLog = ref(null)
 const currentLiveLogCursor = ref(0)
-const emptyText = ['No live game detected.', 'Start your game to proceed.']
+const emptyText = ['游戏未运行，', '请先启动游戏以查看实时日志。']
 
 const logs = ref([])
 await setLogs()
@@ -178,7 +178,7 @@ const displayProcessedLogs = computed(() => {
 const processedLogs = computed(() => {
   // split based on newline and timestamp lookahead
   // (not just newline because of multiline messages)
-  const splitPattern = /\n(?=(?:#|\[\d\d:\d\d:\d\d\]))/
+  const splitPattern = /\n(?=[#\[])/
 
   const lines = logs.value[selectedLogIndex.value]?.stdout.split(splitPattern) || []
   const processed = []
@@ -226,7 +226,7 @@ async function getLiveStdLog() {
       currentLiveLogCursor.value = logCursor.cursor
       returnValue = currentLiveLog.value
     }
-    return { name: 'Live Log', stdout: returnValue, live: true }
+    return { name: '实时日志', stdout: returnValue, live: true }
   }
   return null
 }

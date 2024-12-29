@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { Toggle, ThemeSelector, TeleportDropdownMenu } from '@modrinth/ui'
-import { useTheming } from '@/store/state'
-import { get, set } from '@/helpers/settings'
-import { watch, ref } from 'vue'
-import { getOS } from '@/helpers/utils'
+import {TeleportDropdownMenu, ThemeSelector, Toggle} from '@modrinth/ui'
+import {useTheming} from '@/store/state'
+import {get, set} from '@/helpers/settings'
+import {ref, watch} from 'vue'
+import {getOS} from '@/helpers/utils'
 
 const themeStore = useTheming()
 
@@ -15,12 +15,12 @@ watch(
   async () => {
     await set(settings.value)
   },
-  { deep: true },
+  {deep: true},
 )
 </script>
 <template>
-  <h2 class="m-0 text-lg font-extrabold text-contrast">Color theme</h2>
-  <p class="m-0 mt-1">Select your preferred color theme for Modrinth App.</p>
+  <h2 class="m-0 text-lg font-extrabold text-contrast">主题</h2>
+  <p class="m-0 mt-1">为 Modrinth App 选择您喜欢的主题。</p>
 
   <ThemeSelector
     :update-color-theme="
@@ -36,10 +36,9 @@ watch(
 
   <div class="mt-4 flex items-center justify-between">
     <div>
-      <h2 class="m-0 text-lg font-extrabold text-contrast">Advanced rendering</h2>
+      <h2 class="m-0 text-lg font-extrabold text-contrast">高级渲染</h2>
       <p class="m-0 mt-1">
-        Enables advanced rendering such as blur effects that may cause performance issues without
-        hardware-accelerated rendering.
+        启用高级渲染，例如模糊效果（没有硬件加速时可能导致性能问题）。
       </p>
     </div>
 
@@ -58,8 +57,8 @@ watch(
 
   <div v-if="os !== 'MacOS'" class="mt-4 flex items-center justify-between gap-4">
     <div>
-      <h2 class="m-0 text-lg font-extrabold text-contrast">Native Decorations</h2>
-      <p class="m-0 mt-1">Use system window frame (app restart required).</p>
+      <h2 class="m-0 text-lg font-extrabold text-contrast">原生窗口</h2>
+      <p class="m-0 mt-1">使用系统窗口框。（需要重启应用程序才能生效）</p>
     </div>
     <Toggle
       id="native-decorations"
@@ -75,8 +74,8 @@ watch(
 
   <div class="mt-4 flex items-center justify-between">
     <div>
-      <h2 class="m-0 text-lg font-extrabold text-contrast">Minimize launcher</h2>
-      <p class="m-0 mt-1">Minimize the launcher when a Minecraft process starts.</p>
+      <h2 class="m-0 text-lg font-extrabold text-contrast">最小化启动器</h2>
+      <p class="m-0 mt-1">当 Minecraft 启动时最小化启动器。</p>
     </div>
     <Toggle
       id="minimize-launcher"
@@ -92,21 +91,30 @@ watch(
 
   <div class="mt-4 flex items-center justify-between">
     <div>
-      <h2 class="m-0 text-lg font-extrabold text-contrast">Default landing page</h2>
-      <p class="m-0 mt-1">Change the page to which the launcher opens on.</p>
+      <h2 class="m-0 text-lg font-extrabold text-contrast">默认登陆页</h2>
+      <p class="m-0 mt-1">更改启动器打开时显示的页面。</p>
     </div>
     <TeleportDropdownMenu
       id="opening-page"
       v-model="settings.default_page"
-      name="Opening page dropdown"
+      name="登录页下拉菜单"
+      :display-name="(option: string) => {
+        switch (option) {
+          case 'Home':
+            return '主页'
+          case 'Library':
+            return '实例管理'
+        }
+        return option
+      }"
       :options="['Home', 'Library']"
     />
   </div>
 
   <div class="mt-4 flex items-center justify-between">
     <div>
-      <h2 class="m-0 text-lg font-extrabold text-contrast">Toggle sidebar</h2>
-      <p class="m-0 mt-1">Enables the ability to toggle the sidebar.</p>
+      <h2 class="m-0 text-lg font-extrabold text-contrast">侧边栏收缩开关</h2>
+      <p class="m-0 mt-1">显示能隐藏右侧侧边栏的开关。</p>
     </div>
     <Toggle
       id="toggle-sidebar"
@@ -116,6 +124,23 @@ watch(
         (e) => {
           settings.toggle_sidebar = e
           themeStore.toggleSidebar = settings.toggle_sidebar
+        }
+      "
+    />
+  </div>
+
+  <div class="mt-4 flex items-center justify-between">
+    <div>
+      <h2 class="m-0 text-lg font-extrabold text-contrast">开发者模式（汉化版独有）</h2>
+      <p class="m-0 mt-1">Modrinth App 隐藏了开发者模式的开关，但您可以通过此选项启用开发者模式。</p>
+    </div>
+    <Toggle
+      id="toggle-sidebar"
+      :model-value="themeStore.devMode"
+      :checked="themeStore.devMode"
+      @update:model-value="
+        (e) => {
+          themeStore.devMode = e
         }
       "
     />

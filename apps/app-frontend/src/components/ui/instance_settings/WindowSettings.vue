@@ -51,39 +51,39 @@ watch(
 const messages = defineMessages({
   customWindowSettings: {
     id: 'instance.settings.tabs.window.custom-window-settings',
-    defaultMessage: 'Custom window settings',
+    defaultMessage: '自定义窗口设置',
   },
   fullscreen: {
     id: 'instance.settings.tabs.window.fullscreen',
-    defaultMessage: 'Fullscreen',
+    defaultMessage: '全屏',
   },
   fullscreenDescription: {
     id: 'instance.settings.tabs.window.fullscreen.description',
-    defaultMessage: 'Make the game start in full screen when launched (using options.txt).',
+    defaultMessage: '让游戏全屏启动（通过更改 Minecraft 内的视频选项）。',
   },
   width: {
     id: 'instance.settings.tabs.window.width',
-    defaultMessage: 'Width',
+    defaultMessage: '宽度',
   },
   widthDescription: {
     id: 'instance.settings.tabs.window.width.description',
-    defaultMessage: 'The width of the game window when launched.',
+    defaultMessage: '启动时游戏窗口的宽度。',
   },
   enterWidth: {
     id: 'instance.settings.tabs.window.width.enter',
-    defaultMessage: 'Enter width...',
+    defaultMessage: '请输入宽度...',
   },
   height: {
     id: 'instance.settings.tabs.window.height',
-    defaultMessage: 'Height',
+    defaultMessage: '高度',
   },
   heightDescription: {
     id: 'instance.settings.tabs.window.height.description',
-    defaultMessage: 'The height of the game window when launched.',
+    defaultMessage: '启动时游戏窗口的高度。',
   },
   enterHeight: {
     id: 'instance.settings.tabs.window.height.enter',
-    defaultMessage: 'Enter height...',
+    defaultMessage: '请输入高度...',
   },
 })
 </script>

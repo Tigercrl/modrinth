@@ -104,20 +104,20 @@ const exportPack = async () => {
 </script>
 
 <template>
-  <ModalWrapper ref="exportModal" header="Export modpack">
+  <ModalWrapper ref="exportModal" header="导出整合包">
     <div class="modal-body">
       <div class="labeled_input">
-        <p>Modpack Name</p>
+        <p>整合包名称</p>
         <div class="iconified-input">
           <PackageIcon />
-          <input v-model="nameInput" type="text" placeholder="Modpack name" class="input" />
+          <input v-model="nameInput" type="text" placeholder="整合包名称" class="input" />
           <Button class="r-btn" @click="nameInput = ''">
             <XIcon />
           </Button>
         </div>
       </div>
       <div class="labeled_input">
-        <p>Version number</p>
+        <p>整合包版本</p>
         <div class="iconified-input">
           <VersionIcon />
           <input v-model="versionInput" type="text" placeholder="1.0.0" class="input" />
@@ -128,10 +128,10 @@ const exportPack = async () => {
       </div>
       <div class="adjacent-input">
         <div class="labeled_input">
-          <p>Description</p>
+          <p>介绍</p>
 
           <div class="textarea-wrapper">
-            <textarea v-model="exportDescription" placeholder="Enter modpack description..." />
+            <textarea v-model="exportDescription" placeholder="请输入整合包介绍..." />
           </div>
         </div>
       </div>
@@ -139,7 +139,7 @@ const exportPack = async () => {
       <div class="table">
         <div class="table-head">
           <div class="table-cell row-wise">
-            Select files and folders to include in pack
+            选择要包含在整合包中的文件或文件夹
             <Button
               class="sleek-primary collapsed-button"
               icon-only
@@ -198,11 +198,11 @@ const exportPack = async () => {
       <div class="button-row push-right">
         <Button @click="exportModal.hide">
           <XIcon />
-          Cancel
+          取消
         </Button>
         <Button color="primary" @click="exportPack">
           <PackageIcon />
-          Export
+          导出
         </Button>
       </div>
     </div>

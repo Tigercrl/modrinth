@@ -220,8 +220,8 @@ onUnmounted(() => {
 <template>
   <ConfirmModalWrapper
     ref="deleteConfirmModal"
-    title="Are you sure you want to delete this instance?"
-    description="If you proceed, all data for your instance will be removed. You will not be able to recover it."
+    title="您确定要删除此实例吗？"
+    description="如果您继续，您的实例的所有数据将被永久删除，包括您的世界，配置，和所有已安装的资源。您将无法恢复它。"
     :has-to-type="false"
     proceed-label="Delete"
     @proceed="deleteProfile"
@@ -269,17 +269,17 @@ onUnmounted(() => {
     </div>
   </div>
   <ContextMenu ref="instanceOptions" @option-clicked="handleOptionsClick">
-    <template #play> <PlayIcon /> Play </template>
-    <template #stop> <StopCircleIcon /> Stop </template>
-    <template #add_content> <PlusIcon /> Add content </template>
-    <template #edit> <EyeIcon /> View instance </template>
-    <template #delete> <TrashIcon /> Delete </template>
-    <template #open_folder> <FolderOpenIcon /> Open folder </template>
-    <template #duplicate> <ClipboardCopyIcon /> Duplicate instance</template>
-    <template #copy_path> <ClipboardCopyIcon /> Copy path </template>
-    <template #install> <DownloadIcon /> Install </template>
-    <template #open_link> <GlobeIcon /> Open in Modrinth <ExternalIcon /> </template>
-    <template #copy_link> <ClipboardCopyIcon /> Copy link </template>
+    <template #play> <PlayIcon /> 启动 </template>
+    <template #stop> <StopCircleIcon /> 停止 </template>
+    <template #add_content> <PlusIcon /> 安装资源 </template>
+    <template #edit> <EyeIcon /> 查看实例 </template>
+    <template #delete> <TrashIcon /> 删除实例 </template>
+    <template #open_folder> <FolderOpenIcon /> 打开文件夹 </template>
+    <template #duplicate> <ClipboardCopyIcon /> 复制实例</template>
+    <template #copy_path> <ClipboardCopyIcon /> 复制路径 </template>
+    <template #install> <DownloadIcon /> 安装 </template>
+    <template #open_link> <GlobeIcon /> 在 Modrinth 中打开 <ExternalIcon /> </template>
+    <template #copy_link> <ClipboardCopyIcon /> 复制链接 </template>
   </ContextMenu>
 </template>
 <style lang="scss" scoped>

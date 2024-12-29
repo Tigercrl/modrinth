@@ -104,7 +104,7 @@ async function install(instance) {
 
   if (!version) {
     instance.installing = false
-    handleError('No compatible version found')
+    handleError('未找到兼容版本')
     return
   }
 
@@ -213,14 +213,14 @@ const createInstance = async () => {
 </script>
 
 <template>
-  <ModalWrapper ref="installModal" header="Install project to instance" :on-hide="onInstall">
+  <ModalWrapper ref="installModal" header="安装资源至实例" :on-hide="onInstall">
     <div class="modal-body">
       <input
         v-model="searchFilter"
         autocomplete="off"
         type="text"
         class="search"
-        placeholder="Search for an instance"
+        placeholder="搜索实例"
       />
       <div class="profiles" :class="{ 'hide-creation': !showCreation }">
         <div v-for="profile in shownProfiles" :key="profile.name" class="option">
@@ -238,7 +238,7 @@ const createInstance = async () => {
           <div
             v-tooltip="
               profile.linked_data?.locked && !profile.installedMod
-                ? 'Unpair or unlock an instance to add mods.'
+                ? '解除整合包链接或解锁实例以添加模组。'
                 : ''
             "
           >
@@ -250,10 +250,10 @@ const createInstance = async () => {
               <CheckIcon v-else-if="profile.installedMod" />
               {{
                 profile.installing
-                  ? 'Installing...'
+                  ? '安装中'
                   : profile.installedMod
-                    ? 'Installed'
-                    : 'Install'
+                    ? '已安装'
+                    : '安装'
               }}
             </Button>
           </div>
@@ -266,11 +266,11 @@ const createInstance = async () => {
             <div class="creation-icon__description">
               <Button @click="upload_icon()">
                 <UploadIcon />
-                <span class="no-wrap"> Select icon </span>
+                <span class="no-wrap"> 选择图标 </span>
               </Button>
               <Button :disabled="!display_icon" @click="reset_icon()">
                 <XIcon />
-                <span class="no-wrap"> Remove icon </span>
+                <span class="no-wrap"> 移除图标 </span>
               </Button>
             </div>
           </div>
@@ -284,7 +284,7 @@ const createInstance = async () => {
             />
             <Button :disabled="creatingInstance === true || !name" @click="createInstance()">
               <RightArrowIcon />
-              {{ creatingInstance ? 'Creating...' : 'Create' }}
+              {{ creatingInstance ? '创建中' : '创建' }}
             </Button>
           </div>
         </div>
@@ -292,9 +292,9 @@ const createInstance = async () => {
       <div class="input-group push-right">
         <Button :color="showCreation ? '' : 'primary'" @click="toggleCreation()">
           <PlusIcon />
-          {{ showCreation ? 'Hide New Instance' : 'Create new instance' }}
+          {{ showCreation ? '隐藏新的实例' : '创建新的实例' }}
         </Button>
-        <Button @click="installModal.hide()">Cancel</Button>
+        <Button @click="installModal.hide()">取消</Button>
       </div>
     </div>
   </ModalWrapper>

@@ -123,31 +123,27 @@ defineProps<{
 const messages = defineMessages({
   title: {
     id: 'project.about.links.title',
-    defaultMessage: 'Links',
+    defaultMessage: '链接',
   },
   issues: {
     id: 'project.about.links.issues',
-    defaultMessage: 'Report issues',
+    defaultMessage: '汇报问题',
   },
   source: {
     id: 'project.about.links.source',
-    defaultMessage: 'View source',
+    defaultMessage: '查看源码',
   },
   wiki: {
     id: 'project.about.links.wiki',
-    defaultMessage: 'Visit wiki',
+    defaultMessage: '访问 Wiki',
   },
   discord: {
     id: 'project.about.links.discord',
-    defaultMessage: 'Join Discord server',
+    defaultMessage: '加入 Discord 服务器',
   },
   donateGeneric: {
     id: 'project.about.links.donate.generic',
-    defaultMessage: 'Donate',
-  },
-  donateGitHub: {
-    id: 'project.about.links.donate.github',
-    defaultMessage: 'Sponsor on GitHub',
+    defaultMessage: '赞助',
   },
   donateBmac: {
     id: 'project.about.links.donate.bmac',
@@ -155,19 +151,19 @@ const messages = defineMessages({
   },
   donatePatreon: {
     id: 'project.about.links.donate.patreon',
-    defaultMessage: 'Donate on Patreon',
+    defaultMessage: '使用 Patreon 赞助',
   },
   donatePayPal: {
     id: 'project.about.links.donate.paypal',
-    defaultMessage: 'Donate on PayPal',
+    defaultMessage: '使用 PayPal 赞助',
   },
   donateKoFi: {
     id: 'project.about.links.donate.kofi',
-    defaultMessage: 'Donate on Ko-fi',
+    defaultMessage: '使用 Ko-fi 赞助',
   },
   donateGithub: {
     id: 'project.about.links.donate.github',
-    defaultMessage: 'Sponsor on GitHub',
+    defaultMessage: '在 GitHub 上赞助',
   },
 })
 </script>

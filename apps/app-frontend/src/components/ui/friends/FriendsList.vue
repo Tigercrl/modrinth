@@ -20,7 +20,7 @@ import ModalWrapper from '@/components/ui/modal/ModalWrapper.vue'
 
 const props = defineProps<{
   credentials: unknown | null
-  signIn: () => void2
+  signIn: () => void
 }>()
 
 const userCredentials = computed(() => props.credentials)
@@ -131,7 +131,7 @@ async function loadFriends(timeout = false) {
 
     loading.value = false
   } catch (e) {
-    console.error('Error loading friends', e)
+    console.error('无法加载好友', e)
     if (timeout) {
       setTimeout(() => loadFriends(), 15 * 1000)
     }
@@ -160,10 +160,10 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <ModalWrapper ref="manageFriendsModal" header="Manage friends">
-    <p v-if="acceptedFriends.length === 0">Add friends to share what you're playing!</p>
+  <ModalWrapper ref="manageFriendsModal" header="好友管理">
+    <p v-if="acceptedFriends.length === 0">添加好友以共享您正在玩的内容！</p>
     <div v-else class="flex flex-col gap-4 min-w-[20rem]">
-      <input v-model="search" type="text" placeholder="Search friends..." class="w-full" />
+      <input v-model="search" type="text" placeholder="搜索好友..." class="w-full" />
       <div
         v-for="friend in acceptedFriends.filter(
           (x) => !search || x.username.toLowerCase().includes(search),
@@ -183,7 +183,7 @@ onUnmounted(() => {
           <ButtonStyled>
             <button @click="removeFriend(friend)">
               <XIcon />
-              Remove
+              移除
             </button>
           </ButtonStyled>
         </div>
@@ -191,7 +191,7 @@ onUnmounted(() => {
     </div>
   </ModalWrapper>
   <ModalWrapper ref="friendInvitesModal" header="View friend requests">
-    <p v-if="pendingFriends.length === 0">You have no pending friend requests :C</p>
+    <p v-if="pendingFriends.length === 0">您没有待处理的好友请求 :C</p>
     <div v-else class="flex flex-col gap-4">
       <div v-for="friend in pendingFriends" :key="friend.username" class="flex gap-2">
         <Avatar :src="friend.avatar" class="w-12 h-12 rounded-full" size="2.25rem" circle />
@@ -199,10 +199,10 @@ onUnmounted(() => {
           <div>
             <p class="m-0">
               <template v-if="friend.id === userCredentials.user_id">
-                <span class="font-bold">{{ friend.username }}</span> sent you a friend request
+                <span class="font-bold">{{ friend.username }}</span> 向您发送了好友请求
               </template>
               <template v-else>
-                You sent <span class="font-bold">{{ friend.username }}</span> a friend request
+                您向 <span class="font-bold">{{ friend.username }}</span> 发送了好友请求
               </template>
             </p>
             <p class="m-0 text-sm text-secondary">{{ friend.created.fromNow() }}</p>
@@ -212,13 +212,13 @@ onUnmounted(() => {
               <ButtonStyled color="brand">
                 <button @click="addFriend(friend)">
                   <UserPlusIcon />
-                  Accept
+                  同意
                 </button>
               </ButtonStyled>
               <ButtonStyled>
                 <button @click="removeFriend(friend)">
                   <XIcon />
-                  Ignore
+                  忽略
                 </button>
               </ButtonStyled>
             </template>
@@ -226,7 +226,7 @@ onUnmounted(() => {
               <ButtonStyled>
                 <button @click="removeFriend(friend)">
                   <XIcon />
-                  Cancel
+                  拒绝
                 </button>
               </ButtonStyled>
             </template>
@@ -235,21 +235,21 @@ onUnmounted(() => {
       </div>
     </div>
   </ModalWrapper>
-  <ModalWrapper ref="addFriendModal" header="Add a friend">
+  <ModalWrapper ref="addFriendModal" header="添加好友">
     <div class="mb-4">
-      <h2 class="m-0 text-lg font-extrabold text-contrast">Username</h2>
-      <p class="m-0 mt-1 leading-tight">You can add friends with their Modrinth username.</p>
-      <input v-model="username" class="mt-2 w-full" type="text" placeholder="Enter username..." />
+      <h2 class="m-0 text-lg font-extrabold text-contrast">用户名</h2>
+      <p class="m-0 mt-1 leading-tight">您可以使用 Modrinth 用户名添加好友。</p>
+      <input v-model="username" class="mt-2 w-full" type="text" placeholder="请输入用户名..." />
     </div>
     <ButtonStyled color="brand">
       <button :disabled="username.length === 0" @click="addFriendFromModal">
         <UserPlusIcon />
-        Add friend
+        添加好友
       </button>
     </ButtonStyled>
   </ModalWrapper>
   <div class="flex justify-between items-center">
-    <h3 class="text-lg m-0">Friends</h3>
+    <h3 class="text-lg m-0">好友</h3>
     <ButtonStyled v-if="userCredentials" type="transparent" circular>
       <OverflowMenu
         :options="[
@@ -268,16 +268,16 @@ onUnmounted(() => {
             shown: pendingFriends.length > 0,
           },
         ]"
-        aria-label="More options"
+        aria-label="更多选项"
       >
         <MoreVerticalIcon aria-hidden="true" />
         <template #add-friend>
           <UserPlusIcon aria-hidden="true" />
-          Add friend
+          添加好友
         </template>
         <template #manage-friends>
           <SettingsIcon aria-hidden="true" />
-          Manage friends
+          好友管理
           <div
             v-if="acceptedFriends.length > 0"
             class="bg-button-bg w-6 h-6 rounded-full flex items-center justify-center"
@@ -287,7 +287,7 @@ onUnmounted(() => {
         </template>
         <template #view-requests>
           <MailIcon aria-hidden="true" />
-          View friend requests
+          查看好友请求
           <div
             v-if="pendingFriends.length > 0"
             class="bg-button-bg w-6 h-6 rounded-full flex items-center justify-center"
@@ -311,17 +311,17 @@ onUnmounted(() => {
     <template v-else-if="acceptedFriends.length === 0">
       <div class="text-sm">
         <div v-if="!userCredentials">
-          <span class="text-link cursor-pointer" @click="signIn">Sign in</span> to add friends!
+          <span class="text-link cursor-pointer" @click="signIn">登录</span> 以添加好友！
         </div>
         <div v-else>
-          <span class="text-link cursor-pointer" @click="addFriendModal.show()">Add friends</span>
-          to share what you're playing!
+          <span class="text-link cursor-pointer" @click="addFriendModal.show()">添加好友</span>
+          以共享您正在玩的内容！
         </div>
       </div>
     </template>
     <template v-else>
       <ContextMenu ref="friendOptions" @option-clicked="handleFriendOptions">
-        <template #remove-friend> <TrashIcon /> Remove friend </template>
+        <template #remove-friend> <TrashIcon /> 移除好友 </template>
       </ContextMenu>
       <div
         v-for="friend in acceptedFriends.slice(0, 5)"

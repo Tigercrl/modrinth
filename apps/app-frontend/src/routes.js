@@ -15,7 +15,7 @@ export default new createRouter({
       name: 'Home',
       component: Pages.Index,
       meta: {
-        breadcrumb: [{ name: 'Home' }],
+        breadcrumb: [{ name: '主页' }],
       },
     },
     {
@@ -23,7 +23,7 @@ export default new createRouter({
       name: 'Discover content',
       component: Pages.Browse,
       meta: {
-        breadcrumb: [{ name: 'Discover content' }],
+        breadcrumb: [{ name: '探索资源' }],
       },
     },
     {
@@ -31,7 +31,7 @@ export default new createRouter({
       name: 'Library',
       component: Library.Index,
       meta: {
-        breadcrumb: [{ name: 'Library' }],
+        breadcrumb: [{ name: '实例管理' }],
       },
       children: [
         {
@@ -72,7 +72,7 @@ export default new createRouter({
           component: Project.Versions,
           meta: {
             useContext: true,
-            breadcrumb: [{ name: '?Project', link: '/project/{id}/' }, { name: 'Versions' }],
+            breadcrumb: [{ name: '?Project', link: '/project/{id}/' }, { name: '版本列表' }],
           },
         },
         {
@@ -84,7 +84,7 @@ export default new createRouter({
             useContext: true,
             breadcrumb: [
               { name: '?Project', link: '/project/{id}/' },
-              { name: 'Versions', link: '/project/{id}/versions' },
+              { name: '版本列表', link: '/project/{id}/versions' },
               { name: '?Version' },
             ],
           },
@@ -95,7 +95,7 @@ export default new createRouter({
           component: Project.Gallery,
           meta: {
             useContext: true,
-            breadcrumb: [{ name: '?Project', link: '/project/{id}/' }, { name: 'Gallery' }],
+            breadcrumb: [{ name: '?Project', link: '/project/{id}/' }, { name: '图库' }],
           },
         },
       ],
@@ -130,7 +130,7 @@ export default new createRouter({
           component: Instance.Logs,
           meta: {
             useRootContext: true,
-            breadcrumb: [{ name: '?Instance', link: '/instance/{id}/' }, { name: 'Logs' }],
+            breadcrumb: [{ name: '?Instance', link: '/instance/{id}/' }, { name: '日志' }],
           },
         },
       ],

@@ -27,7 +27,7 @@ const tabs: TabbedModalTab<InstanceSettingsTabProps>[] = [
   {
     name: defineMessage({
       id: 'instance.settings.tabs.general',
-      defaultMessage: 'General',
+      defaultMessage: '通用',
     }),
     icon: InfoIcon,
     content: GeneralSettings,
@@ -35,7 +35,7 @@ const tabs: TabbedModalTab<InstanceSettingsTabProps>[] = [
   {
     name: defineMessage({
       id: 'instance.settings.tabs.installation',
-      defaultMessage: 'Installation',
+      defaultMessage: '版本',
     }),
     icon: WrenchIcon,
     content: InstallationSettings,
@@ -43,7 +43,7 @@ const tabs: TabbedModalTab<InstanceSettingsTabProps>[] = [
   {
     name: defineMessage({
       id: 'instance.settings.tabs.window',
-      defaultMessage: 'Window',
+      defaultMessage: '窗口',
     }),
     icon: MonitorIcon,
     content: WindowSettings,
@@ -51,7 +51,7 @@ const tabs: TabbedModalTab<InstanceSettingsTabProps>[] = [
   {
     name: defineMessage({
       id: 'instance.settings.tabs.java',
-      defaultMessage: 'Java and memory',
+      defaultMessage: 'Java 和内存',
     }),
     icon: CoffeeIcon,
     content: JavaSettings,
@@ -59,7 +59,7 @@ const tabs: TabbedModalTab<InstanceSettingsTabProps>[] = [
   {
     name: defineMessage({
       id: 'instance.settings.tabs.hooks',
-      defaultMessage: 'Launch hooks',
+      defaultMessage: '钩子',
     }),
     icon: CodeIcon,
     content: HooksSettings,
@@ -76,7 +76,7 @@ defineExpose({ show })
 
 const titleMessage = defineMessage({
   id: 'instance.settings.title',
-  defaultMessage: 'Settings',
+  defaultMessage: '设置',
 })
 </script>
 <template>

@@ -42,7 +42,7 @@
           "
         >
           <ClientIcon aria-hidden="true" />
-          Client-side
+          仅客户端
         </TagItem>
         <TagItem
           v-if="
@@ -51,11 +51,11 @@
           "
         >
           <ServerIcon aria-hidden="true" />
-          Server-side
+          仅服务端
         </TagItem>
         <TagItem v-if="false">
           <UserIcon aria-hidden="true" />
-          Singleplayer
+          单人游戏
         </TagItem>
         <TagItem
           v-if="
@@ -67,7 +67,7 @@
           "
         >
           <MonitorSmartphoneIcon aria-hidden="true" />
-          Client and server
+          皆需安装
         </TagItem>
       </div>
     </section>
@@ -103,19 +103,19 @@ defineProps<{
 const messages = defineMessages({
   title: {
     id: 'project.about.compatibility.title',
-    defaultMessage: 'Compatibility',
+    defaultMessage: '兼容性',
   },
   minecraftJava: {
     id: 'project.about.compatibility.game.minecraftJava',
-    defaultMessage: 'Minecraft: Java Edition',
+    defaultMessage: 'Minecraft：Java版',
   },
   platforms: {
     id: 'project.about.compatibility.platforms',
-    defaultMessage: 'Platforms',
+    defaultMessage: '加载器',
   },
   environments: {
     id: 'project.about.compatibility.environments',
-    defaultMessage: 'Supported environments',
+    defaultMessage: '运行环境',
   },
 })
 </script>

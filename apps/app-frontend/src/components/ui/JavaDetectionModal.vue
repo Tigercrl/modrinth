@@ -3,9 +3,9 @@
     <div class="auto-detect-modal">
       <div class="table">
         <div class="table-row table-head">
-          <div class="table-cell table-text">Version</div>
-          <div class="table-cell table-text">Path</div>
-          <div class="table-cell table-text">Actions</div>
+          <div class="table-cell table-text">版本</div>
+          <div class="table-cell table-text">路径</div>
+          <div class="table-cell table-text">操作</div>
         </div>
         <div v-for="javaInstall in chosenInstallOptions" :key="javaInstall.path" class="table-row">
           <div class="table-cell table-text">
@@ -16,19 +16,19 @@
           </div>
           <div class="table-cell table-text manage">
             <Button v-if="currentSelected.path === javaInstall.path" disabled
-              ><CheckIcon /> Selected</Button
+              ><CheckIcon /> 已选择</Button
             >
-            <Button v-else @click="setJavaInstall(javaInstall)"><PlusIcon /> Select</Button>
+            <Button v-else @click="setJavaInstall(javaInstall)"><PlusIcon /> 选择</Button>
           </div>
         </div>
         <div v-if="chosenInstallOptions.length === 0" class="table-row entire-row">
-          <div class="table-cell table-text">No java installations found!</div>
+          <div class="table-cell table-text">未找到任何Java！</div>
         </div>
       </div>
       <div class="input-group push-right">
         <Button @click="$refs.detectJavaModal.hide()">
           <XIcon />
-          Cancel
+          取消
         </Button>
       </div>
     </div>

@@ -76,7 +76,7 @@ impl Settings {
             advanced_rendering: res.advanced_rendering == 1,
             native_decorations: res.native_decorations == 1,
             toggle_sidebar: res.toggle_sidebar == 1,
-            telemetry: res.telemetry == 1,
+            telemetry: false,
             discord_rpc: res.discord_rpc == 1,
             developer_mode: res.developer_mode == 1,
             personalized_ads: res.personalized_ads == 1,

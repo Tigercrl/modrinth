@@ -1,7 +1,17 @@
 <template>
-  <ModalWrapper ref="modal" header="Create instance">
+  <ModalWrapper ref="modal" header="创建新的实例">
     <div class="modal-header">
-      <Chips v-model="creationType" :items="['custom', 'from file', 'import from launcher']" />
+      <Chips v-model="creationType" :items="['custom', 'from file', 'import from launcher']" :format-label="label => {
+          switch (label) {
+            case 'custom':
+              return '自定义';
+            case 'from file':
+              return '从文件导入';
+            case 'import from launcher':
+              return '从启动器导入';
+          }
+          return label;
+        }" />
     </div>
     <hr class="card-divider" />
     <div v-if="creationType === 'custom'" class="modal-body">
@@ -10,16 +20,16 @@
         <div class="image-input">
           <Button @click="upload_icon()">
             <UploadIcon />
-            Select icon
+            选择图标
           </Button>
           <Button :disabled="!display_icon" @click="reset_icon">
             <XIcon />
-            Remove icon
+            移除图标
           </Button>
         </div>
       </div>
       <div class="input-row">
-        <p class="input-label">Name</p>
+        <p class="input-label">实例名称</p>
         <input
           v-model="profile_name"
           autocomplete="off"
@@ -29,11 +39,11 @@
         />
       </div>
       <div class="input-row">
-        <p class="input-label">Loader</p>
+        <p class="input-label">加载器</p>
         <Chips v-model="loader" :items="loaders" />
       </div>
       <div class="input-row">
-        <p class="input-label">Game version</p>
+        <p class="input-label">游戏版本</p>
         <div class="versions">
           <multiselect
             v-model="game_version"
@@ -41,7 +51,7 @@
             :options="game_versions"
             :multiple="false"
             :searchable="true"
-            placeholder="Select game version"
+            placeholder="选择游戏版本"
             open-direction="top"
             :show-labels="false"
           />
@@ -49,35 +59,45 @@
             v-if="showAdvanced"
             v-model="showSnapshots"
             class="filter-checkbox"
-            label="Include snapshots"
+            label="显示所有版本（快照等）"
           />
         </div>
       </div>
       <div v-if="showAdvanced && loader !== 'vanilla'" class="input-row">
-        <p class="input-label">Loader version</p>
-        <Chips v-model="loader_version" :items="['stable', 'latest', 'other']" />
+        <p class="input-label">加载器版本</p>
+        <Chips v-model="loader_version" :items="['stable', 'latest', 'other']" :format-label="label => {
+          switch (label) {
+            case 'stable':
+              return '稳定版';
+            case 'latest':
+              return '最新版';
+            case 'other':
+              return '其他';
+          }
+          return label;
+        }" />
       </div>
       <div v-if="showAdvanced && loader_version === 'other' && loader !== 'vanilla'">
         <div v-if="game_version" class="input-row">
-          <p class="input-label">Select version</p>
+          <p class="input-label">选择版本</p>
           <multiselect
             v-model="specified_loader_version"
             class="selector"
             :options="selectable_versions"
             :searchable="true"
-            placeholder="Select loader version"
+            placeholder="选择加载器版本"
             open-direction="top"
             :show-labels="false"
           />
         </div>
         <div v-else class="input-row">
-          <p class="warning">Select a game version before you select a loader version</p>
+          <p class="warning">请先选择游戏版本！</p>
         </div>
       </div>
       <div class="input-group push-right">
         <Button @click="toggle_advanced">
           <CodeIcon />
-          {{ showAdvanced ? 'Hide advanced' : 'Show advanced' }}
+          {{ showAdvanced ? '隐藏高级选项' : '显示高级选项' }}
         </Button>
         <Button @click="hide()">
           <XIcon />
@@ -85,13 +105,13 @@
         </Button>
         <Button color="primary" :disabled="!check_valid || creating" @click="create_instance()">
           <PlusIcon v-if="!creating" />
-          {{ creating ? 'Creating...' : 'Create' }}
+          {{ creating ? '创建中...' : '创建' }}
         </Button>
       </div>
     </div>
     <div v-else-if="creationType === 'from file'" class="modal-body">
-      <Button @click="openFile"> <FolderOpenIcon /> Import from file </Button>
-      <div class="info"><InfoIcon /> Or drag and drop your .mrpack file</div>
+      <Button @click="openFile"> <FolderOpenIcon /> 选择文件 </Button>
+      <div class="info"><InfoIcon /> 或将 .mrpack 文件拖放至此处</div>
     </div>
     <div v-else class="modal-body">
       <Chips
@@ -100,14 +120,14 @@
         :format-label="(profile) => profile?.name"
       />
       <div class="path-selection">
-        <h3>{{ selectedProfileType.name }} path</h3>
+        <h3>{{ selectedProfileType.name }} 路径</h3>
         <div class="path-input">
           <div class="iconified-input">
             <FolderOpenIcon />
             <input
               v-model="selectedProfileType.path"
               type="text"
-              placeholder="Path to launcher"
+              placeholder="请输入路径..."
               @change="setPath"
             />
             <Button class="r-btn" @click="() => (selectedLauncherPath = '')">
@@ -138,7 +158,7 @@
               "
             />
           </div>
-          <div class="name-cell table-cell">Profile name</div>
+          <div class="name-cell table-cell">实例名称</div>
         </div>
         <div
           v-if="
@@ -160,7 +180,7 @@
             </div>
           </div>
         </div>
-        <div v-else class="table-content empty">No profiles found</div>
+        <div v-else class="table-content empty">未找到任何实例</div>
       </div>
       <div class="button-row">
         <Button
@@ -175,16 +195,16 @@
         >
           {{
             loading
-              ? 'Importing...'
+              ? '导入中...'
               : Array.from(profiles.values())
                     .flatMap((e) => e)
                     .some((e) => e.selected)
-                ? `Import ${
+                ? `导入 ${
                     Array.from(profiles.values())
                       .flatMap((e) => e)
                       .filter((e) => e.selected).length
-                  } profiles`
-                : 'Select profiles to import'
+                  } 个实例`
+                : '请选择要导入的实例'
           }}
         </Button>
         <ProgressBar

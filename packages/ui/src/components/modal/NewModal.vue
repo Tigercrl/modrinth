@@ -32,7 +32,7 @@
             </slot>
           </div>
           <ButtonStyled v-if="closable" circular>
-            <button v-tooltip="'Close'" aria-label="Close" @click="hide">
+            <button v-tooltip="'关闭'" aria-label="Close" @click="hide">
               <XIcon aria-hidden="true" />
             </button>
           </ButtonStyled>

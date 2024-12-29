@@ -14,7 +14,7 @@ import NavTabs from '@/components/ui/NavTabs.vue'
 const route = useRoute()
 const breadcrumbs = useBreadcrumbs()
 
-breadcrumbs.setRootContext({ name: 'Library', link: route.path })
+breadcrumbs.setRootContext({ name: '实例管理', link: route.path })
 
 const instances = shallowRef(await list().catch(handleError))
 
@@ -39,11 +39,11 @@ onUnmounted(() => {
     <h1 class="m-0 text-2xl hidden">Library</h1>
     <NavTabs
       :links="[
-        { label: 'All instances', href: `/library` },
-        { label: 'Downloaded', href: `/library/downloaded` },
-        { label: 'Custom', href: `/library/custom` },
-        { label: 'Shared with me', href: `/library/shared`, shown: false },
-        { label: 'Saved', href: `/library/saved`, shown: false },
+        { label: '所有实例', href: `/library` },
+        { label: '下载的实例', href: `/library/downloaded` },
+        { label: '自定义实例', href: `/library/custom` },
+        { label: '分享的实例', href: `/library/shared`, shown: false },
+        { label: '保存的实例', href: `/library/saved`, shown: false },
       ]"
     />
     <template v-if="instances.length > 0">
@@ -53,10 +53,10 @@ onUnmounted(() => {
       <div class="icon">
         <NewInstanceImage />
       </div>
-      <h3>No instances found</h3>
+      <h3>未找到实例</h3>
       <Button color="primary" :disabled="offline" @click="$refs.installationModal.show()">
         <PlusIcon />
-        Create new instance
+        创建新的实例
       </Button>
       <InstanceCreationModal ref="installationModal" />
     </div>

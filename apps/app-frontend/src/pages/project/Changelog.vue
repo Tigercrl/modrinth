@@ -4,7 +4,7 @@
 
 <script>
 export default {
-  name: 'Changelog',
+  name: '更新日志',
 }
 </script>
 

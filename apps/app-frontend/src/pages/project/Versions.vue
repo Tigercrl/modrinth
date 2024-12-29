@@ -10,7 +10,7 @@
       <template #actions="{ version }">
         <ButtonStyled circular type="transparent">
           <button
-            v-tooltip="`Install`"
+            v-tooltip="`安装`"
             :class="{
               'group-hover:!bg-brand group-hover:[&>svg]:!text-brand-inverted':
                 !installed || version.id !== installedVersion,
@@ -45,13 +45,13 @@
             <MoreVerticalIcon aria-hidden="true" />
             <template #install-elsewhere>
               <DownloadIcon aria-hidden="true" />
-              Add to another instance
+              添加至另一个实例
             </template>
-            <template #open-in-browser> <ExternalIcon /> Open in browser </template>
+            <template #open-in-browser> <ExternalIcon /> 在浏览器中打开 </template>
           </OverflowMenu>
           <a
             v-else
-            v-tooltip="`Open in browser`"
+            v-tooltip="`在浏览器中打开`"
             class="group-hover:!bg-button-bg"
             :href="`https://modrinth.com/${project.project_type}/${project.slug}/version/${version.id}`"
             target="_blank"

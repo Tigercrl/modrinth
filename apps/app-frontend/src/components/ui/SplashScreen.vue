@@ -2,13 +2,13 @@
   <div v-if="!hidden" class="splash-screen dark" :class="{ 'fade-out': doneLoading }">
     <div v-if="os !== 'MacOS'" class="app-buttons">
       <button class="btn icon-only transparent" icon-only @click="() => getCurrent().minimize()">
-        <MinimizeIcon />
+        <MinimizeIcon/>
       </button>
       <button class="btn icon-only transparent" @click="() => getCurrent().toggleMaximize()">
-        <MaximizeIcon />
+        <MaximizeIcon/>
       </button>
       <button class="btn icon-only transparent" @click="handleClose">
-        <XIcon />
+        <XIcon/>
       </button>
     </div>
     <div class="app-logo-wrapper" data-tauri-drag-region>
@@ -72,8 +72,10 @@
           </g>
         </g>
       </svg>
-      <ProgressBar class="loading-bar" :progress="Math.min(loadingProgress, 100)" />
+      <ProgressBar class="loading-bar" :progress="Math.min(loadingProgress, 100)"/>
       <span v-if="message">{{ message }}</span>
+      <!-- 启动经常卡在这 -->
+      <Button @click="close">强制关闭</Button>
     </div>
     <div class="gradient-bg" data-tauri-drag-region></div>
     <div class="cube-bg"></div>
@@ -82,13 +84,14 @@
 </template>
 
 <script setup>
-import { ref, watch } from 'vue'
+import {ref, watch} from 'vue'
 import ProgressBar from '@/components/ui/ProgressBar.vue'
-import { loading_listener } from '@/helpers/events.js'
-import { getCurrentWindow } from '@tauri-apps/api/window'
-import { XIcon, MaximizeIcon, MinimizeIcon } from '@modrinth/assets'
-import { getOS } from '@/helpers/utils.js'
-import { useLoading } from '@/store/loading.js'
+import {loading_listener} from '@/helpers/events.js'
+import {getCurrentWindow} from '@tauri-apps/api/window'
+import {MaximizeIcon, MinimizeIcon, XIcon} from '@modrinth/assets'
+import {getOS} from '@/helpers/utils.js'
+import {useLoading} from '@/store/loading.js'
+import {Button} from "@modrinth/ui";
 
 const doneLoading = ref(false)
 const loadingProgress = ref(0)
@@ -103,16 +106,20 @@ watch(loading, (newValue) => {
       loadingProgress.value = 0
       fakeLoadingIncrease()
     } else {
-      loadingProgress.value = 100
-      doneLoading.value = true
-
-      setTimeout(() => {
-        hidden.value = true
-        loading.setEnabled(true)
-      }, 250)
+      close()
     }
   }
 })
+
+function close() {
+  loadingProgress.value = 100
+  doneLoading.value = true
+
+  setTimeout(() => {
+    hidden.value = true
+    loading.setEnabled(true)
+  }, 250)
+}
 
 function fakeLoadingIncrease() {
   if (loadingProgress.value < 95) {
@@ -190,7 +197,7 @@ const handleClose = async () => {
   height: 100vh;
   width: 100vw;
   background: linear-gradient(180deg, rgba(66, 131, 92, 0.275) 0%, rgba(17, 35, 43, 0.5) 97.29%),
-    linear-gradient(0deg, rgba(22, 24, 28, 0.64), rgba(22, 24, 28, 0.64));
+  linear-gradient(0deg, rgba(22, 24, 28, 0.64), rgba(22, 24, 28, 0.64));
   z-index: 9997;
 }
 

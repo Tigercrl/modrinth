@@ -6,6 +6,8 @@ import FloatingVue from 'floating-vue'
 import 'floating-vue/dist/style.css'
 import { createPlugin } from '@vintl/vintl/plugin'
 import * as Sentry from '@sentry/vue'
+import dayjs from "dayjs";
+import "dayjs/locale/zh-cn.js"
 
 const VIntlPlugin = createPlugin({
   controllerOpts: {
@@ -23,6 +25,8 @@ const VIntlPlugin = createPlugin({
   globalMixin: true,
   injectInto: [],
 })
+
+dayjs.locale('zh-cn')
 
 const pinia = createPinia()
 

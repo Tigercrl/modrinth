@@ -5,15 +5,13 @@
       <div>
         <BookTextIcon aria-hidden="true" />
         <div>
-          Licensed
-          <a
+          许可证：<a
             v-if="project.license.url"
             class="text-link hover:underline"
             :href="project.license.url"
             :target="linkTarget"
             rel="noopener nofollow ugc"
-          >
-            {{ licenseIdDisplay }}
+          >{{ licenseIdDisplay }}
             <ExternalIcon aria-hidden="true" class="external-icon ml-1 mt-[-1px] inline" />
           </a>
           <span
@@ -29,14 +27,14 @@
       </div>
       <div
         v-if="project.approved"
-        v-tooltip="dayjs(project.approved).format('MMMM D, YYYY [at] h:mm A')"
+        v-tooltip="dayjs(project.approved).format('YYYY/MM/D hh:mm:ss')"
       >
         <CalendarIcon aria-hidden="true" />
         <div>
           {{ formatMessage(messages.published, { date: publishedDate }) }}
         </div>
       </div>
-      <div v-else v-tooltip="dayjs(project.published).format('MMMM D, YYYY [at] h:mm A')">
+      <div v-else v-tooltip="dayjs(project.published).format('YYYY/MM/D hh:mm:ss')">
         <CalendarIcon aria-hidden="true" />
         <div>
           {{ formatMessage(messages.created, { date: createdDate }) }}
@@ -44,7 +42,7 @@
       </div>
       <div
         v-if="project.status === 'processing' && project.queued"
-        v-tooltip="dayjs(project.queued).format('MMMM D, YYYY [at] h:mm A')"
+        v-tooltip="dayjs(project.queued).format('YYYY/MM/D hh:mm:ss')"
       >
         <ScaleIcon aria-hidden="true" />
         <div>
@@ -53,7 +51,7 @@
       </div>
       <div
         v-if="hasVersions && project.updated"
-        v-tooltip="dayjs(project.updated).format('MMMM D, YYYY [at] h:mm A')"
+        v-tooltip="dayjs(project.updated).format('YYYY/MM/D hh:mm:ss')"
       >
         <VersionIcon aria-hidden="true" />
         <div>
@@ -116,27 +114,27 @@ const licenseIdDisplay = computed(() => {
 const messages = defineMessages({
   title: {
     id: 'project.about.details.title',
-    defaultMessage: 'Details',
+    defaultMessage: '详细信息',
   },
   licensed: {
     id: 'project.about.details.licensed',
-    defaultMessage: 'Licensed {license}',
+    defaultMessage: '许可证：{license}',
   },
   created: {
     id: 'project.about.details.created',
-    defaultMessage: 'Created {date}',
+    defaultMessage: '创建时间：{date}',
   },
   submitted: {
     id: 'project.about.details.submitted',
-    defaultMessage: 'Submitted {date}',
+    defaultMessage: '提交时间：{date}',
   },
   published: {
     id: 'project.about.details.published',
-    defaultMessage: 'Published {date}',
+    defaultMessage: '发布时间：{date}',
   },
   updated: {
     id: 'project.about.details.updated',
-    defaultMessage: 'Updated {date}',
+    defaultMessage: '更新时间：{date}',
   },
 })
 </script>

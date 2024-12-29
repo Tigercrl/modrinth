@@ -25,39 +25,41 @@
           <template v-if="timePlayed > 0">
             {{ timePlayedHumanized }}
           </template>
-          <template v-else> Never played </template>
+          <template v-else> 从未游玩 </template>
         </div>
       </template>
       <template #actions>
         <div class="flex gap-2">
-          <ButtonStyled v-if="instance.install_stage !== 'installed'" color="brand" size="large">
-            <button disabled>Installing...</button>
+          <ButtonStyled style="text-wrap: nowrap" v-if="instance.install_stage !== 'installed'" color="brand" size="large">
+            <button disabled>安装中...</button>
           </ButtonStyled>
-          <ButtonStyled v-else-if="playing === true" color="red" size="large">
+          <ButtonStyled style="text-wrap: nowrap" v-else-if="playing === true" color="red" size="large">
             <button @click="stopInstance('InstancePage')">
               <StopCircleIcon />
-              Stop
+              停止
             </button>
           </ButtonStyled>
           <ButtonStyled
             v-else-if="playing === false && loading === false"
             color="brand"
             size="large"
+            style="text-wrap: nowrap"
           >
             <button @click="startInstance('InstancePage')">
               <PlayIcon />
-              Play
+              启动
             </button>
           </ButtonStyled>
           <ButtonStyled
             v-else-if="loading === true && playing === false"
             color="brand"
             size="large"
+            style="text-wrap: nowrap"
           >
-            <button disabled>Loading...</button>
+            <button disabled>加载中...</button>
           </ButtonStyled>
           <ButtonStyled size="large" circular>
-            <button v-tooltip="'Instance settings'" @click="settingsModal.show()">
+            <button v-tooltip="'实例设置'" @click="settingsModal.show()">
               <SettingsIcon />
             </button>
           </ButtonStyled>
@@ -75,10 +77,10 @@
               ]"
             >
               <MoreVerticalIcon />
-              <template #share-instance> <UserPlusIcon /> Share instance </template>
-              <template #host-a-server> <ServerIcon /> Create a server </template>
-              <template #open-folder> <FolderOpenIcon /> Open folder </template>
-              <template #export-mrpack> <PackageIcon /> Export modpack </template>
+              <template #share-instance> <UserPlusIcon /> 分享实例 </template>
+              <template #host-a-server> <ServerIcon /> 创建服务器 </template>
+              <template #open-folder> <FolderOpenIcon /> 打开文件夹 </template>
+              <template #export-mrpack> <PackageIcon /> 导出整合包 </template>
             </OverflowMenu>
           </ButtonStyled>
         </div>
@@ -113,25 +115,25 @@
     </RouterView>
   </div>
   <ContextMenu ref="options" @option-clicked="handleOptionsClick">
-    <template #play> <PlayIcon /> Play </template>
-    <template #stop> <StopCircleIcon /> Stop </template>
-    <template #add_content> <PlusIcon /> Add content </template>
-    <template #edit> <EditIcon /> Edit </template>
-    <template #copy_path> <ClipboardCopyIcon /> Copy path </template>
-    <template #open_folder> <ClipboardCopyIcon /> Open folder </template>
-    <template #copy_link> <ClipboardCopyIcon /> Copy link </template>
-    <template #open_link> <ClipboardCopyIcon /> Open in Modrinth <ExternalIcon /> </template>
-    <template #copy_names><EditIcon />Copy names</template>
-    <template #copy_slugs><HashIcon />Copy slugs</template>
-    <template #copy_links><GlobeIcon />Copy links</template>
-    <template #toggle><EditIcon />Toggle selected</template>
-    <template #disable><XIcon />Disable selected</template>
-    <template #enable><CheckCircleIcon />Enable selected</template>
-    <template #hide_show><EyeIcon />Show/Hide unselected</template>
+    <template #play> <PlayIcon /> 启动 </template>
+    <template #stop> <StopCircleIcon /> 停止 </template>
+    <template #add_content> <PlusIcon /> 安装资源 </template>
+    <template #edit> <EditIcon /> 修改 </template>
+    <template #copy_path> <ClipboardCopyIcon /> 复制路径 </template>
+    <template #open_folder> <ClipboardCopyIcon /> 打开文件夹 </template>
+    <template #copy_link> <ClipboardCopyIcon /> 复制链接 </template>
+    <template #open_link> <ClipboardCopyIcon /> 在 Modrinth 中打开 <ExternalIcon /> </template>
+    <template #copy_names><EditIcon />复制名称</template>
+    <template #copy_slugs><HashIcon />复制资源关键字</template>
+    <template #copy_links><GlobeIcon />复制链接</template>
+    <template #toggle><EditIcon />切换已选择资源的启用/禁用</template>
+    <template #disable><XIcon />禁用已选择资源</template>
+    <template #enable><CheckCircleIcon />启用已选择资源</template>
+    <template #hide_show><EyeIcon />显示或隐藏未选择资源</template>
     <template #update_all
       ><UpdatedIcon />Update {{ selected.length > 0 ? 'selected' : 'all' }}</template
     >
-    <template #filter_update><UpdatedIcon />Select Updatable</template>
+    <template #filter_update><UpdatedIcon />选择可更新的资源</template>
   </ContextMenu>
 </template>
 <script setup>
@@ -240,11 +242,11 @@ watch(
 
 const tabs = computed(() => [
   {
-    label: 'Content',
+    label: '资源',
     href: `/instance/${encodeURIComponent(route.params.id)}`,
   },
   {
-    label: 'Logs',
+    label: '日志',
     href: `/instance/${encodeURIComponent(route.params.id)}/logs`,
   },
 ])
@@ -386,16 +388,16 @@ const timePlayedHumanized = computed(() => {
   const duration = dayjs.duration(timePlayed.value, 'seconds')
   const hours = Math.floor(duration.asHours())
   if (hours >= 1) {
-    return hours + ' hour' + (hours > 1 ? 's' : '')
+    return hours + ' 小时'
   }
 
   const minutes = Math.floor(duration.asMinutes())
   if (minutes >= 1) {
-    return minutes + ' minute' + (minutes > 1 ? 's' : '')
+    return minutes + ' 分钟'
   }
 
   const seconds = Math.floor(duration.asSeconds())
-  return seconds + ' second' + (seconds > 1 ? 's' : '')
+  return seconds + ' 秒'
 })
 
 onUnmounted(() => {

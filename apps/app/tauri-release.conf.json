@@ -2,9 +2,6 @@
   "bundle": {
     "createUpdaterArtifacts": "v1Compatible"
   },
-  "build": {
-    "features": ["updater"]
-  },
   "app": {
     "security": {
       "capabilities": ["ads", "core", "plugins", "updater"]

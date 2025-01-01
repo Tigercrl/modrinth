@@ -78,7 +78,7 @@ async function findLauncherDir() {
       title="您确定要清除缓存吗？"
       description="如果您继续，所有缓存将被清除。这可能会使应用程序暂时变卡顿。"
       :has-to-type="false"
-      proceed-label="Purge cache"
+      proceed-label="清除缓存"
       :show-ad-on-close="false"
       @proceed="purgeCache"
     />

@@ -131,7 +131,7 @@ async function loadFriends(timeout = false) {
 
     loading.value = false
   } catch (e) {
-    console.error('无法加载好友', e)
+    console.error('Error loading friends', e)
     if (timeout) {
       setTimeout(() => loadFriends(), 15 * 1000)
     }

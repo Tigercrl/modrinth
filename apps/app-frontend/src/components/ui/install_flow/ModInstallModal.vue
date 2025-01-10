@@ -279,7 +279,7 @@ const createInstance = async () => {
               v-model="name"
               autocomplete="off"
               type="text"
-              placeholder="Name"
+              placeholder="名称"
               class="creation-input"
             />
             <Button :disabled="creatingInstance === true || !name" @click="createInstance()">

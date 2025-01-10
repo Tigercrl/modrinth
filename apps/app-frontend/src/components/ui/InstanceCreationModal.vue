@@ -101,7 +101,7 @@
         </Button>
         <Button @click="hide()">
           <XIcon />
-          Cancel
+          取消
         </Button>
         <Button color="primary" :disabled="!check_valid || creating" @click="create_instance()">
           <PlusIcon v-if="!creating" />

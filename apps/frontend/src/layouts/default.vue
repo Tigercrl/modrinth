@@ -1189,7 +1189,7 @@ function hideStagingBanner() {
 .site-banner--warning {
   // On some pages, there's gradient backgrounds that seep underneath
   // the banner, so we need to add a solid color underlay.
-  background-color: black;
+  background-color: var(--color-bg);
   border-bottom: 2px solid var(--color-red);
   display: grid;
   gap: 0.5rem;

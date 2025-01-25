@@ -101,11 +101,11 @@ export function formatMoney(number, abbreviate = false) {
 }
 
 export const formatBytes = (bytes, decimals = 2) => {
-  if (bytes === 0) return '0 Bytes'
+  if (bytes === 0) return '0B'
 
   const k = 1024
   const dm = decimals < 0 ? 0 : decimals
-  const sizes = ['Bytes', 'KiB', 'MiB', 'GiB']
+  const sizes = ['B', 'KiB', 'MiB', 'GiB']
 
   const i = Math.floor(Math.log(bytes) / Math.log(k))
 
@@ -298,9 +298,21 @@ export const formatCategoryHeader = (name) => {
 
 export const formatProjectStatus = (name) => {
   if (name === 'approved') {
-    return 'Public'
+    return '公共'
   } else if (name === 'processing') {
-    return 'Under review'
+    return '审核中'
+  } else if (name === 'rejected') {
+    return '未过审'
+  } else if (name === 'draft') {
+    return '草稿'
+  } else if (name === 'unlisted') {
+    return '隐藏'
+  } else if (name === 'private') {
+    return '私有'
+  } else if (name === 'withheld') {
+    return '保留'
+  } else if (name === 'archived') {
+    return '已归档'
   }
 
   return capitalizeString(name)

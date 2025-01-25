@@ -52,7 +52,7 @@
           "
         >
           <ServerIcon aria-hidden="true" />
-          仅服务端
+          仅服务器
         </TagItem>
         <TagItem v-if="false">
           <UserIcon aria-hidden="true" />

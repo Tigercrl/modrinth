@@ -71,7 +71,7 @@
       </div>
       <div
         v-if="showUpdatedDate"
-        v-tooltip="$dayjs(updatedAt).format('MMMM D, YYYY [at] h:mm A')"
+        v-tooltip="$dayjs(updatedAt).format('YYYY/MM/D hh:mm:ss')"
         class="stat date"
       >
         <EditIcon aria-hidden="true" />
@@ -79,7 +79,7 @@
       </div>
       <div
         v-else-if="showCreatedDate"
-        v-tooltip="$dayjs(createdAt).format('MMMM D, YYYY [at] h:mm A')"
+        v-tooltip="$dayjs(createdAt).format('YYYY/MM/D hh:mm:ss')"
         class="stat date"
       >
         <CalendarIcon aria-hidden="true" />

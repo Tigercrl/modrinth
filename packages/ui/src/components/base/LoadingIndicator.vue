@@ -1,6 +1,6 @@
 <template>
   <div class="w-full flex items-center justify-center flex-col gap-2">
-    <div class="title">Loading</div>
+    <div class="title">加载中</div>
     <div class="placeholder"></div>
     <div class="placeholder"></div>
     <div class="placeholder"></div>

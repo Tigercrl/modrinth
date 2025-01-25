@@ -2,7 +2,7 @@
   <Modal ref="linkModal" header="Insert link">
     <div class="modal-insert">
       <label class="label" for="insert-link-label">
-        <span class="label__title">Label</span>
+        <span class="label__title">标签</span>
       </label>
       <div class="iconified-input">
         <AlignLeftIcon />
@@ -20,7 +20,7 @@
           id="insert-link-url"
           v-model="linkUrl"
           type="text"
-          placeholder="Enter the link's URL..."
+          placeholder="请输入链接的 URL..."
           @input="validateURL"
         />
         <Button class="r-btn" @click="() => (linkUrl = '')">
@@ -29,12 +29,12 @@
       </div>
       <template v-if="linkValidationErrorMessage">
         <span class="label">
-          <span class="label__title">Error</span>
+          <span class="label__title">错误</span>
           <span class="label__description">{{ linkValidationErrorMessage }}</span>
         </span>
       </template>
       <span class="label">
-        <span class="label__title">Preview</span>
+        <span class="label__title">预览</span>
         <span class="label__description"></span>
       </span>
       <div class="markdown-body-wrapper">
@@ -45,7 +45,7 @@
         />
       </div>
       <div class="input-group push-right">
-        <Button :action="() => linkModal?.hide()"><XIcon /> Cancel</Button>
+        <Button :action="() => linkModal?.hide()"><XIcon /> 取消</Button>
         <Button
           color="primary"
           :disabled="linkValidationErrorMessage || !linkUrl"
@@ -55,7 +55,7 @@
               linkModal?.hide()
             }
           "
-          ><PlusIcon /> Insert</Button
+          ><PlusIcon /> 插入</Button
         >
       </div>
     </div>
@@ -63,9 +63,9 @@
   <Modal ref="imageModal" header="Insert image">
     <div class="modal-insert">
       <label class="label" for="insert-image-alt">
-        <span class="label__title">Description (alt text)<span class="required">*</span></span>
+        <span class="label__title">描述（替代文本）<span class="required">*</span></span>
         <span class="label__description">
-          Describe the image completely as you would to someone who could not see the image.
+          图片加载错误时显示，为一个看不见图像的人完整地描述图像。
         </span>
       </label>
       <div class="iconified-input">
@@ -74,7 +74,7 @@
           id="insert-image-alt"
           v-model="linkText"
           type="text"
-          placeholder="Describe the image..."
+          placeholder="请描述图片..."
         />
         <Button class="r-btn" @click="() => (linkText = '')">
           <XIcon />
@@ -92,7 +92,7 @@
       >
         <FileInput
           accept="image/png,image/jpeg,image/gif,image/webp"
-          prompt="Drag and drop to upload or click to select file"
+          prompt="将文件拖放至此处上传或单击选择文件"
           long-style
           should-always-reset
           class="file-input"
@@ -107,7 +107,7 @@
           id="insert-link-url"
           v-model="linkUrl"
           type="text"
-          placeholder="Enter the image URL..."
+          placeholder="请输入图片的 URL..."
           @input="validateURL"
         />
         <Button class="r-btn" @click="() => (linkUrl = '')">
@@ -116,12 +116,12 @@
       </div>
       <template v-if="linkValidationErrorMessage">
         <span class="label">
-          <span class="label__title">Error</span>
+          <span class="label__title">错误</span>
           <span class="label__description">{{ linkValidationErrorMessage }}</span>
         </span>
       </template>
       <span class="label">
-        <span class="label__title">Preview</span>
+        <span class="label__title">预览</span>
         <span class="label__description"></span>
       </span>
       <div class="markdown-body-wrapper">
@@ -132,7 +132,7 @@
         />
       </div>
       <div class="input-group push-right">
-        <Button :action="() => imageModal?.hide()"><XIcon /> Cancel</Button>
+        <Button :action="() => imageModal?.hide()"><XIcon /> 取消</Button>
         <Button
           color="primary"
           :disabled="!canInsertImage"
@@ -143,7 +143,7 @@
             }
           "
         >
-          <PlusIcon /> Insert
+          <PlusIcon /> 插入
         </Button>
       </div>
     </div>
@@ -151,8 +151,8 @@
   <Modal ref="videoModal" header="Insert YouTube video">
     <div class="modal-insert">
       <label class="label" for="insert-video-url">
-        <span class="label__title">YouTube video URL<span class="required">*</span></span>
-        <span class="label__description"> Enter a valid link to a YouTube video. </span>
+        <span class="label__title">YouTube 视频 URL<span class="required">*</span></span>
+        <span class="label__description"> 请输入一个有效的 YouTube 视频链接 </span>
       </label>
       <div class="iconified-input">
         <YouTubeIcon />
@@ -160,7 +160,7 @@
           id="insert-video-url"
           v-model="linkUrl"
           type="text"
-          placeholder="Enter YouTube video URL"
+          placeholder="请输入 YouTube 视频 URL..."
           @input="validateURL"
         />
         <Button class="r-btn" @click="() => (linkUrl = '')">
@@ -169,12 +169,12 @@
       </div>
       <template v-if="linkValidationErrorMessage">
         <span class="label">
-          <span class="label__title">Error</span>
+          <span class="label__title">错误</span>
           <span class="label__description">{{ linkValidationErrorMessage }}</span>
         </span>
       </template>
       <span class="label">
-        <span class="label__title">Preview</span>
+        <span class="label__title">预览</span>
         <span class="label__description"></span>
       </span>
 
@@ -186,7 +186,7 @@
         />
       </div>
       <div class="input-group push-right">
-        <Button :action="() => videoModal?.hide()"><XIcon /> Cancel</Button>
+        <Button :action="() => videoModal?.hide()"><XIcon /> 取消</Button>
         <Button
           color="primary"
           :disabled="linkValidationErrorMessage || !linkUrl"
@@ -197,7 +197,7 @@
             }
           "
         >
-          <PlusIcon /> Insert
+          <PlusIcon /> 插入
         </Button>
       </div>
     </div>
@@ -226,7 +226,7 @@
       </div>
       <div class="preview">
         <Toggle id="preview" v-model="previewMode" :checked="previewMode" />
-        <label class="label" for="preview"> Preview </label>
+        <label class="label" for="preview"> 预览 </label>
       </div>
     </div>
     <div ref="editorRef" :class="{ hide: previewMode }" />
@@ -234,19 +234,19 @@
       <div class="info-blurb">
         <InfoIcon />
         <span
-          >This editor supports
+          >此编辑器支持
           <a
             class="markdown-resource-link"
             href="https://support.modrinth.com/en/articles/8801962-advanced-markdown-formatting"
             target="_blank"
-            >Markdown formatting</a
+            >Markdown 格式</a
           >.</span
         >
       </div>
       <div :class="{ hide: !props.maxLength }" class="max-length-label">
-        <span>Max length: </span>
+        <span>最大长度：</span>
         <span>
-          {{ props.maxLength ? `${currentValue?.length || 0}/${props.maxLength}` : 'Unlimited' }}
+          {{ props.maxLength ? `${currentValue?.length || 0}/${props.maxLength}` : '无限制' }}
         </span>
       </div>
     </div>
@@ -316,7 +316,7 @@ const props = withDefaults(
     disabled: false,
     headingButtons: true,
     onImageUpload: undefined,
-    placeholder: 'Write something...',
+    placeholder: '请输入...',
     maxLength: undefined,
     maxHeight: undefined,
   },
@@ -370,7 +370,7 @@ onMounted(() => {
         uploadImagesFromList(clipboardData.files)
           .then(function (url) {
             const selection = markdownCommands.yankSelection(view)
-            const altText = selection || 'Replace this with a description'
+            const altText = selection || '请输入描述...'
             const linkMarkdown = `![${altText}](${url})`
             return markdownCommands.replaceSelection(view, linkMarkdown)
           })
@@ -504,33 +504,33 @@ const BUTTONS: ButtonGroupMap = {
     display: props.headingButtons,
     hideOnMobile: false,
     buttons: [
-      composeCommandButton('Heading 1', Heading1Icon, markdownCommands.toggleHeader),
-      composeCommandButton('Heading 2', Heading2Icon, markdownCommands.toggleHeader2),
-      composeCommandButton('Heading 3', Heading3Icon, markdownCommands.toggleHeader3),
+      composeCommandButton('1级标题', Heading1Icon, markdownCommands.toggleHeader),
+      composeCommandButton('2级标题', Heading2Icon, markdownCommands.toggleHeader2),
+      composeCommandButton('3级标题', Heading3Icon, markdownCommands.toggleHeader3),
     ],
   },
   stylizing: {
     display: true,
     hideOnMobile: false,
     buttons: [
-      composeCommandButton('Bold', BoldIcon, markdownCommands.toggleBold),
-      composeCommandButton('Italic', ItalicIcon, markdownCommands.toggleItalic),
+      composeCommandButton('粗体', BoldIcon, markdownCommands.toggleBold),
+      composeCommandButton('斜体', ItalicIcon, markdownCommands.toggleItalic),
       composeCommandButton(
-        'Strikethrough',
+        '删除线',
         StrikethroughIcon,
         markdownCommands.toggleStrikethrough,
       ),
-      composeCommandButton('Code', CodeIcon, markdownCommands.toggleCodeBlock),
-      composeCommandButton('Spoiler', ScanEyeIcon, markdownCommands.toggleSpoiler),
+      composeCommandButton('代码', CodeIcon, markdownCommands.toggleCodeBlock),
+      composeCommandButton('折叠块', ScanEyeIcon, markdownCommands.toggleSpoiler),
     ],
   },
   lists: {
     display: true,
     hideOnMobile: false,
     buttons: [
-      composeCommandButton('Bulleted list', ListBulletedIcon, markdownCommands.toggleBulletList),
-      composeCommandButton('Ordered list', ListOrderedIcon, markdownCommands.toggleOrderedList),
-      composeCommandButton('Quote', TextQuoteIcon, markdownCommands.toggleQuote),
+      composeCommandButton('无序列表', ListBulletedIcon, markdownCommands.toggleBulletList),
+      composeCommandButton('有序列表', ListOrderedIcon, markdownCommands.toggleOrderedList),
+      composeCommandButton('引用', TextQuoteIcon, markdownCommands.toggleQuote),
     ],
   },
   components: {
@@ -538,17 +538,17 @@ const BUTTONS: ButtonGroupMap = {
     hideOnMobile: false,
     buttons: [
       {
-        label: 'Link',
+        label: '链接',
         icon: LinkIcon,
         action: () => openLinkModal(),
       },
       {
-        label: 'Image',
+        label: '图片',
         icon: ImageIcon,
         action: () => openImageModal(),
       },
       {
-        label: 'Video',
+        label: '视频',
         icon: YouTubeIcon,
         action: () => openVideoModal(),
       },
@@ -654,12 +654,12 @@ function cleanUrl(input: string): string {
   try {
     url = new URL(input)
   } catch {
-    throw new Error('Invalid URL. Make sure the URL is well-formed.')
+    throw new Error('无效的 URL。请确保 URL 格式正确。')
   }
 
   // Check for unsupported protocols
   if (url.protocol !== 'http:' && url.protocol !== 'https:') {
-    throw new Error('Unsupported protocol. Use http or https.')
+    throw new Error('不支持的协议。请使用 HTTP 或 HTTPS。')
   }
 
   // If the scheme is "http", automatically upgrade it to "https"
@@ -670,7 +670,7 @@ function cleanUrl(input: string): string {
   // Block certain domains for compliance
   const blockedDomains = ['forgecdn', 'cdn.discordapp', 'media.discordapp']
   if (blockedDomains.some((domain) => url.hostname.includes(domain))) {
-    throw new Error('Invalid URL. This domain is not allowed.')
+    throw new Error('无效的 URL。此域名不被允许。')
   }
 
   return url.toString()

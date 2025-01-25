@@ -6,7 +6,7 @@
       :action="clearFilters"
     >
       <XCircleIcon />
-      Clear all filters
+      清除所有过滤器
     </TagItem>
     <TagItem
       v-for="selectedItem in selectedItems"
@@ -49,7 +49,7 @@ const props = defineProps<{
 
 const defaultProvidedMessage = defineMessage({
   id: 'search.filter.locked.default',
-  defaultMessage: 'Filter locked',
+  defaultMessage: '过滤器已锁定',
 })
 
 type Item = {

@@ -23,7 +23,7 @@ const props = defineProps({
   },
   formatLabels: {
     type: Function,
-    default: (label) => dayjs(label).format('MMM D'),
+    default: (label) => dayjs(label).format('MM/D'),
   },
   colors: {
     type: Array,

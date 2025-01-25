@@ -1,7 +1,7 @@
 <template>
   <article class="project-card base-card" :aria-label="name" role="listitem">
     <router-link class="icon" tabindex="-1" :to="`/${projectTypeUrl}/${id}`">
-      <Avatar :src="iconUrl" :alt="name" size="md" no-shadow loading="lazy" />
+      <Avatar :src="iconUrl" :alt="name" size="md" no-shadow loading="lazy"/>
     </router-link>
     <router-link
       class="gallery"
@@ -10,7 +10,7 @@
       :to="`/${projectTypeUrl}/${id}`"
       :style="color ? `background-color: ${toColor};` : ''"
     >
-      <img v-if="featuredImage" :src="featuredImage" alt="gallery image" loading="lazy" />
+      <img v-if="featuredImage" :src="featuredImage" alt="gallery image" loading="lazy"/>
     </router-link>
     <div class="title">
       <router-link :to="`/${projectTypeUrl}/${id}`">
@@ -19,10 +19,11 @@
         </h2>
       </router-link>
       <p v-if="author" class="author">
-        by
-        <router-link class="title-link" :to="'/user/' + author">{{ author }} </router-link>
+        （由
+        <router-link class="title-link" :to="'/user/' + author">{{ author }}</router-link>
+        创作）
       </p>
-      <Badge v-if="status && status !== 'approved'" :type="status" class="status" />
+      <Badge v-if="status && status !== 'approved'" :type="status" class="status"/>
     </div>
     <p class="description">
       {{ description }}
@@ -39,29 +40,29 @@
     </Categories>
     <div class="stats">
       <div v-if="downloads" class="stat">
-        <DownloadIcon aria-hidden="true" />
+        <DownloadIcon aria-hidden="true"/>
         <p>
           <strong>{{ formatNumber(downloads) }}</strong
-          ><span class="stat-label"> download<span v-if="downloads !== '1'">s</span></span>
+          ><span class="stat-label"> 下载</span>
         </p>
       </div>
       <div v-if="follows" class="stat">
-        <HeartIcon aria-hidden="true" />
+        <HeartIcon aria-hidden="true"/>
         <p>
           <strong>{{ formatNumber(follows) }}</strong
-          ><span class="stat-label"> follower<span v-if="follows !== '1'">s</span></span>
+          ><span class="stat-label"> 关注</span>
         </p>
       </div>
       <div class="buttons">
-        <slot />
+        <slot/>
       </div>
       <div v-if="showUpdatedDate" v-tooltip="updatedDate" class="stat date">
         <EditIcon aria-hidden="true" />
-        <span class="date-label">Updated </span> {{ sinceUpdated }}
+        <span class="date-label">更新时间：</span> {{ sinceUpdated }}
       </div>
       <div v-else v-tooltip="createdDate" class="stat date">
         <CalendarIcon aria-hidden="true" />
-        <span class="date-label">Published </span>{{ sinceCreation }}
+        <span class="date-label">发布时间：</span>{{ sinceCreation }}
       </div>
     </div>
   </article>
@@ -93,7 +94,7 @@ export default defineComponent({
     },
     name: {
       type: String,
-      default: 'Project Name',
+      default: '资源名称',
     },
     author: {
       type: String,
@@ -101,7 +102,7 @@ export default defineComponent({
     },
     description: {
       type: String,
-      default: 'A _type description',
+      default: '这是一条简介',
     },
     iconUrl: {
       type: String,
@@ -202,13 +203,13 @@ export default defineComponent({
       return `rgba(${[r, g, b, 1].join(',')})`
     },
     createdDate() {
-      return dayjs(this.createdAt).format('MMMM D, YYYY [at] h:mm:ss A')
+      return dayjs(this.createdAt).format('YYYY/MM/D hh:mm:ss')
     },
     sinceCreation() {
       return dayjs(this.createdAt).fromNow()
     },
     updatedDate() {
-      return dayjs(this.updatedAt).format('MMMM D, YYYY [at] h:mm:ss A')
+      return dayjs(this.updatedAt).format('YYYY/MM/D hh:mm:ss')
     },
     sinceUpdated() {
       return dayjs(this.updatedAt).fromNow()

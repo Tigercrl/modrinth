@@ -51,7 +51,6 @@ apps/frontend/src/generated
 .turbo
 target
 generated
-.env
 
 # app testing dir
 app-playground-data/*

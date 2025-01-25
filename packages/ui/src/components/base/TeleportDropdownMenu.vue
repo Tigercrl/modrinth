@@ -208,7 +208,7 @@ const selectedOption = computed(() => {
   if (selectedValue.value !== null && selectedValue.value !== undefined) {
     return props.displayName(selectedValue.value as OptionValue)
   }
-  return props.placeholder || 'Select an option'
+  return props.placeholder || '请选择...'
 })
 
 const radioValue = computed<OptionValue>({

@@ -16,7 +16,7 @@ export type DonationPlatform =
   | { short: 'paypal'; name: 'PayPal' }
   | { short: 'github'; name: 'GitHub Sponsors' }
   | { short: 'ko-fi'; name: 'Ko-fi' }
-  | { short: 'other'; name: 'Other' }
+  | { short: 'other'; name: '其他' }
 
 export type ProjectType = 'mod' | 'modpack' | 'resourcepack' | 'shader'
 export type MonetizationStatus = 'monetized' | 'demonetized' | 'force-demonetized'

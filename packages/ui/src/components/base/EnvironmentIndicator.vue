@@ -54,27 +54,27 @@ import { useVIntl, defineMessages } from '@vintl/vintl'
 const messages = defineMessages({
   clientLabel: {
     id: 'omorphia.component.environment-indicator.label.client',
-    defaultMessage: 'Client',
+    defaultMessage: '客户端',
   },
   clientAndServerLabel: {
     id: 'omorphia.component.environment-indicator.label.client-and-server',
-    defaultMessage: 'Client and server',
+    defaultMessage: '双端均需安装',
   },
   clientOrServerLabel: {
     id: 'omorphia.component.environment-indicator.label.client-or-server',
-    defaultMessage: 'Client or server',
+    defaultMessage: '双端任一安装',
   },
   serverLabel: {
     id: 'omorphia.component.environment-indicator.label.server',
-    defaultMessage: 'Server',
+    defaultMessage: '服务器',
   },
   typeLabel: {
     id: 'omorphia.component.environment-indicator.label.type',
-    defaultMessage: 'A {type}',
+    defaultMessage: '一个{type}',
   },
   unsupportedLabel: {
     id: 'omorphia.component.environment-indicator.label.unsupported',
-    defaultMessage: 'Unsupported',
+    defaultMessage: '双端均不支持',
   },
 })
 const { formatMessage } = useVIntl()

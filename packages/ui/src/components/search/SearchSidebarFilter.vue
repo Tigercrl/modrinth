@@ -324,7 +324,7 @@ const messages = defineMessages({
   },
   lockedTitle: {
     id: 'search.filter.locked.default.title',
-    defaultMessage: '{type} is locked',
+    defaultMessage: '{type} 已锁定',
   },
   lockedDescription: {
     id: 'search.filter.locked.default.description',

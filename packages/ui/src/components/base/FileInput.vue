@@ -20,7 +20,7 @@ export default defineComponent({
   props: {
     prompt: {
       type: String,
-      default: 'Select file',
+      default: '请选择文件...',
     },
     multiple: {
       type: Boolean,

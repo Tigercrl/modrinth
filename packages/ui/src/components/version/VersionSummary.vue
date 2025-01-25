@@ -13,7 +13,7 @@
     </div>
     <ButtonStyled color="brand">
       <a :href="downloadUrl" class="min-w-0" @click="emit('onDownload')">
-        <DownloadIcon aria-hidden="true" /> Download
+        <DownloadIcon aria-hidden="true" /> 下载
       </a>
     </ButtonStyled>
     <ButtonStyled circular>
@@ -33,6 +33,7 @@
 import { ButtonStyled, VersionChannelIndicator } from '../index'
 import { DownloadIcon, ExternalIcon } from '@modrinth/assets'
 import { computed } from 'vue'
+import type {Version, VersionFile} from "@modrinth/utils";
 
 const props = defineProps<{
   version: Version

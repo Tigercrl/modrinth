@@ -116,7 +116,7 @@ const chartOptions = ref({
             ? `<div class="list-entry">
                 <div class="label">
                   <span class="circle" style="background-color: ${w.globals.colors[0]}"> </span>
-                  ${dayjs(w.globals.lastXAxis.categories[dataPointIndex]).format('MMM D')}
+                  ${dayjs(w.globals.lastXAxis.categories[dataPointIndex]).format('MM/D')}
                 </div>
                 <div class="divider">
                   |

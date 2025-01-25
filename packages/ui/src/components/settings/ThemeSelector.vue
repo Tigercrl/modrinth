@@ -26,11 +26,11 @@ defineProps({
 const colorTheme = defineMessages({
   title: {
     id: 'settings.display.theme.title',
-    defaultMessage: 'Color theme',
+    defaultMessage: '主题',
   },
   description: {
     id: 'settings.display.theme.description',
-    defaultMessage: 'Select your preferred color theme for Modrinth on this device.',
+    defaultMessage: '在此设备上为 Modrinth 选择您喜欢的主题',
   },
   system: {
     id: 'settings.display.theme.system',
@@ -50,15 +50,15 @@ const colorTheme = defineMessages({
   },
   retro: {
     id: 'settings.display.theme.retro',
-    defaultMessage: 'Retro',
+    defaultMessage: '复古',
   },
   preferredLight: {
     id: 'settings.display.theme.preferred-light-theme',
-    defaultMessage: 'Preferred light theme',
+    defaultMessage: '首选浅色主题',
   },
   preferredDark: {
     id: 'settings.display.theme.preferred-dark-theme',
-    defaultMessage: 'Preferred dark theme',
+    defaultMessage: '首选暗色主题',
   },
 })
 </script>

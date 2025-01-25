@@ -3,13 +3,13 @@
     <ButtonStyled v-if="page > 1" circular type="transparent">
       <a
         v-if="linkFunction"
-        aria-label="Previous Page"
+        aria-label="上一页"
         :href="linkFunction(page - 1)"
         @click.prevent="switchPage(page - 1)"
       >
         <ChevronLeftIcon />
       </a>
-      <button v-else aria-label="Previous Page" @click="switchPage(page - 1)">
+      <button v-else aria-label="上一页" @click="switchPage(page - 1)">
         <ChevronLeftIcon />
       </button>
     </ButtonStyled>
@@ -45,13 +45,13 @@
     <ButtonStyled v-if="page !== pages[pages.length - 1]" circular type="transparent">
       <a
         v-if="linkFunction"
-        aria-label="Next Page"
+        aria-label="下一页"
         :href="linkFunction(page + 1)"
         @click.prevent="switchPage(page + 1)"
       >
         <ChevronRightIcon />
       </a>
-      <button v-else aria-label="Next Page" @click="switchPage(page + 1)">
+      <button v-else aria-label="下一页" @click="switchPage(page + 1)">
         <ChevronRightIcon />
       </button>
     </ButtonStyled>

@@ -3,193 +3,193 @@ import { defineMessages } from '@vintl/vintl'
 export const commonMessages = defineMessages({
   allProjectType: {
     id: 'project-type.all',
-    defaultMessage: 'All',
+    defaultMessage: '所有',
   },
   cancelButton: {
     id: 'button.cancel',
-    defaultMessage: 'Cancel',
+    defaultMessage: '取消',
   },
   collectionsLabel: {
     id: 'label.collections',
-    defaultMessage: 'Collections',
+    defaultMessage: '收藏夹',
   },
   continueButton: {
     id: 'button.continue',
-    defaultMessage: 'Continue',
+    defaultMessage: '继续',
   },
   copyIdButton: {
     id: 'button.copy-id',
-    defaultMessage: 'Copy ID',
+    defaultMessage: '复制 ID',
   },
   changesSavedLabel: {
     id: 'label.changes-saved',
-    defaultMessage: 'Changes saved',
+    defaultMessage: '已保存改动',
   },
   createAProjectButton: {
     id: 'button.create-a-project',
-    defaultMessage: 'Create a project',
+    defaultMessage: '创建新资源',
   },
   createdAgoLabel: {
     id: 'label.created-ago',
-    defaultMessage: 'Created {ago}',
+    defaultMessage: '创建时间：{ago}',
   },
   dashboardLabel: {
     id: 'label.dashboard',
-    defaultMessage: 'Dashboard',
+    defaultMessage: '仪表盘',
   },
   dateAtTimeTooltip: {
     id: 'tooltip.date-at-time',
-    defaultMessage: '{date, date, long} at {time, time, short}',
+    defaultMessage: '{date, date, long} {time, time, short}',
   },
   deleteLabel: {
     id: 'label.delete',
-    defaultMessage: 'Delete',
+    defaultMessage: '删除',
   },
   descriptionLabel: {
     id: 'label.description',
-    defaultMessage: 'Description',
+    defaultMessage: '描述',
   },
   editButton: {
     id: 'button.edit',
-    defaultMessage: 'Edit',
+    defaultMessage: '修改',
   },
   errorLabel: {
     id: 'label.error',
-    defaultMessage: 'Error',
+    defaultMessage: '错误',
   },
   errorNotificationTitle: {
     id: 'notification.error.title',
-    defaultMessage: 'An error occurred',
+    defaultMessage: '出现了一个错误',
   },
   followedProjectsLabel: {
     id: 'label.followed-projects',
-    defaultMessage: 'Followed projects',
+    defaultMessage: '关注的资源',
   },
   galleryInputView: {
     id: 'input.view.gallery',
-    defaultMessage: 'Gallery view',
+    defaultMessage: '画廊',
   },
   gridInputView: {
     id: 'input.view.grid',
-    defaultMessage: 'Grid view',
+    defaultMessage: '网格',
   },
   listInputView: {
     id: 'input.view.list',
-    defaultMessage: 'Rows view',
+    defaultMessage: '列表',
   },
   moderationLabel: {
     id: 'label.moderation',
-    defaultMessage: 'Moderation',
+    defaultMessage: '审核',
   },
   notificationsLabel: {
     id: 'label.notifications',
-    defaultMessage: 'Notifications',
+    defaultMessage: '通知',
   },
   privateLabel: {
     id: 'collection.label.private',
-    defaultMessage: 'Private',
+    defaultMessage: '私密',
   },
   publicLabel: {
     id: 'label.public',
-    defaultMessage: 'Public',
+    defaultMessage: '公共',
   },
   rejectedLabel: {
     id: 'label.rejected',
-    defaultMessage: 'Rejected',
+    defaultMessage: '未过审',
   },
   reportButton: {
     id: 'button.report',
-    defaultMessage: 'Report',
+    defaultMessage: '举报',
   },
   passwordLabel: {
     id: 'label.password',
-    defaultMessage: 'Password',
+    defaultMessage: '密码',
   },
   saveButton: {
     id: 'button.save',
-    defaultMessage: 'Save',
+    defaultMessage: '保存',
   },
   saveChangesButton: {
     id: 'button.save-changes',
-    defaultMessage: 'Save changes',
+    defaultMessage: '保存改动',
   },
   scopesLabel: {
     id: 'label.scopes',
-    defaultMessage: 'Scopes',
+    defaultMessage: '权限',
   },
   serversLabel: {
     id: 'label.servers',
-    defaultMessage: 'Servers',
+    defaultMessage: '服务器',
   },
   settingsLabel: {
     id: 'label.settings',
-    defaultMessage: 'Settings',
+    defaultMessage: '设置',
   },
   signInButton: {
     id: 'button.sign-in',
-    defaultMessage: 'Sign in',
+    defaultMessage: '登录',
   },
   signOutButton: {
     id: 'button.sign-out',
-    defaultMessage: 'Sign out',
+    defaultMessage: '登出',
   },
   titleLabel: {
     id: 'label.title',
-    defaultMessage: 'Title',
+    defaultMessage: '标题',
   },
   unlistedLabel: {
     id: 'label.unlisted',
-    defaultMessage: 'Unlisted',
+    defaultMessage: '隐藏',
   },
   uploadImageButton: {
     id: 'button.upload-image',
-    defaultMessage: 'Upload image',
+    defaultMessage: '上传图片',
   },
   visibilityLabel: {
     id: 'label.visibility',
-    defaultMessage: 'Visibility',
+    defaultMessage: '可见性',
   },
   visitYourProfile: {
     id: 'label.visit-your-profile',
-    defaultMessage: 'Visit your profile',
+    defaultMessage: '查看个人主页',
   },
 })
 
 export const commonSettingsMessages = defineMessages({
   appearance: {
     id: 'settings.appearance.title',
-    defaultMessage: 'Appearance',
+    defaultMessage: '外观',
   },
   language: {
     id: 'settings.language.title',
-    defaultMessage: 'Language',
+    defaultMessage: '语言',
   },
   profile: {
     id: 'settings.profile.title',
-    defaultMessage: 'Public profile',
+    defaultMessage: '个人资料',
   },
   account: {
     id: 'settings.account.title',
-    defaultMessage: 'Account and security',
+    defaultMessage: '账户与安全',
   },
   authorizedApps: {
     id: 'settings.authorized-apps.title',
-    defaultMessage: 'Authorized apps',
+    defaultMessage: '登录的应用',
   },
   sessions: {
     id: 'settings.sessions.title',
-    defaultMessage: 'Sessions',
+    defaultMessage: '会话',
   },
   pats: {
     id: 'settings.pats.title',
-    defaultMessage: 'Personal access tokens',
+    defaultMessage: '个人访问令牌',
   },
   applications: {
     id: 'settings.applications.title',
-    defaultMessage: 'Your applications',
+    defaultMessage: '应用',
   },
   billing: {
     id: 'settings.billing.title',
-    defaultMessage: 'Billing and subscriptions',
+    defaultMessage: '付款与订阅',
   },
 })

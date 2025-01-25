@@ -448,7 +448,7 @@ await refreshSearch()
         v-slot="{ selected }"
         v-model="currentSortType"
         class="max-w-[16rem]"
-        name="分类方式"
+        name="排列方式"
         :options="sortTypes as any"
         :display-name="(option: SortType | undefined) => {
           switch (option?.display) {
@@ -467,7 +467,7 @@ await refreshSearch()
           }
         }"
       >
-        <span class="font-semibold text-primary">分类方式：</span>
+        <span class="font-semibold text-primary">排列方式：</span>
         <span class="font-semibold text-secondary">{{ selected }}</span>
       </DropdownSelect>
       <DropdownSelect

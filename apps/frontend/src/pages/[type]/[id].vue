@@ -743,7 +743,7 @@
             </div>
             <div
               v-if="project.approved"
-              v-tooltip="$dayjs(project.approved).format('MMMM D, YYYY [at] h:mm A')"
+              v-tooltip="$dayjs(project.approved).format('YYYY/MM/D hh:mm:ss')"
               class="details-list__item"
             >
               <CalendarIcon aria-hidden="true" />
@@ -753,7 +753,7 @@
             </div>
             <div
               v-else
-              v-tooltip="$dayjs(project.published).format('MMMM D, YYYY [at] h:mm A')"
+              v-tooltip="$dayjs(project.published).format('YYYY/MM/D hh:mm:ss')"
               class="details-list__item"
             >
               <CalendarIcon aria-hidden="true" />
@@ -763,7 +763,7 @@
             </div>
             <div
               v-if="project.status === 'processing' && project.queued"
-              v-tooltip="$dayjs(project.queued).format('MMMM D, YYYY [at] h:mm A')"
+              v-tooltip="$dayjs(project.queued).format('YYYY/MM/D hh:mm:ss')"
               class="details-list__item"
             >
               <ScaleIcon aria-hidden="true" />
@@ -773,7 +773,7 @@
             </div>
             <div
               v-if="versions.length > 0 && project.updated"
-              v-tooltip="$dayjs(project.updated).format('MMMM D, YYYY [at] h:mm A')"
+              v-tooltip="$dayjs(project.updated).format('YYYY/MM/D hh:mm:ss')"
               class="details-list__item"
             >
               <VersionIcon aria-hidden="true" />

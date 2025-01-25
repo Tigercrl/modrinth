@@ -102,11 +102,11 @@ export function useSearch(
   const maxResults = ref(20)
 
   const sortTypes: readonly SortType[] = readonly([
-    { display: 'Relevance', name: 'relevance' },
-    { display: 'Downloads', name: 'downloads' },
-    { display: 'Followers', name: 'follows' },
-    { display: 'Date published', name: 'newest' },
-    { display: 'Date updated', name: 'updated' },
+    { display: '相关性', name: 'relevance' },
+    { display: '下载量', name: 'downloads' },
+    { display: '关注量', name: 'follows' },
+    { display: '发布时间', name: 'newest' },
+    { display: '更新时间', name: 'updated' },
   ])
 
   const currentSortType: Ref<SortType> = ref({ name: 'relevance', display: 'Relevance' })

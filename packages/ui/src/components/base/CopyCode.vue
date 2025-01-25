@@ -13,7 +13,7 @@ import { CheckIcon, ClipboardCopyIcon } from '@modrinth/assets'
 
 const copiedMessage = defineMessage({
   id: 'omorphia.component.copy.action.copy',
-  defaultMessage: 'Copy code to clipboard',
+  defaultMessage: '复制代码至剪贴板',
 })
 const { formatMessage } = useVIntl()
 

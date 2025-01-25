@@ -14,7 +14,7 @@
           <CompactChart
             v-if="analytics.formattedData.value.downloads"
             ref="tinyDownloadChart"
-            :title="`Downloads since ${dayjs(startDate).format('MMM D, YYYY')}`"
+            :title="`Downloads since ${dayjs(startDate).format('YYYY/MM/D')}`"
             color="var(--color-brand)"
             :value="formatNumber(analytics.formattedData.value.downloads.sum, false)"
             :data="analytics.formattedData.value.downloads.chart.sumData"
@@ -33,7 +33,7 @@
           <CompactChart
             v-if="analytics.formattedData.value.views"
             ref="tinyViewChart"
-            :title="`Page views since ${dayjs(startDate).format('MMM D, YYYY')}`"
+            :title="`Page views since ${dayjs(startDate).format('YYYY/MM/D')}`"
             color="var(--color-blue)"
             :value="formatNumber(analytics.formattedData.value.views.sum, false)"
             :data="analytics.formattedData.value.views.chart.sumData"
@@ -50,7 +50,7 @@
           <CompactChart
             v-if="analytics.formattedData.value.revenue"
             ref="tinyRevenueChart"
-            :title="`Revenue since ${dayjs(startDate).format('MMM D, YYYY')}`"
+            :title="`Revenue since ${dayjs(startDate).format('YYYY/MM/D')}`"
             color="var(--color-purple)"
             :value="formatMoney(analytics.formattedData.value.revenue.sum, false)"
             :data="analytics.formattedData.value.revenue.chart.sumData"

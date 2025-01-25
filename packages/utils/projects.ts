@@ -213,15 +213,15 @@ function groupConsecutiveIndices(versions: string[], referenceList: GameVersionT
 function validateRange(range: string): string {
   switch (range) {
     case 'rd-132211–b1.8.1':
-      return 'All legacy versions'
+      return '所有远古版本'
     case 'a1.0.4–b1.8.1':
-      return 'All alpha and beta versions'
+      return '所有 Alpha 和 Beta 版本'
     case 'a1.0.4–a1.2.6':
-      return 'All alpha versions'
+      return '所有 Alpha 版本'
     case 'b1.0–b1.8.1':
-      return 'All beta versions'
+      return '所有 Beta 版本'
     case 'rd-132211–inf20100618':
-      return 'All pre-alpha versions'
+      return '所有 Pre-Alpha 版本'
   }
   const splitRange = range.split('–')
   if (splitRange && splitRange[0] === splitRange[1]) {

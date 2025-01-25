@@ -79,7 +79,7 @@
         <span>{{ report.reporterUser.username }}</span>
       </nuxt-link>
       <span>&nbsp;</span>
-      <span v-tooltip="$dayjs(report.created).format('MMMM D, YYYY [at] h:mm A')">{{
+      <span v-tooltip="$dayjs(report.created).format('YYYY/MM/D hh:mm:ss')">{{
         fromNow(report.created)
       }}</span>
       <CopyCode v-if="flags.developerMode" :text="report.id" class="report-id" />

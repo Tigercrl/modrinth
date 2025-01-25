@@ -73,7 +73,7 @@ const filters = computed(() => {
   const filters: FilterType<any>[] = [
     {
       id: 'platform',
-      formatted_name: 'Platform',
+      formatted_name: '平台',
       options:
         props.platforms
           .filter((x) => x.default && x.supported_project_types.includes('modpack'))
@@ -85,7 +85,7 @@ const filters = computed(() => {
     },
     {
       id: 'gameVersion',
-      formatted_name: 'Game version',
+      formatted_name: '游戏版本',
       options:
         props.gameVersions
           ?.filter((x) => x.major && x.version_type === 'release')

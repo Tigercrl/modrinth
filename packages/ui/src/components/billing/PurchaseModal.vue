@@ -2,11 +2,11 @@
   <NewModal ref="purchaseModal">
     <template #title>
       <span class="text-contrast text-xl font-extrabold">
-        <template v-if="product.metadata.type === 'midas'">Subscribe to Modrinth Plus!</template>
+        <template v-if="product.metadata.type === 'midas'">订阅 Modrinth Plus！</template>
         <template v-else-if="product.metadata.type === 'pyro'"
-          >Subscribe to Modrinth Servers!</template
+        >订阅 Modrinth 服务器！</template
         >
-        <template v-else>Purchase product</template>
+        <template v-else>购买项目</template>
       </span>
     </template>
     <div class="flex items-center gap-1 pb-4">
@@ -17,10 +17,10 @@
             'font-bold': purchaseModalStep === 0,
           }"
         >
-          Configure
-          <span class="hidden sm:inline">server</span>
+          配置
+          <span class="hidden sm:inline">服务器</span>
         </span>
-        <ChevronRightIcon class="h-5 w-5 text-secondary" />
+        <ChevronRightIcon class="h-5 w-5 text-secondary"/>
       </template>
       <span
         :class="{
@@ -30,12 +30,12 @@
             purchaseModalStep === (product.metadata.type === 'pyro' && !projectId ? 1 : 0),
         }"
       >
-        {{ product.metadata.type === 'pyro' ? 'Billing' : 'Plan' }}
+        {{ product.metadata.type === 'pyro' ? '购买' : '方案' }}
         <span class="hidden sm:inline">{{
-          product.metadata.type === 'pyro' ? 'interval' : 'selection'
-        }}</span>
+            product.metadata.type === 'pyro' ? 'interval' : 'selection'
+          }}</span>
       </span>
-      <ChevronRightIcon class="h-5 w-5 text-secondary" />
+      <ChevronRightIcon class="h-5 w-5 text-secondary"/>
       <span
         :class="{
           'text-secondary':
@@ -44,9 +44,9 @@
             purchaseModalStep === (product.metadata.type === 'pyro' && !projectId ? 2 : 1),
         }"
       >
-        Payment
+        购买
       </span>
-      <ChevronRightIcon class="h-5 w-5 text-secondary" />
+      <ChevronRightIcon class="h-5 w-5 text-secondary"/>
       <span
         :class="{
           'text-secondary':
@@ -55,7 +55,7 @@
             purchaseModalStep === (product.metadata.type === 'pyro' && !projectId ? 3 : 2),
         }"
       >
-        Review
+        检查
       </span>
     </div>
     <div
@@ -63,9 +63,9 @@
       class="md:w-[600px] flex flex-col gap-4"
     >
       <div>
-        <p class="my-2 text-lg font-bold">Configure your server</p>
+        <p class="my-2 text-lg font-bold">配置服务器</p>
         <div class="flex flex-col gap-4">
-          <input v-model="serverName" placeholder="Server name" class="input" maxlength="48" />
+          <input v-model="serverName" placeholder="Server name" class="input" maxlength="48"/>
           <!-- <DropdownSelect
             v-model="serverLoader"
             v-tooltip="'Select the mod loader for your server'"
@@ -91,24 +91,24 @@
               }"
               @click="serverLoader = loader"
             >
-              <UiServersIconsLoaderIcon :loader="loader" class="!h-12 !w-12" />
+              <UiServersIconsLoaderIcon :loader="loader" class="!h-12 !w-12"/>
               <p class="text-lg font-bold m-0">{{ loader }}</p>
             </button>
           </div>
           <div class="flex items-center gap-2">
-            <InfoIcon class="hidden sm:block" />
+            <InfoIcon class="hidden sm:block"/>
             <span class="text-sm text-secondary">
-              You can change these settings later in your server options.
+              您可以稍后在服务器选项中更改这些设置。
             </span>
           </div>
         </div>
       </div>
       <div v-if="customServer">
         <div class="flex gap-2 items-center">
-          <p class="my-2 text-lg font-bold">Configure your RAM</p>
+          <p class="my-2 text-lg font-bold">配置内存大小</p>
           <IssuesIcon
             v-if="customServerConfig.ramInGb < 4"
-            v-tooltip="'This might not be enough resources for your Minecraft server.'"
+            v-tooltip="'这可能不足以运行 Minecraft 服务器。'"
             class="h-6 w-6 text-orange"
           />
         </div>
@@ -129,12 +129,12 @@
             class="flex sm:flex-row flex-col gap-4 w-full"
           >
             <div class="flex flex-col w-full gap-2">
-              <div class="font-semibold">vCPUs</div>
-              <input v-model="mutatedProduct.metadata.cpu" disabled class="input" />
+              <div class="font-semibold">虚拟 CPU</div>
+              <input v-model="mutatedProduct.metadata.cpu" disabled class="input"/>
             </div>
             <div class="flex flex-col w-full gap-2">
-              <div class="font-semibold">Storage</div>
-              <input v-model="customServerConfig.storageGbFormatted" disabled class="input" />
+              <div class="font-semibold">存储</div>
+              <input v-model="customServerConfig.storageGbFormatted" disabled class="input"/>
             </div>
           </div>
           <div
@@ -143,21 +143,19 @@
           >
             <div class="flex w-full justify-between gap-2">
               <div class="flex flex-row gap-4">
-                <InfoIcon class="hidden flex-none h-8 w-8 text-blue sm:block" />
+                <InfoIcon class="hidden flex-none h-8 w-8 text-blue sm:block"/>
 
                 <div v-if="customOutOfStock && customMatchingProduct" class="flex flex-col gap-2">
-                  <div class="font-semibold">This plan is currently out of stock</div>
+                  <div class="font-semibold">该方案暂时售罄</div>
                   <div class="font-normal">
-                    We are currently
-                    <a :href="outOfStockUrl" class="underline" target="_blank">out of capacity</a>
-                    for your selected RAM amount. Please try again later, or try a different amount.
+                    您选择的内存大小<a :href="outOfStockUrl" class="underline"
+                                       target="_blank">暂时售罄</a>。请稍后再试，或尝试不同大小的内存。
                   </div>
                 </div>
                 <div v-else class="flex flex-col gap-2">
-                  <div class="font-semibold">We can't seem to find your selected plan</div>
+                  <div class="font-semibold">我们似乎无法找到您选择的方案</div>
                   <div class="font-normal">
-                    We are currently unable to find a server for your selected RAM amount. Please
-                    try again later, or try a different amount.
+                    我们目前无法找到您选择的内存大小的服务器。请稍后再试，或尝试不同大小的内存。
                   </div>
                 </div>
               </div>
@@ -165,9 +163,9 @@
           </div>
 
           <div class="flex items-center gap-2">
-            <InfoIcon class="hidden sm:block" />
+            <InfoIcon class="hidden sm:block"/>
             <span class="text-sm text-secondary">
-              Storage and vCPUs are currently not configurable.
+              存储和虚拟 CPU 目前不可配置。
             </span>
           </div>
         </div>
@@ -178,7 +176,7 @@
       class="md:w-[600px]"
     >
       <div>
-        <p class="my-2 text-lg font-bold">Choose billing interval</p>
+        <p class="my-2 text-lg font-bold">选择续费间隔</p>
         <div class="flex flex-col gap-4">
           <div
             v-for="([interval, rawPrice], index) in Object.entries(price.prices.intervals)"
@@ -186,8 +184,8 @@
             class="flex cursor-pointer items-center gap-2"
             @click="selectedPlan = interval"
           >
-            <RadioButtonChecked v-if="selectedPlan === interval" class="h-8 w-8 text-brand" />
-            <RadioButtonIcon v-else class="h-8 w-8 text-secondary" />
+            <RadioButtonChecked v-if="selectedPlan === interval" class="h-8 w-8 text-brand"/>
+            <RadioButtonIcon v-else class="h-8 w-8 text-secondary"/>
             <span
               class="text-lg capitalize"
               :class="{ 'text-secondary': selectedPlan !== interval }"
@@ -198,7 +196,7 @@
               v-if="interval === 'yearly'"
               class="rounded-full bg-brand px-2 py-1 font-bold text-brand-inverted"
             >
-              SAVE {{ calculateSavings(price.prices.intervals.monthly, rawPrice) }}%
+              {{ calculateSavings(price.prices.intervals.monthly, rawPrice) }} 折
             </span>
             <span class="ml-auto text-lg" :class="{ 'text-secondary': selectedPlan !== interval }">
               {{ formatPrice(locale, rawPrice, price.currency_code) }}
@@ -206,7 +204,7 @@
           </div>
         </div>
         <div class="mt-4 flex justify-between border-0 border-t border-solid border-code-bg pt-4">
-          <span class="text-xl text-secondary">Total</span>
+          <span class="text-xl text-secondary">总共</span>
           <div class="flex items-baseline gap-2">
             <span class="text-2xl font-extrabold text-primary">
               {{ formatPrice(locale, price.prices.intervals[selectedPlan], price.currency_code) }}
@@ -216,9 +214,9 @@
         </div>
 
         <div class="flex items-center gap-2 pt-4">
-          <InfoIcon class="hidden sm:block" />
+          <InfoIcon class="hidden sm:block"/>
           <span class="text-sm text-secondary">
-            Final price and currency will be based on your selected payment method.
+            最终价格和货币取决于您的付款方式。
           </span>
         </div>
       </div>
@@ -230,7 +228,7 @@
         v-show="loadingPaymentMethodModal !== 2"
         class="flex min-h-[16rem] items-center justify-center md:w-[600px]"
       >
-        <AnimatedLogo class="w-[80px]" />
+        <AnimatedLogo class="w-[80px]"/>
       </div>
       <div v-show="loadingPaymentMethodModal === 2" class="min-h-[16rem] p-1 md:w-[600px]">
         <div id="address-element"></div>
@@ -242,7 +240,7 @@
       class="md:w-[650px]"
     >
       <div v-if="mutatedProduct.metadata.type === 'pyro'" class="r-4 rounded-xl bg-bg p-4 mb-4">
-        <p class="my-2 text-lg font-bold text-primary">Server details</p>
+        <p class="my-2 text-lg font-bold text-primary">服务器信息</p>
         <div class="flex items-center gap-4">
           <img
             v-if="projectImage"
@@ -252,17 +250,17 @@
           />
           <div>
             <p v-if="projectName" class="font-bold">{{ projectName }}</p>
-            <p>Server name: {{ serverName }}</p>
-            <p v-if="!projectId">Loader: {{ serverLoader }}</p>
+            <p>服务器名称：{{ serverName }}</p>
+            <p v-if="!projectId">加载器：{{ serverLoader }}</p>
           </div>
         </div>
       </div>
       <div>
         <div class="r-4 rounded-xl bg-bg p-4">
-          <p class="my-2 text-lg font-bold text-primary">Purchase details</p>
+          <p class="my-2 text-lg font-bold text-primary">支付详情</p>
           <div class="mb-2 flex justify-between">
             <span class="text-secondary"
-              >{{ mutatedProduct.metadata.type === 'midas' ? 'Modrinth+' : 'Modrinth Servers' }}
+            >{{ mutatedProduct.metadata.type === 'midas' ? 'Modrinth+' : 'Modrinth 服务器' }}
               {{ selectedPlan }}</span
             >
             <span class="text-secondary text-end">
@@ -271,22 +269,22 @@
             </span>
           </div>
           <div class="flex justify-between">
-            <span class="text-secondary">Tax</span>
+            <span class="text-secondary">税：</span>
             <span class="text-secondary text-end">{{
-              formatPrice(locale, tax, price.currency_code)
-            }}</span>
+                formatPrice(locale, tax, price.currency_code)
+              }}</span>
           </div>
           <div class="mt-4 flex justify-between border-0 border-t border-solid border-code-bg pt-4">
-            <span class="text-lg font-bold">Today's total</span>
+            <span class="text-lg font-bold">今日总计</span>
             <span class="text-lg font-extrabold text-primary text-end">
               {{ formatPrice(locale, price.prices.intervals[selectedPlan], price.currency_code) }}
             </span>
           </div>
         </div>
-        <p class="my-2 text-lg font-bold">Pay for it with</p>
+        <p class="my-2 text-lg font-bold">付款方式：</p>
         <multiselect
           v-model="selectedPaymentMethod"
-          placeholder="Payment method"
+          placeholder="请选择付款方式..."
           label="id"
           track-by="id"
           :options="selectablePaymentMethods"
@@ -302,9 +300,9 @@
           <!-- eslint-disable-next-line vue/no-template-shadow -->
           <template #singleLabel="props">
             <div class="flex items-center gap-2">
-              <CardIcon v-if="props.option.type === 'card'" class="h-8 w-8" />
-              <CurrencyIcon v-else-if="props.option.type === 'cashapp'" class="h-8 w-8" />
-              <PayPalIcon v-else-if="props.option.type === 'paypal'" class="h-8 w-8" />
+              <CardIcon v-if="props.option.type === 'card'" class="h-8 w-8"/>
+              <CurrencyIcon v-else-if="props.option.type === 'cashapp'" class="h-8 w-8"/>
+              <PayPalIcon v-else-if="props.option.type === 'paypal'" class="h-8 w-8"/>
 
               <span v-if="props.option.type === 'card'">
                 {{
@@ -335,13 +333,13 @@
           <template #option="props">
             <div class="flex items-center gap-2">
               <template v-if="props.option.id === 'new'">
-                <PlusIcon class="h-8 w-8" />
+                <PlusIcon class="h-8 w-8"/>
                 <span class="text-secondary">Add payment method</span>
               </template>
               <template v-else>
-                <CardIcon v-if="props.option.type === 'card'" class="h-8 w-8" />
-                <CurrencyIcon v-else-if="props.option.type === 'cashapp'" class="h-8 w-8" />
-                <PayPalIcon v-else-if="props.option.type === 'paypal'" class="h-8 w-8" />
+                <CardIcon v-if="props.option.type === 'card'" class="h-8 w-8"/>
+                <CurrencyIcon v-else-if="props.option.type === 'cashapp'" class="h-8 w-8"/>
+                <PayPalIcon v-else-if="props.option.type === 'paypal'" class="h-8 w-8"/>
 
                 <span v-if="props.option.type === 'card'">
                   {{
@@ -372,18 +370,18 @@
         </multiselect>
       </div>
       <p class="m-0 mt-9 text-sm text-secondary">
-        <strong>By clicking "Subscribe", you are purchasing a recurring subscription.</strong>
-        <br />
-        You'll be charged
+        <strong>点击“订阅”后，您将购买一个自动续费订阅。</strong>
+        <br/>
+        从今天开始，您将被收取
         {{ formatPrice(locale, price.prices.intervals[selectedPlan], price.currency_code) }} /
-        {{ selectedPlan }} plus applicable taxes starting today, until you cancel.
-        <br />
-        You can cancel anytime from your settings page.
+        {{ selectedPlan }} 外加适用税，直到您取消预订为止。
+        <br/>
+        您可以随时从设置页面取消。
       </p>
       <p v-if="mutatedProduct.metadata.type === 'pyro'" class="mb-2 mt-4 text-secondary">
         <Checkbox v-model="eulaAccepted" :disabled="paymentLoading">
           <label>
-            I acknowledge that I have read and agree to the
+            我确保我已阅读并同意
             <a class="underline" target="_blank" href="https://aka.ms/MinecraftEULA">
               Minecraft EULA
             </a>
@@ -394,8 +392,8 @@
     <div class="input-group push-right pt-4">
       <template v-if="purchaseModalStep === 0">
         <button class="btn" @click="$refs.purchaseModal.hide()">
-          <XIcon />
-          Cancel
+          <XIcon/>
+          取消
         </button>
         <button
           class="btn btn-primary"
@@ -406,8 +404,8 @@
           "
           @click="nextStep"
         >
-          <RightArrowIcon />
-          {{ mutatedProduct.metadata.type === 'pyro' && !projectId ? 'Next' : 'Select' }}
+          <RightArrowIcon/>
+          {{ mutatedProduct.metadata.type === 'pyro' && !projectId ? '下一步' : '请选择' }}
         </button>
       </template>
       <template
@@ -422,11 +420,11 @@
               mutatedProduct.metadata.type === 'pyro' && !projectId ? 0 : purchaseModalStep
           "
         >
-          Back
+          返回
         </button>
         <button class="btn btn-primary" :disabled="paymentLoading" @click="beginPurchaseFlow(true)">
-          <RightArrowIcon />
-          Select
+          <RightArrowIcon/>
+          选择
         </button>
       </template>
       <template
@@ -444,11 +442,11 @@
             }
           "
         >
-          Back
+          返回
         </button>
         <button class="btn btn-primary" :disabled="paymentLoading" @click="validatePayment">
-          <RightArrowIcon />
-          Continue
+          <RightArrowIcon/>
+          继续
         </button>
       </template>
       <template
@@ -457,8 +455,8 @@
         "
       >
         <button class="btn" @click="$refs.purchaseModal.hide()">
-          <XIcon />
-          Cancel
+          <XIcon/>
+          取消
         </button>
         <button
           v-if="mutatedProduct.metadata.type === 'pyro'"
@@ -466,11 +464,13 @@
           :disabled="paymentLoading || !eulaAccepted"
           @click="submitPayment"
         >
-          <CheckCircleIcon /> Subscribe
+          <CheckCircleIcon/>
+          订阅
         </button>
         <!-- Default Subscribe Button, so M+ still works -->
         <button v-else class="btn btn-primary" :disabled="paymentLoading" @click="submitPayment">
-          <CheckCircleIcon /> Subscribe
+          <CheckCircleIcon/>
+          订阅
         </button>
       </template>
     </div>
@@ -478,7 +478,7 @@
 </template>
 
 <script setup>
-import { ref, computed, nextTick, reactive, watch } from 'vue'
+import {computed, nextTick, reactive, ref, watch} from 'vue'
 import NewModal from '../modal/NewModal.vue'
 import {
   CardIcon,
@@ -495,13 +495,13 @@ import {
   XIcon,
 } from '@modrinth/assets'
 import AnimatedLogo from '../brand/AnimatedLogo.vue'
-import { getCurrency, calculateSavings, formatPrice, createStripeElements } from '@modrinth/utils'
-import { useVIntl, defineMessages } from '@vintl/vintl'
-import { Multiselect } from 'vue-multiselect'
+import {calculateSavings, createStripeElements, formatPrice, getCurrency} from '@modrinth/utils'
+import {defineMessages, useVIntl} from '@vintl/vintl'
+import {Multiselect} from 'vue-multiselect'
 import Checkbox from '../base/Checkbox.vue'
 import Slider from '../base/Slider.vue'
 
-const { locale, formatMessage } = useVIntl()
+const {locale, formatMessage} = useVIntl()
 
 const props = defineProps({
   product: {
@@ -530,7 +530,8 @@ const props = defineProps({
   },
   fetchPaymentData: {
     type: Function,
-    default: async () => {},
+    default: async () => {
+    },
   },
   sendBillingRequest: {
     type: Function,
@@ -579,7 +580,7 @@ const props = defineProps({
 const messages = defineMessages({
   paymentMethodCardDisplay: {
     id: 'omorphia.component.purchase_modal.payment_method_card_display',
-    defaultMessage: '{card_brand} ending in {last_four}',
+    defaultMessage: '{card_brand}，尾号 {last_four}',
   },
 })
 
@@ -590,28 +591,28 @@ const paymentMethodTypes = defineMessages({
   },
   amex: {
     id: 'omorphia.component.purchase_modal.payment_method_type.amex',
-    defaultMessage: 'American Express',
+    defaultMessage: '美国运通',
   },
   diners: {
     id: 'omorphia.component.purchase_modal.payment_method_type.diners',
-    defaultMessage: 'Diners Club',
+    defaultMessage: '大莱卡',
   },
   discover: {
     id: 'omorphia.component.purchase_modal.payment_method_type.discover',
-    defaultMessage: 'Discover',
+    defaultMessage: '发现卡',
   },
   eftpos: {
     id: 'omorphia.component.purchase_modal.payment_method_type.eftpos',
     defaultMessage: 'EFTPOS',
   },
-  jcb: { id: 'omorphia.component.purchase_modal.payment_method_type.jcb', defaultMessage: 'JCB' },
+  jcb: {id: 'omorphia.component.purchase_modal.payment_method_type.jcb', defaultMessage: 'JCB'},
   mastercard: {
     id: 'omorphia.component.purchase_modal.payment_method_type.mastercard',
-    defaultMessage: 'MasterCard',
+    defaultMessage: '万事达卡',
   },
   unionpay: {
     id: 'omorphia.component.purchase_modal.payment_method_type.unionpay',
-    defaultMessage: 'UnionPay',
+    defaultMessage: '银联',
   },
   paypal: {
     id: 'omorphia.component.purchase_modal.payment_method_type.paypal',
@@ -623,11 +624,11 @@ const paymentMethodTypes = defineMessages({
   },
   amazon_pay: {
     id: 'omorphia.component.purchase_modal.payment_method_type.amazon_pay',
-    defaultMessage: 'Amazon Pay',
+    defaultMessage: '亚马逊支付',
   },
   unknown: {
     id: 'omorphia.component.purchase_modal.payment_method_type.unknown',
-    defaultMessage: 'Unknown payment method',
+    defaultMessage: '未知支付方式'
   },
 })
 
@@ -659,7 +660,7 @@ const serverName = ref(props.serverName || '')
 const serverLoader = ref('Vanilla')
 const eulaAccepted = ref(false)
 
-const mutatedProduct = ref({ ...props.product })
+const mutatedProduct = ref({...props.product})
 const customMinRam = ref(0)
 const customMaxRam = ref(0)
 const customMatchingProduct = ref()
@@ -682,7 +683,7 @@ const updateCustomServerProduct = () => {
     (product) => product.metadata.ram === customServerConfig.ram,
   )
 
-  if (customMatchingProduct.value) mutatedProduct.value = { ...customMatchingProduct.value }
+  if (customMatchingProduct.value) mutatedProduct.value = {...customMatchingProduct.value}
 }
 
 let updateCustomServerStockTimeout = null
@@ -761,14 +762,14 @@ const metadata = computed(() => {
       source:
         props.projectId && props.versionId
           ? {
-              project_id: props.projectId,
-              version_id: props.versionId,
-            }
+            project_id: props.projectId,
+            version_id: props.versionId,
+          }
           : {
-              loader: serverLoader.value,
-              loader_version: '',
-              game_version: 'latest',
-            },
+            loader: serverLoader.value,
+            loader_version: '',
+            game_version: 'latest',
+          },
     }
   }
   return null
@@ -833,7 +834,7 @@ async function beginPurchaseFlow(skip = false) {
 }
 
 async function createConfirmationToken() {
-  const { error, confirmationToken: confirmation } = await stripe.createConfirmationToken({
+  const {error, confirmationToken: confirmation} = await stripe.createConfirmationToken({
     elements,
   })
 
@@ -847,7 +848,7 @@ async function createConfirmationToken() {
 
 async function validatePayment() {
   paymentLoading.value = true
-  const { error: submitError } = await elements.submit()
+  const {error: submitError} = await elements.submit()
 
   if (submitError) {
     paymentLoading.value = false
@@ -857,7 +858,7 @@ async function validatePayment() {
 
   await refreshPayment(await createConfirmationToken())
 
-  elements.update({ currency: price.value.currency_code.toLowerCase(), amount: total.value })
+  elements.update({currency: price.value.currency_code.toLowerCase(), amount: total.value})
 
   loadingPaymentMethodModal.value = 0
   confirmationToken.value = await createConfirmationToken()
@@ -884,13 +885,13 @@ async function refreshPayment(confirmationId, paymentMethodId) {
   try {
     const base = confirmationId
       ? {
-          type: 'confirmation_token',
-          token: confirmationId,
-        }
+        type: 'confirmation_token',
+        token: confirmationId,
+      }
       : {
-          type: 'payment_method',
-          id: paymentMethodId,
-        }
+        type: 'payment_method',
+        id: paymentMethodId,
+      }
 
     const result = await props.sendBillingRequest({
       charge: {
@@ -926,7 +927,7 @@ async function refreshPayment(confirmationId, paymentMethodId) {
 
 async function submitPayment() {
   paymentLoading.value = true
-  const { error } = await stripe.confirmPayment({
+  const {error} = await stripe.confirmPayment({
     clientSecret: clientSecret.value,
     confirmParams: {
       confirmation_token: confirmationToken.value,

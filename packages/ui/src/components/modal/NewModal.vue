@@ -38,7 +38,7 @@
           </ButtonStyled>
         </div>
         <div class="overflow-y-auto p-6">
-          <slot> You just lost the game.</slot>
+          <slot>无内容</slot>
         </div>
       </div>
     </div>

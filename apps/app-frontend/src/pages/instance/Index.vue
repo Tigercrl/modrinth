@@ -430,10 +430,6 @@ onUnmounted(() => {
   gap: 1rem;
 }
 
-Button {
-  width: 100%;
-}
-
 .button-group {
   display: flex;
   flex-direction: row;

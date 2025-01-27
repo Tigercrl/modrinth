@@ -20,7 +20,8 @@
       </router-link>
       <p v-if="author" class="author">
         （创作者：<!--
-      --><router-link class="title-link" :to="'/user/' + author">
+      -->
+        <router-link class="title-link" :to="'/user/' + author">
           {{ author }}
         </router-link><!--
       -->）
@@ -73,14 +74,19 @@
 <script setup>
 import {CalendarIcon, DownloadIcon, EditIcon, HeartIcon} from '@modrinth/assets'
 import {formatNumber} from '@modrinth/utils'
+import dayjs from 'dayjs'
+import relativeTime from 'dayjs/plugin/relativeTime'
 import Categories from '../search/Categories.vue'
 import Badge from './SimpleBadge.vue'
 import Avatar from './Avatar.vue'
 import EnvironmentIndicator from './EnvironmentIndicator.vue'
+
+dayjs.extend(relativeTime)
 </script>
 
 <script>
-dayjs.extend(relativeTime)
+import {defineComponent} from 'vue'
+
 export default defineComponent({
   props: {
     id: {

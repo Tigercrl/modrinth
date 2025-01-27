@@ -19,7 +19,7 @@
       <template v-else>
         <span>{{ formatMessage(addEmailBannerMessages.title) }}</span>
         <nuxt-link class="btn" to="/settings/account">
-          <SettingsIcon aria-hidden="true" />
+          <SettingsIcon aria-hidden="true"/>
           {{ formatMessage(addEmailBannerMessages.action) }}
         </nuxt-link>
       </template>
@@ -35,7 +35,7 @@
     >
       <span>{{ formatMessage(subscriptionPaymentFailedBannerMessages.title) }}</span>
       <nuxt-link class="btn" to="/settings/billing">
-        <SettingsIcon aria-hidden="true" />
+        <SettingsIcon aria-hidden="true"/>
         {{ formatMessage(subscriptionPaymentFailedBannerMessages.action) }}
       </nuxt-link>
     </div>
@@ -47,7 +47,7 @@
       class="site-banner site-banner--warning [&>*]:z-[6]"
     >
       <div class="site-banner__title">
-        <IssuesIcon aria-hidden="true" />
+        <IssuesIcon aria-hidden="true"/>
         <span>{{ formatMessage(stagingBannerMessages.title) }}</span>
       </div>
       <div class="site-banner__description">
@@ -55,8 +55,10 @@
       </div>
       <div class="site-banner__actions">
         <Button transparent icon-only :action="hideStagingBanner" aria-label="关闭横幅"
-        ><XIcon aria-hidden="true"
-        /></Button>
+        >
+          <XIcon aria-hidden="true"
+          />
+        </Button>
       </div>
     </div>
     <header
@@ -64,7 +66,7 @@
     >
       <div>
         <NuxtLink to="/" aria-label="Modrinth 主页">
-          <BrandTextLogo aria-hidden="true" class="h-7 w-auto text-contrast" />
+          <BrandTextLogo aria-hidden="true" class="h-7 w-auto text-contrast"/>
         </NuxtLink>
       </div>
       <div
@@ -78,7 +80,10 @@
               route.name === 'search-mods' ? 'main-nav-primary' : 'main-nav-secondary'
             "
           >
-            <nuxt-link to="/mods"> <BoxIcon aria-hidden="true" /> 模组 </nuxt-link>
+            <nuxt-link to="/mods">
+              <BoxIcon aria-hidden="true"/>
+              模组
+            </nuxt-link>
           </ButtonStyled>
           <ButtonStyled
             type="transparent"
@@ -90,7 +95,8 @@
             "
           >
             <nuxt-link to="/resourcepacks">
-              <PaintBrushIcon aria-hidden="true" /> 资源包
+              <PaintBrushIcon aria-hidden="true"/>
+              资源包
             </nuxt-link>
           </ButtonStyled>
           <ButtonStyled
@@ -100,7 +106,10 @@
               route.name === 'search-datapacks' ? 'main-nav-primary' : 'main-nav-secondary'
             "
           >
-            <nuxt-link to="/datapacks"> <BracesIcon aria-hidden="true" /> 数据包 </nuxt-link>
+            <nuxt-link to="/datapacks">
+              <BracesIcon aria-hidden="true"/>
+              数据包
+            </nuxt-link>
           </ButtonStyled>
           <ButtonStyled
             type="transparent"
@@ -109,7 +118,10 @@
               route.name === 'search-modpacks' ? 'main-nav-primary' : 'main-nav-secondary'
             "
           >
-            <nuxt-link to="/modpacks"> <PackageOpenIcon aria-hidden="true" /> 整合包 </nuxt-link>
+            <nuxt-link to="/modpacks">
+              <PackageOpenIcon aria-hidden="true"/>
+              整合包
+            </nuxt-link>
           </ButtonStyled>
           <ButtonStyled
             type="transparent"
@@ -118,7 +130,10 @@
               route.name === 'search-shaders' ? 'main-nav-primary' : 'main-nav-secondary'
             "
           >
-            <nuxt-link to="/shaders"> <GlassesIcon aria-hidden="true" /> 光影 </nuxt-link>
+            <nuxt-link to="/shaders">
+              <GlassesIcon aria-hidden="true"/>
+              光影
+            </nuxt-link>
           </ButtonStyled>
           <ButtonStyled
             type="transparent"
@@ -127,7 +142,10 @@
               route.name === 'search-plugins' ? 'main-nav-primary' : 'main-nav-secondary'
             "
           >
-            <nuxt-link to="/plugins"> <PlugIcon aria-hidden="true" /> 插件 </nuxt-link>
+            <nuxt-link to="/plugins">
+              <PlugIcon aria-hidden="true"/>
+              插件
+            </nuxt-link>
           </ButtonStyled>
         </template>
         <template v-else>
@@ -191,19 +209,35 @@
                 v-else-if="route.name === 'search-plugins' || route.path.startsWith('/plugin/')"
                 aria-hidden="true"
               />
-              <CompassIcon v-else aria-hidden="true" />
+              <CompassIcon v-else aria-hidden="true"/>
               <span class="hidden md:contents">探索资源</span>
               <span class="contents md:hidden">探索</span>
-              <DropdownIcon aria-hidden="true" class="h-5 w-5 text-secondary" />
+              <DropdownIcon aria-hidden="true" class="h-5 w-5 text-secondary"/>
 
-              <template #mods> <BoxIcon aria-hidden="true" /> 模组 </template>
-              <template #resourcepacks>
-                <PaintBrushIcon aria-hidden="true" /> 资源包
+              <template #mods>
+                <BoxIcon aria-hidden="true"/>
+                模组
               </template>
-              <template #datapacks> <BracesIcon aria-hidden="true" /> 数据包 </template>
-              <template #plugins> <PlugIcon aria-hidden="true" /> 插件 </template>
-              <template #shaders> <GlassesIcon aria-hidden="true" /> 光影 </template>
-              <template #modpacks> <PackageOpenIcon aria-hidden="true" /> 整合包 </template>
+              <template #resourcepacks>
+                <PaintBrushIcon aria-hidden="true"/>
+                资源包
+              </template>
+              <template #datapacks>
+                <BracesIcon aria-hidden="true"/>
+                数据包
+              </template>
+              <template #plugins>
+                <PlugIcon aria-hidden="true"/>
+                插件
+              </template>
+              <template #shaders>
+                <GlassesIcon aria-hidden="true"/>
+                光影
+              </template>
+              <template #modpacks>
+                <PackageOpenIcon aria-hidden="true"/>
+                整合包
+              </template>
             </TeleportOverflowMenu>
           </ButtonStyled>
 
@@ -218,13 +252,13 @@
             "
           >
             <nuxt-link to="/servers">
-              <ServerIcon aria-hidden="true" />
+              <ServerIcon aria-hidden="true"/>
               托管服务器
             </nuxt-link>
           </ButtonStyled>
           <ButtonStyled type="transparent" :highlighted="route.name === 'app'">
             <nuxt-link to="/app">
-              <DownloadIcon aria-hidden="true" />
+              <DownloadIcon aria-hidden="true"/>
               <span class="hidden md:contents">获取 Modrinth App</span>
               <span class="contents md:hidden">Modrinth App</span>
             </nuxt-link>
@@ -256,15 +290,20 @@
               },
             ]"
           >
-            <PlusIcon aria-hidden="true" />
-            <DropdownIcon aria-hidden="true" class="h-5 w-5 text-secondary" />
-            <template #new-project> <BoxIcon aria-hidden="true" /> 创建资源 </template>
+            <PlusIcon aria-hidden="true"/>
+            <DropdownIcon aria-hidden="true" class="h-5 w-5 text-secondary"/>
+            <template #new-project>
+              <BoxIcon aria-hidden="true"/>
+              创建资源
+            </template>
             <!-- <template #import-project> <BoxImportIcon /> Import project </template>-->
             <template #new-collection>
-              <CollectionIcon aria-hidden="true" /> 创建收藏夹
+              <CollectionIcon aria-hidden="true"/>
+              创建收藏夹
             </template>
             <template #new-organization>
-              <OrganizationIcon aria-hidden="true" /> 创建组织
+              <OrganizationIcon aria-hidden="true"/>
+              创建组织
             </template>
           </OverflowMenu>
         </ButtonStyled>
@@ -274,29 +313,64 @@
           class="btn-dropdown-animation flex items-center gap-1 rounded-xl bg-transparent px-2 py-1"
           :options="userMenuOptions"
         >
-          <Avatar :src="auth.user.avatar_url" aria-hidden="true" circle />
-          <DropdownIcon class="h-5 w-5 text-secondary" />
-          <template #profile> <UserIcon aria-hidden="true" /> 资料页 </template>
-          <template #notifications> <BellIcon aria-hidden="true" /> 通知 </template>
-          <template #saved> <BookmarkIcon aria-hidden="true" /> 收藏夹 </template>
-          <template #servers> <ServerIcon aria-hidden="true" /> 托管的服务器 </template>
+          <Avatar :src="auth.user.avatar_url" aria-hidden="true" circle/>
+          <DropdownIcon class="h-5 w-5 text-secondary"/>
+          <template #profile>
+            <UserIcon aria-hidden="true"/>
+            资料页
+          </template>
+          <template #notifications>
+            <BellIcon aria-hidden="true"/>
+            通知
+          </template>
+          <template #saved>
+            <BookmarkIcon aria-hidden="true"/>
+            收藏夹
+          </template>
+          <template #servers>
+            <ServerIcon aria-hidden="true"/>
+            托管的服务器
+          </template>
           <template #plus>
-            <ArrowBigUpDashIcon aria-hidden="true" /> 升级到 Modrinth+
+            <ArrowBigUpDashIcon aria-hidden="true"/>
+            升级到 Modrinth+
           </template>
-          <template #settings> <SettingsIcon aria-hidden="true" /> 设置 </template>
-          <template #flags> <ReportIcon aria-hidden="true" /> 实验性功能 </template>
-          <template #projects> <BoxIcon aria-hidden="true" /> 资源 </template>
+          <template #settings>
+            <SettingsIcon aria-hidden="true"/>
+            设置
+          </template>
+          <template #flags>
+            <ReportIcon aria-hidden="true"/>
+            实验性功能
+          </template>
+          <template #projects>
+            <BoxIcon aria-hidden="true"/>
+            资源
+          </template>
           <template #organizations>
-            <OrganizationIcon aria-hidden="true" /> 组织
+            <OrganizationIcon aria-hidden="true"/>
+            组织
           </template>
-          <template #revenue> <CurrencyIcon aria-hidden="true" /> 收益 </template>
-          <template #analytics> <ChartIcon aria-hidden="true" /> 数据分析 </template>
-          <template #moderation> <ModerationIcon aria-hidden="true" /> 管理 </template>
-          <template #sign-out> <LogOutIcon aria-hidden="true" /> 登出 </template>
+          <template #revenue>
+            <CurrencyIcon aria-hidden="true"/>
+            收益
+          </template>
+          <template #analytics>
+            <ChartIcon aria-hidden="true"/>
+            数据分析
+          </template>
+          <template #moderation>
+            <ModerationIcon aria-hidden="true"/>
+            管理
+          </template>
+          <template #sign-out>
+            <LogOutIcon aria-hidden="true"/>
+            登出
+          </template>
         </OverflowMenu>
         <ButtonStyled v-else color="brand">
           <nuxt-link to="/auth/sign-in">
-            <LogInIcon aria-hidden="true" />
+            <LogInIcon aria-hidden="true"/>
             登录
           </nuxt-link>
         </ButtonStyled>
@@ -345,25 +419,26 @@
             </div>
           </NuxtLink>
           <nuxt-link v-else class="iconified-button brand-button" to="/auth/sign-in">
-            <LogInIcon aria-hidden="true" /> {{ formatMessage(commonMessages.signInButton) }}
+            <LogInIcon aria-hidden="true"/>
+            {{ formatMessage(commonMessages.signInButton) }}
           </nuxt-link>
         </div>
         <div class="links">
           <template v-if="auth.user">
             <button class="iconified-button danger-button" @click="logoutUser()">
-              <LogOutIcon aria-hidden="true" />
+              <LogOutIcon aria-hidden="true"/>
               {{ formatMessage(commonMessages.signOutButton) }}
             </button>
             <button class="iconified-button" @click="$refs.modal_creation.show()">
-              <PlusIcon aria-hidden="true" />
+              <PlusIcon aria-hidden="true"/>
               {{ formatMessage(commonMessages.createAProjectButton) }}
             </button>
             <NuxtLink class="iconified-button" to="/dashboard/collections">
-              <LibraryIcon class="icon" />
+              <LibraryIcon class="icon"/>
               {{ formatMessage(commonMessages.collectionsLabel) }}
             </NuxtLink>
             <NuxtLink class="iconified-button" to="/servers/manage">
-              <ServerIcon class="icon" />
+              <ServerIcon class="icon"/>
               {{ formatMessage(commonMessages.serversLabel) }}
             </NuxtLink>
             <NuxtLink
@@ -371,21 +446,21 @@
               class="iconified-button"
               to="/moderation"
             >
-              <ModerationIcon aria-hidden="true" />
+              <ModerationIcon aria-hidden="true"/>
               {{ formatMessage(commonMessages.moderationLabel) }}
             </NuxtLink>
             <NuxtLink v-if="flags.developerMode" class="iconified-button" to="/flags">
-              <ReportIcon aria-hidden="true" />
+              <ReportIcon aria-hidden="true"/>
               实验性功能
             </NuxtLink>
           </template>
           <NuxtLink class="iconified-button" to="/settings">
-            <SettingsIcon aria-hidden="true" />
+            <SettingsIcon aria-hidden="true"/>
             {{ formatMessage(commonMessages.settingsLabel) }}
           </NuxtLink>
           <button class="iconified-button" @click="changeTheme">
-            <MoonIcon v-if="$theme.active === 'light'" class="icon" />
-            <SunIcon v-else class="icon" />
+            <MoonIcon v-if="$theme.active === 'light'" class="icon"/>
+            <SunIcon v-else class="icon"/>
             <span class="dropdown-item__text">
               {{ formatMessage(messages.changeTheme) }}
             </span>
@@ -399,7 +474,7 @@
           :title="formatMessage(navMenuMessages.home)"
           aria-label="Home"
         >
-          <HomeIcon aria-hidden="true" />
+          <HomeIcon aria-hidden="true"/>
         </NuxtLink>
         <button
           class="tab button-animation"
@@ -409,10 +484,10 @@
           @click="toggleBrowseMenu()"
         >
           <template v-if="auth.user">
-            <SearchIcon aria-hidden="true" />
+            <SearchIcon aria-hidden="true"/>
           </template>
           <template v-else>
-            <SearchIcon aria-hidden="true" class="smaller" />
+            <SearchIcon aria-hidden="true" class="smaller"/>
             {{ formatMessage(navMenuMessages.search) }}
           </template>
         </button>
@@ -432,7 +507,7 @@
               }
             "
           >
-            <NotificationIcon aria-hidden="true" />
+            <NotificationIcon aria-hidden="true"/>
           </NuxtLink>
           <NuxtLink
             to="/dashboard"
@@ -440,7 +515,7 @@
             aria-label="仪表盘"
             :title="formatMessage(commonMessages.dashboardLabel)"
           >
-            <ChartIcon aria-hidden="true" />
+            <ChartIcon aria-hidden="true"/>
           </NuxtLink>
         </template>
         <button
@@ -450,8 +525,8 @@
           @click="toggleMobileMenu()"
         >
           <template v-if="!auth.user">
-            <HamburgerIcon v-if="!isMobileMenuOpen" aria-hidden="true" />
-            <CrossIcon v-else aria-hidden="true" />
+            <HamburgerIcon v-if="!isMobileMenuOpen" aria-hidden="true"/>
+            <CrossIcon v-else aria-hidden="true"/>
           </template>
           <template v-else>
             <Avatar
@@ -467,10 +542,10 @@
       </div>
     </header>
     <main>
-      <ModalCreation v-if="auth.user" ref="modal_creation" />
-      <CollectionCreateModal ref="modal_collection_creation" />
-      <OrganizationCreateModal ref="modal_organization_creation" />
-      <slot id="main" />
+      <ModalCreation v-if="auth.user" ref="modal_creation"/>
+      <CollectionCreateModal ref="modal_collection_creation"/>
+      <OrganizationCreateModal ref="modal_organization_creation"/>
+      <slot id="main"/>
     </main>
     <footer>
       <div class="logo-info" role="region" aria-label="Modrinth 信息">
@@ -488,7 +563,7 @@
                 class="text-link"
                 rel="noopener"
               >
-                <component :is="() => children" />
+                <component :is="() => children"/>
               </a>
             </template>
           </IntlFormatted>
@@ -547,16 +622,16 @@
       </div>
       <div class="buttons">
         <nuxt-link class="btn btn-outline btn-primary" to="/app">
-          <DownloadIcon aria-hidden="true" />
+          <DownloadIcon aria-hidden="true"/>
           {{ formatMessage(messages.getModrinthApp) }}
         </nuxt-link>
         <button class="iconified-button raised-button" @click="changeTheme">
-          <MoonIcon v-if="$theme.active === 'light'" aria-hidden="true" />
-          <SunIcon v-else aria-hidden="true" />
+          <MoonIcon v-if="$theme.active === 'light'" aria-hidden="true"/>
+          <SunIcon v-else aria-hidden="true"/>
           {{ formatMessage(messages.changeTheme) }}
         </button>
         <nuxt-link class="iconified-button raised-button" to="/settings">
-          <SettingsIcon aria-hidden="true" />
+          <SettingsIcon aria-hidden="true"/>
           {{ formatMessage(commonMessages.settingsLabel) }}
         </nuxt-link>
       </div>
@@ -569,49 +644,49 @@
 <script setup>
 import {
   ArrowBigUpDashIcon,
-  BookmarkIcon,
-  ServerIcon,
-  LogInIcon,
-  DownloadIcon,
-  LibraryIcon,
-  XIcon,
-  IssuesIcon,
-  ReportIcon,
-  CompassIcon,
-  HamburgerIcon,
-  SearchIcon,
   BellIcon,
-  SettingsIcon,
+  BellIcon as NotificationIcon,
+  BookmarkIcon,
+  BoxIcon,
+  BracesIcon,
+  ChartIcon,
+  CollectionIcon,
+  CompassIcon,
+  CurrencyIcon,
+  DownloadIcon,
+  DropdownIcon,
+  GlassesIcon,
+  HamburgerIcon,
   HomeIcon,
+  IssuesIcon,
+  LibraryIcon,
+  LogInIcon,
+  LogOutIcon,
   MoonIcon,
-  SunIcon,
+  OrganizationIcon,
+  PackageOpenIcon,
+  PaintBrushIcon,
   PlugIcon,
   PlusIcon,
-  DropdownIcon,
-  LogOutIcon,
-  ChartIcon,
-  BoxIcon,
-  CollectionIcon,
-  OrganizationIcon,
-  UserIcon,
-  CurrencyIcon,
-  BracesIcon,
-  GlassesIcon,
-  PaintBrushIcon,
-  PackageOpenIcon,
-  XIcon as CrossIcon,
+  ReportIcon,
   ScaleIcon as ModerationIcon,
-  BellIcon as NotificationIcon,
+  SearchIcon,
+  ServerIcon,
+  SettingsIcon,
+  SunIcon,
+  UserIcon,
+  XIcon,
+  XIcon as CrossIcon,
 } from "@modrinth/assets";
-import { Button, ButtonStyled, OverflowMenu, Avatar, commonMessages } from "@modrinth/ui";
+import {Avatar, Button, ButtonStyled, commonMessages, OverflowMenu} from "@modrinth/ui";
 
 import ModalCreation from "~/components/ui/ModalCreation.vue";
-import { getProjectTypeMessage } from "~/utils/i18n-project-type.ts";
+import {getProjectTypeMessage} from "~/utils/i18n-project-type.ts";
 import CollectionCreateModal from "~/components/ui/CollectionCreateModal.vue";
 import OrganizationCreateModal from "~/components/ui/OrganizationCreateModal.vue";
 import TeleportOverflowMenu from "~/components/ui/servers/TeleportOverflowMenu.vue";
 
-const { formatMessage } = useVIntl();
+const {formatMessage} = useVIntl();
 
 const app = useNuxtApp();
 const auth = await useAuth();
@@ -755,7 +830,7 @@ const footerMessages = defineMessages({
   legalDisclaimer: {
     id: "layout.footer.legal-disclaimer",
     defaultMessage:
-      "非 MINECRAFT 官方产品服务。未经 MOJANG 或 MICROSOFT 批准，也不与 MOJANG 或 MICROSOFT 关联",
+      "非 MINECRAFT 官方服务。未经 MOJANG 或 MICROSOFT 批准，也不与 MOJANG 或 MICROSOFT 关联",
   },
 });
 
@@ -997,19 +1072,23 @@ function runAnalytics() {
           Authorization: auth.value.token,
         },
       })
-        .then(() => {})
-        .catch(() => {});
+        .then(() => {
+        })
+        .catch(() => {
+        });
     });
   } catch (e) {
     console.error(`Sending analytics failed (CORS error? If so, ignore)`, e);
   }
 }
+
 function toggleMobileMenu() {
   isMobileMenuOpen.value = !isMobileMenuOpen.value;
   if (isMobileMenuOpen.value) {
     isBrowseMenuOpen.value = false;
   }
 }
+
 function toggleBrowseMenu() {
   isBrowseMenuOpen.value = !isBrowseMenuOpen.value;
 
@@ -1018,7 +1097,7 @@ function toggleBrowseMenu() {
   }
 }
 
-const { cycle: changeTheme } = useTheme();
+const {cycle: changeTheme} = useTheme();
 
 function hideStagingBanner() {
   cosmetics.value.hideStagingBanner = true;

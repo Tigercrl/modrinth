@@ -132,6 +132,8 @@ export const formatProjectType = (name) => {
       return '模组'
     case 'modpack':
       return '整合包'
+    case 'project':
+      return '资源'
   }
 
   return capitalizeString(name)
@@ -297,7 +299,7 @@ export const formatCategoryHeader = (name) => {
 
 export const formatProjectStatus = (name) => {
   if (name === 'approved') {
-    return '已过审'
+    return '公共'
   } else if (name === 'processing') {
     return '审核中'
   } else if (name === 'rejected') {

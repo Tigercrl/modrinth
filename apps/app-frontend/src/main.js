@@ -10,13 +10,13 @@ import "dayjs/locale/zh-cn.js"
 
 const VIntlPlugin = createPlugin({
   controllerOpts: {
-    defaultLocale: 'en-US',
-    locale: 'en-US',
+    defaultLocale: 'zh-CN',
+    locale: 'zh-CN',
     locales: [
       {
-        tag: 'en-US',
+        tag: 'zh-CN',
         meta: {
-          displayName: 'American English',
+          displayName: '简体中文',
         },
       },
     ],

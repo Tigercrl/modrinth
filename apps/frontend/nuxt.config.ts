@@ -362,13 +362,13 @@ export default defineNuxtConfig({
   },
   modules: ["@vintl/nuxt", "@pinia/nuxt"],
   vintl: {
-    defaultLocale: "en-US",
+    defaultLocale: "zh-CN",
     locales: [
       {
-        tag: "en-US",
+        tag: "zh-CN",
         meta: {
           static: {
-            iso: "en",
+            iso: "zh",
           },
         },
       },

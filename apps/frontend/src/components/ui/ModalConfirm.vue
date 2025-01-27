@@ -4,9 +4,9 @@
       <div class="markdown-body" v-html="renderString(description)" />
       <label v-if="hasToType" for="confirmation" class="confirmation-label">
         <span>
-          <strong>To verify, type</strong>
+          <strong>请在下方输入</strong>
           <em class="confirmation-text">{{ confirmationText }}</em>
-          <strong>below:</strong>
+          <strong>以进行验证</strong>
         </span>
       </label>
       <div class="confirmation-input">
@@ -15,14 +15,14 @@
           id="confirmation"
           v-model="confirmation_typed"
           type="text"
-          placeholder="Type here..."
+          placeholder="请输入..."
           @input="type"
         />
       </div>
       <div class="button-group">
         <button class="iconified-button" @click="cancel">
           <CrossIcon />
-          Cancel
+          取消
         </button>
         <button class="iconified-button danger-button" :disabled="action_disabled" @click="proceed">
           <TrashIcon />
@@ -56,17 +56,17 @@ export default {
     },
     title: {
       type: String,
-      default: "No title defined",
+      default: "无标题",
       required: true,
     },
     description: {
       type: String,
-      default: "No description defined",
+      default: "无简介",
       required: true,
     },
     proceedLabel: {
       type: String,
-      default: "Proceed",
+      default: "继续",
     },
   },
   emits: ["proceed"],

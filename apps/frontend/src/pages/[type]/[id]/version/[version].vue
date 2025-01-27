@@ -587,7 +587,7 @@
         <div v-if="!isEditing">
           <h4>Publication date</h4>
           <span>
-            {{ $dayjs(version.date_published).format("MMMM D, YYYY [at] h:mm A") }}
+            {{ $dayjs(version.date_published).format('YYYY/MM/D hh:mm:ss') }}
           </span>
         </div>
         <div v-if="!isEditing && version.author">
@@ -661,7 +661,6 @@ import RightArrowIcon from "~/assets/images/utils/right-arrow.svg?component";
 import Modal from "~/components/ui/Modal.vue";
 import ChevronRightIcon from "~/assets/images/utils/chevron-right.svg?component";
 
-import AdPlaceholder from "~/components/ui/AdPlaceholder.vue";
 export default defineNuxtComponent({
   components: {
     MarkdownEditor,
@@ -693,7 +692,6 @@ export default defineNuxtComponent({
     RightArrowIcon,
     ConfirmModal,
     ButtonStyled,
-    AdPlaceholder,
   },
   props: {
     project: {
@@ -886,7 +884,7 @@ export default defineNuxtComponent({
           .map((x) => x.charAt(0).toUpperCase() + x.slice(1))
           .join(" & ")}. Published on ${data
           .$dayjs(version.date_published)
-          .format("MMM D, YYYY")}. ${version.downloads} downloads.`,
+          .format("YYYY/MM/DD")}. ${version.downloads} downloads.`,
     );
 
     useSeoMeta({

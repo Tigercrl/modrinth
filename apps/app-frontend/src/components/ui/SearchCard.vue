@@ -19,7 +19,7 @@
         <span class="text-lg font-extrabold text-contrast m-0 leading-none">
           {{ project.title }}
         </span>
-        <span v-if="project.author" class="text-secondary"> 作者：{{ project.author }}</span>
+        <span v-if="project.author" class="text-secondary"> 创作者：{{ project.author }}</span>
       </div>
       <div class="m-0 line-clamp-2">
         {{ project.description }}
@@ -39,7 +39,7 @@
               (project.server_side === 'optional' || project.server_side === 'unsupported')
             "
           >
-            客户端
+            仅客户端
           </template>
           <template
             v-else-if="
@@ -47,7 +47,7 @@
               (project.client_side === 'optional' || project.client_side === 'unsupported')
             "
           >
-            服务器
+            仅服务器
           </template>
           <template
             v-else-if="

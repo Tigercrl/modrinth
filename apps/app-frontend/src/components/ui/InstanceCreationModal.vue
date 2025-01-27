@@ -1,5 +1,5 @@
 <template>
-  <ModalWrapper ref="modal" header="创建新的实例">
+  <ModalWrapper ref="modal" header="创建实例">
     <div class="modal-header">
       <Chips v-model="creationType" :items="['custom', 'from file', 'import from launcher']" :format-label="label => {
           switch (label) {

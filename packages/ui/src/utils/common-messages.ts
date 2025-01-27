@@ -47,7 +47,7 @@ export const commonMessages = defineMessages({
   },
   descriptionLabel: {
     id: 'label.description',
-    defaultMessage: '描述',
+    defaultMessage: '简介',
   },
   editButton: {
     id: 'button.edit',

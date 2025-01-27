@@ -370,7 +370,7 @@ onMounted(() => {
         uploadImagesFromList(clipboardData.files)
           .then(function (url) {
             const selection = markdownCommands.yankSelection(view)
-            const altText = selection || '请输入描述...'
+            const altText = selection || '请描述图片...'
             const linkMarkdown = `![${altText}](${url})`
             return markdownCommands.replaceSelection(view, linkMarkdown)
           })

@@ -14,12 +14,12 @@ export const useImageUpload = async (file: File, ctx: ImageUploadContext) => {
     !file.type.startsWith("image/") ||
     !["png", "jpeg", "gif", "webp"].includes(file.type.split("/")[1])
   ) {
-    throw new Error("File is not an accepted image type");
+    throw new Error("文件不是一个图像");
   }
 
   // Make sure file is less than 1MB
   if (file.size > 1024 * 1024) {
-    throw new Error("File is too large");
+    throw new Error("文件过大");
   }
 
   const qs = new URLSearchParams();

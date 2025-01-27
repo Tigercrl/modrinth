@@ -1,12 +1,12 @@
-import { promises as fs } from "fs";
-import { pathToFileURL } from "node:url";
+import {promises as fs} from "fs";
+import {pathToFileURL} from "node:url";
 import svgLoader from "vite-svg-loader";
-import { resolve, basename, relative } from "pathe";
-import { defineNuxtConfig } from "nuxt/config";
-import { $fetch } from "ofetch";
-import { globIterate } from "glob";
-import { match as matchLocale } from "@formatjs/intl-localematcher";
-import { consola } from "consola";
+import {basename, relative, resolve} from "pathe";
+import {defineNuxtConfig} from "nuxt/config";
+import {$fetch} from "ofetch";
+import {globIterate} from "glob";
+import {match as matchLocale} from "@formatjs/intl-localematcher";
+import {consola} from "consola";
 
 const STAGING_API_URL = "https://staging-api.modrinth.com/v2/";
 
@@ -50,7 +50,7 @@ export default defineNuxtConfig({
   app: {
     head: {
       htmlAttrs: {
-        lang: "en",
+        lang: "zh-CN",
       },
       title: "Modrinth",
       link: [
@@ -65,16 +65,16 @@ export default defineNuxtConfig({
           };
         }),
         ...Object.entries(favicons).map(([media, href]): object => {
-          return { rel: "icon", type: "image/x-icon", href, media };
+          return {rel: "icon", type: "image/x-icon", href, media};
         }),
         ...Object.entries(favicons).map(([media, href]): object => {
-          return { rel: "apple-touch-icon", type: "image/x-icon", href, media, sizes: "64x64" };
+          return {rel: "apple-touch-icon", type: "image/x-icon", href, media, sizes: "64x64"};
         }),
         {
           rel: "search",
           type: "application/opensearchdescription+xml",
           href: "/opensearch.xml",
-          title: "Modrinth mods",
+          title: "Modrinth 模组",
         },
       ],
     },
@@ -132,7 +132,7 @@ export default defineNuxtConfig({
         state = JSON.parse(await fs.readFile("./src/generated/state.json", "utf8"));
       } catch {
         // File doesn't exist, create folder
-        await fs.mkdir("./src/generated", { recursive: true });
+        await fs.mkdir("./src/generated", {recursive: true});
       }
 
       const API_URL = getApiUrl();
@@ -220,7 +220,7 @@ export default defineNuxtConfig({
 
         for await (const localeFile of globIterate(
           "node_modules/@vintl/compact-number/dist/locale-data/*.mjs",
-          { ignore: "**/*.data.mjs" },
+          {ignore: "**/*.data.mjs"},
         )) {
           const tag = basename(localeFile, ".mjs");
           compactNumberLocales.push(tag);
@@ -248,9 +248,9 @@ export default defineNuxtConfig({
 
           const localeFiles: { from: string; format?: string }[] = [];
 
-          omorphiaLocaleSets.set(tag, { files: localeFiles });
+          omorphiaLocaleSets.set(tag, {files: localeFiles});
 
-          for await (const localeFile of globIterate(`${localeDir}/*`, { posix: true })) {
+          for await (const localeFile of globIterate(`${localeDir}/*`, {posix: true})) {
             localeFiles.push({
               from: pathToFileURL(localeFile).toString(),
               format: "default",
@@ -263,17 +263,17 @@ export default defineNuxtConfig({
         };
       })();
 
-      for await (const localeDir of globIterate("src/locales/*/", { posix: true })) {
+      for await (const localeDir of globIterate("src/locales/*/", {posix: true})) {
         const tag = basename(localeDir);
         if (isProduction && !enabledLocales.includes(tag) && opts.defaultLocale !== tag) continue;
 
         const locale =
           opts.locales.find((locale) => locale.tag === tag) ??
-          opts.locales[opts.locales.push({ tag }) - 1]!;
+          opts.locales[opts.locales.push({tag}) - 1]!;
 
         const localeFiles = (locale.files ??= []);
 
-        for await (const localeFile of globIterate(`${localeDir}/*`, { posix: true })) {
+        for await (const localeFile of globIterate(`${localeDir}/*`, {posix: true})) {
           const fileName = basename(localeFile);
           if (fileName === "index.json") {
             localeFiles.push({
@@ -378,12 +378,12 @@ export default defineNuxtConfig({
     seo: {
       defaultLocaleHasParameter: false,
     },
-    onParseError({ error, message, messageId, moduleId, parseMessage, parserOptions }) {
+    onParseError({error, message, messageId, moduleId, parseMessage, parserOptions}) {
       const errorMessage = String(error);
       const modulePath = relative(__dirname, moduleId);
 
       try {
-        const fallback = parseMessage(message, { ...parserOptions, ignoreTag: true });
+        const fallback = parseMessage(message, {...parserOptions, ignoreTag: true});
 
         consola.warn(
           `[i18n] ${messageId} in ${modulePath} cannot be parsed normally due to ${errorMessage}. The tags will will not be parsed.`,

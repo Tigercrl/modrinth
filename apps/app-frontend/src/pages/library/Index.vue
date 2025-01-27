@@ -56,7 +56,7 @@ onUnmounted(() => {
       <h3>未找到实例</h3>
       <Button color="primary" :disabled="offline" @click="$refs.installationModal.show()">
         <PlusIcon />
-        创建新的实例
+        创建新实例
       </Button>
       <InstanceCreationModal ref="installationModal" />
     </div>

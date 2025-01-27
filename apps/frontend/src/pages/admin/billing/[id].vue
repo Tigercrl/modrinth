@@ -78,7 +78,7 @@
           </template>
         </span>
         <div class="mb-4 mt-2 flex items-center gap-1">
-          {{ subscription.status }} ⋅ {{ $dayjs(subscription.created).format("YYYY-MM-DD") }}
+          {{ subscription.status }} ⋅ {{ $dayjs(subscription.created).format("YYYY/MM/DD") }}
           <template v-if="subscription.metadata?.id"> ⋅ {{ subscription.metadata.id }}</template>
         </div>
         <div
@@ -95,7 +95,7 @@
               ⋅
               {{ charge.type }}
               ⋅
-              {{ $dayjs(charge.due).format("YYYY-MM-DD") }}
+              {{ $dayjs(charge.due).format("YYYY/MM/DD") }}
               ⋅
               <span>{{ formatPrice(vintl.locale, charge.amount, charge.currency_code) }}</span>
               <template v-if="subscription.interval"> ⋅ {{ subscription.interval }} </template>

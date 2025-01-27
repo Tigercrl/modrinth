@@ -1,17 +1,16 @@
 import dayjs from "dayjs";
 
-import { ref, watch, computed } from "vue";
+import {computed, ref, watch} from "vue";
 
 // note: build step can miss unix import for some reason, so
 // we have to import it like this
 
-const { unix } = dayjs; // eslint-disable-line import/no-named-as-default-member
+const {unix} = dayjs; // eslint-disable-line import/no-named-as-default-member
 
 export function useCountryNames(style = "long") {
-  const formattingOptions = { type: "region", style };
-  const { formats } = useVIntl();
+  const formattingOptions = {type: "region", style};
   return function formatCountryName(code) {
-    return formats.displayName(code, formattingOptions);
+    return new Intl.DisplayNames(['zh-CN'], formattingOptions).of(code)
   };
 }
 
@@ -208,7 +207,7 @@ export const processAnalytics = (category, projects, labelFn, sortFn, mapFn, cha
     len: timestamps.length,
     chart: {
       labels: timestamps.map(labelFn),
-      data: chartData.map((x) => ({ name: x.name, data: x.data })),
+      data: chartData.map((x) => ({name: x.name, data: x.data})),
       sumData: [
         {
           name: chartName,

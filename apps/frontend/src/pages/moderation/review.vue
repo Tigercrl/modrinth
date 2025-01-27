@@ -110,7 +110,7 @@ import SortDescIcon from "~/assets/images/utils/sort-desc.svg?component";
 import WarningIcon from "~/assets/images/utils/issues.svg?component";
 import ModerationIcon from "~/assets/images/sidebar/admin.svg?component";
 import Badge from "~/components/ui/Badge.vue";
-import { formatProjectType } from "~/plugins/shorthands.js";
+import { formatProjectType } from "@modrinth/utils";
 
 useHead({
   title: "Review projects - Modrinth",

@@ -128,10 +128,10 @@ const exportPack = async () => {
       </div>
       <div class="adjacent-input">
         <div class="labeled_input">
-          <p>介绍</p>
+          <p>简介</p>
 
           <div class="textarea-wrapper">
-            <textarea v-model="exportDescription" placeholder="请输入整合包介绍..." />
+            <textarea v-model="exportDescription" placeholder="请输入整合包简介..." />
           </div>
         </div>
       </div>

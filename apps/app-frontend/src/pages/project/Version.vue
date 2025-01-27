@@ -155,7 +155,7 @@
             </span>
           </div>
           <div v-if="author" class="metadata-item">
-            <span class="metadata-label">作者</span>
+            <span class="metadata-label">创作者</span>
             <a
               :href="`https://modrinth.com/user/${author.user.username}`"
               rel="external"

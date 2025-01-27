@@ -86,14 +86,14 @@ onMounted(() => {
 });
 
 watch(macValue, () => {
-  if (macValue.value === "Download for Apple Silicon") {
+  if (macValue.value === "下载 Apple Silicon 芯片版本") {
     const link = document.createElement("a");
     link.href = macLinks.appleSilicon;
     link.download = "";
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
-  } else if (macValue.value === "Download for Intel") {
+  } else if (macValue.value === "下载 Intel 芯片版本") {
     const link = document.createElement("a");
     link.href = macLinks.intel;
     link.download = "";

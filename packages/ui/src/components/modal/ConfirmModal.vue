@@ -65,7 +65,7 @@ const props = defineProps({
   },
   description: {
     type: String,
-    default: '无描述',
+    default: '无简介',
     required: true,
   },
   proceedIcon: {

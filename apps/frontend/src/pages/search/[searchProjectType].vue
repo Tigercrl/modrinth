@@ -54,12 +54,6 @@
       }"
       aria-label="Filters"
     >
-      <AdPlaceholder
-        v-if="
-          (!auth.user || !isPermission(auth.user.badges, 1 << 0) || flags.showAdsWithPlus) &&
-          !server
-        "
-      />
       <div v-if="filtersMenuOpen" class="fixed inset-0 z-40 bg-bg"></div>
       <div
         class="flex flex-col gap-3"
@@ -326,7 +320,6 @@ import FilterIcon from "~/assets/images/utils/filter.svg?component";
 import GridIcon from "~/assets/images/utils/grid.svg?component";
 import ListIcon from "~/assets/images/utils/list.svg?component";
 import ImageIcon from "~/assets/images/utils/image.svg?component";
-import AdPlaceholder from "~/components/ui/AdPlaceholder.vue";
 import NavTabs from "~/components/ui/NavTabs.vue";
 
 const { formatMessage } = useVIntl();

@@ -65,13 +65,13 @@
             </span>
             <template v-if="midasCharge">
               <span class="text-sm text-secondary">
-                Since {{ $dayjs(midasSubscription.created).format("MMMM D, YYYY") }}
+                Since {{ $dayjs(midasSubscription.created).format("YYYY/MM/DD") }}
               </span>
               <span v-if="midasCharge.status === 'open'" class="text-sm text-secondary">
-                Renews {{ $dayjs(midasCharge.due).format("MMMM D, YYYY") }}
+                Renews {{ $dayjs(midasCharge.due).format("YYYY/MM/DD") }}
               </span>
               <span v-else-if="midasCharge.status === 'cancelled'" class="text-sm text-secondary">
-                Expires {{ $dayjs(midasCharge.due).format("MMMM D, YYYY") }}
+                Expires {{ $dayjs(midasCharge.due).format("YYYY/MM/DD") }}
               </span>
             </template>
 
@@ -245,7 +245,7 @@
                     </div>
                     <div v-if="getPyroCharge(subscription)" class="mb-4 flex flex-col items-end">
                       <span class="text-sm text-secondary">
-                        Since {{ $dayjs(subscription.created).format("MMMM D, YYYY") }}
+                        Since {{ $dayjs(subscription.created).format("YYYY/MM/DD") }}
                       </span>
                       <span
                         v-if="getPyroCharge(subscription).status === 'open'"

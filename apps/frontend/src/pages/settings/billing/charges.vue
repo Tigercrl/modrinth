@@ -30,7 +30,7 @@
           <div class="flex items-center gap-1">
             <Badge :color="charge.status === 'succeeded' ? 'green' : 'red'" :type="charge.status" />
             ⋅
-            {{ $dayjs(charge.due).format("YYYY-MM-DD") }}
+            {{ $dayjs(charge.due).format("YYYY/MM/DD") }}
           </div>
         </div>
       </div>

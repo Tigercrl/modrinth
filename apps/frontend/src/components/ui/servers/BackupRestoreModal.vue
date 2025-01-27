@@ -42,14 +42,7 @@ const isRestoring = ref(false);
 const backupError = ref<string | null>(null);
 
 const formattedDate = computed(() => {
-  return new Date(props.backupCreatedAt).toLocaleString("en-US", {
-    month: "numeric",
-    day: "numeric",
-    year: "2-digit",
-    hour: "numeric",
-    minute: "numeric",
-    hour12: true,
-  });
+  return new Date(props.backupCreatedAt).toLocaleString("zh-CN");
 });
 
 const hideModal = () => {

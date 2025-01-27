@@ -19,9 +19,11 @@
         </h2>
       </router-link>
       <p v-if="author" class="author">
-        （由
-        <router-link class="title-link" :to="'/user/' + author">{{ author }}</router-link>
-        创作）
+        （创作者：<!--
+      --><router-link class="title-link" :to="'/user/' + author">
+          {{ author }}
+        </router-link><!--
+      -->）
       </p>
       <Badge v-if="status && status !== 'approved'" :type="status" class="status"/>
     </div>
@@ -57,11 +59,11 @@
         <slot/>
       </div>
       <div v-if="showUpdatedDate" v-tooltip="updatedDate" class="stat date">
-        <EditIcon aria-hidden="true" />
+        <EditIcon aria-hidden="true"/>
         <span class="date-label">更新时间：</span> {{ sinceUpdated }}
       </div>
       <div v-else v-tooltip="createdDate" class="stat date">
-        <CalendarIcon aria-hidden="true" />
+        <CalendarIcon aria-hidden="true"/>
         <span class="date-label">发布时间：</span>{{ sinceCreation }}
       </div>
     </div>
@@ -69,11 +71,8 @@
 </template>
 
 <script setup>
-import { HeartIcon, DownloadIcon, EditIcon, CalendarIcon } from '@modrinth/assets'
-import { formatNumber } from '@modrinth/utils'
-import dayjs from 'dayjs'
-import relativeTime from 'dayjs/plugin/relativeTime.js'
-import { defineComponent } from 'vue'
+import {CalendarIcon, DownloadIcon, EditIcon, HeartIcon} from '@modrinth/assets'
+import {formatNumber} from '@modrinth/utils'
 import Categories from '../search/Categories.vue'
 import Badge from './SimpleBadge.vue'
 import Avatar from './Avatar.vue'
@@ -102,7 +101,7 @@ export default defineComponent({
     },
     description: {
       type: String,
-      default: '这是一条简介',
+      default: '无简介',
     },
     iconUrl: {
       type: String,
@@ -301,9 +300,8 @@ export default defineComponent({
     img,
     svg {
       border-radius: var(--radius-lg);
-      box-shadow:
-        -2px -2px 0 2px var(--color-raised-bg),
-        2px -2px 0 2px var(--color-raised-bg);
+      box-shadow: -2px -2px 0 2px var(--color-raised-bg),
+      2px -2px 0 2px var(--color-raised-bg);
     }
   }
 

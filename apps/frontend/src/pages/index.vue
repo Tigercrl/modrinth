@@ -3,7 +3,7 @@
     <div class="landing-hero">
       <ModrinthIcon class="modrinth-icon" />
       <h1 class="main-header">
-        The place for Minecraft
+        Minecraft
         <div class="animate-strong">
           <span>
             <strong
@@ -11,29 +11,29 @@
               :key="projectType.id"
               class="main-header-strong"
             >
-              {{ projectType.display }}s <br />
+              {{ projectType.display }} <br />
             </strong>
-            <strong class="main-header-strong">servers <br /></strong>
-            <strong class="main-header-strong">mods</strong>
+            <strong class="main-header-strong">服务器 <br /></strong>
+            <strong class="main-header-strong">模组</strong>
           </span>
         </div>
+        的聚集地
       </h1>
       <h2>
-        Discover, play, and share Minecraft content through our open-source platform built for the
-        community.
+        通过我们为社区打造的开源平台探索、游玩、分享 Minecraft 资源。
       </h2>
       <div class="button-group">
         <ButtonStyled color="brand" size="large">
-          <nuxt-link to="/mods"> <CompassIcon aria-hidden="true" /> Discover mods </nuxt-link>
+          <nuxt-link to="/mods"> <CompassIcon aria-hidden="true" /> 探索模组 </nuxt-link>
         </ButtonStyled>
         <ButtonStyled size="large" type="outlined">
           <nuxt-link v-if="!auth.user" to="/auth/sign-up" rel="noopener nofollow">
             <LogInIcon aria-hidden="true" />
-            Sign up
+            登录
           </nuxt-link>
           <nuxt-link v-else to="/dashboard/projects">
             <DashboardIcon aria-hidden="true" />
-            Go to dashboard
+            仪表盘
           </nuxt-link>
         </ButtonStyled>
       </div>
@@ -64,42 +64,40 @@
       <div class="projects-transition" />
       <div class="users-section">
         <div class="section-header">
-          <div class="section-label green">For Players</div>
-          <h2 class="section-tagline">Discover over 10,000 creations</h2>
+          <div class="section-label green">对于玩家</div>
+          <h2 class="section-tagline">探索 10,000+ 资源</h2>
           <p class="section-description">
-            From magical biomes to cursed dungeons, you can be sure to find content to bring your
-            gameplay to the next level.
+            从各色的生物群系到阴森的地牢，您一定可以找到各色资源将您的游戏体验提升到一个新高度。
           </p>
         </div>
         <div class="feature-blob">
           <div class="blob-text">
-            <h3>Find what you want, quickly and easily</h3>
+            <h3>快速容易地找到您想要的资源</h3>
             <p>
-              Modrinth's lightning-fast search and powerful filters let you find what you want as
-              you type.
+              Modrinth 快速的搜索引擎和强大的过滤器可以让您在输入时找到您想要的资源。
             </p>
           </div>
           <div class="blob-demonstration gradient-border bigger">
             <div class="demo-search">
               <div class="search-controls">
                 <div class="iconified-input">
-                  <label class="hidden" for="search">Search</label>
+                  <label class="hidden" for="search">搜索</label>
                   <SearchIcon aria-hidden="true" />
                   <input
                     id="search"
                     v-model="searchQuery"
                     type="search"
                     name="search"
-                    :placeholder="`Search...`"
+                    :placeholder="`请搜索内容...`"
                     autocomplete="off"
                     @input="updateSearchProjects"
                   />
                 </div>
                 <div class="sort-by">
-                  <span class="label">Sort by</span>
+                  <span class="label">排列方式</span>
                   <Multiselect
                     v-model="sortType"
-                    placeholder="Select one"
+                    placeholder="请选择..."
                     class="selector"
                     :custom-label="(value) => value.charAt(0).toUpperCase() + value.slice(1)"
                     :options="['relevance', 'downloads', 'follows', 'updated', 'newest']"
@@ -139,12 +137,12 @@
         </div>
         <div class="feature-blob reverse">
           <div class="blob-text">
-            <h3>Follow projects you love</h3>
-            <p>Get notified every time your favorite projects update and stay in the loop</p>
+            <h3>关注您喜欢的资源</h3>
+            <p>您喜欢的资源更新时您将会收到通知</p>
           </div>
           <div class="blob-demonstration gradient-border">
             <div class="notifs-demo">
-              <h3>Notifications</h3>
+              <h3>通知</h3>
               <div class="notifications">
                 <div
                   v-for="(notification, index) in notifications"
@@ -162,24 +160,21 @@
                       :to="`${notification.project_type}/${notification.slug}`"
                       class="notif-header"
                     >
-                      {{ notification.title }} has been updated!
+                      {{ notification.title }} 更新了版本 {{ ["1.1.2", "1.0.3", "15.1"][index] }}！
                     </nuxt-link>
                     <p class="notif-desc">
-                      Version {{ ["1.1.2", "1.0.3", "15.1"][index] }} has been released for
-                      {{
+                      分类：{{
                         $capitalizeString(
                           notification.display_categories[
-                            notification.display_categories.length - 1
-                          ],
+                          notification.display_categories.length - 1
+                            ],
                         )
-                      }}
-                      {{ notification.versions[notification.versions.length - 1] }}
+                      }}｜Minecraft 版本：{{ notification.versions[notification.versions.length - 1] }}
                     </p>
                     <div class="date">
                       <CalendarIcon aria-hidden="true" />
                       <span>
-                        Received
-                        {{ fromNow(notification.date_modified) }}
+                        更新时间：{{ fromNow(notification.date_modified) }}
                       </span>
                     </div>
                   </div>
@@ -190,12 +185,10 @@
         </div>
         <div class="feature-blob">
           <div class="blob-text">
-            <h3>Play with your favorite launcher</h3>
+            <h3>使用您最喜欢的启动器游玩</h3>
             <p>
-              Modrinth's open-source API lets launchers add deep integration with Modrinth. You can
-              use Modrinth through
-              <nuxt-link class="title-link" to="/app">our own app</nuxt-link> and some of the most
-              popular launchers like ATLauncher, MultiMC, and Prism Launcher.
+              Modrinth 的开源 API 允许启动器与 Modrinth 进行深度集成。您可以使用我们自主研发的
+              <nuxt-link class="title-link" to="/app">Modrinth App 启动器</nuxt-link>或其他流行的启动器，如 HMCL，PCL 等进行游戏。
             </p>
           </div>
           <div class="blob-demonstration gradient-border">

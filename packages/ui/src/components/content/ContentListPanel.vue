@@ -67,7 +67,7 @@ const paginatedItems = computed(() =>
           />
         </div>
         <div class="flex items-center gap-1 max-w-60 cursor-pointer" @click="updateSort('Updated')">
-          上次更新
+          更新时间
           <DropdownIcon
             v-if="sortColumn === 'Updated'"
             class="transition-all transform"

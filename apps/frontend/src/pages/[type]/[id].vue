@@ -685,12 +685,6 @@
           :tags="tags"
           class="card flex-card experimental-styles-within"
         />
-        <AdPlaceholder
-          v-if="
-            (!auth.user || !isPermission(auth.user.badges, 1 << 0) || flags.showAdsWithPlus) &&
-            tags.approvedStatuses.includes(project.status)
-          "
-        />
         <ProjectSidebarLinks
           :project="project"
           :link-target="$external()"
@@ -862,7 +856,6 @@ import { navigateTo } from "#app";
 import dayjs from "dayjs";
 import ModrinthIcon from "~/assets/images/utils/modrinth.svg?component";
 import Accordion from "~/components/ui/Accordion.vue";
-import AdPlaceholder from "~/components/ui/AdPlaceholder.vue";
 import AutomaticAccordion from "~/components/ui/AutomaticAccordion.vue";
 import Badge from "~/components/ui/Badge.vue";
 import Breadcrumbs from "~/components/ui/Breadcrumbs.vue";

@@ -1,10 +1,10 @@
 <template>
-  <NewModal ref="modal" header="Creating a project">
+  <NewModal ref="modal" header="创建资源">
     <div class="flex flex-col gap-3">
       <div class="flex flex-col gap-2">
         <label for="name">
           <span class="text-lg font-semibold text-contrast">
-            Name
+            名称
             <span class="text-brand-red">*</span>
           </span>
         </label>
@@ -13,7 +13,7 @@
           v-model="name"
           type="text"
           maxlength="64"
-          placeholder="Enter project name..."
+          placeholder="请输入资源名称..."
           autocomplete="off"
           @input="updatedName()"
         />
@@ -40,26 +40,26 @@
       <div class="flex flex-col gap-2">
         <label for="visibility" class="flex flex-col gap-1">
           <span class="text-lg font-semibold text-contrast">
-            Visibility
+            可见性
             <span class="text-brand-red">*</span>
           </span>
-          <span> The visibility of your project after it has been approved. </span>
+          <span> 资源过审后的可见性。 </span>
         </label>
         <DropdownSelect
           id="visibility"
           v-model="visibility"
           :options="visibilities"
           :display-name="(x) => x.display"
-          name="Visibility"
+          name="可见性"
         />
       </div>
       <div class="flex flex-col gap-2">
         <label for="additional-information" class="flex flex-col gap-1">
           <span class="text-lg font-semibold text-contrast">
-            Summary
+            简介
             <span class="text-brand-red">*</span>
           </span>
-          <span> A sentence or two that describes your project. </span>
+          <span> 介绍一下此资源。 </span>
         </label>
         <div class="textarea-wrapper">
           <textarea id="additional-information" v-model="description" maxlength="256" />
@@ -69,13 +69,13 @@
         <ButtonStyled color="brand">
           <button @click="createProject">
             <PlusIcon aria-hidden="true" />
-            Create project
+            创建资源
           </button>
         </ButtonStyled>
         <ButtonStyled>
           <button @click="cancel">
             <XIcon aria-hidden="true" />
-            Cancel
+            取消
           </button>
         </ButtonStyled>
       </div>

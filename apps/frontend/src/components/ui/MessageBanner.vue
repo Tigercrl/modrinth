@@ -12,7 +12,14 @@ const props = withDefaults(defineProps<{ messageType?: MessageType }>(), {
   messageType: "information",
 });
 const cardClassByType = computed(() => `message-banner__content_${props.messageType}`);
-const ariaLabelByType = computed(() => `Banner with ${props.messageType} message`);
+const ariaLabelByType = computed(() => {
+  switch (props.messageType) {
+    case "information":
+      return "信息横幅";
+    case "warning":
+      return "警告横幅";
+  }
+});
 </script>
 
 <style lang="css" scoped>

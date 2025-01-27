@@ -54,8 +54,8 @@
         {{ formatMessage(stagingBannerMessages.description) }}
       </div>
       <div class="site-banner__actions">
-        <Button transparent icon-only :action="hideStagingBanner" aria-label="Close banner"
-          ><XIcon aria-hidden="true"
+        <Button transparent icon-only :action="hideStagingBanner" aria-label="关闭横幅"
+        ><XIcon aria-hidden="true"
         /></Button>
       </div>
     </div>
@@ -63,7 +63,7 @@
       class="experimental-styles-within desktop-only relative z-[5] mx-auto grid max-w-[1280px] grid-cols-[1fr_auto] items-center gap-2 px-6 py-4 lg:grid-cols-[auto_1fr_auto]"
     >
       <div>
-        <NuxtLink to="/" aria-label="Modrinth home page">
+        <NuxtLink to="/" aria-label="Modrinth 主页">
           <BrandTextLogo aria-hidden="true" class="h-7 w-auto text-contrast" />
         </NuxtLink>
       </div>
@@ -78,7 +78,7 @@
               route.name === 'search-mods' ? 'main-nav-primary' : 'main-nav-secondary'
             "
           >
-            <nuxt-link to="/mods"> <BoxIcon aria-hidden="true" /> Mods </nuxt-link>
+            <nuxt-link to="/mods"> <BoxIcon aria-hidden="true" /> 模组 </nuxt-link>
           </ButtonStyled>
           <ButtonStyled
             type="transparent"
@@ -90,7 +90,7 @@
             "
           >
             <nuxt-link to="/resourcepacks">
-              <PaintBrushIcon aria-hidden="true" /> Resource Packs
+              <PaintBrushIcon aria-hidden="true" /> 资源包
             </nuxt-link>
           </ButtonStyled>
           <ButtonStyled
@@ -100,7 +100,7 @@
               route.name === 'search-datapacks' ? 'main-nav-primary' : 'main-nav-secondary'
             "
           >
-            <nuxt-link to="/datapacks"> <BracesIcon aria-hidden="true" /> Data Packs </nuxt-link>
+            <nuxt-link to="/datapacks"> <BracesIcon aria-hidden="true" /> 数据包 </nuxt-link>
           </ButtonStyled>
           <ButtonStyled
             type="transparent"
@@ -109,7 +109,7 @@
               route.name === 'search-modpacks' ? 'main-nav-primary' : 'main-nav-secondary'
             "
           >
-            <nuxt-link to="/modpacks"> <PackageOpenIcon aria-hidden="true" /> Modpacks </nuxt-link>
+            <nuxt-link to="/modpacks"> <PackageOpenIcon aria-hidden="true" /> 整合包 </nuxt-link>
           </ButtonStyled>
           <ButtonStyled
             type="transparent"
@@ -118,7 +118,7 @@
               route.name === 'search-shaders' ? 'main-nav-primary' : 'main-nav-secondary'
             "
           >
-            <nuxt-link to="/shaders"> <GlassesIcon aria-hidden="true" /> Shaders </nuxt-link>
+            <nuxt-link to="/shaders"> <GlassesIcon aria-hidden="true" /> 光影 </nuxt-link>
           </ButtonStyled>
           <ButtonStyled
             type="transparent"
@@ -127,7 +127,7 @@
               route.name === 'search-plugins' ? 'main-nav-primary' : 'main-nav-secondary'
             "
           >
-            <nuxt-link to="/plugins"> <PlugIcon aria-hidden="true" /> Plugins </nuxt-link>
+            <nuxt-link to="/plugins"> <PlugIcon aria-hidden="true" /> 插件 </nuxt-link>
           </ButtonStyled>
         </template>
         <template v-else>
@@ -192,18 +192,18 @@
                 aria-hidden="true"
               />
               <CompassIcon v-else aria-hidden="true" />
-              <span class="hidden md:contents">Discover content</span>
-              <span class="contents md:hidden">Discover</span>
+              <span class="hidden md:contents">探索资源</span>
+              <span class="contents md:hidden">探索</span>
               <DropdownIcon aria-hidden="true" class="h-5 w-5 text-secondary" />
 
-              <template #mods> <BoxIcon aria-hidden="true" /> Mods </template>
+              <template #mods> <BoxIcon aria-hidden="true" /> 模组 </template>
               <template #resourcepacks>
-                <PaintBrushIcon aria-hidden="true" /> Resource Packs
+                <PaintBrushIcon aria-hidden="true" /> 资源包
               </template>
-              <template #datapacks> <BracesIcon aria-hidden="true" /> Data Packs </template>
-              <template #plugins> <PlugIcon aria-hidden="true" /> Plugins </template>
-              <template #shaders> <GlassesIcon aria-hidden="true" /> Shaders </template>
-              <template #modpacks> <PackageOpenIcon aria-hidden="true" /> Modpacks </template>
+              <template #datapacks> <BracesIcon aria-hidden="true" /> 数据包 </template>
+              <template #plugins> <PlugIcon aria-hidden="true" /> 插件 </template>
+              <template #shaders> <GlassesIcon aria-hidden="true" /> 光影 </template>
+              <template #modpacks> <PackageOpenIcon aria-hidden="true" /> 整合包 </template>
             </TeleportOverflowMenu>
           </ButtonStyled>
 
@@ -219,13 +219,13 @@
           >
             <nuxt-link to="/servers">
               <ServerIcon aria-hidden="true" />
-              Host a server
+              托管服务器
             </nuxt-link>
           </ButtonStyled>
           <ButtonStyled type="transparent" :highlighted="route.name === 'app'">
             <nuxt-link to="/app">
               <DownloadIcon aria-hidden="true" />
-              <span class="hidden md:contents">Get Modrinth App</span>
+              <span class="hidden md:contents">获取 Modrinth App</span>
               <span class="contents md:hidden">Modrinth App</span>
             </nuxt-link>
           </ButtonStyled>
@@ -258,13 +258,13 @@
           >
             <PlusIcon aria-hidden="true" />
             <DropdownIcon aria-hidden="true" class="h-5 w-5 text-secondary" />
-            <template #new-project> <BoxIcon aria-hidden="true" /> New project </template>
+            <template #new-project> <BoxIcon aria-hidden="true" /> 创建资源 </template>
             <!-- <template #import-project> <BoxImportIcon /> Import project </template>-->
             <template #new-collection>
-              <CollectionIcon aria-hidden="true" /> New collection
+              <CollectionIcon aria-hidden="true" /> 创建收藏夹
             </template>
             <template #new-organization>
-              <OrganizationIcon aria-hidden="true" /> New organization
+              <OrganizationIcon aria-hidden="true" /> 创建组织
             </template>
           </OverflowMenu>
         </ButtonStyled>
@@ -276,28 +276,28 @@
         >
           <Avatar :src="auth.user.avatar_url" aria-hidden="true" circle />
           <DropdownIcon class="h-5 w-5 text-secondary" />
-          <template #profile> <UserIcon aria-hidden="true" /> Profile </template>
-          <template #notifications> <BellIcon aria-hidden="true" /> Notifications </template>
-          <template #saved> <BookmarkIcon aria-hidden="true" /> Saved projects </template>
-          <template #servers> <ServerIcon aria-hidden="true" /> My servers </template>
+          <template #profile> <UserIcon aria-hidden="true" /> 资料页 </template>
+          <template #notifications> <BellIcon aria-hidden="true" /> 通知 </template>
+          <template #saved> <BookmarkIcon aria-hidden="true" /> 收藏夹 </template>
+          <template #servers> <ServerIcon aria-hidden="true" /> 托管的服务器 </template>
           <template #plus>
-            <ArrowBigUpDashIcon aria-hidden="true" /> Upgrade to Modrinth+
+            <ArrowBigUpDashIcon aria-hidden="true" /> 升级到 Modrinth+
           </template>
-          <template #settings> <SettingsIcon aria-hidden="true" /> Settings </template>
-          <template #flags> <ReportIcon aria-hidden="true" /> Feature flags </template>
-          <template #projects> <BoxIcon aria-hidden="true" /> Projects </template>
+          <template #settings> <SettingsIcon aria-hidden="true" /> 设置 </template>
+          <template #flags> <ReportIcon aria-hidden="true" /> 实验性功能 </template>
+          <template #projects> <BoxIcon aria-hidden="true" /> 资源 </template>
           <template #organizations>
-            <OrganizationIcon aria-hidden="true" /> Organizations
+            <OrganizationIcon aria-hidden="true" /> 组织
           </template>
-          <template #revenue> <CurrencyIcon aria-hidden="true" /> Revenue </template>
-          <template #analytics> <ChartIcon aria-hidden="true" /> Analytics </template>
-          <template #moderation> <ModerationIcon aria-hidden="true" /> Moderation </template>
-          <template #sign-out> <LogOutIcon aria-hidden="true" /> Sign out </template>
+          <template #revenue> <CurrencyIcon aria-hidden="true" /> 收益 </template>
+          <template #analytics> <ChartIcon aria-hidden="true" /> 数据分析 </template>
+          <template #moderation> <ModerationIcon aria-hidden="true" /> 管理 </template>
+          <template #sign-out> <LogOutIcon aria-hidden="true" /> 登出 </template>
         </OverflowMenu>
         <ButtonStyled v-else color="brand">
           <nuxt-link to="/auth/sign-in">
             <LogInIcon aria-hidden="true" />
-            Sign in
+            登录
           </nuxt-link>
         </ButtonStyled>
       </div>
@@ -376,7 +376,7 @@
             </NuxtLink>
             <NuxtLink v-if="flags.developerMode" class="iconified-button" to="/flags">
               <ReportIcon aria-hidden="true" />
-              Feature flags
+              实验性功能
             </NuxtLink>
           </template>
           <NuxtLink class="iconified-button" to="/settings">
@@ -420,7 +420,7 @@
           <NuxtLink
             to="/dashboard/notifications"
             class="tab button-animation"
-            aria-label="Notifications"
+            aria-label="通知"
             :class="{
               'no-active': isMobileMenuOpen || isBrowseMenuOpen,
             }"
@@ -437,7 +437,7 @@
           <NuxtLink
             to="/dashboard"
             class="tab button-animation"
-            aria-label="Dashboard"
+            aria-label="仪表盘"
             :title="formatMessage(commonMessages.dashboardLabel)"
           >
             <ChartIcon aria-hidden="true" />
@@ -446,7 +446,7 @@
         <button
           class="tab button-animation"
           :title="formatMessage(messages.toggleMenu)"
-          :aria-label="isMobileMenuOpen ? 'Close menu' : 'Open menu'"
+          :aria-label="isMobileMenuOpen ? '关闭菜单' : '开启菜单'"
           @click="toggleMobileMenu()"
         >
           <template v-if="!auth.user">
@@ -473,7 +473,7 @@
       <slot id="main" />
     </main>
     <footer>
-      <div class="logo-info" role="region" aria-label="Modrinth information">
+      <div class="logo-info" role="region" aria-label="Modrinth 信息">
         <BrandTextLogo
           aria-hidden="true"
           class="text-logo button-base mx-auto mb-4 lg:mx-0"
@@ -495,8 +495,8 @@
         </p>
         <p class="mb-4">
           {{ config.public.branch }}@<a
-            :target="$external()"
-            :href="
+          :target="$external()"
+          :href="
               'https://github.com/' +
               config.public.owner +
               '/' +
@@ -504,12 +504,12 @@
               '/tree/' +
               config.public.hash
             "
-            class="text-link"
-            rel="noopener"
-            >{{ config.public.hash.substring(0, 7) }}</a
-          >
+          class="text-link"
+          rel="noopener"
+        >{{ config.public.hash.substring(0, 7) }}</a
+        >
         </p>
-        <p>© Rinth, Inc.</p>
+        <p>© Rinth, Inc.（由 Tigercrl 汉化）</p>
       </div>
       <div class="links links-1" role="region" aria-label="Legal">
         <h4 aria-hidden="true">{{ formatMessage(footerMessages.companyTitle) }}</h4>
@@ -630,22 +630,22 @@ const userPopoutId = useId();
 const verifyEmailBannerMessages = defineMessages({
   title: {
     id: "layout.banner.verify-email.title",
-    defaultMessage: "For security purposes, please verify your email address on Modrinth.",
+    defaultMessage: "为了安全起见，请验证您 Modrinth 账户的电子邮件地址。",
   },
   action: {
     id: "layout.banner.verify-email.action",
-    defaultMessage: "Re-send verification email",
+    defaultMessage: "重新发送验证邮件",
   },
 });
 
 const addEmailBannerMessages = defineMessages({
   title: {
     id: "layout.banner.add-email.title",
-    defaultMessage: "For security purposes, please enter your email on Modrinth.",
+    defaultMessage: "为了安全起见，请设置您 Modrinth 账户的电子邮件地址。",
   },
   action: {
     id: "layout.banner.add-email.button",
-    defaultMessage: "Visit account settings",
+    defaultMessage: "账户设置",
   },
 });
 
@@ -653,109 +653,109 @@ const subscriptionPaymentFailedBannerMessages = defineMessages({
   title: {
     id: "layout.banner.subscription-payment-failed.title",
     defaultMessage:
-      "Your subscription failed to renew. Please update your payment method to prevent losing access.",
+      "您的订阅未能自动续订。请更新您的付款方式，以防止权益丢失。",
   },
   action: {
     id: "layout.banner.subscription-payment-failed.button",
-    defaultMessage: "Update billing info",
+    defaultMessage: "更新付款方式",
   },
 });
 
 const stagingBannerMessages = defineMessages({
   title: {
     id: "layout.banner.staging.title",
-    defaultMessage: "You’re viewing Modrinth’s staging environment.",
+    defaultMessage: "您正在访问 Modrinth 的开发环境",
   },
   description: {
     id: "layout.banner.staging.description",
     defaultMessage:
-      "The staging environment is completely separate from the production Modrinth database. This is used for testing and debugging purposes, and may be running in-development versions of the Modrinth backend or frontend newer than the production instance.",
+      "测试环境完全独立于生产环境的 Modrinth 数据库，用于测试和调试目的。并且可能运行比生产环境更新的 Modrinth 后端或前端的开发版本。（译者注：把 .env.example 重命名为 .env 即可改成生产环境）",
   },
 });
 
 const navMenuMessages = defineMessages({
   home: {
     id: "layout.nav.home",
-    defaultMessage: "Home",
+    defaultMessage: "主页",
   },
   search: {
     id: "layout.nav.search",
-    defaultMessage: "Search",
+    defaultMessage: "搜索",
   },
 });
 
 const messages = defineMessages({
   toggleMenu: {
     id: "layout.menu-toggle.action",
-    defaultMessage: "Toggle menu",
+    defaultMessage: "开关菜单",
   },
   yourAvatarAlt: {
     id: "layout.avatar.alt",
-    defaultMessage: "Your avatar",
+    defaultMessage: "您的头像",
   },
   getModrinthApp: {
     id: "layout.action.get-modrinth-app",
-    defaultMessage: "Get Modrinth App",
+    defaultMessage: "获取 Modrinth App",
   },
   changeTheme: {
     id: "layout.action.change-theme",
-    defaultMessage: "Change theme",
+    defaultMessage: "更改主题",
   },
 });
 
 const footerMessages = defineMessages({
   openSource: {
     id: "layout.footer.open-source",
-    defaultMessage: "Modrinth is <github-link>open source</github-link>.",
+    defaultMessage: "Modrinth 是<github-link>开源的</github-link>。",
   },
   companyTitle: {
     id: "layout.footer.company.title",
-    defaultMessage: "Company",
+    defaultMessage: "公司",
   },
   terms: {
     id: "layout.footer.company.terms",
-    defaultMessage: "Terms",
+    defaultMessage: "条例",
   },
   privacy: {
     id: "layout.footer.company.privacy",
-    defaultMessage: "Privacy",
+    defaultMessage: "隐私",
   },
   rules: {
     id: "layout.footer.company.rules",
-    defaultMessage: "Rules",
+    defaultMessage: "规则",
   },
   careers: {
     id: "layout.footer.company.careers",
-    defaultMessage: "Careers",
+    defaultMessage: "职员",
   },
   resourcesTitle: {
     id: "layout.footer.resources.title",
-    defaultMessage: "Resources",
+    defaultMessage: "资源",
   },
   support: {
     id: "layout.footer.resources.support",
-    defaultMessage: "Support",
+    defaultMessage: "帮助",
   },
   blog: {
     id: "layout.footer.resources.blog",
-    defaultMessage: "Blog",
+    defaultMessage: "博客",
   },
   docs: {
     id: "layout.footer.resources.docs",
-    defaultMessage: "Docs",
+    defaultMessage: "文档",
   },
   status: {
     id: "layout.footer.resources.status",
-    defaultMessage: "Status",
+    defaultMessage: "状态",
   },
   interactTitle: {
     id: "layout.footer.interact.title",
-    defaultMessage: "Interact",
+    defaultMessage: "联系",
   },
   legalDisclaimer: {
     id: "layout.footer.legal-disclaimer",
     defaultMessage:
-      "NOT AN OFFICIAL MINECRAFT SERVICE. NOT APPROVED BY OR ASSOCIATED WITH MOJANG OR MICROSOFT.",
+      "非 MINECRAFT 官方产品服务。未经 MOJANG 或 MICROSOFT 批准，也不与 MOJANG 或 MICROSOFT 关联",
   },
 });
 
@@ -773,8 +773,8 @@ useSeoMeta({
     formatMessage({
       id: "layout.meta.description",
       defaultMessage:
-        "Download Minecraft mods, plugins, datapacks, shaders, resourcepacks, and modpacks on Modrinth. " +
-        "Discover and publish projects on Modrinth with a modern, easy to use interface and API.",
+        "在 Modrinth 上下载 Minecraft 模组，插件，数据包，着色器，资源包和整合包。" +
+        "使用 Modrinth 现代，易于使用的接口和 API 来探索和发布资源。",
     }),
   publisher: "Modrinth",
   themeColor: "#1bd96a",
@@ -786,7 +786,7 @@ useSeoMeta({
   ogDescription: () =>
     formatMessage({
       id: "layout.meta.og-description",
-      defaultMessage: "Discover and publish Minecraft content!",
+      defaultMessage: "探索和发布 Minecraft 资源！",
     }),
   ogType: "website",
   ogImage: "https://cdn.modrinth.com/modrinth-new.png",
@@ -961,15 +961,15 @@ function developerModeIncrement() {
     if (flags.value.developerMode) {
       app.$notify({
         group: "main",
-        title: "Developer mode activated",
-        text: "Developer mode has been enabled",
+        title: "开发模式已启用",
+        text: "开发模式已启用",
         type: "success",
       });
     } else {
       app.$notify({
         group: "main",
-        title: "Developer mode deactivated",
-        text: "Developer mode has been disabled",
+        title: "开发模式已禁用",
+        text: "开发模式已禁用",
         type: "success",
       });
     }

@@ -79,25 +79,22 @@ export const sortedCategories = (tags) => {
 
 export const formatNumber = (number, abbreviate = true) => {
   const x = Number(number)
-  if (x >= 1000000 && abbreviate) {
-    return `${(x / 1000000).toFixed(2).toString()}M`
+  if (x >= 100000000 && abbreviate) {
+    return `${(x / 100000000).toFixed(2).toString()} 亿`
   } else if (x >= 10000 && abbreviate) {
-    return `${(x / 1000).toFixed(1).toString()}k`
+    return `${(x / 10000).toFixed(1).toString()} 万`
   }
   return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
 }
 
 export function formatMoney(number, abbreviate = false) {
   const x = Number(number)
-  if (x >= 1000000 && abbreviate) {
-    return `$${(x / 1000000).toFixed(2).toString()}M`
+  if (x >= 100000000 && abbreviate) {
+    return `${(x / 100000000).toFixed(2).toString()} 亿`
   } else if (x >= 10000 && abbreviate) {
-    return `$${(x / 1000).toFixed(2).toString()}k`
+    return `${(x / 10000).toFixed(1).toString()} 万`
   }
-  return `$${x
-    .toFixed(2)
-    .toString()
-    .replace(/\B(?=(\d{3})+(?!\d))/g, ',')}`
+  return `$${x.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}`
 }
 
 export const formatBytes = (bytes, decimals = 2) => {
@@ -291,6 +288,8 @@ export const formatCategoryHeader = (name) => {
       return '分辨率'
     case 'performance impact':
       return '性能影响'
+    case 'downloads':
+      return '下载量'
     default:
       return capitalizeString(name)
   }
@@ -298,7 +297,7 @@ export const formatCategoryHeader = (name) => {
 
 export const formatProjectStatus = (name) => {
   if (name === 'approved') {
-    return '公共'
+    return '已过审'
   } else if (name === 'processing') {
     return '审核中'
   } else if (name === 'rejected') {
@@ -308,7 +307,7 @@ export const formatProjectStatus = (name) => {
   } else if (name === 'unlisted') {
     return '隐藏'
   } else if (name === 'private') {
-    return '私有'
+    return '私密'
   } else if (name === 'withheld') {
     return '保留'
   } else if (name === 'archived') {

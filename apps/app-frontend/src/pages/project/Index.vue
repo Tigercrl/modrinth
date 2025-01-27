@@ -80,7 +80,7 @@
                 <MoreVerticalIcon aria-hidden="true" />
                 <template #open-in-browser> <ExternalIcon /> 在浏览器中打开 </template>
                 <template #follow> <HeartIcon /> 关注 </template>
-                <template #save> <BookmarkIcon /> 保存 </template>
+                <template #save> <BookmarkIcon /> 收藏 </template>
                 <template #report> <ReportIcon /> 举报 </template>
               </OverflowMenu>
             </ButtonStyled>
@@ -89,7 +89,7 @@
         <NavTabs
           :links="[
             {
-              label: '介绍',
+              label: '简介',
               href: `/project/${$route.params.id}`,
             },
             {

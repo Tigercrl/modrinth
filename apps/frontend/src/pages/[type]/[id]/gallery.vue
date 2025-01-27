@@ -237,7 +237,7 @@
         <div class="gallery-bottom">
           <div class="gallery-created">
             <CalendarIcon aria-hidden="true" aria-label="Date created" />
-            {{ $dayjs(item.created).format("MMMM D, YYYY") }}
+            {{ $dayjs(item.created).format("YYYY/MM/DD") }}
           </div>
           <div v-if="currentMember" class="gallery-buttons input-group">
             <button

@@ -14,7 +14,7 @@
           <CompactChart
             v-if="analytics.formattedData.value.downloads"
             ref="tinyDownloadChart"
-            :title="`Downloads since ${dayjs(startDate).format('YYYY/MM/D')}`"
+            :title="`自 ${dayjs(startDate).format('YYYY/MM/D')} 的下载量`"
             color="var(--color-brand)"
             :value="formatNumber(analytics.formattedData.value.downloads.sum, false)"
             :data="analytics.formattedData.value.downloads.chart.sumData"
@@ -33,7 +33,7 @@
           <CompactChart
             v-if="analytics.formattedData.value.views"
             ref="tinyViewChart"
-            :title="`Page views since ${dayjs(startDate).format('YYYY/MM/D')}`"
+            :title="`自 ${dayjs(startDate).format('YYYY/MM/D')} 的浏览量`"
             color="var(--color-blue)"
             :value="formatNumber(analytics.formattedData.value.views.sum, false)"
             :data="analytics.formattedData.value.views.chart.sumData"
@@ -50,7 +50,7 @@
           <CompactChart
             v-if="analytics.formattedData.value.revenue"
             ref="tinyRevenueChart"
-            :title="`Revenue since ${dayjs(startDate).format('YYYY/MM/D')}`"
+            :title="`自 ${dayjs(startDate).format('YYYY/MM/D')} 的收益`"
             color="var(--color-purple)"
             :value="formatMoney(analytics.formattedData.value.revenue.sum, false)"
             :data="analytics.formattedData.value.revenue.chart.sumData"
@@ -73,14 +73,14 @@
               </span>
             </h2>
             <div class="chart-controls__buttons">
-              <Button v-tooltip="'Toggle project colors'" icon-only @click="onToggleColors">
-                <PaletteIcon />
+              <Button v-tooltip="'开关资源颜色'" icon-only @click="onToggleColors">
+                <PaletteIcon/>
               </Button>
-              <Button v-tooltip="'Download this data as CSV'" icon-only @click="onDownloadSetAsCSV">
-                <DownloadIcon />
+              <Button v-tooltip="'以 CSV 格式下载数据'" icon-only @click="onDownloadSetAsCSV">
+                <DownloadIcon/>
               </Button>
-              <Button v-tooltip="'Refresh the chart'" icon-only @click="resetCharts">
-                <UpdatedIcon />
+              <Button v-tooltip="'刷新图表'" icon-only @click="resetCharts">
+                <UpdatedIcon/>
               </Button>
               <DropdownSelect
                 v-model="selectedRange"
@@ -99,7 +99,7 @@
                   v-if="analytics.formattedData.value.downloads && selectedChart === 'downloads'"
                   ref="downloadsChart"
                   type="line"
-                  name="Download data"
+                  name="下载数据"
                   :hide-legend="true"
                   :data="analytics.formattedData.value.downloads.chart.data"
                   :labels="analytics.formattedData.value.downloads.chart.labels"
@@ -114,7 +114,7 @@
                   v-if="analytics.formattedData.value.views && selectedChart === 'views'"
                   ref="viewsChart"
                   type="line"
-                  name="View data"
+                  name="浏览数据"
                   :hide-legend="true"
                   :data="analytics.formattedData.value.views.chart.data"
                   :labels="analytics.formattedData.value.views.chart.labels"
@@ -129,7 +129,7 @@
                   v-if="analytics.formattedData.value.revenue && selectedChart === 'revenue'"
                   ref="revenueChart"
                   type="line"
-                  name="Revenue data"
+                  name="收益数据"
                   :hide-legend="true"
                   :data="analytics.formattedData.value.revenue.chart.data"
                   :labels="analytics.formattedData.value.revenue.chart.labels"
@@ -183,7 +183,7 @@
             class="country-downloads"
           >
             <label>
-              <span class="label__title">Downloads by region</span>
+              <span class="label__title">按地区划分的下载数据</span>
             </label>
             <div class="country-values">
               <div
@@ -195,21 +195,22 @@
                   <template v-if="name.toLowerCase() === 'xx' || !name">
                     <img
                       src="https://cdn.modrinth.com/placeholder-banner.svg"
-                      alt="Placeholder flag"
+                      alt="国旗占位符"
                       class="country-flag"
                     />
                   </template>
                   <template v-else>
                     <img
                       :src="countryCodeToFlag(name)"
-                      :alt="`${countryCodeToName(name)}'s flag`"
+                      :alt="`${countryCodeToName(name)} 的国旗`"
                       class="country-flag"
                     />
                   </template>
                 </div>
                 <div class="country-text">
                   <strong class="country-name"
-                    ><template v-if="name.toLowerCase() === 'xx' || !name">Hidden</template>
+                  >
+                    <template v-if="name.toLowerCase() === 'xx' || !name">隐藏</template>
                     <template v-else>{{ countryCodeToName(name) }}</template>
                   </strong>
                   <span class="data-point">{{ formatNumber(count) }}</span>
@@ -242,7 +243,7 @@
             class="country-downloads"
           >
             <label>
-              <span class="label__title">Page views by region</span>
+              <span class="label__title">按地区划分的浏览数据</span>
             </label>
             <div class="country-values">
               <div
@@ -254,21 +255,21 @@
                   <template v-if="name.toLowerCase() === 'xx' || !name">
                     <img
                       src="https://cdn.modrinth.com/placeholder-banner.svg"
-                      alt="Placeholder flag"
+                      alt="国旗占位符"
                       class="country-flag"
                     />
                   </template>
                   <template v-else>
                     <img
                       :src="countryCodeToFlag(name)"
-                      :alt="`${countryCodeToName(name)}'s flag`"
+                      :alt="`${countryCodeToName(name)} 的国旗`"
                       class="country-flag"
                     />
                   </template>
                 </div>
                 <div class="country-text">
                   <strong class="country-name">
-                    <template v-if="name.toLowerCase() === 'xx' || !name">Hidden</template>
+                    <template v-if="name.toLowerCase() === 'xx' || !name">隐藏</template>
                     <template v-else>{{ countryCodeToName(name) }}</template>
                   </strong>
                   <span class="data-point">{{ formatNumber(count) }}</span>
@@ -300,15 +301,15 @@
 </template>
 
 <script setup lang="ts">
-import { Button, Card, DropdownSelect } from "@modrinth/ui";
-import { formatMoney, formatNumber, formatCategoryHeader } from "@modrinth/utils";
-import { UpdatedIcon, DownloadIcon } from "@modrinth/assets";
+import {Button, Card, DropdownSelect} from "@modrinth/ui";
+import {formatCategoryHeader, formatMoney, formatNumber} from "@modrinth/utils";
+import {DownloadIcon, UpdatedIcon} from "@modrinth/assets";
 import dayjs from "dayjs";
-import { computed } from "vue";
+import {computed} from "vue";
 
-import { analyticsSetToCSVString, intToRgba } from "~/utils/analytics.js";
+import {analyticsSetToCSVString, intToRgba} from "~/utils/analytics.js";
 
-import { UiChartsCompactChart as CompactChart, UiChartsChart as Chart } from "#components";
+import {UiChartsChart as Chart, UiChartsCompactChart as CompactChart} from "#components";
 
 import PaletteIcon from "~/assets/icons/palette.svg?component";
 
@@ -420,7 +421,7 @@ const analytics = useFetchAllAnalytics(
   props.personal,
 );
 
-const { startDate, endDate, timeRange, timeResolution } = analytics;
+const {startDate, endDate, timeRange, timeResolution} = analytics;
 
 const selectedRange = computed({
   get: () => {
@@ -465,7 +466,7 @@ const downloadSelectedSetAsCSV = () => {
 
   const csv = analyticsSetToCSVString(selectedDataSet.value);
 
-  const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+  const blob = new Blob([csv], {type: "text/csv;charset=utf-8;"});
 
   const link = document.createElement("a");
   const url = URL.createObjectURL(blob);
@@ -485,24 +486,24 @@ const onToggleColors = () => {
 
 <script lang="ts">
 const defaultResoloutions: Record<string, number> = {
-  "5 minutes": 5,
-  "30 minutes": 30,
-  "An hour": 60,
-  "12 hours": 720,
-  "A day": 1440,
-  "A week": 10080,
+  "5 分钟": 5,
+  "30 分钟": 30,
+  "1 小时": 60,
+  "12 小时": 720,
+  "1 天": 1440,
+  "1 周": 10080,
 };
 
 const defaultRanges: Record<number, [string, number] | string> = {
-  30: ["Last 30 minutes", 1],
-  60: ["Last hour", 5],
-  720: ["Last 12 hours", 15],
-  1440: ["Last day", 60],
-  10080: ["Last week", 720],
-  43200: ["Last month", 1440],
-  129600: ["Last quarter", 10080],
-  525600: ["Last year", 20160],
-  1051200: ["Last two years", 40320],
+  30: ["30 分钟", 1],
+  60: ["1 小时", 5],
+  720: ["12 小时", 15],
+  1440: ["1 天", 60],
+  10080: ["1 周", 720],
+  43200: ["1 月", 1440],
+  129600: ["1 季度", 10080],
+  525600: ["1 年", 20160],
+  1051200: ["2 年", 40320],
 };
 </script>
 
@@ -601,9 +602,8 @@ const defaultRanges: Record<number, [string, number] | string> = {
 .chart-button-base__selected {
   color: var(--color-contrast);
   background-color: var(--color-brand-highlight);
-  box-shadow:
-    inset 0 0 0 transparent,
-    0 0 0 2px var(--color-brand);
+  box-shadow: inset 0 0 0 transparent,
+  0 0 0 2px var(--color-brand);
 
   &:hover {
     background-color: var(--color-brand-highlight);
@@ -688,6 +688,7 @@ const defaultRanges: Record<number, [string, number] | string> = {
     flex-direction: column;
     gap: var(--gap-xs);
   }
+
   .percentage-bar {
     grid-area: bar;
     width: 100%;
@@ -696,6 +697,7 @@ const defaultRanges: Record<number, [string, number] | string> = {
     border: 1px solid var(--color-button-bg);
     border-radius: var(--radius-sm);
     overflow: hidden;
+
     span {
       display: block;
       height: 100%;

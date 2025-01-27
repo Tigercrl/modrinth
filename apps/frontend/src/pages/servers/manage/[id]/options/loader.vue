@@ -816,15 +816,7 @@ const handleReinstall = async () => {
   if (backupServer.value) {
     try {
       const date = new Date();
-      const format = date.toLocaleString(navigator.language || "en-US", {
-        month: "short",
-        day: "numeric",
-        year: "numeric",
-        hour: "numeric",
-        minute: "numeric",
-        second: "numeric",
-        timeZoneName: "short",
-      });
+      const format = date.toLocaleString(navigator.language || "zh-CN");
       const backupName = `Reinstallation - ${format}`;
       isLoading.value = true;
       const backupId = (await props.server.backups?.create(backupName)) as unknown as string;
@@ -916,15 +908,7 @@ const handleReinstallUpload = async () => {
   if (backupServer.value) {
     try {
       const date = new Date();
-      const format = date.toLocaleString(navigator.language || "en-US", {
-        month: "short",
-        day: "numeric",
-        year: "numeric",
-        hour: "numeric",
-        minute: "numeric",
-        second: "numeric",
-        timeZoneName: "short",
-      });
+      const format = date.toLocaleString(navigator.language || "zh-CN");
       const backupName = `Reinstallation - ${format}`;
       isLoading.value = true;
       const backupId = (await props.server.backups?.create(backupName)) as unknown as string;

@@ -20,7 +20,7 @@ export default defineNuxtRouteMiddleware(async (_to, from) => {
     }
   }
 
-  return await navigateTo(
+  return navigateTo(
     {
       path: "/auth/sign-in",
       query: {

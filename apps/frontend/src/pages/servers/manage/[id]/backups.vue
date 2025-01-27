@@ -126,14 +126,7 @@
                   <div class="flex items-center gap-2 text-sm font-semibold">
                     <CalendarIcon class="size-4" />
                     {{
-                      new Date(backup.created_at).toLocaleString("en-US", {
-                        month: "numeric",
-                        day: "numeric",
-                        year: "2-digit",
-                        hour: "numeric",
-                        minute: "numeric",
-                        hour12: true,
-                      })
+                      new Date(backup.created_at).toLocaleString("zh-CN")
                     }}
                   </div>
                 </div>

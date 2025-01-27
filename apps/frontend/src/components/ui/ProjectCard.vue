@@ -6,7 +6,7 @@
       tabindex="-1"
       :to="`/${$getProjectTypeForUrl(type, categories)}/${id}`"
     >
-      <Avatar :src="iconUrl" :alt="name" size="md" no-shadow loading="lazy" />
+      <Avatar :src="iconUrl" :alt="name" size="md" no-shadow loading="lazy"/>
     </nuxt-link>
     <nuxt-link
       class="gallery"
@@ -15,7 +15,7 @@
       :to="`/${$getProjectTypeForUrl(type, categories)}/${id}`"
       :style="color ? `background-color: ${toColor};` : ''"
     >
-      <img v-if="featuredImage" :src="featuredImage" alt="gallery image" loading="lazy" />
+      <img v-if="featuredImage" :src="featuredImage" alt="gallery image" loading="lazy"/>
     </nuxt-link>
     <div class="title">
       <nuxt-link :to="`/${$getProjectTypeForUrl(type, categories)}/${id}`">
@@ -24,12 +24,13 @@
         </h2>
       </nuxt-link>
       <p v-if="author" class="author">
-        by
-        <nuxt-link class="title-link" :to="'/user/' + author">
+        （创作者：<!--
+      --><nuxt-link class="title-link" :to="'/user/' + author">
           {{ author }}
-        </nuxt-link>
+        </nuxt-link><!--
+      -->）
       </p>
-      <Badge v-if="status && status !== 'approved'" :type="status" class="status" />
+      <Badge v-if="status && status !== 'approved'" :type="status" class="status"/>
     </div>
     <p class="description">
       {{ description }}
@@ -53,37 +54,37 @@
     </Categories>
     <div class="stats">
       <div v-if="downloads" class="stat">
-        <DownloadIcon aria-hidden="true" />
+        <DownloadIcon aria-hidden="true"/>
         <p>
           <strong>{{ $formatNumber(downloads) }}</strong
-          ><span class="stat-label"> download<span v-if="downloads !== '1'">s</span></span>
+          ><span class="stat-label"> 下载<span v-if="downloads !== '1'">s</span></span>
         </p>
       </div>
       <div v-if="follows" class="stat">
-        <HeartIcon aria-hidden="true" />
+        <HeartIcon aria-hidden="true"/>
         <p>
           <strong>{{ $formatNumber(follows) }}</strong
-          ><span class="stat-label"> follower<span v-if="follows !== '1'">s</span></span>
+          ><span class="stat-label"> 关注<span v-if="follows !== '1'">s</span></span>
         </p>
       </div>
       <div class="buttons">
-        <slot />
+        <slot/>
       </div>
       <div
         v-if="showUpdatedDate"
         v-tooltip="$dayjs(updatedAt).format('YYYY/MM/D hh:mm:ss')"
         class="stat date"
       >
-        <EditIcon aria-hidden="true" />
-        <span class="date-label">Updated </span>{{ fromNow(updatedAt) }}
+        <EditIcon aria-hidden="true"/>
+        <span class="date-label">更新时间：</span>{{ fromNow(updatedAt) }}
       </div>
       <div
         v-else-if="showCreatedDate"
         v-tooltip="$dayjs(createdAt).format('YYYY/MM/D hh:mm:ss')"
         class="stat date"
       >
-        <CalendarIcon aria-hidden="true" />
-        <span class="date-label">Published </span>{{ fromNow(createdAt) }}
+        <CalendarIcon aria-hidden="true"/>
+        <span class="date-label">发布时间：</span>{{ fromNow(createdAt) }}
       </div>
     </div>
   </article>
@@ -122,7 +123,7 @@ export default {
     },
     name: {
       type: String,
-      default: "Project Name",
+      default: "资源名称",
     },
     author: {
       type: String,
@@ -130,7 +131,7 @@ export default {
     },
     description: {
       type: String,
-      default: "A _type description",
+      default: "无简介",
     },
     iconUrl: {
       type: String,
@@ -218,7 +219,7 @@ export default {
   setup() {
     const tags = useTags();
 
-    return { tags };
+    return {tags};
   },
   computed: {
     projectTypeDisplay() {
@@ -311,9 +312,8 @@ export default {
     img,
     svg {
       border-radius: var(--size-rounded-lg);
-      box-shadow:
-        -2px -2px 0 2px var(--color-raised-bg),
-        2px -2px 0 2px var(--color-raised-bg);
+      box-shadow: -2px -2px 0 2px var(--color-raised-bg),
+      2px -2px 0 2px var(--color-raised-bg);
     }
   }
 

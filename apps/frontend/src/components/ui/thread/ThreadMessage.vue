@@ -24,31 +24,31 @@
       <span :class="`message__author role-${members[message.author_id].role}`">
         <LockIcon
           v-if="message.body.private"
-          v-tooltip="'Only visible to moderators'"
+          v-tooltip="'仅审核员可见'"
           class="private-icon"
         />
         <AutoLink :to="noLinks ? '' : `/user/${members[message.author_id].username}`">
           {{ members[message.author_id].username }}
         </AutoLink>
-        <ScaleIcon v-if="members[message.author_id].role === 'moderator'" v-tooltip="'Moderator'" />
+        <ScaleIcon v-if="members[message.author_id].role === 'moderator'" v-tooltip="'审核员'"/>
         <ModrinthIcon
           v-else-if="members[message.author_id].role === 'admin'"
-          v-tooltip="'Modrinth Team'"
+          v-tooltip="'Modrinth 团队'"
         />
         <MicrophoneIcon
           v-if="report && message.author_id === report.reporterUser.id"
-          v-tooltip="'Reporter'"
+          v-tooltip="'举报者'"
           class="reporter-icon"
         />
       </span>
     </template>
     <template v-else>
       <div class="message__icon backed-svg circle moderation-color" :class="{ raised: raised }">
-        <ScaleIcon />
+        <ScaleIcon/>
       </div>
       <span class="message__author moderation-color">
-        Moderator
-        <ScaleIcon v-tooltip="'Moderator'" />
+        审核员
+        <ScaleIcon v-tooltip="'审核员'"/>
       </span>
     </template>
     <div
@@ -57,22 +57,22 @@
       v-html="formattedMessage"
     />
     <div v-else class="message__body status-message">
-      <span v-if="message.body.type === 'deleted'"> posted a message that has been deleted. </span>
+      <span v-if="message.body.type === 'deleted'"> 撤回了一条消息。</span>
       <template v-else-if="message.body.type === 'status_change'">
         <span v-if="message.body.new_status === 'processing'">
-          submitted the project for review.
+          提交了审核。
         </span>
         <span v-else>
-          changed the project's status from <Badge :type="message.body.old_status" /> to
-          <Badge :type="message.body.new_status" />.
+          将资源状态从 <Badge :type="message.body.old_status"/> 改为 <Badge
+          :type="message.body.new_status"/>。
         </span>
       </template>
-      <span v-else-if="message.body.type === 'thread_closure'">closed the thread.</span>
-      <span v-else-if="message.body.type === 'thread_reopen'">reopened the thread.</span>
+      <span v-else-if="message.body.type === 'thread_closure'">关闭了对话。</span>
+      <span v-else-if="message.body.type === 'thread_reopen'">重新开启了对话。</span>
     </div>
     <span class="message__date">
       <span v-tooltip="$dayjs(message.created).format('YYYY/MM/D hh:mm:ss')">
-        {{ timeSincePosted }}
+        {{ $dayjs(message.created).fromNow() }}
       </span>
     </span>
     <div v-if="isStaff(auth.user) && message.author_id === auth.user.id" class="message__actions">
@@ -87,8 +87,11 @@
           },
         ]"
       >
-        <MoreHorizontalIcon />
-        <template #delete> <TrashIcon /> Delete </template>
+        <MoreHorizontalIcon/>
+        <template #delete>
+          <TrashIcon/>
+          撤回
+        </template>
       </OverflowMenu>
     </div>
   </div>
@@ -96,18 +99,18 @@
 
 <script setup>
 import {
-  MoreHorizontalIcon,
-  TrashIcon,
-  MicrophoneIcon,
   LockIcon,
+  MicrophoneIcon,
   ModrinthIcon,
+  MoreHorizontalIcon,
   ScaleIcon,
+  TrashIcon,
 } from "@modrinth/assets";
-import { AutoLink, OverflowMenu } from "@modrinth/ui";
-import { renderString } from "@modrinth/utils";
+import {AutoLink, OverflowMenu} from "@modrinth/ui";
+import {renderString} from "@modrinth/utils";
 import Avatar from "~/components/ui/Avatar.vue";
 import Badge from "~/components/ui/Badge.vue";
-import { isStaff } from "~/helpers/users.js";
+import {isStaff} from "~/helpers/users.js";
 
 const props = defineProps({
   message: {
@@ -120,7 +123,8 @@ const props = defineProps({
   },
   members: {
     type: Object,
-    default: () => {},
+    default: () => {
+    },
   },
   forceCompact: {
     type: Boolean,
@@ -157,9 +161,6 @@ const formattedMessage = computed(() => {
   }
   return body;
 });
-
-const formatRelativeTime = useRelativeTime();
-const timeSincePosted = ref(formatRelativeTime(props.message.created));
 
 async function deleteMessage() {
   await useBaseFetch(`message/${props.message.id}`, {
@@ -263,6 +264,7 @@ async function deleteMessage() {
   gap: var(--spacing-card-xs);
   flex-wrap: wrap;
 }
+
 a {
   display: flex;
   align-items: center;

@@ -131,7 +131,7 @@ watch(
 
   <div class="mt-4 flex items-center justify-between">
     <div>
-      <h2 class="m-0 text-lg font-extrabold text-contrast">开发者模式（汉化版独有）</h2>
+      <h2 class="m-0 text-lg font-extrabold text-contrast">开发者模式（开关由汉化版添加）</h2>
       <p class="m-0 mt-1">Modrinth App 隐藏了开发者模式的开关，但您可以通过此选项启用开发者模式。</p>
     </div>
     <Toggle

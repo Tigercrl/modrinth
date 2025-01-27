@@ -247,9 +247,6 @@
             </div>
           </template>
         </div>
-        <AdPlaceholder
-          v-if="!auth.user || !isPermission(auth.user.badges, 1 << 0) || flags.showAdsWithPlus"
-        />
       </div>
       <div class="normal-page__content">
         <nav class="navigation-card">
@@ -395,7 +392,6 @@ import { addNotification } from "~/composables/notifs.js";
 import ModalConfirm from "~/components/ui/ModalConfirm.vue";
 import NavRow from "~/components/ui/NavRow.vue";
 import ProjectCard from "~/components/ui/ProjectCard.vue";
-import AdPlaceholder from "~/components/ui/AdPlaceholder.vue";
 
 const vintl = useVIntl();
 const { formatMessage } = vintl;

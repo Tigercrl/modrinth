@@ -43,18 +43,19 @@
     </template>
     <template v-else-if="alwaysShow">
       <InfoIcon aria-hidden="true" />
-      {{ formatMessage(messages.typeLabel, { type: type }) }}
+      {{ formatProjectType(type) }}
     </template>
   </span>
 </template>
 <script setup lang="ts">
 import { GlobeIcon, ClientIcon, ServerIcon, InfoIcon } from '@modrinth/assets'
 import { useVIntl, defineMessages } from '@vintl/vintl'
+import {capitalizeString} from "@modrinth/utils";
 
 const messages = defineMessages({
   clientLabel: {
     id: 'omorphia.component.environment-indicator.label.client',
-    defaultMessage: '客户端',
+    defaultMessage: '仅客户端',
   },
   clientAndServerLabel: {
     id: 'omorphia.component.environment-indicator.label.client-and-server',
@@ -66,11 +67,7 @@ const messages = defineMessages({
   },
   serverLabel: {
     id: 'omorphia.component.environment-indicator.label.server',
-    defaultMessage: '服务器',
-  },
-  typeLabel: {
-    id: 'omorphia.component.environment-indicator.label.type',
-    defaultMessage: '一个{type}',
+    defaultMessage: '仅服务器',
   },
   unsupportedLabel: {
     id: 'omorphia.component.environment-indicator.label.unsupported',
@@ -78,6 +75,23 @@ const messages = defineMessages({
   },
 })
 const { formatMessage } = useVIntl()
+
+const formatProjectType = (name) => {
+  switch (name) {
+    case 'resourcepack':
+      return '资源包'
+    case 'datapack':
+      return '数据包'
+    case 'shader':
+      return '光影'
+    case 'mod':
+      return '模组'
+    case 'modpack':
+      return '整合包'
+  }
+
+  return name ? name.charAt(0).toUpperCase() + name.slice(1) : name
+}
 
 withDefaults(
   defineProps<{

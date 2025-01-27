@@ -3,18 +3,18 @@
     <div class="main">
       <div class="error">
         <Logo404 v-if="error.statusCode === 404" />
-        <h1 v-else>An error occurred!</h1>
+        <h1 v-else>发生错误！</h1>
         <p>{{ error.message }}</p>
         <div class="button-group">
           <nuxt-link to="/" class="iconified-button raised-button brand-button">
-            Go home
+            返回主页
           </nuxt-link>
           <a
             href="https://discord.modrinth.com"
             class="iconified-button raised-button"
             rel="noopener"
           >
-            Get help on Discord
+            在 Discord 上获取帮助
           </a>
         </div>
       </div>
@@ -31,7 +31,7 @@ defineProps({
     default() {
       return {
         statusCode: 1000,
-        message: "Unknown error",
+        message: "未知错误",
       };
     },
   },

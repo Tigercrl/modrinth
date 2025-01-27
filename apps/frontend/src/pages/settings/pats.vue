@@ -179,7 +179,7 @@
               editPatIndex = index;
               name = pat.name;
               scopesVal = pat.scopes;
-              expires = $dayjs(pat.expires).format('YYYY-MM-DD');
+              expires = $dayjs(pat.expires).format('YYYY/MM/DD');
               $refs.patModal.show();
             }
           "

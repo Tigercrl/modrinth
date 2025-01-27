@@ -161,7 +161,7 @@ export async function markAsRead(ids) {
     const app = useNuxtApp();
     app.$notify({
       group: "main",
-      title: "Error marking notification as read",
+      title: "未能标记为已读",
       text: err.data ? err.data.description : err,
       type: "error",
     });

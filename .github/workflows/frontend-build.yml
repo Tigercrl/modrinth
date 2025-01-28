@@ -48,8 +48,7 @@ jobs:
         run: pnpm install
 
       - name: Build frontend
-        run: pnpm web:build"
-        id: build_os
+        run: pnpm web:build
 
       - name: Upload output
         uses: actions/upload-artifact@v4

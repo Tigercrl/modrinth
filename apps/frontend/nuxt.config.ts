@@ -335,12 +335,14 @@ export default defineNuxtConfig({
         process.env.CF_PAGES_BRANCH ||
         // @ts-ignore
         globalThis.CF_PAGES_BRANCH ||
+        process.env.GITHUB_BASE_REF ||
         "master",
       hash:
         process.env.VERCEL_GIT_COMMIT_SHA ||
         process.env.CF_PAGES_COMMIT_SHA ||
         // @ts-ignore
         globalThis.CF_PAGES_COMMIT_SHA ||
+        process.env.GITHUB_SHA ||
         "unknown",
 
       stripePublishableKey:

@@ -36,11 +36,11 @@
         </a>
         <a class="btn" :href="getAuthUrl('microsoft', redirectTarget)">
           <SSOMicrosoftIcon />
-          <span>Microsoft</span>
+          <span>微软</span>
         </a>
         <a class="btn" :href="getAuthUrl('google', redirectTarget)">
           <SSOGoogleIcon />
-          <span>Google</span>
+          <span>谷歌</span>
         </a>
         <a class="btn" :href="getAuthUrl('steam', redirectTarget)">
           <SSOSteamIcon />
@@ -143,39 +143,39 @@ const messages = defineMessages({
   additionalOptionsLabel: {
     id: "auth.sign-in.additional-options",
     defaultMessage:
-      "<forgot-password-link>Forgot password?</forgot-password-link> • <create-account-link>Create an account</create-account-link>",
+      "<forgot-password-link>忘记密码？</forgot-password-link> • <create-account-link>创建账户</create-account-link>",
   },
   emailUsernameLabel: {
     id: "auth.sign-in.email-username.label",
-    defaultMessage: "Email or username",
+    defaultMessage: "用户名或密码",
   },
   passwordLabel: {
     id: "auth.sign-in.password.label",
-    defaultMessage: "Password",
+    defaultMessage: "密码",
   },
   signInWithLabel: {
     id: "auth.sign-in.sign-in-with",
-    defaultMessage: "Sign in with",
+    defaultMessage: "使用第三方平台登录",
   },
   signInTitle: {
     id: "auth.sign-in.title",
-    defaultMessage: "Sign In",
+    defaultMessage: "登录",
   },
   twoFactorCodeInputPlaceholder: {
     id: "auth.sign-in.2fa.placeholder",
-    defaultMessage: "Enter code...",
+    defaultMessage: "请输入代码...",
   },
   twoFactorCodeLabel: {
     id: "auth.sign-in.2fa.label",
-    defaultMessage: "Enter two-factor code",
+    defaultMessage: "请输入两部验证代码",
   },
   twoFactorCodeLabelDescription: {
     id: "auth.sign-in.2fa.description",
-    defaultMessage: "Please enter a two-factor code to proceed.",
+    defaultMessage: "请输入两部验证代码以继续",
   },
   usePasswordLabel: {
     id: "auth.sign-in.use-password",
-    defaultMessage: "Or use a password",
+    defaultMessage: "或使用密码",
   },
 });
 

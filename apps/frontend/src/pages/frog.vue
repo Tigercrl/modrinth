@@ -1,3 +1,5 @@
+<!-- TODO: 汉化 -->
+<!-- 此梗在国内不流传 -->
 <script setup lang="ts">
 const vintl = useVIntl();
 const { formatMessage } = vintl;
@@ -17,7 +19,7 @@ const messages = defineMessages({
   },
   frogSinceOpened: {
     id: "frog.sinceOpened",
-    defaultMessage: "This page was opened {ago}",
+    defaultMessage: "页面打开时间：{ago}",
   },
   frogFroggedPeople: {
     id: "frog.froggedPeople",

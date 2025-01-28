@@ -2,34 +2,34 @@
   <div class="normal-page">
     <div class="normal-page__sidebar">
       <aside class="universal-card">
-        <h1>Legal</h1>
+        <h1>政策条款</h1>
         <NavStack>
-          <NavStackItem link="/legal/terms" label="Terms of Use">
+          <NavStackItem link="/legal/terms" label="使用条款">
             <HeartHandshakeIcon aria-hidden="true" />
           </NavStackItem>
-          <NavStackItem link="/legal/rules" label="Content Rules">
+          <NavStackItem link="/legal/rules" label="内容规则">
             <ScaleIcon aria-hidden="true" />
           </NavStackItem>
-          <NavStackItem link="/legal/copyright" label="Copyright Policy">
+          <NavStackItem link="/legal/copyright" label="版权政策">
             <CopyrightIcon aria-hidden="true" />
           </NavStackItem>
-          <NavStackItem link="/legal/security" label="Security Notice">
+          <NavStackItem link="/legal/security" label="安全注意">
             <ShieldIcon aria-hidden="true" />
           </NavStackItem>
 
-          <h3>Privacy</h3>
-          <NavStackItem link="/legal/privacy" label="Privacy Policy">
+          <h3>隐私</h3>
+          <NavStackItem link="/legal/privacy" label="隐私政策">
             <LockIcon aria-hidden="true" />
           </NavStackItem>
-          <NavStackItem link="/legal/ccpa" label="California Privacy Notice">
+          <NavStackItem link="/legal/ccpa" label="加州隐私声明">
             <InfoIcon aria-hidden="true" />
           </NavStackItem>
 
-          <h3>Rewards Program</h3>
-          <NavStackItem link="/legal/cmp" label="Rewards Program Terms">
+          <h3>创作者激励</h3>
+          <NavStackItem link="/legal/cmp" label="创作者激励条款">
             <CurrencyIcon aria-hidden="true" />
           </NavStackItem>
-          <NavStackItem link="/legal/cmp-info" label="Rewards Program Info">
+          <NavStackItem link="/legal/cmp-info" label="创作者激励详情">
             <InfoIcon aria-hidden="true" />
           </NavStackItem>
         </NavStack>

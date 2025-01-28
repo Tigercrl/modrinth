@@ -1,3 +1,5 @@
+<!-- TODO: 汉化 -->
+<!-- 不会真有中国人当上审核员了吧？ -->
 <template>
   <section class="universal-card">
     <h2>Review projects</h2>

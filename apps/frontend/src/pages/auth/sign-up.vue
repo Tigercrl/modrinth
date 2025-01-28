@@ -13,11 +13,11 @@
       </a>
       <a class="btn" :href="getAuthUrl('microsoft', redirectTarget)">
         <SSOMicrosoftIcon />
-        <span>Microsoft</span>
+        <span>微软</span>
       </a>
       <a class="btn" :href="getAuthUrl('google', redirectTarget)">
         <SSOGoogleIcon />
-        <span>Google</span>
+        <span>谷歌</span>
       </a>
       <a class="btn" :href="getAuthUrl('steam', redirectTarget)">
         <SSOSteamIcon />
@@ -153,48 +153,48 @@ const { formatMessage } = useVIntl();
 const messages = defineMessages({
   title: {
     id: "auth.sign-up.title",
-    defaultMessage: "Sign Up",
+    defaultMessage: "注册",
   },
   signUpWithTitle: {
     id: "auth.sign-up.title.sign-up-with",
-    defaultMessage: "Sign up with",
+    defaultMessage: "使用第三方平台注册",
   },
   createAccountTitle: {
     id: "auth.sign-up.title.create-account",
-    defaultMessage: "Or create an account yourself",
+    defaultMessage: "或手动创建账户",
   },
   emailLabel: {
     id: "auth.sign-up.email.label",
-    defaultMessage: "Email",
+    defaultMessage: "邮箱地址",
   },
   usernameLabel: {
     id: "auth.sign-up.label.username",
-    defaultMessage: "Username",
+    defaultMessage: "用户名",
   },
   passwordLabel: {
     id: "auth.sign-up.password.label",
-    defaultMessage: "Password",
+    defaultMessage: "密码",
   },
   confirmPasswordLabel: {
     id: "auth.sign-up.confirm-password.label",
-    defaultMessage: "Confirm password",
+    defaultMessage: "重复密码",
   },
   subscribeLabel: {
     id: "auth.sign-up.subscribe.label",
-    defaultMessage: "Subscribe to updates about Modrinth",
+    defaultMessage: "订阅 Modrinth 更新",
   },
   legalDisclaimer: {
     id: "auth.sign-up.legal-dislaimer",
     defaultMessage:
-      "By creating an account, you agree to Modrinth's <terms-link>Terms</terms-link> and <privacy-policy-link>Privacy Policy</privacy-policy-link>.",
+      "创建账户即表示您同意 Modrinth 的 <terms-link>条款</terms-link> 和 <privacy-policy-link>隐私政策</privacy-policy-link>。",
   },
   createAccountButton: {
     id: "auth.sign-up.action.create-account",
-    defaultMessage: "Create account",
+    defaultMessage: "创建账户",
   },
   alreadyHaveAccountLabel: {
     id: "auth.sign-up.sign-in-option.title",
-    defaultMessage: "Already have an account?",
+    defaultMessage: "已经有账户了？",
   },
 });
 

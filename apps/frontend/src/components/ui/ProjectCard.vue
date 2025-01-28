@@ -57,14 +57,14 @@
         <DownloadIcon aria-hidden="true"/>
         <p>
           <strong>{{ $formatNumber(downloads) }}</strong
-          ><span class="stat-label"> 下载<span v-if="downloads !== '1'">s</span></span>
+          ><span class="stat-label"> 下载</span>
         </p>
       </div>
       <div v-if="follows" class="stat">
         <HeartIcon aria-hidden="true"/>
         <p>
           <strong>{{ $formatNumber(follows) }}</strong
-          ><span class="stat-label"> 关注<span v-if="follows !== '1'">s</span></span>
+          ><span class="stat-label"> 关注</span>
         </p>
       </div>
       <div class="buttons">

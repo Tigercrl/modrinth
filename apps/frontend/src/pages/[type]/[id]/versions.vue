@@ -7,15 +7,15 @@
       <FileInput
         :max-size="524288000"
         :accept="acceptFileFromProjectType(project.project_type)"
-        prompt="Upload a version"
+        prompt="上传版本"
         class="btn btn-primary"
-        aria-label="Upload a version"
+        aria-label="上传版本"
         @change="handleFiles"
       >
         <UploadIcon aria-hidden="true" />
       </FileInput>
       <span class="flex items-center gap-2">
-        <InfoIcon aria-hidden="true" /> Click to choose a file or drag one onto this page
+        <InfoIcon aria-hidden="true" /> 单击选择文件或将文件拖放至此页面上传
       </span>
       <DropArea :accept="acceptFileFromProjectType(project.project_type)" @change="handleFiles" />
     </div>
@@ -37,10 +37,10 @@
       <template #actions="{ version }">
         <ButtonStyled circular type="transparent">
           <a
-            v-tooltip="`Download`"
+            v-tooltip="`下载`"
             :href="getPrimaryFile(version).url"
             class="group-hover:!bg-brand group-hover:[&>svg]:!text-brand-inverted"
-            aria-label="Download"
+            aria-label="下载"
             @click="emits('onDownload')"
           >
             <DownloadIcon aria-hidden="true" />
@@ -110,31 +110,31 @@
             <MoreVerticalIcon aria-hidden="true" />
             <template #download>
               <DownloadIcon aria-hidden="true" />
-              Download
+              下载
             </template>
             <template #new-tab>
               <ExternalIcon aria-hidden="true" />
-              Open in new tab
+              在新标签页中打开
             </template>
             <template #copy-link>
               <LinkIcon aria-hidden="true" />
-              Copy link
+              复制链接
             </template>
             <template #share>
               <ShareIcon aria-hidden="true" />
-              Share
+              分享
             </template>
             <template #report>
               <ReportIcon aria-hidden="true" />
-              Report
+              举报
             </template>
             <template #edit>
               <EditIcon aria-hidden="true" />
-              Edit
+              修改
             </template>
             <template #delete>
               <TrashIcon aria-hidden="true" />
-              Delete
+              删除
             </template>
           </OverflowMenu>
         </ButtonStyled>

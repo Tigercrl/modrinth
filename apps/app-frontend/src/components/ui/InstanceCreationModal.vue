@@ -24,7 +24,7 @@
           </Button>
           <Button :disabled="!display_icon" @click="reset_icon">
             <XIcon />
-            移除图标
+            删除图标
           </Button>
         </div>
       </div>

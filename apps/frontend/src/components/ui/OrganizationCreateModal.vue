@@ -104,7 +104,7 @@ async function createOrganization() {
     console.error(err);
     addNotification({
       group: "main",
-      title: "An error occurred",
+      title: "发生错误",
       text: err.data.description,
       type: "error",
     });

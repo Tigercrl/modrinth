@@ -1,21 +1,25 @@
 <template>
   <div>
     <section class="universal-card">
-      <h2 class="text-2xl">Revenue</h2>
+      <h2 class="text-2xl">收益</h2>
       <div v-if="userBalance.available >= minWithdraw">
         <p>
-          You have
+          您有
           <strong>{{ $formatMoney(userBalance.available) }}</strong>
-          available to withdraw. <strong>{{ $formatMoney(userBalance.pending) }}</strong> of your
-          balance is <nuxt-link class="text-link" to="/legal/cmp-info#pending">pending</nuxt-link>.
+          可提现，有
+          <strong>{{ $formatMoney(userBalance.pending) }}</strong>
+          正在
+          <nuxt-link class="text-link" to="/legal/cmp-info#pending">等待中</nuxt-link>。
         </p>
       </div>
       <p v-else>
-        You have made
+        您赚取了
         <strong>{{ $formatMoney(userBalance.available) }}</strong
-        >, which is under the minimum of ${{ minWithdraw }} to withdraw.
-        <strong>{{ $formatMoney(userBalance.pending) }}</strong> of your balance is
-        <nuxt-link class="text-link" to="/legal/cmp-info#pending">pending</nuxt-link>.
+        >，低于最低提现额 ${{ minWithdraw }}，因此无法提现。
+        您有
+        <strong>{{ $formatMoney(userBalance.pending) }}</strong>
+        正在
+        <nuxt-link class="text-link" to="/legal/cmp-info#pending">等待中</nuxt-link>。
       </p>
       <div class="input-group mt-4">
         <nuxt-link
@@ -23,69 +27,78 @@
           class="iconified-button brand-button"
           to="/dashboard/revenue/withdraw"
         >
-          <TransferIcon /> Withdraw
+          <TransferIcon/>
+          提现
         </nuxt-link>
         <NuxtLink class="iconified-button" to="/dashboard/revenue/transfers">
-          <HistoryIcon /> View transfer history
+          <HistoryIcon/>
+          查看提现历史
         </NuxtLink>
       </div>
       <p>
-        By uploading projects to Modrinth and withdrawing money from your account, you agree to the
-        <nuxt-link to="/legal/cmp" class="text-link">Rewards Program Terms</nuxt-link>. For more
-        information on how the rewards system works, see our information page
-        <nuxt-link to="/legal/cmp-info" class="text-link">here</nuxt-link>.
+        在 Modrinth 上发布资源并从您的账户中提现资金，即表示您同意
+        <nuxt-link to="/legal/cmp" class="text-link">创作者激励条款</nuxt-link>。如需了解奖励制度的更多信息，请
+        <nuxt-link to="/legal/cmp-info" class="text-link">点击此处</nuxt-link>
+        查看我们的信息页面。
       </p>
     </section>
     <section class="universal-card">
-      <h2 class="text-2xl">Payout methods</h2>
+      <h2 class="text-2xl">提现方式</h2>
       <h3>PayPal</h3>
       <template v-if="auth.user.auth_providers.includes('paypal')">
         <p>
-          Your PayPal {{ auth.user.payout_data.paypal_country }} account is currently connected with
-          email
+          您的 PayPal
+          {{ auth.user.payout_data.paypal_country }}
+          账户目前与邮箱
           {{ auth.user.payout_data.paypal_address }}
+          绑定
         </p>
         <button class="btn mt-4" @click="removeAuthProvider('paypal')">
-          <XIcon /> Disconnect account
+          <XIcon/>
+          解绑
         </button>
       </template>
       <template v-else>
-        <p>Connect your PayPal account to enable withdrawing to your PayPal balance.</p>
+        <p>绑定您的 PayPal 账户，以提现到您的 PayPal 账户。</p>
         <a class="btn mt-4" :href="`${getAuthUrl('paypal')}&token=${auth.token}`">
-          <PayPalIcon />
-          Sign in with PayPal
+          <PayPalIcon/>
+          登录 PayPal
         </a>
       </template>
       <h3>Tremendous</h3>
       <p>
-        Tremendous payments are sent to your Modrinth email. To change/set your Modrinth email,
-        visit
-        <nuxt-link to="/settings/account" class="text-link">here</nuxt-link>.
+        Tremendous 提现将提现至和您 Modrinth 邮箱一致的账户。点此
+        <nuxt-link to="/settings/account" class="text-link">修改 / 设置您的 Modrinth 电子邮箱
+        </nuxt-link>
+        .
       </p>
       <h3>Venmo</h3>
-      <p>Enter your Venmo username below to enable withdrawing to your Venmo balance.</p>
-      <label class="hidden" for="venmo">Venmo address</label>
+      <p>请在下面输入您的 Venmo 用户名，以提现到您的 Venmo 账户。</p>
+      <label class="hidden" for="venmo">Venmo 地址</label>
       <input
         id="venmo"
         v-model="auth.user.payout_data.venmo_handle"
         class="mt-4"
         type="search"
         name="search"
-        placeholder="@example"
+        placeholder="@xxxxx"
         autocomplete="off"
       />
-      <button class="btn btn-secondary" @click="updateVenmo"><SaveIcon /> Save information</button>
+      <button class="btn btn-secondary" @click="updateVenmo">
+        <SaveIcon/>
+        保存信息
+      </button>
     </section>
   </div>
 </template>
 <script setup>
-import { TransferIcon, HistoryIcon, PayPalIcon, SaveIcon, XIcon } from "@modrinth/assets";
+import {HistoryIcon, PayPalIcon, SaveIcon, TransferIcon, XIcon} from "@modrinth/assets";
 
 const auth = await useAuth();
 const minWithdraw = ref(0.01);
 
-const { data: userBalance } = await useAsyncData(`payout/balance`, () =>
-  useBaseFetch(`payout/balance`, { apiVersion: 3 }),
+const {data: userBalance} = await useAsyncData(`payout/balance`, () =>
+  useBaseFetch(`payout/balance`, {apiVersion: 3}),
 );
 
 async function updateVenmo() {
@@ -105,7 +118,7 @@ async function updateVenmo() {
     const data = useNuxtApp();
     data.$notify({
       group: "main",
-      title: "An error occurred",
+      title: "发生错误",
       text: err.data.description,
       type: "error",
     });

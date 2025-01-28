@@ -183,7 +183,7 @@ onUnmounted(() => {
           <ButtonStyled>
             <button @click="removeFriend(friend)">
               <XIcon />
-              移除
+              删除
             </button>
           </ButtonStyled>
         </div>
@@ -321,7 +321,7 @@ onUnmounted(() => {
     </template>
     <template v-else>
       <ContextMenu ref="friendOptions" @option-clicked="handleFriendOptions">
-        <template #remove-friend> <TrashIcon /> 移除好友 </template>
+        <template #remove-friend> <TrashIcon /> 删除好友 </template>
       </ContextMenu>
       <div
         v-for="friend in acceptedFriends.slice(0, 5)"

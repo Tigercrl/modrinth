@@ -462,7 +462,7 @@ async function saveEmail() {
   } catch (err) {
     data.$notify({
       group: "main",
-      title: "An error occurred",
+      title: "发生错误",
       text: err.data.description,
       type: "error",
     });
@@ -494,7 +494,7 @@ async function savePassword() {
   } catch (err) {
     data.$notify({
       group: "main",
-      title: "An error occurred",
+      title: "发生错误",
       text: err.data.description,
       type: "error",
     });
@@ -531,7 +531,7 @@ async function showTwoFactorModal() {
   } catch (err) {
     data.$notify({
       group: "main",
-      title: "An error occurred",
+      title: "发生错误",
       text: err.data.description,
       type: "error",
     });
@@ -621,7 +621,7 @@ async function deleteAccount() {
   } catch (err) {
     data.$notify({
       group: "main",
-      title: "An error occurred",
+      title: "发生错误",
       text: err.data.description,
       type: "error",
     });
@@ -651,7 +651,7 @@ async function exportData() {
   } catch (err) {
     data.$notify({
       group: "main",
-      title: "An error occurred",
+      title: "发生错误",
       text: err.data.description,
       type: "error",
     });

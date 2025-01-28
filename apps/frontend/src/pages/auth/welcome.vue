@@ -44,25 +44,25 @@ const { formatMessage } = useVIntl();
 const messages = defineMessages({
   subscribeCheckbox: {
     id: "auth.welcome.checkbox.subscribe",
-    defaultMessage: "Subscribe to updates about Modrinth",
+    defaultMessage: "订阅 Modrinth 更新",
   },
   tosLabel: {
     id: "auth.welcome.label.tos",
     defaultMessage:
-      "By creating an account, you have agreed to Modrinth's <terms-link>Terms</terms-link> and <privacy-policy-link>Privacy Policy</privacy-policy-link>.",
+      "创建账户即表示您同意 Modrinth 的 <terms-link>条款</terms-link> 和 <privacy-policy-link>隐私政策</privacy-policy-link>。",
   },
   welcomeDescription: {
     id: "auth.welcome.description",
     defaultMessage:
-      "Thank you for creating an account. You can now follow and create projects, receive updates about your favorite projects, and more!",
+      "感谢您创建账户。您现在可以关注和创建资源、接收您最喜爱项目的更新通知等更多操作！",
   },
   welcomeLongTitle: {
     id: "auth.welcome.long-title",
-    defaultMessage: "Welcome to Modrinth!",
+    defaultMessage: "欢迎来到 Modrinth！",
   },
   welcomeTitle: {
     id: "auth.welcome.title",
-    defaultMessage: "Welcome",
+    defaultMessage: "欢迎",
   },
 });
 

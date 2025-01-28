@@ -114,10 +114,14 @@ export const capitalizeString = (name) => {
 }
 
 export const formatWallet = (name) => {
-  if (name === 'paypal') {
-    return 'PayPal'
+  switch (name) {
+    case 'paypal':
+      return 'PayPal'
+    case 'all':
+      return '所有方式'
+    default:
+      return capitalizeString(name)
   }
-  return capitalizeString(name)
 }
 
 export const formatProjectType = (name) => {
@@ -134,6 +138,12 @@ export const formatProjectType = (name) => {
       return '整合包'
     case 'project':
       return '资源'
+    case 'project_update':
+      return '资源更新'
+    case 'status_change':
+      return '资源状态变更'
+    case 'moderation_message':
+      return '审核消息'
   }
 
   return capitalizeString(name)

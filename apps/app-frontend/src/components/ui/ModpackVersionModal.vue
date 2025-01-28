@@ -54,7 +54,7 @@ const onHide = () => {
   <ModalWrapper
     ref="modpackVersionModal"
     class="modpack-version-modal"
-    header="更改整合包版本"
+    header="修改整合包版本"
     :on-hide="onHide"
   >
     <div class="modal-body">

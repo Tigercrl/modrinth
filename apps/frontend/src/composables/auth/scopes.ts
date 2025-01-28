@@ -13,7 +13,7 @@ export const scopeMessages = defineMessages({
   },
   userReadDescription: {
     id: "scopes.userRead.description",
-    defaultMessage: "访问您的个人资料信息",
+    defaultMessage: "读取您的个人资料信息",
   },
   userWriteLabel: {
     id: "scopes.userWrite.label",

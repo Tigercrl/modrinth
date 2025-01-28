@@ -30,10 +30,9 @@
             purchaseModalStep === (product.metadata.type === 'pyro' && !projectId ? 1 : 0),
         }"
       >
-        {{ product.metadata.type === 'pyro' ? '购买' : '方案' }}
-        <span class="hidden sm:inline">{{
-            product.metadata.type === 'pyro' ? 'interval' : 'selection'
-          }}</span>
+        {{ product.metadata.type === 'pyro' ? '续费' : '方案' }}<span class="hidden sm:inline">{{
+          product.metadata.type === 'pyro' ? '间隔' : '选择'
+        }}</span>
       </span>
       <ChevronRightIcon class="h-5 w-5 text-secondary"/>
       <span
@@ -98,7 +97,7 @@
           <div class="flex items-center gap-2">
             <InfoIcon class="hidden sm:block"/>
             <span class="text-sm text-secondary">
-              您可以稍后在服务器选项中更改这些设置。
+              您可以稍后在服务器选项中修改这些设置。
             </span>
           </div>
         </div>
@@ -190,13 +189,13 @@
               class="text-lg capitalize"
               :class="{ 'text-secondary': selectedPlan !== interval }"
             >
-              {{ interval }}
+              {{ formatPlan(interval) }}
             </span>
             <span
               v-if="interval === 'yearly'"
               class="rounded-full bg-brand px-2 py-1 font-bold text-brand-inverted"
             >
-              {{ calculateSavings(price.prices.intervals.monthly, rawPrice) }} 折
+              {{ -calculateSavings(price.prices.intervals.monthly, rawPrice) }}%
             </span>
             <span class="ml-auto text-lg" :class="{ 'text-secondary': selectedPlan !== interval }">
               {{ formatPrice(locale, rawPrice, price.currency_code) }}
@@ -204,12 +203,12 @@
           </div>
         </div>
         <div class="mt-4 flex justify-between border-0 border-t border-solid border-code-bg pt-4">
-          <span class="text-xl text-secondary">总共</span>
+          <span class="text-xl text-secondary">共计</span>
           <div class="flex items-baseline gap-2">
             <span class="text-2xl font-extrabold text-primary">
               {{ formatPrice(locale, price.prices.intervals[selectedPlan], price.currency_code) }}
             </span>
-            <span class="text-lg text-secondary">/ {{ selectedPlan }}</span>
+            <span class="text-lg text-secondary">/ {{ formatPlan(selectedPlan) }}</span>
           </div>
         </div>
 
@@ -217,6 +216,12 @@
           <InfoIcon class="hidden sm:block"/>
           <span class="text-sm text-secondary">
             最终价格和货币取决于您的付款方式。
+          </span>
+        </div>
+        <div class="flex items-center gap-2 pt-4 text-warning">
+          <IssuesIcon class="hidden sm:block"/>
+          <span class="text-sm">
+            汉化站支付可能出现失败等情况。推荐前往官方站点支付！
           </span>
         </div>
       </div>
@@ -405,7 +410,7 @@
           @click="nextStep"
         >
           <RightArrowIcon/>
-          {{ mutatedProduct.metadata.type === 'pyro' && !projectId ? '下一步' : '请选择' }}
+          {{ mutatedProduct.metadata.type === 'pyro' && !projectId ? '下一步' : '确认' }}
         </button>
       </template>
       <template
@@ -686,6 +691,17 @@ const updateCustomServerProduct = () => {
   if (customMatchingProduct.value) mutatedProduct.value = {...customMatchingProduct.value}
 }
 
+const formatPlan = (name) => {
+  switch (name.toLowerCase()) {
+    case 'yearly':
+      return '年付'
+    case 'monthly':
+      return '月付'
+    default:
+      return name
+  }
+}
+
 let updateCustomServerStockTimeout = null
 const updateCustomServerStock = async () => {
   if (updateCustomServerStockTimeout) {
@@ -957,4 +973,8 @@ defineExpose({
   },
 })
 </script>
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+.text-warning {
+  color: var(--color-warning-text);
+}
+</style>

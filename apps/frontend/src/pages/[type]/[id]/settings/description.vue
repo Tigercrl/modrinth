@@ -2,14 +2,13 @@
   <div>
     <div class="universal-card">
       <div class="markdown-disclaimer">
-        <h2>Description</h2>
+        <h2>描述</h2>
         <span class="label__description">
-          You can type an extended description of your mod here.
+          您可以在此编写您资源的详细描述。
           <span class="label__subdescription">
-            The description must clearly and honestly describe the purpose and function of the
-            project. See section 2.1 of the
-            <nuxt-link to="/legal/rules" class="text-link" target="_blank">Content Rules</nuxt-link>
-            for the full requirements.
+            描述必须清晰、如实地描述资源的功能。有关全部要求，请参见
+            <nuxt-link to="/legal/rules" class="text-link" target="_blank">内容规则</nuxt-link>
+            第 2.1 节。
           </span>
         </span>
       </div>
@@ -25,8 +24,8 @@
           :disabled="!hasChanges"
           @click="saveChanges()"
         >
-          <SaveIcon />
-          Save changes
+          <SaveIcon/>
+          保存改动
         </button>
       </div>
     </div>
@@ -34,11 +33,11 @@
 </template>
 
 <script>
-import { MarkdownEditor } from "@modrinth/ui";
+import {MarkdownEditor} from "@modrinth/ui";
 import Chips from "~/components/ui/Chips.vue";
 import SaveIcon from "~/assets/images/utils/save.svg?component";
-import { renderHighlightedString } from "~/helpers/highlight.js";
-import { useImageUpload } from "~/composables/image-upload.ts";
+import {renderHighlightedString} from "~/helpers/highlight.js";
+import {useImageUpload} from "~/composables/image-upload.ts";
 
 export default defineNuxtComponent({
   components: {
@@ -71,7 +70,7 @@ export default defineNuxtComponent({
         return () => {
           this.$notify({
             group: "main",
-            title: "An error occurred",
+            title: "发生错误",
             text: "Patch project function not found",
             type: "error",
           });

@@ -37,3 +37,21 @@ If you need help with the Modrinth web interface or app, please visit our [suppo
 ## License
 
 All packages in this repository are licensed under their respective licenses. Refer to the LICENSE file in each package for more information.
+
+## 汉化站
+
+* [Modrinth 汉化站](https://modrinth.tigercrl.top)
+
+小破服没CDN不要攻击！QwQ
+
+## 汉化版TODO
+
+* 汉化托管服务器页面
+* 汉化部分管理员页面（不会真有中国管理员吧）
+* 汉化部分梗
+
+## TO MODRINTH 对Modrinth的话
+
+If you have a problem with this idc
+
+如果你们对此有异议，关我屁事有本事封...（划掉）我不关心

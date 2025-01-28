@@ -3,16 +3,14 @@
     <section class="universal-card">
       <div class="label">
         <h3>
-          <span class="label__title size-card-header">Tags</span>
+          <span class="label__title size-card-header">标签</span>
         </h3>
       </div>
       <p>
-        Accurate tagging is important to help people find your
-        {{ $formatProjectType(project.project_type).toLowerCase() }}. Make sure to select all tags
-        that apply.
+        准确的标签可以帮助人们找到您的{{ $formatProjectType(project.project_type) }}。请确保您选择所有符合的标签。
       </p>
       <p v-if="project.versions.length === 0" class="known-errors">
-        Please upload a version first in order to select tags!
+        请先发布一个版本以选择标签！
       </p>
       <template v-else>
         <template v-for="header in Object.keys(categoryLists)" :key="`categories-${header}`">
@@ -22,22 +20,16 @@
             </h4>
             <span class="label__description">
               <template v-if="header === 'categories'">
-                Select all categories that reflect the themes or function of your
-                {{ $formatProjectType(project.project_type).toLowerCase() }}.
+                选择所有反映此{{ $formatProjectType(project.project_type) }}主题或功能的标签。
               </template>
               <template v-else-if="header === 'features'">
-                Select all of the features that your
-                {{ $formatProjectType(project.project_type).toLowerCase() }} makes use of.
+                选择此{{ $formatProjectType(project.project_type) }}中使用的所有功能。
               </template>
               <template v-else-if="header === 'resolutions'">
-                Select the resolution(s) of textures in your
-                {{ $formatProjectType(project.project_type).toLowerCase() }}.
+                选择此{{ $formatProjectType(project.project_type) }}中纹理的分辨率。
               </template>
               <template v-else-if="header === 'performance impact'">
-                Select the realistic performance impact of your
-                {{ $formatProjectType(project.project_type).toLowerCase() }}. Select multiple if the
-                {{ $formatProjectType(project.project_type).toLowerCase() }} is configurable to
-                different levels of performance impact.
+                选择此{{ $formatProjectType(project.project_type) }}造成的性能影响。如果此{{ $formatProjectType(project.project_type) }}可配置不同级别的性能影响，则选择多个标签。
               </template>
             </span>
           </div>
@@ -64,15 +56,14 @@
         </template>
         <div class="label">
           <h4>
-            <span class="label__title"><StarIcon /> Featured tags</span>
+            <span class="label__title"><StarIcon/> 展示标签</span>
           </h4>
           <span class="label__description">
-            You can feature up to 3 of your most relevant tags. Other tags may be promoted to
-            featured if you do not select all 3.
+            您最多可以选择 3 个最相关的标签来展示。如果您没选够 3 个标签，其他标签可能会被展示。
           </span>
         </div>
         <p v-if="selectedTags.length < 1">
-          Select at least one category in order to feature a category.
+          请选择至少一个标签，以选择展示标签。
         </p>
         <div class="category-list input-div">
           <Checkbox
@@ -104,8 +95,8 @@
           :disabled="!hasChanges"
           @click="saveChanges()"
         >
-          <SaveIcon />
-          Save changes
+          <SaveIcon/>
+          保存改动
         </button>
       </div>
     </section>
@@ -148,8 +139,8 @@ export default defineNuxtComponent({
         return () => {
           this.$notify({
             group: "main",
-            title: "An error occurred",
-            text: "Patch project function not found",
+            title: "发生错误",
+            text: "资源信息修改函数未定义",
             type: "error",
           });
         };
@@ -271,11 +262,14 @@ export default defineNuxtComponent({
 
   :deep(.category-selector) {
     margin-bottom: 0.5rem;
+
     .category-selector__label {
       display: flex;
       align-items: center;
+
       .icon {
         height: 1rem;
+
         svg {
           margin-right: 0.25rem;
           width: 1rem;
@@ -283,6 +277,7 @@ export default defineNuxtComponent({
         }
       }
     }
+
     span {
       user-select: none;
     }

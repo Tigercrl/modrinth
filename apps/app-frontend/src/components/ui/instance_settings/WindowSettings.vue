@@ -59,7 +59,7 @@ const messages = defineMessages({
   },
   fullscreenDescription: {
     id: 'instance.settings.tabs.window.fullscreen.description',
-    defaultMessage: '让游戏全屏启动（通过更改 Minecraft 内的视频选项）。',
+    defaultMessage: '让游戏全屏启动（通过修改 Minecraft 内的视频选项）。',
   },
   width: {
     id: 'instance.settings.tabs.window.width',

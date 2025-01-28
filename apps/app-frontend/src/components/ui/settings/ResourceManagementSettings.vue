@@ -59,7 +59,7 @@ async function findLauncherDir() {
 <template>
   <h2 class="m-0 text-lg font-extrabold text-contrast">数据目录</h2>
   <p class="m-0 mt-1 mb-2 leading-tight text-secondary">
-    Modrinth App 存储所有文件的目录。（需要重启应用程序才能生效）
+    Modrinth App 存储所有文件的目录。（需要重启应用生效）
   </p>
 
   <div class="m-1 my-2">
@@ -76,7 +76,7 @@ async function findLauncherDir() {
     <ConfirmModalWrapper
       ref="purgeCacheConfirmModal"
       title="您确定要清除缓存吗？"
-      description="如果您继续，所有缓存将被清除。这可能会使应用程序暂时变卡顿。"
+      description="如果您继续，所有缓存将被清除。这可能会使 Modrinth App 暂时变卡顿。"
       :has-to-type="false"
       proceed-label="清除缓存"
       :show-ad-on-close="false"
@@ -85,7 +85,7 @@ async function findLauncherDir() {
 
     <h2 class="m-0 text-lg font-extrabold text-contrast">缓存</h2>
     <p class="m-0 mt-1 mb-2 leading-tight text-secondary">
-      Modrinth App 使用缓存以加快加载速度。这可以清除所有缓存以强制应用程序重新加载数据。这可能会使应用程序暂时变卡顿。
+      Modrinth App 使用缓存以加快加载速度。这可以清除所有缓存以强制重新加载数据。这可能会使 Modrinth App 暂时变卡顿。
     </p>
   </div>
   <button id="purge-cache" class="btn min-w-max" @click="$refs.purgeCacheConfirmModal.show()">
@@ -95,7 +95,7 @@ async function findLauncherDir() {
 
   <h2 class="m-0 text-lg font-extrabold text-contrast mt-4">最大并发下载</h2>
   <p class="m-0 mt-1 mb-2 leading-tight text-secondary">
-    Modrinth App 可以同时下载文件的最大数量。如果您的网络连接较差，请将此值设置为较低的值。（需要重启应用程序才能生效）
+    Modrinth App 可以同时下载文件的最大数量。如果您的网络连接较差，请将此值设置为较低的值。（需要重启应用生效）
   </p>
   <Slider
     id="max-downloads"
@@ -107,7 +107,7 @@ async function findLauncherDir() {
 
   <h2 class="mt-4 m-0 text-lg font-extrabold text-contrast">最大并发写入</h2>
   <p class="m-0 mt-1 mb-2 leading-tight text-secondary">
-    Modrinth App 可以同时将文件写入磁盘的最大数量。如果经常出现 I/O 错误，请将此值设置为较低的值。（需要重启应用程序才能生效）
+    Modrinth App 可以同时将文件写入磁盘的最大数量。如果经常出现 I/O 错误，请将此值设置为较低的值。（需要重启应用生效）
   </p>
   <Slider id="max-writes" v-model="settings.max_concurrent_writes" :min="1" :max="50" :step="1" />
 </template>

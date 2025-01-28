@@ -127,7 +127,7 @@
       <template v-else-if="type === 'moderator_message' && thread && report">
         审核员回复了您对
         <nuxt-link v-if="project" :to="getProjectLink(project)" class="title-link">
-          项目 {{ project.title }}
+          资源 {{ project.title }}
         </nuxt-link>
         <nuxt-link v-if="version" :to="getVersionLink(project, version)" class="title-link">
           的版本 {{ version.name }}
@@ -422,7 +422,7 @@ async function performAction(notification, actionIndex) {
   } catch (err) {
     app.$notify({
       group: "main",
-      title: "An error occurred",
+      title: "发生错误",
       text: err.data.description,
       type: "error",
     });

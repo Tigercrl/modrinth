@@ -457,7 +457,7 @@ await refreshSearch()
             case 'Downloads':
               return '下载量'
             case 'Followers':
-              return '关注者'
+              return '关注量'
             case 'Date published':
               return '发布时间'
             case 'Date updated':

@@ -90,7 +90,7 @@ import { UserIcon, SaveIcon, UploadIcon, UndoIcon, XIcon } from "@modrinth/asset
 import { Avatar, FileInput, Button, commonMessages } from "@modrinth/ui";
 
 useHead({
-  title: "Profile settings - Modrinth",
+  title: "个人资料设置 - Modrinth",
 });
 
 definePageMeta({
@@ -102,36 +102,36 @@ const { formatMessage } = useVIntl();
 const messages = defineMessages({
   title: {
     id: "settings.profile.profile-info",
-    defaultMessage: "Profile information",
+    defaultMessage: "个人信息",
   },
   description: {
     id: "settings.profile.description",
     defaultMessage:
-      "Your profile information is publicly viewable on Modrinth and through the <docs-link>Modrinth API</docs-link>.",
+      "您的个人资料信息可在 Modrinth 或通过 <docs-link>Modrinth API</docs-link> 被公众访问。",
   },
   profilePicture: {
     id: "settings.profile.profile-picture.title",
-    defaultMessage: "Profile picture",
+    defaultMessage: "头像",
   },
   profilePictureReset: {
     id: "settings.profile.profile-picture.reset",
-    defaultMessage: "Reset",
+    defaultMessage: "重置",
   },
   usernameTitle: {
     id: "settings.profile.username.title",
-    defaultMessage: "Username",
+    defaultMessage: "用户名",
   },
   usernameDescription: {
     id: "settings.profile.username.description",
-    defaultMessage: "A unique case-insensitive name to identify your profile.",
+    defaultMessage: "不区分大小写的唯一名称，用于辨识您的身份。",
   },
   bioTitle: {
     id: "settings.profile.bio.title",
-    defaultMessage: "Bio",
+    defaultMessage: "个人简介",
   },
   bioDescription: {
     id: "settings.profile.bio.description",
-    defaultMessage: "A short description to tell everyone a little bit about you.",
+    defaultMessage: "一个简短描述，向大家介绍您自己。",
   },
 });
 
@@ -204,7 +204,7 @@ async function saveChanges() {
   } catch (err) {
     addNotification({
       group: "main",
-      title: "An error occurred",
+      title: "发生错误",
       text: err
         ? err.data
           ? err.data.description

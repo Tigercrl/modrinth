@@ -270,7 +270,7 @@ const createInstance = async () => {
               </Button>
               <Button :disabled="!display_icon" @click="reset_icon()">
                 <XIcon />
-                <span class="no-wrap"> 移除图标 </span>
+                <span class="no-wrap"> 删除图标 </span>
               </Button>
             </div>
           </div>

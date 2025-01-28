@@ -3,11 +3,11 @@
     <OrganizationCreateModal ref="createOrgModal" />
     <section class="universal-card">
       <div class="header__row">
-        <h2 class="header__title text-2xl">Organizations</h2>
+        <h2 class="header__title text-2xl">组织</h2>
         <div class="input-group">
           <button class="iconified-button brand-button" @click="openCreateOrgModal">
             <PlusIcon aria-hidden="true" />
-            Create organization
+            创建组织
           </button>
         </div>
       </div>
@@ -32,7 +32,7 @@
                 <div class="stats">
                   <UsersIcon aria-hidden="true" />
                   <span>
-                    {{ onlyAcceptedMembers(org.members).length }} member<template
+                    {{ onlyAcceptedMembers(org.members).length }} 成员<template
                       v-if="onlyAcceptedMembers(org.members).length !== 1"
                       >s</template
                     >
@@ -43,7 +43,7 @@
           </nuxt-link>
         </div>
       </template>
-      <template v-else> Make an organization! </template>
+      <template v-else> 您没有组织！ </template>
     </section>
   </div>
 </template>
@@ -72,7 +72,7 @@ const onlyAcceptedMembers = (members) => members.filter((member) => member?.acce
 if (error.value) {
   createError({
     statusCode: 500,
-    message: "Failed to fetch organizations",
+    message: "获取组织失败",
   });
 }
 

@@ -43,7 +43,7 @@ defineExpose({
       errorType.value = 'minecraft_sign_in'
       supportLink.value = 'https://support.modrinth.com'
     } else if (errorVal.message && errorVal.message.includes('Move directory error:')) {
-      title.value = '无法更改数据目录'
+      title.value = '无法修改数据目录'
       errorType.value = 'directory_move'
       supportLink.value = 'https://support.modrinth.com'
 

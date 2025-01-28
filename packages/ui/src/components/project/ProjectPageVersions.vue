@@ -44,7 +44,7 @@
       <div class="text-sm font-bold text-contrast max-sm:hidden xl:collapse xl:hidden">
         兼容性
       </div>
-      <div class="text-sm font-bold text-contrast max-sm:hidden xl:collapse xl:hidden">Stats</div>
+      <div class="text-sm font-bold text-contrast max-sm:hidden xl:collapse xl:hidden">信息</div>
       <div class="w-9 max-sm:hidden"></div>
     </div>
     <template v-for="(version, index) in currentVersions" :key="index">

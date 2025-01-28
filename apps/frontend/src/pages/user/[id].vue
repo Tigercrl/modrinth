@@ -2,13 +2,13 @@
   <div v-if="user" class="experimental-styles-within">
     <ModalCreation ref="modal_creation" />
     <CollectionCreateModal ref="modal_collection_creation" />
-    <NewModal v-if="auth.user && isStaff(auth.user)" ref="userDetailsModal" header="User details">
+    <NewModal v-if="auth.user && isStaff(auth.user)" ref="userDetailsModal" header="用户信息">
       <div class="flex flex-col gap-3">
         <div class="flex flex-col gap-1">
-          <span class="text-lg font-bold text-primary">Email</span>
+          <span class="text-lg font-bold text-primary">邮箱</span>
           <div>
             <span
-              v-tooltip="user.email_verified ? 'Email verified' : 'Email not verified'"
+              v-tooltip="user.email_verified ? '已验证' : '未验证'"
               class="flex w-fit items-center gap-1"
             >
               <span>{{ user.email }}</span>
@@ -19,15 +19,15 @@
         </div>
 
         <div class="flex flex-col gap-1">
-          <span class="text-lg font-bold text-primary"> Auth providers </span>
+          <span class="text-lg font-bold text-primary"> 登录方式 </span>
           <span>{{ user.auth_providers.join(", ") }}</span>
         </div>
 
         <div class="flex flex-col gap-1">
-          <span class="text-lg font-bold text-primary"> Payment methods</span>
+          <span class="text-lg font-bold text-primary"> 付款方式</span>
           <span>
             <template v-if="user.payout_data?.paypal_address">
-              Paypal ({{ user.payout_data.paypal_address }} - {{ user.payout_data.paypal_country }})
+              PayPal ({{ user.payout_data.paypal_address }} - {{ user.payout_data.paypal_country }})
             </template>
             <template v-if="user.payout_data?.paypal_address && user.payout_data?.venmo_address">
               ,
@@ -39,16 +39,16 @@
         </div>
 
         <div class="flex flex-col gap-1">
-          <span class="text-lg font-bold text-primary"> Has password </span>
+          <span class="text-lg font-bold text-primary"> 密码 </span>
           <span>
-            {{ user.has_password ? "Yes" : "No" }}
+            {{ user.has_password ? "已设置" : "未设置" }}
           </span>
         </div>
 
         <div class="flex flex-col gap-1">
-          <span class="text-lg font-bold text-primary"> Has TOTP </span>
+          <span class="text-lg font-bold text-primary"> OTP </span>
           <span>
-            {{ user.has_totp ? "Yes" : "No" }}
+            {{ user.has_totp ? "已设置" : "未设置" }}
           </span>
         </div>
       </div>
@@ -67,8 +67,8 @@
               user.bio
                 ? user.bio
                 : projects.length === 0
-                  ? "A Modrinth user."
-                  : "A Modrinth creator."
+                  ? "Modrinth 用户"
+                  : "Modrinth 创作者"
             }}
           </template>
           <template #stats>
@@ -76,15 +76,15 @@
               class="flex items-center gap-2 border-0 border-r border-solid border-divider pr-4 font-semibold"
             >
               <BoxIcon class="h-6 w-6 text-secondary" />
+              资源：
               {{ formatCompactNumber(projects?.length || 0) }}
-              projects
             </div>
             <div
               class="flex items-center gap-2 border-0 border-r border-solid border-divider pr-4 font-semibold"
             >
               <DownloadIcon class="h-6 w-6 text-secondary" />
+              下载：
               {{ formatCompactNumber(sumDownloads) }}
-              downloads
             </div>
             <div
               v-tooltip="
@@ -96,7 +96,7 @@
               class="flex items-center gap-2 font-semibold"
             >
               <CalendarIcon class="h-6 w-6 text-secondary" />
-              Joined
+              加入：
               {{ formatRelativeTime(user.created) }}
             </div>
           </template>
@@ -136,7 +136,7 @@
                     shown: auth.user && isStaff(auth.user),
                   },
                 ]"
-                aria-label="More options"
+                aria-label="更多选项"
               >
                 <MoreVerticalIcon aria-hidden="true" />
                 <template #manage-projects>
@@ -234,7 +234,7 @@
                 <h2 class="title">{{ collection.name }}</h2>
                 <div class="stats">
                   <LibraryIcon aria-hidden="true" />
-                  Collection
+                  收藏夹
                 </div>
               </div>
             </div>
@@ -246,19 +246,19 @@
               <div class="stats">
                 <template v-if="collection.status === 'listed'">
                   <WorldIcon />
-                  <span> Public </span>
+                  <span> 公共 </span>
                 </template>
                 <template v-else-if="collection.status === 'unlisted'">
                   <LinkIcon />
-                  <span> Unlisted </span>
+                  <span> 隐藏 </span>
                 </template>
                 <template v-else-if="collection.status === 'private'">
                   <LockIcon />
-                  <span> Private </span>
+                  <span> 私密 </span>
                 </template>
                 <template v-else-if="collection.status === 'rejected'">
                   <XIcon />
-                  <span> Rejected </span>
+                  <span> 未过审 </span>
                 </template>
               </div>
             </div>
@@ -377,82 +377,55 @@ const formatCompactNumber = useCompactNumber();
 const formatRelativeTime = useRelativeTime();
 
 const messages = defineMessages({
-  profileProjectsStats: {
-    id: "profile.stats.projects",
-    defaultMessage:
-      "{count, plural, one {<stat>{count}</stat> project} other {<stat>{count}</stat> projects}}",
-  },
-  profileDownloadsStats: {
-    id: "profile.stats.downloads",
-    defaultMessage:
-      "{count, plural, one {<stat>{count}</stat> project download} other {<stat>{count}</stat> project downloads}}",
-  },
-  profileProjectsFollowersStats: {
-    id: "profile.stats.projects-followers",
-    defaultMessage:
-      "{count, plural, one {<stat>{count}</stat> project follower} other {<stat>{count}</stat> project followers}}",
-  },
-  profileJoinedAt: {
-    id: "profile.joined-at",
-    defaultMessage: "Joined <date>{ago}</date>",
-  },
-  profileUserId: {
-    id: "profile.user-id",
-    defaultMessage: "User ID: {id}",
-  },
-  profileDetails: {
-    id: "profile.label.details",
-    defaultMessage: "Details",
-  },
   profileOrganizations: {
     id: "profile.label.organizations",
-    defaultMessage: "Organizations",
+    defaultMessage: "组织",
   },
   profileBadges: {
     id: "profile.label.badges",
-    defaultMessage: "Badges",
+    defaultMessage: "徽章",
   },
   profileManageProjectsButton: {
     id: "profile.button.manage-projects",
-    defaultMessage: "Manage projects",
+    defaultMessage: "管理资源",
   },
   profileMetaDescription: {
     id: "profile.meta.description",
-    defaultMessage: "Download {username}'s projects on Modrinth",
+    defaultMessage: "在 Modrinth 上下载 {username} 的资源",
   },
   profileMetaDescriptionWithBio: {
     id: "profile.meta.description-with-bio",
-    defaultMessage: "{bio} - Download {username}'s projects on Modrinth",
+    defaultMessage: "{bio} - 在 Modrinth 上下载 {username} 的资源",
   },
   profileNoProjectsLabel: {
     id: "profile.label.no-projects",
-    defaultMessage: "This user has no projects!",
+    defaultMessage: "无资源",
   },
   profileNoProjectsAuthLabel: {
     id: "profile.label.no-projects-auth",
     defaultMessage:
-      "You don't have any projects.\nWould you like to <create-link>create one</create-link>?",
+      "您没有任何资源。\n点此<create-link>创建资源</create-link>。",
   },
   profileNoCollectionsLabel: {
     id: "profile.label.no-collections",
-    defaultMessage: "This user has no collections!",
+    defaultMessage: "无收藏夹",
   },
   profileNoCollectionsAuthLabel: {
     id: "profile.label.no-collections-auth",
     defaultMessage:
-      "You don't have any collections.\nWould you like to <create-link>create one</create-link>?",
+      "您没有任何收藏夹。\n点此<create-link>创建收藏夹</create-link>。",
   },
   billingButton: {
     id: "profile.button.billing",
-    defaultMessage: "Manage user billing",
+    defaultMessage: "管理用户付款方式",
   },
   infoButton: {
     id: "profile.button.info",
-    defaultMessage: "View user details",
+    defaultMessage: "查看用户信息",
   },
   userNotFoundError: {
     id: "profile.error.not-found",
-    defaultMessage: "User not found",
+    defaultMessage: "未找到用户",
   },
 });
 

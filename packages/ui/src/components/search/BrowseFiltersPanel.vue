@@ -73,7 +73,7 @@ const filters = computed(() => {
   const filters: FilterType<any>[] = [
     {
       id: 'platform',
-      formatted_name: '平台',
+      formatted_name: '加载器',
       options:
         props.platforms
           .filter((x) => x.default && x.supported_project_types.includes('modpack'))

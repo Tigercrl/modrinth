@@ -1,18 +1,16 @@
 <template>
   <div>
-    <Modal ref="editLinksModal" header="Edit links">
+    <Modal ref="editLinksModal" header="修改链接">
       <div class="universal-modal links-modal">
         <p>
-          Any links you specify below will be overwritten on each of the selected projects. Any you
-          leave blank will be ignored. You can clear a link from all selected projects using the
-          trash can button.
+          您在下面设置的链接将应用到每个选定的资源。留空的链接将被忽略。您可以使用垃圾桶按钮来删除所有选定资源中的链接。
         </p>
         <section class="links">
           <label
             for="issue-tracker-input"
-            title="A place for users to report bugs, issues, and concerns about your project."
+            title="用户汇报错误、问题和提供建议的地方。"
           >
-            <span class="label__title">Issue tracker</span>
+            <span class="label__title">漏洞追踪器</span>
           </label>
           <div class="input-group shrink-first">
             <input
@@ -21,25 +19,25 @@
               :disabled="editLinks.issues.clear"
               type="url"
               :placeholder="
-                editLinks.issues.clear ? 'Existing link will be cleared' : 'Enter a valid URL'
+                editLinks.issues.clear ? '已有链接将被删除' : '请输入 URL...'
               "
               maxlength="2048"
             />
             <button
-              v-tooltip="'Clear link'"
-              aria-label="Clear link"
+              v-tooltip="'删除链接'"
+              aria-label="删除链接"
               class="square-button label-button"
               :data-active="editLinks.issues.clear"
               @click="editLinks.issues.clear = !editLinks.issues.clear"
             >
-              <TrashIcon />
+              <TrashIcon/>
             </button>
           </div>
           <label
             for="source-code-input"
-            title="A page/repository containing the source code for your project"
+            title="包含资源源代码的页面 / 仓库"
           >
-            <span class="label__title">Source code</span>
+            <span class="label__title">源代码</span>
           </label>
           <div class="input-group shrink-first">
             <input
@@ -49,24 +47,24 @@
               type="url"
               maxlength="2048"
               :placeholder="
-                editLinks.source.clear ? 'Existing link will be cleared' : 'Enter a valid URL'
+                editLinks.source.clear ? '已有链接将被删除' : '请输入 URL...'
               "
             />
             <button
-              v-tooltip="'Clear link'"
-              aria-label="Clear link"
+              v-tooltip="'删除链接'"
+              aria-label="删除链接"
               class="square-button label-button"
               :data-active="editLinks.source.clear"
               @click="editLinks.source.clear = !editLinks.source.clear"
             >
-              <TrashIcon />
+              <TrashIcon/>
             </button>
           </div>
           <label
             for="wiki-page-input"
-            title="A page containing information, documentation, and help for the project."
+            title="包含资源信息、文档和帮助的页面。"
           >
-            <span class="label__title">Wiki page</span>
+            <span class="label__title">Wiki</span>
           </label>
           <div class="input-group shrink-first">
             <input
@@ -76,21 +74,21 @@
               type="url"
               maxlength="2048"
               :placeholder="
-                editLinks.wiki.clear ? 'Existing link will be cleared' : 'Enter a valid URL'
+                editLinks.wiki.clear ? '已有链接将被删除' : '请输入 URL...'
               "
             />
             <button
-              v-tooltip="'Clear link'"
-              aria-label="Clear link"
+              v-tooltip="'删除链接'"
+              aria-label="删除链接"
               class="square-button label-button"
               :data-active="editLinks.wiki.clear"
               @click="editLinks.wiki.clear = !editLinks.wiki.clear"
             >
-              <TrashIcon />
+              <TrashIcon/>
             </button>
           </div>
-          <label for="discord-invite-input" title="An invitation link to your Discord server.">
-            <span class="label__title">Discord invite</span>
+          <label for="discord-invite-input" title="您的 Discord 服务器的邀请链接。">
+            <span class="label__title">Discord 服务器</span>
           </label>
           <div class="input-group shrink-first">
             <input
@@ -100,27 +98,24 @@
               type="url"
               maxlength="2048"
               :placeholder="
-                editLinks.discord.clear
-                  ? 'Existing link will be cleared'
-                  : 'Enter a valid Discord invite URL'
+                editLinks.discord.clear ? '已有链接将被删除' : '请输入 URL...'
               "
             />
             <button
-              v-tooltip="'Clear link'"
-              aria-label="Clear link"
+              v-tooltip="'删除链接'"
+              aria-label="删除链接"
               class="square-button label-button"
               :data-active="editLinks.discord.clear"
               @click="editLinks.discord.clear = !editLinks.discord.clear"
             >
-              <TrashIcon />
+              <TrashIcon/>
             </button>
           </div>
         </section>
         <p>
-          Changes will be applied to
-          <strong>{{ selectedProjects.length }}</strong> project{{
-            selectedProjects.length > 1 ? "s" : ""
-          }}.
+          改动将应用到
+          <strong>{{ selectedProjects.length }}</strong>
+          个资源
         </p>
         <ul>
           <li
@@ -133,57 +128,57 @@
             {{ project.title }}
           </li>
           <li v-if="!editLinks.showAffected && selectedProjects.length > 3">
-            <strong>and {{ selectedProjects.length - 3 }} more...</strong>
+            <strong>等 {{ selectedProjects.length - 3 }} 个资源...</strong>
           </li>
         </ul>
         <Checkbox
           v-if="selectedProjects.length > 3"
           v-model="editLinks.showAffected"
-          :label="editLinks.showAffected ? 'Less' : 'More'"
-          description="Show all loaders"
+          :label="editLinks.showAffected ? '隐藏' : '展开'"
+          description="显示所有资源"
           :border="false"
           :collapsing-toggle-style="true"
         />
         <div class="push-right input-group">
           <button class="iconified-button" @click="$refs.editLinksModal.hide()">
-            <CrossIcon />
-            Cancel
+            <CrossIcon/>
+            取消
           </button>
           <button class="iconified-button brand-button" @click="bulkEditLinks()">
-            <SaveIcon />
-            Save changes
+            <SaveIcon/>
+            保存改动
           </button>
         </div>
       </div>
     </Modal>
-    <ModalCreation ref="modal_creation" />
+    <ModalCreation ref="modal_creation"/>
     <section class="universal-card">
       <div class="header__row">
-        <h2 class="header__title text-2xl">Projects</h2>
+        <h2 class="header__title text-2xl">资源</h2>
         <div class="input-group">
           <button class="iconified-button brand-button" @click="$refs.modal_creation.show()">
-            <PlusIcon />
+            <PlusIcon/>
             {{ formatMessage(commonMessages.createAProjectButton) }}
           </button>
         </div>
       </div>
       <p v-if="projects.length < 1">
-        You don't have any projects yet. Click the green button above to begin.
+        您没有任何资源。
       </p>
       <template v-else>
-        <p>You can edit multiple projects at once by selecting them below.</p>
+        <p>您可以在下面选择多个资源同时进行编辑。</p>
         <div class="input-group">
           <button
             class="iconified-button"
             :disabled="selectedProjects.length === 0"
             @click="$refs.editLinksModal.show()"
           >
-            <EditIcon />
-            Edit links
+            <EditIcon/>
+            修改链接
           </button>
           <div class="push-right">
             <div class="labeled-control-row">
-              Sort by
+              排列方式
               <Multiselect
                 v-model="sortBy"
                 :searchable="false"
@@ -192,15 +187,27 @@
                 :close-on-select="true"
                 :show-labels="false"
                 :allow-empty="false"
+                :custom-label="(option) => {
+                  switch (option) {
+                    case 'Name':
+                      return '名称';
+                    case 'Status':
+                      return '状态';
+                    case 'Type':
+                      return '类型';
+                    default:
+                      return option;
+                  }
+                }"
                 @update:model-value="projects = updateSort(projects, sortBy, descending)"
               />
               <button
-                v-tooltip="descending ? 'Descending' : 'Ascending'"
+                v-tooltip="descending ? '降序' : '升序'"
                 class="square-button"
                 @click="updateDescending()"
               >
-                <DescendingIcon v-if="descending" />
-                <AscendingIcon v-else />
+                <DescendingIcon v-if="descending"/>
+                <AscendingIcon v-else/>
               </button>
             </div>
           </div>
@@ -217,12 +224,12 @@
                 "
               />
             </div>
-            <div>Icon</div>
-            <div>Name</div>
+            <div>图标</div>
+            <div>名称</div>
             <div>ID</div>
-            <div>Type</div>
-            <div>Status</div>
-            <div />
+            <div>类型</div>
+            <div>状态</div>
+            <div/>
           </div>
           <div v-for="project in projects" :key="`project-${project.id}`" class="grid-table__row">
             <div>
@@ -246,7 +253,7 @@
                 <Avatar
                   :src="project.icon_url"
                   aria-hidden="true"
-                  :alt="'Icon for ' + project.title"
+                  :alt="project.title + '的图标'"
                   no-shadow
                 />
               </nuxt-link>
@@ -256,7 +263,7 @@
               <span class="project-title">
                 <IssuesIcon
                   v-if="project.moderator_message"
-                  aria-label="Project has a message from the moderators. View the project to see more."
+                  aria-label="资源收到了来自审核员的消息。查看资源以了解更多信息。"
                 />
 
                 <nuxt-link
@@ -271,7 +278,7 @@
             </div>
 
             <div>
-              <CopyCode :text="project.id" />
+              <CopyCode :text="project.id"/>
             </div>
 
             <div>
@@ -279,7 +286,7 @@
             </div>
 
             <div>
-              <Badge v-if="project.status" :type="project.status" class="status" />
+              <Badge v-if="project.status" :type="project.status" class="status"/>
             </div>
 
             <div>
@@ -289,7 +296,7 @@
                   project.slug ? project.slug : project.id
                 }/settings`"
               >
-                <SettingsIcon />
+                <SettingsIcon/>
               </nuxt-link>
             </div>
           </div>
@@ -300,19 +307,19 @@
 </template>
 
 <script>
-import { Multiselect } from "vue-multiselect";
+import {Multiselect} from "vue-multiselect";
 import {
-  SettingsIcon,
-  TrashIcon,
-  PlusIcon,
-  XIcon as CrossIcon,
-  IssuesIcon,
   EditIcon,
+  IssuesIcon,
+  PlusIcon,
   SaveIcon,
+  SettingsIcon,
   SortAscendingIcon as AscendingIcon,
   SortDescendingIcon as DescendingIcon,
+  TrashIcon,
+  XIcon as CrossIcon,
 } from "@modrinth/assets";
-import { commonMessages } from "@modrinth/ui";
+import {commonMessages} from "@modrinth/ui";
 
 import Badge from "~/components/ui/Badge.vue";
 import Checkbox from "~/components/ui/Checkbox.vue";
@@ -341,11 +348,11 @@ export default defineNuxtComponent({
     DescendingIcon,
   },
   async setup() {
-    const { formatMessage } = useVIntl();
+    const {formatMessage} = useVIntl();
 
     const user = await useUser();
     await initUserProjects();
-    return { formatMessage, user: ref(user) };
+    return {formatMessage, user: ref(user)};
   },
   data() {
     return {
@@ -377,7 +384,7 @@ export default defineNuxtComponent({
     };
   },
   head: {
-    title: "Projects - Modrinth",
+    title: "资源 - Modrinth",
   },
   created() {
     this.UPLOAD_VERSION = 1 << 0;
@@ -487,7 +494,7 @@ export default defineNuxtComponent({
       } catch (e) {
         this.$notify({
           group: "main",
-          title: "An error occurred",
+          title: "发生错误",
           text: e,
           type: "error",
         });

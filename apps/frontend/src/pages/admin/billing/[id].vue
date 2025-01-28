@@ -1,3 +1,5 @@
+<!-- TODO: 汉化 -->
+<!-- 不会真有中国人当上管理员了吧？ -->
 <template>
   <NewModal ref="refundModal">
     <template #title>

@@ -58,7 +58,7 @@ watch(
   <div v-if="os !== 'MacOS'" class="mt-4 flex items-center justify-between gap-4">
     <div>
       <h2 class="m-0 text-lg font-extrabold text-contrast">原生窗口</h2>
-      <p class="m-0 mt-1">使用系统窗口框。（需要重启应用程序才能生效）</p>
+      <p class="m-0 mt-1">使用系统窗口框。（需要重启应用生效）</p>
     </div>
     <Toggle
       id="native-decorations"
@@ -92,7 +92,7 @@ watch(
   <div class="mt-4 flex items-center justify-between">
     <div>
       <h2 class="m-0 text-lg font-extrabold text-contrast">默认登陆页</h2>
-      <p class="m-0 mt-1">更改启动器打开时显示的页面。</p>
+      <p class="m-0 mt-1">修改启动器打开时显示的页面。</p>
     </div>
     <TeleportDropdownMenu
       id="opening-page"

@@ -134,7 +134,7 @@
             <span class="metadata-value">{{ version.downloads }}</span>
           </div>
           <div class="metadata-item">
-            <span class="metadata-label">发布日期</span>
+            <span class="metadata-label">发布时间</span>
             <span class="metadata-value">
               {{
                 new Date(version.date_published).toLocaleString('zh-CN', {

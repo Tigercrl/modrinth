@@ -182,7 +182,7 @@ async function createProject() {
   } catch (err) {
     app.$notify({
       group: "main",
-      title: "An error occurred",
+      title: "发生错误",
       text: err.data.description,
       type: "error",
     });

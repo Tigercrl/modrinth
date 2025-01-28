@@ -53,7 +53,7 @@ watch(
       <div>
         <h3 class="mt-2 m-0 text-base font-extrabold text-primary">全屏</h3>
         <p class="m-0 mt-1 mb-2 leading-tight text-secondary">
-          让游戏全屏启动（通过更改 Minecraft 内的视频选项）。
+          让游戏全屏启动（通过修改 Minecraft 内的视频选项）。
         </p>
       </div>
 

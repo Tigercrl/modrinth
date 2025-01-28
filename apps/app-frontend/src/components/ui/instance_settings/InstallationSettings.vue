@@ -338,11 +338,11 @@ const messages = defineMessages({
   },
   changeVersionButton: {
     id: 'instance.settings.tabs.installation.change-version.button',
-    defaultMessage: '更改版本',
+    defaultMessage: '修改版本',
   },
   changeVersionAction: {
     id: 'instance.settings.tabs.installation.tooltip.action.change-version',
-    defaultMessage: '更改版本',
+    defaultMessage: '修改版本',
   },
   installingButton: {
     id: 'instance.settings.tabs.installation.change-version.button.installing',
@@ -424,7 +424,7 @@ const messages = defineMessages({
   },
   reinstallModpackConfirmDescription: {
     id: 'instance.settings.tabs.installation.reinstall.confirm.description',
-    defaultMessage: `重装整合包会将所有新安装或修改的资源重置为整合包提供的资源，删除您在原始整合包之上添加的任何模组或其他资源。如果您不小心对实例进行了更改，这可能会修复意外行为，但如果您的世界现在依赖于额外安装的资源，则可能会破坏现有的世界。`,
+    defaultMessage: `重装整合包会将所有新安装或修改的资源重置为整合包提供的资源，删除您在原始整合包之上添加的任何模组或其他资源。如果您不小心对实例进行了修改，这可能会修复意外行为，但如果您的世界现在依赖于额外安装的资源，则可能会破坏现有的世界。`,
   },
   reinstallModpackTitle: {
     id: 'instance.settings.tabs.installation.reinstall.title',

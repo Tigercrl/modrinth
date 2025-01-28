@@ -26,8 +26,8 @@ watch(
   { deep: true },
 )
 
-function getOptionName(option: string){
-  switch (option){
+function getOptionName(option: string) {
+  switch (option) {
     case 'project_background':
       return '资源背景（在模组等资源页面增加渐变背景）'
     case 'page_path':

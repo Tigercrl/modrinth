@@ -59,58 +59,58 @@ const { formatMessage } = useVIntl();
 const messages = defineMessages({
   title: {
     id: "auth.verify-email.title",
-    defaultMessage: "Verify Email",
+    defaultMessage: "验证邮箱地址",
   },
   accountSettings: {
     id: "auth.verify-email.action.account-settings",
-    defaultMessage: "Account settings",
+    defaultMessage: "账户设置",
   },
   signIn: {
     id: "auth.verify-email.action.sign-in",
-    defaultMessage: "Sign in",
+    defaultMessage: "登录",
   },
 });
 
 const alreadyVerifiedMessages = defineMessages({
   title: {
     id: "auth.verify-email.already-verified.title",
-    defaultMessage: "Email already verified",
+    defaultMessage: "已验证邮箱地址",
   },
   description: {
     id: "auth.verify-email.already-verified.description",
-    defaultMessage: "Your email is already verified!",
+    defaultMessage: "您的邮箱地址已经被验证了！",
   },
 });
 
 const postVerificationMessages = defineMessages({
   title: {
     id: "auth.verify-email.post-verification.title",
-    defaultMessage: "Email verification",
+    defaultMessage: "验证邮箱地址",
   },
   description: {
     id: "auth.verify-email.post-verification.description",
-    defaultMessage: "Your email address has been successfully verified!",
+    defaultMessage: "您的邮箱地址验证成功！",
   },
 });
 
 const failedVerificationMessages = defineMessages({
   title: {
     id: "auth.verify-email.failed-verification.title",
-    defaultMessage: "Email verification failed",
+    defaultMessage: "邮箱地址验证失败",
   },
   description: {
     id: "auth.verify-email.failed-verification.description",
     defaultMessage:
-      "We were unable to verify your email. Try re-sending the verification email through your dashboard by signing in.",
+      "我们无法验证您的电子邮件。请尝试通过登录您的账户并进入仪表板以重新发送验证邮件。",
   },
   loggedInDescription: {
     id: "auth.verify-email.failed-verification.description.logged-in",
     defaultMessage:
-      "We were unable to verify your email. Try re-sending the verification email through the button below.",
+      "我们无法验证您的电子邮件。请尝试通过下面的按钮重新发送验证邮件。",
   },
   action: {
     id: "auth.verify-email.failed-verification.action",
-    defaultMessage: "Resend verification email",
+    defaultMessage: "重发验证邮件",
   },
 });
 

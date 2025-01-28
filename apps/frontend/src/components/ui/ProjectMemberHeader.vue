@@ -278,7 +278,7 @@ const nags = computed(() => [
     title: "添加外部链接",
     id: "add-links",
     description:
-      "添加 Modrinth 之外有关该资源的链接，例如源代码、反馈和 Discord 频道邀请。",
+      "添加 Modrinth 之外有关该资源的链接，例如源代码、反馈和 Discord 服务器邀请。",
     status: "suggestion",
     link: {
       path: "settings/links",
@@ -299,7 +299,7 @@ const nags = computed(() => [
       (props.project.client_side === "unsupported" && props.project.server_side === "unsupported"),
     title: "选择支持的环境",
     id: "select-environments",
-    description: `选择该${formatProjectType(
+    description: `请选择该${formatProjectType(
       props.project.project_type,
     ).toLowerCase()}是否在客户端 和/或 服务器中有效。`,
     status: "required",
@@ -313,7 +313,7 @@ const nags = computed(() => [
     condition: props.project.license.id === "LicenseRef-Unknown",
     title: "选择许可证",
     id: "select-license",
-    description: `选择该${formatProjectType(
+    description: `请选择该${formatProjectType(
       props.project.project_type,
     ).toLowerCase()}的分发许可证。`,
     status: "required",
@@ -341,7 +341,7 @@ const nags = computed(() => [
     condition: props.tags.rejectedStatuses.includes(props.project.status),
     title: "重新提交审核",
     id: "resubmit-for-review",
-    description: `Modrinth 团队${formatProjectStatusVerb(props.project.status)}了你的资源。在大多数情况下，您可以在处理审核员的消息后重新提交审核。`,
+    description: `Modrinth 团队${formatProjectStatusVerb(props.project.status)}了您的资源。在大多数情况下，您可以在处理审核员的消息后重新提交审核。`,
     status: "review",
     link: {
       path: "moderation",

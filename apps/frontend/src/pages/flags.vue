@@ -10,7 +10,7 @@ const flags = shallowReactive(useFeatureFlags().value);
 
 <template>
   <div class="page">
-    <h1>Feature flags</h1>
+    <h1>实验性功能</h1>
     <div class="flags">
       <div
         v-for="flag in Object.keys(flags) as FeatureFlag[]"
@@ -23,12 +23,12 @@ const flags = shallowReactive(useFeatureFlags().value);
           </span>
           <span class="label__description">
             <p>
-              Default:
+              默认：
               <span
                 :style="`color:var(--color-${
                   DEFAULT_FEATURE_FLAGS[flag] === false ? 'red' : 'green'
                 })`"
-                >{{ DEFAULT_FEATURE_FLAGS[flag] }}</span
+                >{{ DEFAULT_FEATURE_FLAGS[flag] === false ? "关" : "开" }}</span
               >
             </p>
           </span>

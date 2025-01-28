@@ -145,7 +145,7 @@ const messages = defineMessages({
   },
   removeIcon: {
     id: 'instance.settings.tabs.general.edit-icon.remove',
-    defaultMessage: '移除图标',
+    defaultMessage: '删除图标',
   },
   duplicateInstance: {
     id: 'instance.settings.tabs.general.duplicate-instance',

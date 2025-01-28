@@ -223,42 +223,42 @@ const formatRelativeTime = useRelativeTime();
 const createModalMessages = defineMessages({
   createTitle: {
     id: "settings.pats.modal.create.title",
-    defaultMessage: "Create personal access token",
+    defaultMessage: "创建个人访问令牌",
   },
   editTitle: {
     id: "settings.pats.modal.edit.title",
-    defaultMessage: "Edit personal access token",
+    defaultMessage: "修改个人访问令牌",
   },
   nameLabel: {
     id: "settings.pats.modal.create.name.label",
-    defaultMessage: "Name",
+    defaultMessage: "名称",
   },
   namePlaceholder: {
     id: "settings.pats.modal.create.name.placeholder",
-    defaultMessage: "Enter the PAT's name...",
+    defaultMessage: "请输入 PAT 名称...",
   },
   expiresLabel: {
     id: "settings.pats.modal.create.expires.label",
-    defaultMessage: "Expires",
+    defaultMessage: "过期时间",
   },
   action: {
     id: "settings.pats.modal.create.action",
-    defaultMessage: "Create PAT",
+    defaultMessage: "创建 PAT",
   },
 });
 
 const deleteModalMessages = defineMessages({
   title: {
     id: "settings.pats.modal.delete.title",
-    defaultMessage: "Are you sure you want to delete this token?",
+    defaultMessage: "您确定要删除此令牌吗？",
   },
   description: {
     id: "settings.pats.modal.delete.description",
-    defaultMessage: "This will remove this token forever (like really forever).",
+    defaultMessage: "该令牌将会永久消失！（真的很久！）",
   },
   action: {
     id: "settings.pats.modal.delete.action",
-    defaultMessage: "Delete this token",
+    defaultMessage: "删除令牌",
   },
 });
 
@@ -266,38 +266,38 @@ const messages = defineMessages({
   description: {
     id: "settings.pats.description",
     defaultMessage:
-      "PATs can be used to access Modrinth's API. For more information, see <doc-link>Modrinth's API documentation</doc-link>. They can be created and revoked at any time.",
+      "PAT 可用于访问 Modrinth Api。请参阅<doc-link>Modrinth API 文档</doc-link> 以获取更多信息。你可以可以随时创建和撤销它们。",
   },
   create: {
     id: "settings.pats.action.create",
-    defaultMessage: "Create a PAT",
+    defaultMessage: "创建 PAT",
   },
 });
 
 const tokenMessages = defineMessages({
   edit: {
     id: "settings.pats.token.action.edit",
-    defaultMessage: "Edit token",
+    defaultMessage: "修改令牌",
   },
   revoke: {
     id: "settings.pats.token.action.revoke",
-    defaultMessage: "Revoke token",
+    defaultMessage: "撤销令牌",
   },
   lastUsed: {
     id: "settings.pats.token.last-used",
-    defaultMessage: "Last used {ago}",
+    defaultMessage: "上次使用：{ago}",
   },
   neverUsed: {
     id: "settings.pats.token.never-used",
-    defaultMessage: "Never used",
+    defaultMessage: "从未使用",
   },
   expiresIn: {
     id: "settings.pats.token.expires-in",
-    defaultMessage: "Expires {inTime}",
+    defaultMessage: "{inTime}过期",
   },
   expiredAgo: {
     id: "settings.pats.token.expired-ago",
-    defaultMessage: "Expired {ago}",
+    defaultMessage: "{ago}过期",
   },
 });
 

@@ -93,27 +93,27 @@ const messages = defineMessages({
   appInfo: {
     id: "auth.authorize.app-info",
     defaultMessage:
-      "<strong>{appName}</strong> by <creator-link>{creator}</creator-link> will be able to:",
+      "<creator-link>{creator}</creator-link> 的 <strong>{appName}</strong> 将能够：",
   },
   authorize: {
     id: "auth.authorize.action.authorize",
-    defaultMessage: "Authorize",
+    defaultMessage: "授权",
   },
   decline: {
     id: "auth.authorize.action.decline",
-    defaultMessage: "Decline",
+    defaultMessage: "拒绝",
   },
   noRedirectUrlError: {
     id: "auth.authorize.error.no-redirect-url",
-    defaultMessage: "No redirect location found in response",
+    defaultMessage: "响应中未包含重定向链接",
   },
   redirectUrl: {
     id: "auth.authorize.redirect-url",
-    defaultMessage: "You will be redirected to <redirect-url>{url}</redirect-url>",
+    defaultMessage: "您将被重定向至 <redirect-url>{url}</redirect-url>",
   },
   title: {
     id: "auth.authorize.authorize-app-name",
-    defaultMessage: "Authorize {appName}",
+    defaultMessage: "授权 {appName}",
   },
 });
 

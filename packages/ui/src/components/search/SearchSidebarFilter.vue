@@ -74,7 +74,7 @@
           :placeholder="`搜索...`"
           autocomplete="off"
         />
-        <Button v-if="query" class="r-btn" aria-label="Clear search" @click="() => (query = '')">
+        <Button v-if="query" class="r-btn" aria-label="清除搜索内容" @click="() => (query = '')">
           <XIcon aria-hidden="true" />
         </Button>
       </div>

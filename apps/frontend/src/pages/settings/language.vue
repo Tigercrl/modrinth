@@ -13,63 +13,63 @@ const messages = defineMessages({
   languagesDescription: {
     id: "settings.language.description",
     defaultMessage:
-      "Choose your preferred language for the site. Translations are contributed by volunteers <crowdin-link>on Crowdin</crowdin-link>.",
+      "请选择网站的语言。翻译由 <crowdin-link>Crowdin</crowdin-link> 上的贡献者提供。（要是 Crowdin 有用还要汉化站干啥）",
   },
   automaticLocale: {
     id: "settings.language.languages.automatic",
-    defaultMessage: "Sync with the system language",
+    defaultMessage: "跟随系统",
   },
   noResults: {
     id: "settings.language.languages.search.no-results",
-    defaultMessage: "No languages match your search.",
+    defaultMessage: "未找到您搜索的语言",
   },
   searchFieldDescription: {
     id: "settings.language.languages.search-field.description",
-    defaultMessage: "Submit to focus the first search result",
+    defaultMessage: "提交以聚焦第一个搜索结果",
   },
   searchFieldPlaceholder: {
     id: "settings.language.languages.search-field.placeholder",
-    defaultMessage: "Search for a language...",
+    defaultMessage: "搜索语言...",
   },
   searchResultsAnnouncement: {
     id: "settings.language.languages.search-results-announcement",
     defaultMessage:
-      "{matches, plural, =0 {No languages match} one {# language matches} other {# languages match}} your search.",
+      "{matches, plural, =0 {没有} one {# 个} other {# 个}} 语言匹配您的搜索内容。",
   },
   loadFailed: {
     id: "settings.language.languages.load-failed",
-    defaultMessage: "Cannot load this language. Try again in a bit.",
+    defaultMessage: "无法应用语言。请重试。",
   },
   languageLabelApplying: {
     id: "settings.language.languages.language-label-applying",
-    defaultMessage: "{label}. Applying...",
+    defaultMessage: "{label}。应用中...",
   },
   languageLabelError: {
     id: "settings.language.languages.language-label-error",
-    defaultMessage: "{label}. Error",
+    defaultMessage: "{label}。发生错误",
   },
 });
 
 const categoryNames = defineMessages({
   auto: {
     id: "settings.language.categories.auto",
-    defaultMessage: "Automatic",
+    defaultMessage: "自动",
   },
   default: {
     id: "settings.language.categories.default",
-    defaultMessage: "Standard languages",
+    defaultMessage: "标准语言",
   },
   fun: {
     id: "settings.language.categories.fun",
-    defaultMessage: "Fun languages",
+    defaultMessage: "梗语言",
   },
   experimental: {
     id: "settings.language.categories.experimental",
-    defaultMessage: "Experimental languages",
+    defaultMessage: "实验性语言",
   },
   searchResult: {
     id: "settings.language.categories.search-result",
-    defaultMessage: "Search results",
+    defaultMessage: "搜索结果",
   },
 });
 
@@ -120,7 +120,7 @@ const $locales = computed(() => {
     category: "auto",
     searchTerms: [
       "automatic",
-      "Sync with the system language",
+      "跟随系统",
       formatMessage(messages.automaticLocale),
     ],
   });

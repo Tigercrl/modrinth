@@ -7,7 +7,7 @@
       <div class="normal-page__sidebar">
         <aside class="universal-card">
           <NavStack>
-            <h3>Display</h3>
+            <h3>显示</h3>
             <NavStackItem
               link="/settings"
               :label="formatMessage(commonSettingsMessages.appearance)"
@@ -22,7 +22,7 @@
               <LanguagesIcon />
             </NavStackItem>
             <template v-if="auth.user">
-              <h3>Account</h3>
+              <h3>账户</h3>
               <NavStackItem
                 link="/settings/profile"
                 :label="formatMessage(commonSettingsMessages.profile)"
@@ -55,7 +55,7 @@
               </NavStackItem>
             </template>
             <template v-if="auth.user">
-              <h3>Developer</h3>
+              <h3>开发者</h3>
               <NavStackItem
                 link="/settings/pats"
                 :label="formatMessage(commonSettingsMessages.pats)"

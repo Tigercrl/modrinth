@@ -3,55 +3,53 @@
     <Card>
       <div class="content">
         <div>
-          <h1 class="card-title-adjustments">Submit a Report</h1>
+          <h1 class="card-title-adjustments">举报资源</h1>
           <div>
             <p>
-              Modding should be safe for everyone, so we take abuse and malicious intent seriously
-              at Modrinth. If you encounter content that violates our
-              <nuxt-link class="text-link" to="/legal/terms">Terms of Service</nuxt-link> or our
-              <nuxt-link class="text-link" to="/legal/rules">Rules</nuxt-link>, please report it to
-              us here.
+              Modrinth 中的资源应该保证彻底安全，所以 Modrinth 团队会严肃对待违规或恶意程序。如果您遇到违反我们的
+              <nuxt-link class="text-link" to="/legal/terms">服务条款</nuxt-link>
+              或
+              <nuxt-link class="text-link" to="/legal/rules">规则</nuxt-link>
+              的资源，请在这里向我们报告。
             </p>
             <p>
-              This form is intended exclusively for reporting abuse or harmful content to Modrinth
-              staff. For bugs related to specific projects, please use the project's designated
-              Issues link or Discord channel.
+              此表单仅用于向 Modrinth 报告违规资源。对于与特定资源的问题，请使用资源指定的问题链接和
+              Discord 服务器等。
             </p>
             <p>
-              Your privacy is important to us; rest assured that your identifying information will
-              be kept confidential.
+              您的隐私对我们很重要。请放心，您的身份信息将被保密。
             </p>
           </div>
         </div>
         <div class="report-info-section">
           <div class="report-info-item">
-            <label for="report-item">Item type to report</label>
+            <label for="report-item">举报类型</label>
             <DropdownSelect
               id="report-item"
               v-model="reportItem"
               name="report-item"
               :options="reportItems"
-              :display-name="capitalizeString"
+              :display-name="formatItemType"
               :multiple="false"
               :searchable="false"
               :show-no-results="false"
               :show-labels="false"
-              placeholder="Choose report item"
+              placeholder="请选择举报类型..."
             />
           </div>
           <div class="report-info-item">
-            <label for="report-item-id">Item ID</label>
+            <label for="report-item-id">{{ formatItemType(reportItem) }} ID</label>
             <input
               id="report-item-id"
               v-model="reportItemID"
               type="text"
-              placeholder="ex. project ID"
+              placeholder="请输入..."
               autocomplete="off"
               :disabled="reportItem === ''"
             />
           </div>
           <div class="report-info-item">
-            <label for="report-type">Reason for report</label>
+            <label for="report-type">举报原因</label>
             <DropdownSelect
               id="report-type"
               v-model="reportType"
@@ -61,19 +59,18 @@
               :searchable="false"
               :show-no-results="false"
               :show-labels="false"
-              :display-name="capitalizeString"
-              placeholder="Choose report type"
+              :display-name="$formatReportType"
+              placeholder="请选择原因..."
             />
           </div>
         </div>
         <div class="report-submission-section">
           <div>
             <p>
-              Please provide additional context about your report. Include links and images if
-              possible. <strong>Empty reports will be closed.</strong>
+              请提供更多相关内容或描述。如果可能的话，请提供链接和图片。<strong>描述无意义的举报不会被处理并会被关闭。</strong>
             </p>
           </div>
-          <MarkdownEditor v-model="reportBody" placeholder="" :on-image-upload="onImageUpload" />
+          <MarkdownEditor v-model="reportBody" placeholder="" :on-image-upload="onImageUpload"/>
         </div>
         <div class="submit-button">
           <Button
@@ -82,8 +79,8 @@
             :disabled="submitLoading || !canSubmit"
             @click="submitReport"
           >
-            <SaveIcon aria-hidden="true" />
-            Submit
+            <SaveIcon aria-hidden="true"/>
+            提交
           </Button>
         </div>
       </div>
@@ -92,15 +89,28 @@
 </template>
 
 <script setup lang="ts">
-import { Card, Button, MarkdownEditor, DropdownSelect } from "@modrinth/ui";
-import { SaveIcon } from "@modrinth/assets";
-import { useImageUpload } from "~/composables/image-upload.ts";
+import {Button, Card, DropdownSelect, MarkdownEditor} from "@modrinth/ui";
+import {SaveIcon} from "@modrinth/assets";
+import {useImageUpload} from "~/composables/image-upload.ts";
 
 const tags = useTags();
 const route = useNativeRoute();
 const router = useRouter();
 
 const auth = await useAuth();
+
+const formatItemType = (name: string) => {
+  switch (name) {
+    case 'project':
+      return '资源'
+    case 'version':
+      return '版本'
+    case 'user':
+      return '用户'
+    default:
+      return capitalizeString(name)
+  }
+}
 
 if (!auth.value.user) {
   router.push("/auth/sign-in?redirect=" + encodeURIComponent(route.fullPath));
@@ -133,23 +143,23 @@ const canSubmit = computed(() => {
 
 const submissionValidation = () => {
   if (!canSubmit.value) {
-    throw new Error("Please fill out all required fields");
+    throw new Error("请填写所有必填项");
   }
 
   if (reportItem.value === "") {
-    throw new Error("Please select a report item");
+    throw new Error("请选择举报项目");
   }
 
   if (reportItemID.value === "") {
-    throw new Error("Please enter a report item ID");
+    throw new Error("请输入报告项目ID");
   }
 
   if (reportType.value === "") {
-    throw new Error("Please select a report type");
+    throw new Error("请选择举报原因");
   }
 
   if (reportBody.value === "") {
-    throw new Error("Please enter a report body");
+    throw new Error("请提供更多信息");
   }
 
   return true;
@@ -191,7 +201,7 @@ const submitReport = async () => {
     if (error instanceof Error) {
       addNotification({
         group: "main",
-        title: "An error occurred",
+        title: "发生错误",
         text: error.message,
         type: "error",
       });
@@ -217,7 +227,7 @@ const submitReport = async () => {
     if (error instanceof Error) {
       addNotification({
         group: "main",
-        title: "An error occurred",
+        title: "发生错误",
         text: error.message,
         type: "error",
       });
@@ -228,7 +238,7 @@ const submitReport = async () => {
 };
 
 const onImageUpload = async (file: File) => {
-  const item = await useImageUpload(file, { context: "report" });
+  const item = await useImageUpload(file, {context: "report"});
   uploadedImageIDs.value.push(item.id);
   return item.url;
 };

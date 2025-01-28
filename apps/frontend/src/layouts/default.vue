@@ -317,7 +317,7 @@
           <DropdownIcon class="h-5 w-5 text-secondary"/>
           <template #profile>
             <UserIcon aria-hidden="true"/>
-            资料页
+            个人资料
           </template>
           <template #notifications>
             <BellIcon aria-hidden="true"/>
@@ -584,7 +584,9 @@
         >{{ config.public.hash.substring(0, 7) }}</a
         >
         </p>
-        <p>© Rinth, Inc.（由 Tigercrl 汉化）</p>
+        <p>© Rinth, Inc.（由<span>
+          <a class="text-link" href="/user/Tigercrl">Tigercrl</a>
+        </span>汉化）</p>
       </div>
       <div class="links links-1" role="region" aria-label="Legal">
         <h4 aria-hidden="true">{{ formatMessage(footerMessages.companyTitle) }}</h4>
@@ -705,7 +707,7 @@ const userPopoutId = useId();
 const verifyEmailBannerMessages = defineMessages({
   title: {
     id: "layout.banner.verify-email.title",
-    defaultMessage: "为了安全起见，请验证您 Modrinth 账户的电子邮件地址。",
+    defaultMessage: "为了安全起见，请验证您 Modrinth 账户的邮箱地址。",
   },
   action: {
     id: "layout.banner.verify-email.action",
@@ -716,7 +718,7 @@ const verifyEmailBannerMessages = defineMessages({
 const addEmailBannerMessages = defineMessages({
   title: {
     id: "layout.banner.add-email.title",
-    defaultMessage: "为了安全起见，请设置您 Modrinth 账户的电子邮件地址。",
+    defaultMessage: "为了安全起见，请设置您 Modrinth 账户的邮箱地址。",
   },
   action: {
     id: "layout.banner.add-email.button",
@@ -774,7 +776,7 @@ const messages = defineMessages({
   },
   changeTheme: {
     id: "layout.action.change-theme",
-    defaultMessage: "更改主题",
+    defaultMessage: "修改主题",
   },
 });
 
@@ -789,7 +791,7 @@ const footerMessages = defineMessages({
   },
   terms: {
     id: "layout.footer.company.terms",
-    defaultMessage: "条例",
+    defaultMessage: "条款",
   },
   privacy: {
     id: "layout.footer.company.privacy",

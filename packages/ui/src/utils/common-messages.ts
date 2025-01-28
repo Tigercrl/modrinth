@@ -182,7 +182,7 @@ export const commonSettingsMessages = defineMessages({
   },
   pats: {
     id: 'settings.pats.title',
-    defaultMessage: '个人访问令牌',
+    defaultMessage: '个人访问令牌（PAT）',
   },
   applications: {
     id: 'settings.applications.title',

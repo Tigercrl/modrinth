@@ -1135,7 +1135,7 @@ export default defineNuxtComponent({
       } catch (err) {
         this.$notify({
           group: "main",
-          title: "An error occurred",
+          title: "发生错误",
           text: err.data.description,
           type: "error",
         });
@@ -1160,7 +1160,7 @@ export default defineNuxtComponent({
       } catch (err) {
         this.$notify({
           group: "main",
-          title: "An error occurred",
+          title: "发生错误",
           text: err.data ? err.data.description : err,
           type: "error",
         });
@@ -1291,7 +1291,7 @@ export default defineNuxtComponent({
       } catch (err) {
         this.$notify({
           group: "main",
-          title: "An error occurred",
+          title: "发生错误",
           text: err.data ? err.data.description : err,
           type: "error",
         });

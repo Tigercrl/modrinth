@@ -233,15 +233,15 @@ const filteredResults = computed(() => {
       class="max-w-[16rem]"
       :options="['Name', 'Last played', 'Date created', 'Date modified', 'Game version']"
       :display-name="(option) => {
-        switch(option){
+        switch (option) {
           case 'Name':
             return '实例名称'
           case 'Last played':
             return '上次游玩'
           case 'Date created':
-            return '创建日期'
+            return '创建时间'
           case 'Date modified':
-            return '修改日期'
+            return '修改时间'
           case 'Game version':
             return '游戏版本'
           default:

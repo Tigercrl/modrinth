@@ -65,7 +65,7 @@
       <label class="label" for="insert-image-alt">
         <span class="label__title">描述（替代文本）<span class="required">*</span></span>
         <span class="label__description">
-          图片加载错误时显示，为一个看不见图像的人完整地描述图像。
+          图片加载错误时显示，为一个看不见图片的人完整地描述图片。
         </span>
       </label>
       <div class="iconified-input">
@@ -92,7 +92,7 @@
       >
         <FileInput
           accept="image/png,image/jpeg,image/gif,image/webp"
-          prompt="将文件拖放至此处上传或单击选择文件"
+          prompt="单击选择文件或将文件拖放至此处上传"
           long-style
           should-always-reset
           class="file-input"
@@ -152,7 +152,7 @@
     <div class="modal-insert">
       <label class="label" for="insert-video-url">
         <span class="label__title">YouTube 视频 URL<span class="required">*</span></span>
-        <span class="label__description"> 请输入一个有效的 YouTube 视频链接 </span>
+        <span class="label__description"> 请输入 YouTube 视频链接 </span>
       </label>
       <div class="iconified-input">
         <YouTubeIcon />

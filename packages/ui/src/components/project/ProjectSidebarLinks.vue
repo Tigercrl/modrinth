@@ -139,7 +139,7 @@ const messages = defineMessages({
   },
   discord: {
     id: 'project.about.links.discord',
-    defaultMessage: '加入 Discord 服务器',
+    defaultMessage: 'Discord 服务器',
   },
   donateGeneric: {
     id: 'project.about.links.donate.generic',

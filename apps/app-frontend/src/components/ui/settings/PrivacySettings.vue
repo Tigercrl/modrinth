@@ -69,7 +69,7 @@ watch(
         管理 Discord Rich Presence 集成。禁用此功能将导致“Modrinth”不再显示为您在 Discord 个人信息中正在游玩的游戏或使用的应用程序。
       </p>
       <p class="m-0 mt-2 text-sm">
-        注意：这不会阻止任何特定于实例的 Discord Rich Presence 集成，例如模组的集成。（需要重启应用程序才能生效）
+        注意：这不会阻止任何特定于实例的 Discord Rich Presence 集成，例如模组的集成。（需要重启应用生效）
       </p>
     </div>
     <Toggle

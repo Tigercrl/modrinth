@@ -14,7 +14,7 @@ export const useImageUpload = async (file: File, ctx: ImageUploadContext) => {
     !file.type.startsWith("image/") ||
     !["png", "jpeg", "gif", "webp"].includes(file.type.split("/")[1])
   ) {
-    throw new Error("文件不是一个图像");
+    throw new Error("文件不是一个图片");
   }
 
   // Make sure file is less than 1MB

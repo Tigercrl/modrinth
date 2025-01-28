@@ -36,23 +36,23 @@
                 </nuxt-link>
               </h2>
               <span v-if="version.author">
-                by
-                <nuxt-link class="text-link" :to="'/user/' + version.author.user.username">{{
+                创作者：<!--
+                --><nuxt-link class="text-link" :to="'/user/' + version.author.user.username">{{
                   version.author.user.username
-                }}</nuxt-link>
+                }}</nuxt-link>，
               </span>
               <span>
-                on
+                发布时间：
                 {{ $dayjs(version.date_published).format("YYYY/MM/DD") }}</span
               >
             </div>
             <a
               :href="version.primaryFile.url"
               class="iconified-button download"
-              :title="`Download ${version.name}`"
+              :title="`下载 ${version.name}`"
             >
-              <DownloadIcon aria-hidden="true" />
-              Download
+              <DownloadIcon aria-hidden="true"/>
+              下载
             </a>
           </div>
           <div
@@ -73,11 +73,11 @@
   </div>
 </template>
 <script setup>
-import { Pagination } from "@modrinth/ui";
-import { DownloadIcon } from "@modrinth/assets";
+import {Pagination} from "@modrinth/ui";
+import {DownloadIcon} from "@modrinth/assets";
 
 import VersionFilterControl from "@modrinth/ui/src/components/version/VersionFilterControl.vue";
-import { renderHighlightedString } from "~/helpers/highlight.js";
+import {renderHighlightedString} from "~/helpers/highlight.js";
 
 const props = defineProps({
   project: {
@@ -101,7 +101,7 @@ const props = defineProps({
 });
 
 const title = `${props.project.title} - Changelog`;
-const description = `View the changelog of ${props.project.title}'s ${props.versions.length} versions.`;
+const description = `查看资源 ${props.project.title} 的 ${props.versions.length} 个版本的更新日志。`;
 
 useSeoMeta({
   title,
@@ -216,11 +216,11 @@ function updateQuery(newQueries) {
 
     &.duplicate {
       background: linear-gradient(
-        to bottom,
-        transparent,
-        transparent 30%,
-        var(--color) 30%,
-        var(--color)
+          to bottom,
+          transparent,
+          transparent 30%,
+          var(--color) 30%,
+          var(--color)
       );
       background-size: 100% 10px;
     }

@@ -13,7 +13,7 @@
       (err) =>
         data.$notify({
           group: 'main',
-          title: 'An error occurred',
+          title: '发生错误',
           type: 'error',
           text: err.message ?? (err.data ? err.data.description : err),
         })
@@ -24,78 +24,71 @@
   />
   <div class="main-hero">
     <div class="flex max-w-screen-lg flex-col items-center gap-4 text-center">
-      <ModrinthPlusIcon class="h-8 w-max text-contrast" />
-      <h1 class="m-0 text-[4rem]">Support creators and go ad-free</h1>
+      <ModrinthPlusIcon class="h-8 w-max text-contrast"/>
+      <h1 class="m-0 text-[4rem]">支持创作者并去广告</h1>
+      <h2 class="m-0 text-[2rem]">汉化版已去除所有广告，除非您想要徽章或者支持创作者，无需购买</h2>
       <p class="m-0 mb-4 text-[18px] leading-relaxed">
-        Subscribe to Modrinth Plus to go ad-free, support Modrinth's development, and get an
-        exclusive profile badge! Half your subscription goes directly to Modrinth creators. Cancel
-        anytime.
+        订阅 Modrinth+ 以去广告、支持 Modrinth 的创作者、并获得个人资料中的徽章！一半的订阅费将用于创作者激励。您可以随时取消订阅。
       </p>
       <p class="m-0 text-[2rem] font-bold text-purple">
-        {{ formatPrice(vintl.locale, price.prices.intervals.monthly, price.currency_code) }}/mo
+        {{ formatPrice(vintl.locale, price.prices.intervals.monthly, price.currency_code) }}/月
       </p>
       <p class="m-0 mb-4 text-secondary">
-        or save
-        {{ calculateSavings(price.prices.intervals.monthly, price.prices.intervals.yearly) }}% with
-        annual billing!
+        或者按年订阅（{{
+          -calculateSavings(price.prices.intervals.monthly, price.prices.intervals.yearly)
+        }}%）！
       </p>
       <nuxt-link
         v-if="auth.user && isPermission(auth.user.badges, 1 << 0)"
         to="/settings/billing"
         class="btn btn-purple btn-large"
       >
-        <SettingsIcon aria-hidden="true" />
-        Manage subscription
+        <SettingsIcon aria-hidden="true"/>
+        管理订阅
       </nuxt-link>
       <button v-else-if="auth.user" class="btn btn-purple btn-large" @click="purchaseModal.show()">
-        Subscribe
+        订阅
       </button>
       <nuxt-link
         v-else
         :to="`/auth/sign-in?redirect=${encodeURIComponent('/plus?showModal=true')}`"
         class="btn btn-purple btn-large"
       >
-        Subscribe
+        登录以订阅
       </nuxt-link>
     </div>
   </div>
   <div class="perks-hero">
-    <h2>What you get with Modrinth Plus!</h2>
+    <h2>Modrinth+ 权益！</h2>
     <div class="mt-8 grid max-w-screen-lg gap-8 lg:grid-cols-3">
       <div class="flex flex-col gap-4 rounded-xl bg-bg-raised p-4">
-        <HeartIcon class="h-8 w-8 text-purple" />
-        <span class="text-lg font-bold">Support Modrinth creators</span>
+        <HeartIcon class="h-8 w-8 text-purple"/>
+        <span class="text-lg font-bold">支持 Modrinth 创作者</span>
         <span class="leading-5 text-secondary">
-          50% of your subscription goes directly to Modrinth creators.
+          您订阅费的 50% 将用于创作者激励。
         </span>
       </div>
       <div class="flex flex-col gap-4 rounded-xl bg-bg-raised p-4">
-        <SparklesIcon class="h-8 w-8 text-purple" />
-        <span class="text-lg font-bold">Remove all ads</span>
+        <SparklesIcon class="h-8 w-8 text-purple"/>
+        <span class="text-lg font-bold">移除所有广告（汉化版已移除）</span>
         <span class="leading-5 text-secondary">
-          Never see an advertisement again on the Modrinth app or the website.
+          您从此不会在 Modrinth App 和网站上看到任何广告。
         </span>
       </div>
       <div class="flex flex-col gap-4 rounded-xl bg-bg-raised p-4">
-        <StarIcon class="h-8 w-8 text-purple" />
-        <span class="text-lg font-bold">Profile badge</span>
-        <span class="leading-5 text-secondary">Get an exclusive badge on your user page.</span>
+        <StarIcon class="h-8 w-8 text-purple"/>
+        <span class="text-lg font-bold">个人资料徽章</span>
+        <span class="leading-5 text-secondary">在您的个人资料中获得专属徽章。</span>
       </div>
     </div>
-    <span class="mt-4 text-secondary">...and much more coming soon!</span>
+    <span class="mt-4 text-secondary">...敬请期待更多权益！</span>
   </div>
 </template>
 <script setup>
-import {
-  ModrinthPlusIcon,
-  HeartIcon,
-  SparklesIcon,
-  StarIcon,
-  SettingsIcon,
-} from "@modrinth/assets";
-import { PurchaseModal } from "@modrinth/ui";
-import { calculateSavings, formatPrice, getCurrency } from "@modrinth/utils";
-import { products } from "~/generated/state.json";
+import {HeartIcon, ModrinthPlusIcon, SettingsIcon, SparklesIcon, StarIcon,} from "@modrinth/assets";
+import {PurchaseModal} from "@modrinth/ui";
+import {calculateSavings, formatPrice, getCurrency} from "@modrinth/utils";
+import {products} from "~/generated/state.json";
 
 const title = "Subscribe to Modrinth Plus!";
 const description =
@@ -135,8 +128,8 @@ const paymentMethods = ref([]);
 
 async function fetchPaymentData() {
   [customer.value, paymentMethods.value] = await Promise.all([
-    useBaseFetch("billing/customer", { internal: true }),
-    useBaseFetch("billing/payment_methods", { internal: true }),
+    useBaseFetch("billing/customer", {internal: true}),
+    useBaseFetch("billing/payment_methods", {internal: true}),
   ]);
 }
 
@@ -150,7 +143,7 @@ onMounted(() => {
 <style lang="scss" scoped>
 .main-hero {
   background: linear-gradient(360deg, rgba(199, 138, 255, 0.2) 10.92%, var(--color-bg) 100%),
-    var(--color-accent-contrast);
+  var(--color-accent-contrast);
   margin-top: -5rem;
   padding: 11.25rem 1rem 8rem;
 

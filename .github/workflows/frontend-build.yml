@@ -4,7 +4,7 @@ on:
     branches:
       - zhcn
     paths:
-      - .github/workflows/app-release.yml
+      - .github/workflows/frontend-build.yml
       - 'apps/app/**'
       - 'apps/frontend/**'
       - 'packages/assets/**'

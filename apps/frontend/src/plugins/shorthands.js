@@ -206,6 +206,8 @@ export const formatProjectType = (name) => {
       return '模组'
     case 'modpack':
       return '整合包'
+    case 'plugin':
+      return '插件'
     case 'project':
       return '资源'
     case 'project_update':

@@ -88,6 +88,8 @@ const formatProjectType = (name) => {
       return '模组'
     case 'modpack':
       return '整合包'
+    case 'plugin':
+      return '插件'
   }
 
   return name ? name.charAt(0).toUpperCase() + name.slice(1) : name

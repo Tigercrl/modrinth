@@ -96,7 +96,7 @@
       <a class="text-link" href="https://docs.modrinth.com">
         Modrinth API 文档
       </a>
-      以获取更多信息。你可以可以随时创建和撤销它们。
+      以获取更多信息。您可以可以随时创建和撤销它们。
     </p>
     <div v-for="(pat, index) in pats" :key="pat.id" class="universal-card recessed token">
       <div>
@@ -264,7 +264,7 @@ const messages = defineMessages({
   description: {
     id: "settings.pats.description",
     defaultMessage:
-      "PAT 可用于访问 Modrinth Api。请参阅<doc-link>Modrinth API 文档</doc-link> 以获取更多信息。你可以可以随时创建和撤销它们。",
+      "PAT 可用于访问 Modrinth Api。请参阅<doc-link>Modrinth API 文档</doc-link> 以获取更多信息。您可以可以随时创建和撤销它们。",
   },
   create: {
     id: "settings.pats.action.create",

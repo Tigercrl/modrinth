@@ -152,7 +152,7 @@ async function repairInstance() {
           <template v-else>
             <h3>请更换微软账户</h3>
             <p>
-              此账户没有 Minecraft：Java 版！再次检查您是否用正确的账户登录。您可以在另一个微软账户上拥有 Minecraft。
+              此账户没有 Minecraft：Java 版！再次检查您是否用正确的账户登录。您可能在另一个微软账户上拥有 Minecraft。
             </p>
             <div class="cta-button">
               <button class="btn btn-primary" :disabled="loadingMinecraft" @click="loginMinecraft">

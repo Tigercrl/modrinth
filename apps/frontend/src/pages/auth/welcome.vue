@@ -51,7 +51,7 @@ const messages = defineMessages({
   welcomeDescription: {
     id: "auth.welcome.description",
     defaultMessage:
-      "感谢您创建账户。您现在可以关注和创建资源、接收您最喜爱项目的更新通知等更多操作！",
+      "感谢您创建账户。您现在可以关注和创建资源、接收您最喜爱资源的更新通知等更多操作！",
   },
   welcomeLongTitle: {
     id: "auth.welcome.long-title",

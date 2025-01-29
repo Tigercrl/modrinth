@@ -2,7 +2,7 @@
   <div>
     <MessageBanner v-if="flags.developerMode" message-type="warning" class="developer-message">
       <CodeIcon class="inline-flex" />
-      <strong>开发者模式</strong>已启用。这将允许你查看整个 Modrinth 网站中各种项目的内部 ID，如果你是使用 Modrinth API 的开发者，这可能会对你有所帮助。点击页脚的 Modrinth 徽标 5 次，即可开关开发者模式。
+      <strong>开发者模式</strong>已启用。这将允许您查看整个 Modrinth 网站中各种资源的内部 ID，如果您是使用 Modrinth API 的开发者，这可能会对您有所帮助。点击页脚的 Modrinth 徽标 5 次，即可开关开发者模式。
       <Button :action="() => disableDeveloperMode()">
         {{ formatMessage(developerModeBanner.deactivate) }}
       </Button>
@@ -209,7 +209,7 @@ const developerModeBanner = defineMessages({
   description: {
     id: "settings.display.banner.developer-mode.description",
     defaultMessage:
-      "<strong>开发者模式</strong>已启用。这将允许你查看整个 Modrinth 网站中各种项目的内部 ID，如果你是使用 Modrinth API 的开发者，这可能会对你有所帮助。点击页脚的 Modrinth 徽标 5 次，即可开关开发者模式。",
+      "<strong>开发者模式</strong>已启用。这将允许您查看整个 Modrinth 网站中各种资源的内部 ID，如果您是使用 Modrinth API 的开发者，这可能会对您有所帮助。点击页脚的 Modrinth 徽标 5 次，即可开关开发者模式。",
   },
   deactivate: {
     id: "settings.display.banner.developer-mode.button",
@@ -236,7 +236,7 @@ const projectListLayouts = defineMessages({
   description: {
     id: "settings.display.project-list-layouts.description",
     defaultMessage:
-      "为该设备上显示项目列表的每个页面选择您喜欢的布局。",
+      "为该设备上显示资源列表的每个页面选择您喜欢的布局。",
   },
   mod: {
     id: "settings.display.project-list-layouts.mod",

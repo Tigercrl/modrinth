@@ -555,14 +555,12 @@
           @click="developerModeIncrement()"
         />
         <p class="mb-4">
-          创建账户即表示您同意 Modrinth 的
-          <NuxtLink to="/legal/terms" class="text-link">
-            条款
-          </NuxtLink>
-          和
-          <NuxtLink to="/legal/privacy" class="text-link">
-            隐私政策
-          </NuxtLink>。
+          Modrinth 是<a
+          :target="$external()"
+          href="https://github.com/modrinth"
+          class="text-link"
+          rel="noopener"
+        >开源的</a>
         </p>
         <p class="mb-4">
           {{ config.public.branch }}@<a

@@ -93,6 +93,16 @@
           <RightArrowIcon/>
         </button>
 
+        <p>
+          <IssuesIcon/>
+          电脑端请先下载并运行
+          <a class="text-link" href="/patch.jar"
+             download="ModrinthCnLoginPatch-1.0.0.jar">
+            汉化站修复补丁
+          </a>
+          以进行登录。手机端暂不支持登录。
+        </p>
+
         <div class="auth-form__additional-options">
           <NuxtLink
             class="text-link"
@@ -113,6 +123,7 @@
 
 <script setup>
 import {
+  IssuesIcon,
   KeyIcon,
   MailIcon,
   RightArrowIcon,

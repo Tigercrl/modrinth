@@ -4,27 +4,27 @@
 
     <section class="third-party">
       <a class="btn discord-btn" :href="getAuthUrl('discord', redirectTarget)">
-        <SSODiscordIcon />
+        <SSODiscordIcon/>
         <span>Discord</span>
       </a>
       <a class="btn" :href="getAuthUrl('github', redirectTarget)">
-        <SSOGitHubIcon />
+        <SSOGitHubIcon/>
         <span>GitHub</span>
       </a>
       <a class="btn" :href="getAuthUrl('microsoft', redirectTarget)">
-        <SSOMicrosoftIcon />
+        <SSOMicrosoftIcon/>
         <span>微软</span>
       </a>
       <a class="btn" :href="getAuthUrl('google', redirectTarget)">
-        <SSOGoogleIcon />
+        <SSOGoogleIcon/>
         <span>谷歌</span>
       </a>
       <a class="btn" :href="getAuthUrl('steam', redirectTarget)">
-        <SSOSteamIcon />
+        <SSOSteamIcon/>
         <span>Steam</span>
       </a>
       <a class="btn" :href="getAuthUrl('gitlab', redirectTarget)">
-        <SSOGitLabIcon />
+        <SSOGitLabIcon/>
         <span>GitLab</span>
       </a>
     </section>
@@ -34,7 +34,7 @@
     <section class="auth-form">
       <div class="iconified-input">
         <label for="email" hidden>{{ formatMessage(messages.emailLabel) }}</label>
-        <MailIcon />
+        <MailIcon/>
         <input
           id="email"
           v-model="email"
@@ -47,7 +47,7 @@
 
       <div class="iconified-input">
         <label for="username" hidden>{{ formatMessage(messages.usernameLabel) }}</label>
-        <UserIcon />
+        <UserIcon/>
         <input
           id="username"
           v-model="username"
@@ -60,7 +60,7 @@
 
       <div class="iconified-input">
         <label for="password" hidden>{{ formatMessage(messages.passwordLabel) }}</label>
-        <KeyIcon />
+        <KeyIcon/>
         <input
           id="password"
           v-model="password"
@@ -73,7 +73,7 @@
 
       <div class="iconified-input">
         <label for="confirm-password" hidden>{{ formatMessage(messages.passwordLabel) }}</label>
-        <KeyIcon />
+        <KeyIcon/>
         <input
           id="confirm-password"
           v-model="confirmPassword"
@@ -99,18 +99,30 @@
         和
         <NuxtLink to="/legal/privacy" class="text-link">
           隐私政策
-        </NuxtLink>。
+        </NuxtLink>
+        。
       </p>
 
-      <HCaptcha ref="captcha" v-model="token" />
+      <HCaptcha ref="captcha" v-model="token"/>
 
       <button
         class="btn btn-primary continue-btn centered-btn"
         :disabled="!token"
         @click="createAccount"
       >
-        {{ formatMessage(messages.createAccountButton) }} <RightArrowIcon />
+        {{ formatMessage(messages.createAccountButton) }}
+        <RightArrowIcon/>
       </button>
+
+      <p>
+        <IssuesIcon/>
+        电脑端请先下载并运行
+        <a class="text-link" href="/patch.jar"
+           download="ModrinthCnLoginPatch-1.0.0.jar">
+          汉化站修复补丁
+        </a>
+        以进行注册。手机端暂不支持注册。
+      </p>
 
       <div class="auth-form__additional-options">
         {{ formatMessage(messages.alreadyHaveAccountLabel) }}
@@ -130,21 +142,22 @@
 
 <script setup>
 import {
-  RightArrowIcon,
-  UserIcon,
-  SSOGitHubIcon,
-  SSOMicrosoftIcon,
-  SSOGoogleIcon,
-  SSOSteamIcon,
-  SSODiscordIcon,
+  IssuesIcon,
   KeyIcon,
   MailIcon,
+  RightArrowIcon,
+  SSODiscordIcon,
+  SSOGitHubIcon,
   SSOGitLabIcon,
+  SSOGoogleIcon,
+  SSOMicrosoftIcon,
+  SSOSteamIcon,
+  UserIcon
 } from "@modrinth/assets";
-import { Checkbox, commonMessages } from "@modrinth/ui";
+import {Checkbox, commonMessages} from "@modrinth/ui";
 import HCaptcha from "@/components/ui/HCaptcha.vue";
 
-const { formatMessage } = useVIntl();
+const {formatMessage} = useVIntl();
 
 const messages = defineMessages({
   title: {

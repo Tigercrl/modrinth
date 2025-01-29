@@ -25,7 +25,7 @@ const messages = defineMessages({
   },
   searchFieldDescription: {
     id: "settings.language.languages.search-field.description",
-    defaultMessage: "提交以聚焦第一个搜索结果",
+    defaultMessage: "提交语言",
   },
   searchFieldPlaceholder: {
     id: "settings.language.languages.search-field.placeholder",
@@ -34,7 +34,7 @@ const messages = defineMessages({
   searchResultsAnnouncement: {
     id: "settings.language.languages.search-results-announcement",
     defaultMessage:
-      "{matches, plural, =0 {没有} one {# 个} other {# 个}} 语言匹配您的搜索内容。",
+      "{matches, plural, =0 {没有} one {# 个} other {# 个}} 语言匹配您的搜索。",
   },
   loadFailed: {
     id: "settings.language.languages.load-failed",
@@ -42,11 +42,11 @@ const messages = defineMessages({
   },
   languageLabelApplying: {
     id: "settings.language.languages.language-label-applying",
-    defaultMessage: "{label}。应用中...",
+    defaultMessage: "应用语言 {label} 中...",
   },
   languageLabelError: {
     id: "settings.language.languages.language-label-error",
-    defaultMessage: "{label}。发生错误",
+    defaultMessage: "应用语言 {label} 时发生错误",
   },
 });
 

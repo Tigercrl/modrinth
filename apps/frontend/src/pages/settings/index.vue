@@ -51,7 +51,7 @@
                   class="radio"
                 />
                 <RadioButtonIcon v-else class="radio" />
-                Rows
+                列表
               </div>
             </button>
             <button
@@ -75,7 +75,7 @@
                   class="radio"
                 />
                 <RadioButtonIcon v-else class="radio" />
-                Grid
+                网格
               </div>
             </button>
             <button
@@ -97,7 +97,7 @@
                   class="radio"
                 />
                 <RadioButtonIcon v-else class="radio" />
-                Gallery
+                画廊
               </div>
             </button>
           </div>

@@ -328,8 +328,8 @@ export default defineNuxtConfig({
       production: isProduction(),
       featureFlagOverrides: getFeatureFlagOverrides(),
 
-      owner: process.env.VERCEL_GIT_REPO_OWNER || process.env.GITHUB_REPOSITORY!.split('/')[0] || "Tigercrl",
-      slug: process.env.VERCEL_GIT_REPO_SLUG || process.env.GITHUB_REPOSITORY!.split('/')[1] || "modrinth",
+      owner: process.env.VERCEL_GIT_REPO_OWNER || process.env.GITHUB_REPOSITORY?.split('/')[0] || "Tigercrl",
+      slug: process.env.VERCEL_GIT_REPO_SLUG || process.env.GITHUB_REPOSITORY?.split('/')[1] || "modrinth",
       branch:
         process.env.VERCEL_GIT_COMMIT_REF ||
         process.env.CF_PAGES_BRANCH ||

@@ -12,42 +12,30 @@
     <div v-else class="oauth-items">
       <div class="connected-items">
         <div class="profile-pics">
-          <Avatar size="md" :src="app.icon_url" />
+          <Avatar size="md" :src="app.icon_url"/>
           <!-- <img class="profile-pic" :src="app.icon_url" alt="User profile picture" /> -->
           <div class="connection-indicator">→</div>
-          <Avatar size="md" circle :src="auth.user.avatar_url" />
+          <Avatar size="md" circle :src="auth.user.avatar_url"/>
           <!-- <img class="profile-pic" :src="auth.user.avatar_url" alt="User profile picture" /> -->
         </div>
       </div>
       <div class="title">
-        <h1>{{ formatMessage(messages.title, { appName: app.name }) }}</h1>
+        <h1>{{ formatMessage(messages.title, {appName: app.name}) }}</h1>
       </div>
       <div class="auth-info">
         <div class="scope-heading">
-          <IntlFormatted
-            :message-id="messages.appInfo"
-            :values="{
-              appName: app.name,
-              creator: createdBy.username,
-            }"
-          >
-            <template #strong="{ children }">
-              <strong>
-                <component :is="() => normalizeChildren(children)" />
-              </strong>
-            </template>
-            <template #creator-link="{ children }">
-              <nuxt-link class="text-link" :to="'/user/' + createdBy.id">
-                <component :is="() => normalizeChildren(children)" />
-              </nuxt-link>
-            </template>
-          </IntlFormatted>
+          <nuxt-link class="text-link" :to="'/user/' + createdBy.id">
+            {{ createdBy.username }}
+          </nuxt-link>
+          的
+          <strong>{{ app.name }}}</strong>
+          将能够：
         </div>
         <div class="scope-items">
           <div v-for="scopeItem in scopeDefinitions" :key="scopeItem">
             <div class="scope-item">
               <div class="scope-icon">
-                <CheckIcon />
+                <CheckIcon/>
               </div>
               {{ scopeItem }}
             </div>
@@ -56,23 +44,20 @@
       </div>
       <div class="button-row">
         <Button class="wide-button" large :action="onReject" :disabled="pending">
-          <XIcon />
+          <XIcon/>
           {{ formatMessage(messages.decline) }}
         </Button>
         <Button class="wide-button" color="primary" large :action="onAuthorize" :disabled="pending">
-          <CheckIcon />
+          <CheckIcon/>
           {{ formatMessage(messages.authorize) }}
         </Button>
       </div>
       <div class="redirection-notice">
         <p class="redirect-instructions">
-          <IntlFormatted :message-id="messages.redirectUrl" :values="{ url: redirectUri }">
-            <template #redirect-url="{ children }">
-              <span class="redirect-url">
-                <component :is="() => normalizeChildren(children)" />
-              </span>
-            </template>
-          </IntlFormatted>
+          您将被重定向至
+          <span class="redirect-url">
+            {{ redirectUri }}
+          </span>
         </p>
       </div>
     </div>
@@ -80,14 +65,14 @@
 </template>
 
 <script setup>
-import { Button, Avatar, commonMessages } from "@modrinth/ui";
-import { XIcon, CheckIcon } from "@modrinth/assets";
-import { useBaseFetch } from "@/composables/fetch.js";
-import { useAuth } from "@/composables/auth.js";
+import {Avatar, Button, commonMessages} from "@modrinth/ui";
+import {CheckIcon, XIcon} from "@modrinth/assets";
+import {useBaseFetch} from "@/composables/fetch.js";
+import {useAuth} from "@/composables/auth.js";
 
-import { useScopes } from "@/composables/auth/scopes.ts";
+import {useScopes} from "@/composables/auth/scopes.ts";
 
-const { formatMessage } = useVIntl();
+const {formatMessage} = useVIntl();
 
 const messages = defineMessages({
   appInfo: {
@@ -121,7 +106,7 @@ const data = useNuxtApp();
 
 const router = useNativeRoute();
 const auth = await useAuth();
-const { scopesToDefinitions } = useScopes();
+const {scopesToDefinitions} = useScopes();
 
 const clientId = router.query?.client_id || false;
 const redirectUri = router.query?.redirect_uri || false;
@@ -159,7 +144,7 @@ const {
   error,
 } = await useAsyncData("authorization", getFlowIdAuthorization);
 
-const { data: app } = await useAsyncData("oauth/app/" + clientId, () =>
+const {data: app} = await useAsyncData("oauth/app/" + clientId, () =>
   useBaseFetch("oauth/app/" + clientId, {
     method: "GET",
     internal: true,
@@ -170,7 +155,7 @@ const scopeDefinitions = scopesToDefinitions(
   BigInt(authorizationData.value?.requested_scopes || 0),
 );
 
-const { data: createdBy } = await useAsyncData("user/" + app.value.created_by, () =>
+const {data: createdBy} = await useAsyncData("user/" + app.value.created_by, () =>
   useBaseFetch("user/" + app.value.created_by, {
     method: "GET",
     apiVersion: 3,
@@ -266,6 +251,7 @@ definePageMeta({
   border-radius: 50%;
   padding: var(--gap-xs);
 }
+
 .title {
   margin-inline: auto;
 
@@ -273,6 +259,7 @@ definePageMeta({
     margin-bottom: 0 !important;
   }
 }
+
 .redirection-notice {
   display: flex;
   flex-direction: column;
@@ -298,6 +285,7 @@ definePageMeta({
   gap: var(--gap-xs);
   justify-content: center;
 }
+
 .auth-info {
   display: flex;
   flex-direction: column;

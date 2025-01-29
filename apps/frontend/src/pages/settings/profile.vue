@@ -3,13 +3,11 @@
     <section class="card">
       <h2 class="text-2xl">{{ formatMessage(messages.title) }}</h2>
       <p class="mb-4">
-        <IntlFormatted :message-id="messages.description">
-          <template #docs-link="{ children }">
-            <a href="https://docs.modrinth.com/" target="_blank" class="text-link">
-              <component :is="() => children" />
-            </a>
-          </template>
-        </IntlFormatted>
+        您的个人资料信息可在 Modrinth 或通过
+        <a href="https://docs.modrinth.com/" target="_blank" class="text-link">
+          Modrinth API
+        </a>
+        被公开访问。
       </p>
       <label>
         <span class="label__title">{{ formatMessage(messages.profilePicture) }}</span>
@@ -107,7 +105,7 @@ const messages = defineMessages({
   description: {
     id: "settings.profile.description",
     defaultMessage:
-      "您的个人资料信息可在 Modrinth 或通过 <docs-link>Modrinth API</docs-link> 被公众访问。",
+      "您的个人资料信息可在 Modrinth 或通过 <docs-link>Modrinth API</docs-link> 被公开访问。",
   },
   profilePicture: {
     id: "settings.profile.profile-picture.title",

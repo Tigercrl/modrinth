@@ -92,18 +92,14 @@
       />
 
       <p v-if="!route.query.launcher">
-        <IntlFormatted :message-id="messages.legalDisclaimer">
-          <template #terms-link="{ children }">
-            <NuxtLink to="/legal/terms" class="text-link">
-              <component :is="() => children" />
-            </NuxtLink>
-          </template>
-          <template #privacy-policy-link="{ children }">
-            <NuxtLink to="/legal/privacy" class="text-link">
-              <component :is="() => children" />
-            </NuxtLink>
-          </template>
-        </IntlFormatted>
+        创建账户即表示您同意 Modrinth 的
+        <NuxtLink to="/legal/terms" class="text-link">
+          条款
+        </NuxtLink>
+        和
+        <NuxtLink to="/legal/privacy" class="text-link">
+          隐私政策
+        </NuxtLink>。
       </p>
 
       <HCaptcha ref="captcha" v-model="token" />

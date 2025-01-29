@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import Fuse from "fuse.js/dist/fuse.basic";
-import { commonSettingsMessages } from "@modrinth/ui";
+import {commonSettingsMessages} from "@modrinth/ui";
 import RadioButtonIcon from "~/assets/images/utils/radio-button.svg?component";
 import RadioButtonCheckedIcon from "~/assets/images/utils/radio-button-checked.svg?component";
 import WarningIcon from "~/assets/images/utils/issues.svg?component";
-import { isModifierKeyDown } from "~/helpers/events.ts";
+import {isModifierKeyDown} from "~/helpers/events.ts";
 
 const vintl = useVIntl();
-const { formatMessage } = vintl;
+const {formatMessage} = vintl;
 
 const messages = defineMessages({
   languagesDescription: {
@@ -199,7 +199,7 @@ const $categories = computed(() => {
 
 const $searchResults = computed(() => {
   return new Map<Category, Locale[]>([
-    ["searchResult", isQueryEmpty() ? [] : fuse.search($query.value).map(({ item }) => item)],
+    ["searchResult", isQueryEmpty() ? [] : fuse.search($query.value).map(({item}) => item)],
   ]);
 });
 
@@ -271,11 +271,11 @@ function getItemLabel(locale: Locale) {
     : `${locale.translatedName}. ${locale.displayName}`;
 
   if ($changingTo.value === locale.tag) {
-    return formatMessage(messages.languageLabelApplying, { label });
+    return formatMessage(messages.languageLabelApplying, {label});
   }
 
   if ($failedLocale.value === locale.tag) {
-    return formatMessage(messages.languageLabelError, { label });
+    return formatMessage(messages.languageLabelError, {label});
   }
 
   return label;
@@ -288,13 +288,11 @@ function getItemLabel(locale: Locale) {
       <h2 class="text-2xl">{{ formatMessage(commonSettingsMessages.language) }}</h2>
 
       <div class="card-description">
-        <IntlFormatted :message-id="messages.languagesDescription">
-          <template #crowdin-link="{ children }">
-            <a href="https://crowdin.com/project/modrinth">
-              <component :is="() => children" />
-            </a>
-          </template>
-        </IntlFormatted>
+        请选择网站的语言。翻译由
+        <a href="https://crowdin.com/project/modrinth">
+          Crowdin
+        </a>
+        上的贡献者提供。（要是 Crowdin 有用还要汉化站干啥）
       </div>
 
       <div class="search-container">
@@ -319,8 +317,8 @@ function getItemLabel(locale: Locale) {
             isQueryEmpty()
               ? ""
               : formatMessage(messages.searchResultsAnnouncement, {
-                  matches: $searchResults.get("searchResult")?.length ?? 0,
-                })
+                matches: $searchResults.get("searchResult")?.length ?? 0,
+              })
           }}
         </div>
       </div>
@@ -357,8 +355,8 @@ function getItemLabel(locale: Locale) {
               @click="(e) => onItemClick(e, locale)"
               @keydown="(e) => onItemKeydown(e, locale)"
             >
-              <RadioButtonCheckedIcon v-if="$activeLocale === locale.tag" class="radio" />
-              <RadioButtonIcon v-else class="radio" />
+              <RadioButtonCheckedIcon v-if="$activeLocale === locale.tag" class="radio"/>
+              <RadioButtonIcon v-else class="radio"/>
 
               <div class="language-names">
                 <div class="language-name">
@@ -376,7 +374,8 @@ function getItemLabel(locale: Locale) {
               :id="`language__${locale.tag}__fail`"
               class="language-load-error"
             >
-              <WarningIcon /> {{ formatMessage(messages.loadFailed) }}
+              <WarningIcon/>
+              {{ formatMessage(messages.loadFailed) }}
             </div>
           </template>
         </template>
@@ -430,13 +429,13 @@ function getItemLabel(locale: Locale) {
     height: 100%;
 
     background-image: linear-gradient(
-      102deg,
-      rgba(0, 0, 0, 0) 0%,
-      rgba(0, 0, 0, 0) 20%,
-      rgba(0, 0, 0, 0.1) 45%,
-      rgba(0, 0, 0, 0.1) 50%,
-      rgba(0, 0, 0, 0) 80%,
-      rgba(0, 0, 0, 0) 100%
+        102deg,
+        rgba(0, 0, 0, 0) 0%,
+        rgba(0, 0, 0, 0) 20%,
+        rgba(0, 0, 0, 0.1) 45%,
+        rgba(0, 0, 0, 0.1) 50%,
+        rgba(0, 0, 0, 0) 80%,
+        rgba(0, 0, 0, 0) 100%
     );
 
     background-repeat: no-repeat;
@@ -445,13 +444,13 @@ function getItemLabel(locale: Locale) {
     .dark-mode &,
     .oled-mode & {
       background-image: linear-gradient(
-        102deg,
-        rgba(255, 255, 255, 0) 0%,
-        rgba(255, 255, 255, 0) 20%,
-        rgba(255, 255, 255, 0.1) 45%,
-        rgba(255, 255, 255, 0.1) 50%,
-        rgba(255, 255, 255, 0) 80%,
-        rgba(255, 255, 255, 0) 100%
+          102deg,
+          rgba(255, 255, 255, 0) 0%,
+          rgba(255, 255, 255, 0) 20%,
+          rgba(255, 255, 255, 0.1) 45%,
+          rgba(255, 255, 255, 0.1) 50%,
+          rgba(255, 255, 255, 0) 80%,
+          rgba(255, 255, 255, 0) 100%
       );
     }
 

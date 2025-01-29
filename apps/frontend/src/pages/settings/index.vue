@@ -2,13 +2,7 @@
   <div>
     <MessageBanner v-if="flags.developerMode" message-type="warning" class="developer-message">
       <CodeIcon class="inline-flex" />
-      <IntlFormatted :message-id="developerModeBanner.description">
-        <template #strong="{ children }">
-          <strong>
-            <component :is="() => normalizeChildren(children)" />
-          </strong>
-        </template>
-      </IntlFormatted>
+      <strong>开发者模式</strong>已启用。这将允许你查看整个 Modrinth 网站中各种项目的内部 ID，如果你是使用 Modrinth API 的开发者，这可能会对你有所帮助。点击页脚的 Modrinth 徽标 5 次，即可开关开发者模式。
       <Button :action="() => disableDeveloperMode()">
         {{ formatMessage(developerModeBanner.deactivate) }}
       </Button>

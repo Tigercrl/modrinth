@@ -834,7 +834,7 @@ useSeoMeta({
             Windows
           </div>
           <div class="description">
-            <a href="javascript:void(0)" @click="downloadChinese">
+            <a @click.prevent="downloadChinese">
               <DownloadIcon/>
               <span> 下载汉化版 </span>
             </a>
@@ -862,7 +862,7 @@ useSeoMeta({
             Mac
           </div>
           <div class="description">
-            <a href="javascript:void(0)" @click="downloadChinese">
+            <a @click.prevent="downloadChinese">
               <DownloadIcon/>
               <span> 下载汉化版 </span>
             </a>
@@ -907,7 +907,7 @@ useSeoMeta({
             Linux
           </div>
           <div class="description">
-            <a href="javascript:void(0)" @click="downloadChinese">
+            <a @click.prevent="downloadChinese">
               <DownloadIcon/>
               <span> 下载汉化版 </span>
             </a>

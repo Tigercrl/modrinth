@@ -1,7 +1,7 @@
 <template>
   <div v-if="user" class="experimental-styles-within">
-    <ModalCreation ref="modal_creation" />
-    <CollectionCreateModal ref="modal_collection_creation" />
+    <ModalCreation ref="modal_creation"/>
+    <CollectionCreateModal ref="modal_collection_creation"/>
     <NewModal v-if="auth.user && isStaff(auth.user)" ref="userDetailsModal" header="用户信息">
       <div class="flex flex-col gap-3">
         <div class="flex flex-col gap-1">
@@ -12,8 +12,8 @@
               class="flex w-fit items-center gap-1"
             >
               <span>{{ user.email }}</span>
-              <CheckIcon v-if="user.email_verified" class="h-4 w-4 text-brand" />
-              <XIcon v-else class="h-4 w-4 text-red" />
+              <CheckIcon v-if="user.email_verified" class="h-4 w-4 text-brand"/>
+              <XIcon v-else class="h-4 w-4 text-red"/>
             </span>
           </div>
         </div>
@@ -57,7 +57,7 @@
       <div class="normal-page__header py-4">
         <ContentPageHeader>
           <template #icon>
-            <Avatar :src="user.avatar_url" :alt="user.username" size="96px" circle />
+            <Avatar :src="user.avatar_url" :alt="user.username" size="96px" circle/>
           </template>
           <template #title>
             {{ user.username }}
@@ -75,14 +75,14 @@
             <div
               class="flex items-center gap-2 border-0 border-r border-solid border-divider pr-4 font-semibold"
             >
-              <BoxIcon class="h-6 w-6 text-secondary" />
+              <BoxIcon class="h-6 w-6 text-secondary"/>
               资源：
               {{ formatCompactNumber(projects?.length || 0) }}
             </div>
             <div
               class="flex items-center gap-2 border-0 border-r border-solid border-divider pr-4 font-semibold"
             >
-              <DownloadIcon class="h-6 w-6 text-secondary" />
+              <DownloadIcon class="h-6 w-6 text-secondary"/>
               下载：
               {{ formatCompactNumber(sumDownloads) }}
             </div>
@@ -95,7 +95,7 @@
               "
               class="flex items-center gap-2 font-semibold"
             >
-              <CalendarIcon class="h-6 w-6 text-secondary" />
+              <CalendarIcon class="h-6 w-6 text-secondary"/>
               加入：
               {{ formatRelativeTime(user.created) }}
             </div>
@@ -103,7 +103,7 @@
           <template #actions>
             <ButtonStyled size="large">
               <NuxtLink v-if="auth.user && auth.user.id === user.id" to="/settings/profile">
-                <EditIcon aria-hidden="true" />
+                <EditIcon aria-hidden="true"/>
                 {{ formatMessage(commonMessages.editButton) }}
               </NuxtLink>
             </ButtonStyled>
@@ -138,25 +138,25 @@
                 ]"
                 aria-label="更多选项"
               >
-                <MoreVerticalIcon aria-hidden="true" />
+                <MoreVerticalIcon aria-hidden="true"/>
                 <template #manage-projects>
-                  <BoxIcon aria-hidden="true" />
+                  <BoxIcon aria-hidden="true"/>
                   {{ formatMessage(messages.profileManageProjectsButton) }}
                 </template>
                 <template #report>
-                  <ReportIcon aria-hidden="true" />
+                  <ReportIcon aria-hidden="true"/>
                   {{ formatMessage(commonMessages.reportButton) }}
                 </template>
                 <template #copy-id>
-                  <ClipboardCopyIcon aria-hidden="true" />
+                  <ClipboardCopyIcon aria-hidden="true"/>
                   {{ formatMessage(commonMessages.copyIdButton) }}
                 </template>
                 <template #open-billing>
-                  <CurrencyIcon aria-hidden="true" />
+                  <CurrencyIcon aria-hidden="true"/>
                   {{ formatMessage(messages.billingButton) }}
                 </template>
                 <template #open-info>
-                  <InfoIcon aria-hidden="true" />
+                  <InfoIcon aria-hidden="true"/>
                   {{ formatMessage(messages.infoButton) }}
                 </template>
               </OverflowMenu>
@@ -166,7 +166,7 @@
       </div>
       <div class="normal-page__content">
         <div v-if="navLinks.length >= 2" class="mb-4 max-w-full overflow-x-auto">
-          <NavTabs :links="navLinks" />
+          <NavTabs :links="navLinks"/>
         </div>
         <div v-if="projects.length > 0">
           <div
@@ -209,15 +209,10 @@
           </div>
         </div>
         <div v-else-if="route.params.projectType !== 'collections'" class="error">
-          <UpToDate class="icon" /><br />
+          <UpToDate class="icon"/>
+          <br/>
           <span v-if="auth.user && auth.user.id === user.id" class="preserve-lines text">
-            <IntlFormatted :message-id="messages.profileNoProjectsAuthLabel">
-              <template #create-link="{ children }">
-                <a class="link" @click.prevent="$refs.modal_creation.show()">
-                  <component :is="() => children" />
-                </a>
-              </template>
-            </IntlFormatted>
+            您没有任何资源。<br/>点此<a class="link" @click.prevent="$refs.modal_creation.show()">创建资源</a>。
           </span>
           <span v-else class="text">{{ formatMessage(messages.profileNoProjectsLabel) }}</span>
         </div>
@@ -229,11 +224,11 @@
             class="card collection-item"
           >
             <div class="collection">
-              <Avatar :src="collection.icon_url" class="icon" />
+              <Avatar :src="collection.icon_url" class="icon"/>
               <div class="details">
                 <h2 class="title">{{ collection.name }}</h2>
                 <div class="stats">
-                  <LibraryIcon aria-hidden="true" />
+                  <LibraryIcon aria-hidden="true"/>
                   收藏夹
                 </div>
               </div>
@@ -242,22 +237,25 @@
               {{ collection.description }}
             </div>
             <div class="stat-bar">
-              <div class="stats"><BoxIcon /> {{ collection.projects?.length || 0 }} projects</div>
+              <div class="stats">
+                <BoxIcon/>
+                {{ collection.projects?.length || 0 }} projects
+              </div>
               <div class="stats">
                 <template v-if="collection.status === 'listed'">
-                  <WorldIcon />
+                  <WorldIcon/>
                   <span> 公共 </span>
                 </template>
                 <template v-else-if="collection.status === 'unlisted'">
-                  <LinkIcon />
+                  <LinkIcon/>
                   <span> 隐藏 </span>
                 </template>
                 <template v-else-if="collection.status === 'private'">
-                  <LockIcon />
+                  <LockIcon/>
                   <span> 私密 </span>
                 </template>
                 <template v-else-if="collection.status === 'rejected'">
-                  <XIcon />
+                  <XIcon/>
                   <span> 未过审 </span>
                 </template>
               </div>
@@ -268,18 +266,10 @@
           v-if="route.params.projectType === 'collections' && collections.length === 0"
           class="error"
         >
-          <UpToDate class="icon" /><br />
+          <UpToDate class="icon"/>
+          <br/>
           <span v-if="auth.user && auth.user.id === user.id" class="preserve-lines text">
-            <IntlFormatted :message-id="messages.profileNoCollectionsAuthLabel">
-              <template #create-link="{ children }">
-                <a
-                  class="link"
-                  @click.prevent="(event) => $refs.modal_collection_creation.show(event)"
-                >
-                  <component :is="() => children" />
-                </a>
-              </template>
-            </IntlFormatted>
+            您没有任何收藏夹。<br/>点此<a class="link" @click.prevent="(event) => $refs.modal_collection_creation.show(event)">创建收藏夹</a>。
           </span>
           <span v-else class="text">{{ formatMessage(messages.profileNoCollectionsLabel) }}</span>
         </div>
@@ -295,7 +285,7 @@
               class="organization"
               :to="`/organization/${org.slug}`"
             >
-              <Avatar :src="org.icon_url" :alt="'Icon for ' + org.name" size="3rem" />
+              <Avatar :src="org.icon_url" :alt="'Icon for ' + org.name" size="3rem"/>
             </nuxt-link>
           </div>
         </div>
@@ -303,15 +293,15 @@
           <h2 class="text-lg text-contrast">{{ formatMessage(messages.profileBadges) }}</h2>
           <div class="flex flex-wrap gap-2">
             <div v-for="badge in badges" :key="badge">
-              <StaffBadge v-if="badge === 'staff'" class="h-14 w-14" />
-              <ModBadge v-else-if="badge === 'mod'" class="h-14 w-14" />
+              <StaffBadge v-if="badge === 'staff'" class="h-14 w-14"/>
+              <ModBadge v-else-if="badge === 'mod'" class="h-14 w-14"/>
               <nuxt-link v-else-if="badge === 'plus'" to="/plus">
-                <PlusBadge class="h-14 w-14" />
+                <PlusBadge class="h-14 w-14"/>
               </nuxt-link>
-              <TenMClubBadge v-else-if="badge === '10m-club'" class="h-14 w-14" />
-              <EarlyAdopterBadge v-else-if="badge === 'early-adopter'" class="h-14 w-14" />
-              <AlphaTesterBadge v-else-if="badge === 'alpha-tester'" class="h-14 w-14" />
-              <BetaTesterBadge v-else-if="badge === 'beta-tester'" class="h-14 w-14" />
+              <TenMClubBadge v-else-if="badge === '10m-club'" class="h-14 w-14"/>
+              <EarlyAdopterBadge v-else-if="badge === 'early-adopter'" class="h-14 w-14"/>
+              <AlphaTesterBadge v-else-if="badge === 'alpha-tester'" class="h-14 w-14"/>
+              <BetaTesterBadge v-else-if="badge === 'beta-tester'" class="h-14 w-14"/>
             </div>
           </div>
         </div>
@@ -321,30 +311,30 @@
 </template>
 <script setup>
 import {
-  LibraryIcon,
   BoxIcon,
+  CalendarIcon,
+  CheckIcon,
+  ClipboardCopyIcon,
+  CurrencyIcon,
+  DownloadIcon,
+  InfoIcon,
+  LibraryIcon,
   LinkIcon,
   LockIcon,
-  XIcon,
-  CalendarIcon,
-  DownloadIcon,
-  ClipboardCopyIcon,
   MoreVerticalIcon,
-  CurrencyIcon,
-  InfoIcon,
-  CheckIcon,
+  XIcon,
 } from "@modrinth/assets";
 import {
-  OverflowMenu,
   ButtonStyled,
-  ContentPageHeader,
   commonMessages,
+  ContentPageHeader,
   NewModal,
+  OverflowMenu,
 } from "@modrinth/ui";
-import { isStaff } from "~/helpers/users.js";
+import {isStaff} from "~/helpers/users.js";
 import NavTabs from "~/components/ui/NavTabs.vue";
 import ProjectCard from "~/components/ui/ProjectCard.vue";
-import { reportUser } from "~/utils/report-helpers.ts";
+import {reportUser} from "~/utils/report-helpers.ts";
 
 import StaffBadge from "~/assets/images/badges/staff.svg?component";
 import ModBadge from "~/assets/images/badges/mod.svg?component";
@@ -370,7 +360,7 @@ const tags = useTags();
 const flags = useFeatureFlags();
 
 const vintl = useVIntl();
-const { formatMessage } = vintl;
+const {formatMessage} = vintl;
 
 const formatCompactNumber = useCompactNumber();
 
@@ -431,7 +421,7 @@ const messages = defineMessages({
 
 let user, projects, organizations, collections;
 try {
-  [{ data: user }, { data: projects }, { data: organizations }, { data: collections }] =
+  [{data: user}, {data: projects}, {data: organizations}, {data: collections}] =
     await Promise.all([
       useAsyncData(`user/${route.params.id}`, () => useBaseFetch(`user/${route.params.id}`)),
       useAsyncData(
@@ -458,7 +448,7 @@ try {
         }),
       ),
       useAsyncData(`user/${route.params.id}/collections`, () =>
-        useBaseFetch(`user/${route.params.id}/collections`, { apiVersion: 3 }),
+        useBaseFetch(`user/${route.params.id}/collections`, {apiVersion: 3}),
       ),
     ]);
 } catch {
@@ -478,17 +468,17 @@ if (!user.value) {
 }
 
 if (user.value.username !== route.params.id) {
-  await navigateTo(`/user/${user.value.username}`, { redirectCode: 301 });
+  await navigateTo(`/user/${user.value.username}`, {redirectCode: 301});
 }
 
 const title = computed(() => `${user.value.username} - Modrinth`);
 const description = computed(() =>
   user.value.bio
     ? formatMessage(messages.profileMetaDescriptionWithBio, {
-        bio: user.value.bio,
-        username: user.value.username,
-      })
-    : formatMessage(messages.profileMetaDescription, { username: user.value.username }),
+      bio: user.value.bio,
+      username: user.value.username,
+    })
+    : formatMessage(messages.profileMetaDescription, {username: user.value.username}),
 );
 
 useSeoMeta({

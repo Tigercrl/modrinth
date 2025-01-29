@@ -92,13 +92,11 @@
       </button>
     </div>
     <p>
-      <IntlFormatted :message-id="messages.description">
-        <template #doc-link="{ children }">
-          <a class="text-link" href="https://docs.modrinth.com">
-            <component :is="() => children" />
-          </a>
-        </template>
-      </IntlFormatted>
+      PAT 可用于访问 Modrinth Api。请参阅
+      <a class="text-link" href="https://docs.modrinth.com">
+        Modrinth API 文档
+      </a>
+      以获取更多信息。你可以可以随时创建和撤销它们。
     </p>
     <div v-for="(pat, index) in pats" :key="pat.id" class="universal-card recessed token">
       <div>

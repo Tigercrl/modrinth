@@ -555,18 +555,14 @@
           @click="developerModeIncrement()"
         />
         <p class="mb-4">
-          <IntlFormatted :message-id="footerMessages.openSource">
-            <template #github-link="{ children }">
-              <a
-                :target="$external()"
-                href="https://github.com/modrinth"
-                class="text-link"
-                rel="noopener"
-              >
-                <component :is="() => children"/>
-              </a>
-            </template>
-          </IntlFormatted>
+          创建账户即表示您同意 Modrinth 的
+          <NuxtLink to="/legal/terms" class="text-link">
+            条款
+          </NuxtLink>
+          和
+          <NuxtLink to="/legal/privacy" class="text-link">
+            隐私政策
+          </NuxtLink>。
         </p>
         <p class="mb-4">
           {{ config.public.branch }}@<a

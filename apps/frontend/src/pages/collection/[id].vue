@@ -165,16 +165,10 @@
               <div class="primary-stat">
                 <LibraryIcon class="primary-stat__icon" aria-hidden="true"/>
                 <div v-if="projects" class="primary-stat__text">
-                  <IntlFormatted
-                    :message-id="messages.projectsCountLabel"
-                    :values="{ count: formatCompactNumber(projects.length || 0) }"
-                  >
-                    <template #stat="{ children }">
-                      <span class="primary-stat__counter">
-                        <component :is="() => normalizeChildren(children)"/>
-                      </span>
-                    </template>
-                  </IntlFormatted>
+                  <span class="primary-stat__counter">
+                    {{ formatCompactNumber(projects.length || 0) }}
+                  </span>
+                  资源
                 </div>
               </div>
 
@@ -339,13 +333,7 @@
           <UpToDate class="icon"/>
           <br/>
           <span v-if="auth.user && auth.user.id === creator.id" class="preserve-lines text">
-            <IntlFormatted :message-id="messages.noProjectsAuthLabel">
-              <template #create-link="{ children }">
-                <a class="link" @click.prevent="$router.push('/mods')">
-                  <component :is="() => children"/>
-                </a>
-              </template>
-            </IntlFormatted>
+            该收藏夹没有任何资源。<br/>点此<a class="link" @click.prevent="$router.push('/mods')">添加资源</a>。
           </span>
           <span v-else class="text">{{ formatMessage(messages.noProjectsLabel) }}</span>
         </div>

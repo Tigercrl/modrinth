@@ -436,7 +436,7 @@ onBeforeMount(() => {
 onMounted(() => {
   if (internalRange.value === null) {
     internalRange.value = props.ranges.find(
-      (r) => r.getLabel([dayjs(), dayjs()]) === "Previous 30 days",
+      (r) => r.getLabel([dayjs(), dayjs()]) === "过去 30 天",
     )!;
   }
 
@@ -463,7 +463,7 @@ const selectedRange = computed({
     if (import.meta.client) {
       localStorage.setItem(
         "analyticsSelectedRange",
-        internalRange.value?.getLabel([dayjs(), dayjs()]) ?? "Previous 30 days",
+        internalRange.value?.getLabel([dayjs(), dayjs()]) ?? "过去 30 天",
       );
     }
   },
@@ -550,7 +550,7 @@ type RangeObject = {
 
 const defaultRanges: RangeObject[] = [
   {
-    getLabel: () => "Previous 30 minutes",
+    getLabel: () => "过去 30 天",
     getDates: (currentDate: dayjs.Dayjs) => ({
       startDate: dayjs(currentDate).subtract(30, "minute"),
       endDate: currentDate,
@@ -558,7 +558,7 @@ const defaultRanges: RangeObject[] = [
     timeResolution: 1,
   },
   {
-    getLabel: () => "Previous hour",
+    getLabel: () => "过去 1 小时",
     getDates: (currentDate: dayjs.Dayjs) => ({
       startDate: dayjs(currentDate).subtract(1, "hour"),
       endDate: currentDate,
@@ -566,7 +566,7 @@ const defaultRanges: RangeObject[] = [
     timeResolution: 5,
   },
   {
-    getLabel: () => "Previous 12 hours",
+    getLabel: () => "过去 12 小时",
     getDates: (currentDate: dayjs.Dayjs) => ({
       startDate: dayjs(currentDate).subtract(12, "hour"),
       endDate: currentDate,
@@ -574,7 +574,7 @@ const defaultRanges: RangeObject[] = [
     timeResolution: 12,
   },
   {
-    getLabel: () => "Previous 24 hours",
+    getLabel: () => "过去 24 小时",
     getDates: (currentDate: dayjs.Dayjs) => ({
       startDate: dayjs(currentDate).subtract(1, "day"),
       endDate: currentDate,
@@ -582,7 +582,7 @@ const defaultRanges: RangeObject[] = [
     timeResolution: 30,
   },
   {
-    getLabel: () => "Today",
+    getLabel: () => "今天",
     getDates: (currentDate: dayjs.Dayjs) => ({
       startDate: dayjs(currentDate).startOf("day"),
       endDate: currentDate,
@@ -590,7 +590,7 @@ const defaultRanges: RangeObject[] = [
     timeResolution: 30,
   },
   {
-    getLabel: () => "Yesterday",
+    getLabel: () => "昨天",
     getDates: (currentDate: dayjs.Dayjs) => ({
       startDate: dayjs(currentDate).subtract(1, "day").startOf("day"),
       endDate: dayjs(currentDate).startOf("day").subtract(1, "second"),
@@ -598,7 +598,7 @@ const defaultRanges: RangeObject[] = [
     timeResolution: 30,
   },
   {
-    getLabel: () => "This week",
+    getLabel: () => "本周",
     getDates: (currentDate: dayjs.Dayjs) => ({
       startDate: dayjs(currentDate).startOf("week").add(1, "hour"),
       endDate: currentDate,
@@ -606,7 +606,7 @@ const defaultRanges: RangeObject[] = [
     timeResolution: 360,
   },
   {
-    getLabel: () => "Last week",
+    getLabel: () => "上周",
     getDates: (currentDate: dayjs.Dayjs) => ({
       startDate: dayjs(currentDate).subtract(1, "week").startOf("week").add(1, "hour"),
       endDate: dayjs(currentDate).startOf("week").subtract(1, "second"),
@@ -614,7 +614,7 @@ const defaultRanges: RangeObject[] = [
     timeResolution: 1440,
   },
   {
-    getLabel: () => "Previous 7 days",
+    getLabel: () => "过去 7 天",
     getDates: (currentDate: dayjs.Dayjs) => ({
       startDate: dayjs(currentDate).startOf("day").subtract(7, "day").add(1, "hour"),
       endDate: currentDate.startOf("day"),
@@ -622,7 +622,7 @@ const defaultRanges: RangeObject[] = [
     timeResolution: 720,
   },
   {
-    getLabel: () => "This month",
+    getLabel: () => "本月",
     getDates: (currentDate: dayjs.Dayjs) => ({
       startDate: dayjs(currentDate).startOf("month").add(1, "hour"),
       endDate: currentDate,
@@ -630,7 +630,7 @@ const defaultRanges: RangeObject[] = [
     timeResolution: 1440,
   },
   {
-    getLabel: () => "Last month",
+    getLabel: () => "上月",
     getDates: (currentDate: dayjs.Dayjs) => ({
       startDate: dayjs(currentDate).subtract(1, "month").startOf("month").add(1, "hour"),
       endDate: dayjs(currentDate).startOf("month").subtract(1, "second"),
@@ -638,7 +638,7 @@ const defaultRanges: RangeObject[] = [
     timeResolution: 1440,
   },
   {
-    getLabel: () => "Previous 30 days",
+    getLabel: () => "过去 30 天",
     getDates: (currentDate: dayjs.Dayjs) => ({
       startDate: dayjs(currentDate).startOf("day").subtract(30, "day").add(1, "hour"),
       endDate: currentDate.startOf("day"),
@@ -646,7 +646,7 @@ const defaultRanges: RangeObject[] = [
     timeResolution: 1440,
   },
   {
-    getLabel: () => "This quarter",
+    getLabel: () => "本季度",
     getDates: (currentDate: dayjs.Dayjs) => ({
       startDate: dayjs(currentDate).startOf("quarter").add(1, "hour"),
       endDate: currentDate,
@@ -654,7 +654,7 @@ const defaultRanges: RangeObject[] = [
     timeResolution: 1440,
   },
   {
-    getLabel: () => "Last quarter",
+    getLabel: () => "上季度",
     getDates: (currentDate: dayjs.Dayjs) => ({
       startDate: dayjs(currentDate).subtract(1, "quarter").startOf("quarter").add(1, "hour"),
       endDate: dayjs(currentDate).startOf("quarter").subtract(1, "second"),
@@ -662,7 +662,7 @@ const defaultRanges: RangeObject[] = [
     timeResolution: 1440,
   },
   {
-    getLabel: () => "This year",
+    getLabel: () => "今年",
     getDates: (currentDate: dayjs.Dayjs) => ({
       startDate: dayjs(currentDate).startOf("year"),
       endDate: currentDate,
@@ -670,7 +670,7 @@ const defaultRanges: RangeObject[] = [
     timeResolution: 20160,
   },
   {
-    getLabel: () => "Last year",
+    getLabel: () => "去年",
     getDates: (currentDate: dayjs.Dayjs) => ({
       startDate: dayjs(currentDate).subtract(1, "year").startOf("year"),
       endDate: dayjs(currentDate).startOf("year").subtract(1, "second"),
@@ -678,7 +678,7 @@ const defaultRanges: RangeObject[] = [
     timeResolution: 20160,
   },
   {
-    getLabel: () => "Previous year",
+    getLabel: () => "过去 1 年",
     getDates: (currentDate: dayjs.Dayjs) => ({
       startDate: dayjs(currentDate).subtract(1, "year"),
       endDate: dayjs(currentDate),
@@ -686,7 +686,7 @@ const defaultRanges: RangeObject[] = [
     timeResolution: 40320,
   },
   {
-    getLabel: () => "Previous two years",
+    getLabel: () => "过去 2 年",
     getDates: (currentDate: dayjs.Dayjs) => ({
       startDate: dayjs(currentDate).subtract(2, "year"),
       endDate: currentDate,
@@ -694,7 +694,7 @@ const defaultRanges: RangeObject[] = [
     timeResolution: 40320,
   },
   {
-    getLabel: () => "All Time",
+    getLabel: () => "所有时间",
     getDates: (currentDate: dayjs.Dayjs) => ({
       startDate: dayjs(0),
       endDate: currentDate,

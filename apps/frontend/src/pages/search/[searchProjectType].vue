@@ -20,13 +20,13 @@
             class="flex flex-col gap-4 text-primary"
           >
             <span class="flex items-center gap-2">
-              <Avatar :src="server.general.image" size="48px"/>
+              <Avatar :src="server.general.image" size="48px" />
               <span class="flex flex-col gap-2">
                 <span class="bold font-extrabold text-contrast">
                   {{ server.general.name }}
                 </span>
                 <span class="flex items-center gap-2 font-semibold text-secondary">
-                  <GameIcon class="h-5 w-5 text-secondary"/>
+                  <GameIcon class="h-5 w-5 text-secondary" />
                   {{ server.general.loader }} {{ server.general.mc_version }}
                 </span>
               </span>
@@ -34,8 +34,7 @@
           </nuxt-link>
           <ButtonStyled>
             <nuxt-link :to="`/servers/manage/${server.serverId}/content`">
-              <LeftArrowIcon/>
-              返回服务器
+              <LeftArrowIcon /> 返回服务器
             </nuxt-link>
           </ButtonStyled>
         </div>
@@ -76,7 +75,7 @@
                 }
               "
             >
-              <XIcon/>
+              <XIcon />
             </button>
           </ButtonStyled>
         </div>
@@ -133,14 +132,14 @@
           <template #locked-mod_loader>
             {{ formatMessage(messages.modLoaderProvidedByServer) }}
           </template>
-          <template #sync-button> {{ formatMessage(messages.syncFilterButton) }}</template>
+          <template #sync-button> {{ formatMessage(messages.syncFilterButton) }} </template>
         </SearchSidebarFilter>
       </div>
     </aside>
     <section class="normal-page__content">
       <div class="flex flex-col gap-3">
         <div class="iconified-input w-full">
-          <SearchIcon aria-hidden="true" class="text-lg"/>
+          <SearchIcon aria-hidden="true" class="text-lg" />
           <input
             v-model="query"
             class="h-12"
@@ -151,7 +150,7 @@
             @input="updateSearchResults()"
           />
           <Button v-if="query" class="r-btn" @click="() => (query = '')">
-            <XIcon/>
+            <XIcon />
           </Button>
         </div>
         <div class="flex flex-wrap items-center gap-2">
@@ -177,7 +176,7 @@
                   return option?.display
               }
             }"
-            @change="updateSearchResults(1)"
+            @change="updateSearchResults()"
           >
             <span class="font-semibold text-primary">排列方式：</span>
             <span class="font-semibold text-secondary">{{ selected }}</span>
@@ -190,7 +189,7 @@
             :default-value="maxResults"
             :model-value="maxResults"
             class="!w-auto flex-grow md:flex-grow-0"
-            @change="updateSearchResults(1)"
+            @change="updateSearchResults()"
           >
             <span class="font-semibold text-primary">显示数目：</span>
             <span class="font-semibold text-secondary">{{ selected }}</span>
@@ -218,7 +217,7 @@
             :page="currentPage"
             :count="pageCount"
             class="mx-auto sm:ml-auto sm:mr-0"
-            @switch-page="setPage"
+            @switch-page="updateSearchResults"
           />
         </div>
         <SearchFilterControl
@@ -228,7 +227,7 @@
           :overridden-provided-filter-types="overriddenProvidedFilterTypes"
           :provided-message="messages.providedByServer"
         />
-        <LogoAnimated v-if="searchLoading && !noLoad"/>
+        <LogoAnimated v-if="searchLoading && !noLoad" />
         <div v-else-if="results && results.hits && results.hits.length === 0" class="no-results">
           <p>没有找到任何资源！</p>
         </div>
@@ -308,7 +307,7 @@
             :page="currentPage"
             :count="pageCount"
             class="justify-end"
-            @switch-page="setPage"
+            @switch-page="updateSearchResults"
           />
         </div>
       </div>
@@ -317,20 +316,19 @@
 </template>
 <script setup>
 import {
-  Avatar,
-  Button,
-  ButtonStyled,
-  Checkbox,
-  commonMessages,
-  DropdownSelect,
-  NewProjectCard,
   Pagination,
-  SearchFilterControl,
+  Checkbox,
+  Avatar,
   SearchSidebarFilter,
   useSearch,
+  DropdownSelect,
+  Button,
+  ButtonStyled,
+  NewProjectCard,
+  SearchFilterControl,
 } from "@modrinth/ui";
-import {CheckIcon, DownloadIcon, GameIcon, LeftArrowIcon, XIcon} from "@modrinth/assets";
-import {computed} from "vue";
+import { CheckIcon, DownloadIcon, GameIcon, LeftArrowIcon, XIcon } from "@modrinth/assets";
+import { computed } from "vue";
 import ProjectCard from "~/components/ui/ProjectCard.vue";
 import LogoAnimated from "~/components/brand/LogoAnimated.vue";
 
@@ -341,7 +339,7 @@ import ListIcon from "~/assets/images/utils/list.svg?component";
 import ImageIcon from "~/assets/images/utils/image.svg?component";
 import NavTabs from "~/components/ui/NavTabs.vue";
 
-const {formatMessage} = useVIntl();
+const { formatMessage } = useVIntl();
 
 const filtersMenuOpen = ref(false);
 
@@ -355,7 +353,6 @@ const flags = useFeatureFlags();
 const auth = await useAuth();
 
 const projectType = ref();
-
 function setProjectType() {
   const projType = tags.value.projectTypes.find(
     (x) => x.id === route.path.replaceAll(/^\/|s\/?$/g, ""), // Removes prefix `/` and suffixes `s` and `s/`
@@ -365,7 +362,6 @@ function setProjectType() {
     projectType.value = projType;
   }
 }
-
 setProjectType();
 router.afterEach(() => {
   setProjectType();
@@ -559,19 +555,13 @@ const pageCount = computed(() =>
   results.value ? Math.ceil(results.value.total_hits / results.value.limit) : 1,
 );
 
-function setPage(newPageNumber) {
-  currentPage.value = newPageNumber;
-
-  window.scrollTo({top: 0, behavior: "smooth"});
-
-  updateSearchResults();
-}
-
 function scrollToTop(behavior = "smooth") {
-  window.scrollTo({top: 0, behavior});
+  window.scrollTo({ top: 0, behavior });
 }
 
-function updateSearchResults() {
+function updateSearchResults(pageNumber) {
+  currentPage.value = pageNumber || 1;
+  scrollToTop();
   noLoad.value = true;
 
   if (query.value === null) {
@@ -600,12 +590,12 @@ function updateSearchResults() {
       ...createPageParams(),
     };
 
-    router.replace({path: route.path, query: params});
+    router.replace({ path: route.path, query: params });
   }
 }
 
-watch([currentFilters, requestParams], () => {
-  updateSearchResults();
+watch([currentFilters], () => {
+  updateSearchResults(1);
 });
 
 function cycleSearchDisplayMode() {
@@ -721,8 +711,9 @@ useSeoMeta({
       &.open {
         color: var(--color-button-text-active);
         background-color: var(--color-brand-highlight);
-        box-shadow: inset 0 0 0 transparent,
-        0 0 0 2px var(--color-brand);
+        box-shadow:
+          inset 0 0 0 transparent,
+          0 0 0 2px var(--color-brand);
       }
     }
 

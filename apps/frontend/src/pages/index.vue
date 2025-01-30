@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="landing-hero">
-      <ModrinthIcon class="modrinth-icon"/>
+      <ModrinthIcon class="modrinth-icon" />
       <h1 class="main-header">
         <div class="animate-strong">
           Minecraft&nbsp;
@@ -68,7 +68,7 @@
       <div class="users-section">
         <div class="section-header">
           <div class="section-label green">对于玩家</div>
-          <h2 class="section-tagline">探索 10,000+ 资源</h2>
+          <h2 class="section-tagline">探索 50,000+ 资源</h2>
           <p class="section-description">
             从各色的生物群系到阴森的地牢，您一定可以找到各色资源将您的游戏体验提升到一个新高度。
           </p>

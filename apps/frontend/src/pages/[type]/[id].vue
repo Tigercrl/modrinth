@@ -936,7 +936,7 @@ const detailsMessages = defineMessages({
   },
   licensed: {
     id: "project.about.details.licensed",
-    defaultMessage: "许可证：{license}",
+    defaultMessage: "许可证：",
   },
   created: {
     id: "project.about.details.created",
@@ -960,16 +960,16 @@ const modalLicense = ref(null);
 const licenseText = ref("");
 
 const createdDate = computed(() =>
-  project.value.published ? formatRelativeTime(project.value.published) : "unknown",
+  project.value.published ? formatRelativeTime(project.value.published) : "未知",
 );
 const submittedDate = computed(() =>
-  project.value.queued ? formatRelativeTime(project.value.queued) : "unknown",
+  project.value.queued ? formatRelativeTime(project.value.queued) : "未知",
 );
 const publishedDate = computed(() =>
-  project.value.approved ? formatRelativeTime(project.value.approved) : "unknown",
+  project.value.approved ? formatRelativeTime(project.value.approved) : "未知",
 );
 const updatedDate = computed(() =>
-  project.value.updated ? formatRelativeTime(project.value.updated) : "unknown",
+  project.value.updated ? formatRelativeTime(project.value.updated) : "未知",
 );
 
 const licenseIdDisplay = computed(() => {

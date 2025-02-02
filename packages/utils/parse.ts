@@ -1,9 +1,9 @@
 import MarkdownIt from 'markdown-it'
-import { escapeAttrValue, FilterXSS, safeAttrValue, whiteList } from 'xss'
+import xss from 'xss'
 
-export const configuredXss = new FilterXSS({
+export const configuredXss = new xss.FilterXSS({
   whiteList: {
-    ...whiteList,
+    ...xss.whiteList,
     summary: [],
     h1: ['id'],
     h2: ['id'],
@@ -14,16 +14,16 @@ export const configuredXss = new FilterXSS({
     kbd: ['id'],
     input: ['checked', 'disabled', 'type'],
     iframe: ['width', 'height', 'allowfullscreen', 'frameborder', 'start', 'end'],
-    img: [...(whiteList.img || []), 'usemap', 'style', 'align'],
+    img: [...(xss.whiteList.img || []), 'usemap', 'style', 'align'],
     map: ['name'],
-    area: [...(whiteList.a || []), 'coords'],
-    a: [...(whiteList.a || []), 'rel'],
-    td: [...(whiteList.td || []), 'style'],
-    th: [...(whiteList.th || []), 'style'],
+    area: [...(xss.whiteList.a || []), 'coords'],
+    a: [...(xss.whiteList.a || []), 'rel'],
+    td: [...(xss.whiteList.td || []), 'style'],
+    th: [...(xss.whiteList.th || []), 'style'],
     picture: [],
     source: ['media', 'sizes', 'src', 'srcset', 'type'],
-    p: [...(whiteList.p || []), 'align'],
-    div: [...(whiteList.p || []), 'align'],
+    p: [...(xss.whiteList.p || []), 'align'],
+    div: [...(xss.whiteList.p || []), 'align'],
   },
   css: {
     whiteList: {
@@ -61,7 +61,7 @@ export const configuredXss = new FilterXSS({
         })
 
         url.search = newSearchParams.toString()
-        return `${name}="${escapeAttrValue(url.toString())}"`
+        return `${name}="${xss.escapeAttrValue(url.toString())}"`
       }
     }
 
@@ -73,7 +73,7 @@ export const configuredXss = new FilterXSS({
           allowedClasses.push(className)
         }
       }
-      return `${name}="${escapeAttrValue(allowedClasses.join(' '))}"`
+      return `${name}="${xss.escapeAttrValue(allowedClasses.join(' '))}"`
     }
   },
   safeAttrValue(tag, name, value, cssFilter) {
@@ -106,7 +106,7 @@ export const configuredXss = new FilterXSS({
         ]
 
         if (!allowedHostnames.includes(url.hostname)) {
-          return safeAttrValue(
+          return xss.safeAttrValue(
             tag,
             name,
             `https://wsrv.nl/?url=${encodeURIComponent(
@@ -115,13 +115,13 @@ export const configuredXss = new FilterXSS({
             cssFilter,
           )
         }
-        return safeAttrValue(tag, name, url.toString(), cssFilter)
+        return xss.safeAttrValue(tag, name, url.toString(), cssFilter)
       } catch {
         /* empty */
       }
     }
 
-    return safeAttrValue(tag, name, value, cssFilter)
+    return xss.safeAttrValue(tag, name, value, cssFilter)
   },
 })
 

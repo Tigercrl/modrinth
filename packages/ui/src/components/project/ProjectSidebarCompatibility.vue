@@ -110,7 +110,7 @@ const messages = defineMessages({
   },
   minecraftJava: {
     id: 'project.about.compatibility.game.minecraftJava',
-    defaultMessage: 'Minecraft：Java版',
+    defaultMessage: 'Minecraft: Java 版',
   },
   platforms: {
     id: 'project.about.compatibility.platforms',

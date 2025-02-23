@@ -27,7 +27,7 @@ const changelogEntry = computed(() =>
 const isFirst = computed(() => changelogEntry.value?.date === getChangelog()[0].date);
 
 if (!changelogEntry.value) {
-  createError({ statusCode: 404, statusMessage: "Version not found" });
+  createError({ statusCode: 404, statusMessage: "版本未找到" });
 }
 </script>
 
@@ -37,7 +37,7 @@ if (!changelogEntry.value) {
       :to="`/news/changelog?filter=${changelogEntry.product}`"
       class="mb-4 mt-4 flex w-fit items-center gap-2 text-link"
     >
-      <ChevronLeftIcon /> View full changelog
+      <ChevronLeftIcon /> 查看更多
     </nuxt-link>
     <div class="relative flex flex-col gap-4 pb-6">
       <div class="absolute flex h-full w-4 justify-center">

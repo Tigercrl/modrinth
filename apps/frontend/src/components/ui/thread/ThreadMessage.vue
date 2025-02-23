@@ -71,7 +71,7 @@
       <span v-else-if="message.body.type === 'thread_reopen'">重新开启了对话。</span>
     </div>
     <span class="message__date">
-      <span v-tooltip="$dayjs(message.created).format('YYYY/MM/D hh:mm:ss')">
+      <span v-tooltip="$dayjs(message.created).format('YYYY/MM/DD hh:mm:ss')">
         {{ $dayjs(message.created).fromNow() }}
       </span>
     </span>

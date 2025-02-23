@@ -675,11 +675,6 @@ import {
   SettingsIcon,
   SunIcon,
   UserIcon,
-  CurrencyIcon,
-  BracesIcon,
-  GlassesIcon,
-  PaintBrushIcon,
-  PackageOpenIcon,
   DiscordIcon,
   BlueskyIcon,
   TumblrIcon,
@@ -1115,24 +1110,24 @@ const socialLinks = [
 
 const footerLinks = [
   {
-    label: formatMessage(defineMessage({ id: "layout.footer.about", defaultMessage: "About" })),
+    label: formatMessage(defineMessage({ id: "layout.footer.about", defaultMessage: "关于" })),
     links: [
       {
         href: "https://blog.modrinth.com",
         label: formatMessage(
-          defineMessage({ id: "layout.footer.about.blog", defaultMessage: "Blog" }),
+          defineMessage({ id: "layout.footer.about.blog", defaultMessage: "博客" }),
         ),
       },
       {
         href: "/news/changelog",
         label: formatMessage(
-          defineMessage({ id: "layout.footer.about.changelog", defaultMessage: "Changelog" }),
+          defineMessage({ id: "layout.footer.about.changelog", defaultMessage: "更新日志" }),
         ),
       },
       {
         href: "https://status.modrinth.com",
         label: formatMessage(
-          defineMessage({ id: "layout.footer.about.status", defaultMessage: "Status" }),
+          defineMessage({ id: "layout.footer.about.status", defaultMessage: "状态" }),
         ),
       },
       {
@@ -1140,7 +1135,7 @@ const footerLinks = [
         label: formatMessage(
           defineMessage({
             id: "layout.footer.about.rewards-program",
-            defaultMessage: "Rewards Program",
+            defaultMessage: "创作者激励",
           }),
         ),
       },
@@ -1148,7 +1143,7 @@ const footerLinks = [
   },
   {
     label: formatMessage(
-      defineMessage({ id: "layout.footer.products", defaultMessage: "Products" }),
+      defineMessage({ id: "layout.footer.products", defaultMessage: "产品" }),
     ),
     links: [
       {
@@ -1176,7 +1171,7 @@ const footerLinks = [
   },
   {
     label: formatMessage(
-      defineMessage({ id: "layout.footer.resources", defaultMessage: "Resources" }),
+      defineMessage({ id: "layout.footer.resources", defaultMessage: "资源" }),
     ),
     links: [
       {
@@ -1191,7 +1186,7 @@ const footerLinks = [
       {
         href: "https://crowdin.com/project/modrinth",
         label: formatMessage(
-          defineMessage({ id: "layout.footer.resources.translate", defaultMessage: "Translate" }),
+          defineMessage({ id: "layout.footer.resources.translate", defaultMessage: "翻译" }),
         ),
       },
       {
@@ -1199,7 +1194,7 @@ const footerLinks = [
         label: formatMessage(
           defineMessage({
             id: "layout.footer.resources.report-issues",
-            defaultMessage: "Report issues",
+            defaultMessage: "汇报问题",
           }),
         ),
       },
@@ -1208,25 +1203,25 @@ const footerLinks = [
         label: formatMessage(
           defineMessage({
             id: "layout.footer.resources.api-docs",
-            defaultMessage: "API documentation",
+            defaultMessage: "API 文档",
           }),
         ),
       },
     ],
   },
   {
-    label: formatMessage(defineMessage({ id: "layout.footer.legal", defaultMessage: "Legal" })),
+    label: formatMessage(defineMessage({ id: "layout.footer.legal", defaultMessage: "条款" })),
     links: [
       {
         href: "/legal/rules",
         label: formatMessage(
-          defineMessage({ id: "layout.footer.legal.rules", defaultMessage: "Content Rules" }),
+          defineMessage({ id: "layout.footer.legal.rules", defaultMessage: "内容规则" }),
         ),
       },
       {
         href: "/legal/terms",
         label: formatMessage(
-          defineMessage({ id: "layout.footer.legal.terms-of-use", defaultMessage: "Terms of Use" }),
+          defineMessage({ id: "layout.footer.legal.terms-of-use", defaultMessage: "使用条款" }),
         ),
       },
       {
@@ -1234,7 +1229,7 @@ const footerLinks = [
         label: formatMessage(
           defineMessage({
             id: "layout.footer.legal.privacy-policy",
-            defaultMessage: "Privacy Policy",
+            defaultMessage: "隐私政策",
           }),
         ),
       },
@@ -1243,7 +1238,7 @@ const footerLinks = [
         label: formatMessage(
           defineMessage({
             id: "layout.footer.legal.security-notice",
-            defaultMessage: "Security Notice",
+            defaultMessage: "安全提醒",
           }),
         ),
       },

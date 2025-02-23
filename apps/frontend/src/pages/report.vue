@@ -183,7 +183,7 @@
                 {{ formatMessage(messages.whatReportReason, { item: reportItem || "content" }) }}
               </span>
               <RadioButtons v-slot="{ item }" v-model="reportType" :items="reportTypes">
-                {{ item === "copyright" ? "Reuploaded work" : capitalizeString(item) }}
+                {{ item === "copyright" ? "重新上传" : capitalizeString(item) }}
               </RadioButtons>
             </div>
             <div
@@ -500,24 +500,24 @@ const warnings: Record<string, MessageDescriptor[]> = {
     defineMessage({
       id: "report.note.copyright.1",
       defaultMessage:
-        "Please note that you are *not* submitting a DMCA takedown request, but rather a report of reuploaded content.",
+        "请注意，您*不在*提交 DMCA 删除请求，而是提交重新上传内容的举报。",
     }),
     defineMessage({
       id: "report.note.copyright.2",
       defaultMessage:
-        "If you meant to file a DMCA takedown request (which is a legal action) instead, please see our <copyright-policy-link>Copyright Policy</copyright-policy-link>.",
+        "如果您想提交DMCA删除请求（这是一项法律行为），请参阅我们的<copyright-policy-link>版权政策</copyright-policy-link>。",
     }),
   ],
   malicious: [
     defineMessage({
       id: "report.note.malicious.1",
       defaultMessage:
-        "Reports for malicious or deceptive content must include substantial evidence of the behavior, such as code samples.",
+        "恶意或欺骗性内容的举报必须包括行为的实质性证据，例如代码片段。",
     }),
     defineMessage({
       id: "report.note.malicious.2",
       defaultMessage:
-        "Summaries from Microsoft Defender, VirusTotal, or AI malware detection are not sufficient forms of evidence and will not be accepted.",
+        "来自 Microsoft Defender、VirusTotal 或 AI 恶意软件检测的摘要不是充分的证据形式，将不被接受。",
     }),
   ],
 };

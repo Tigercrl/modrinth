@@ -94,7 +94,7 @@
       <span v-if="project.queued" :class="`submitter-info ${project.age_warning}`">
         <WarningIcon v-if="project.age_warning" />
         Submitted
-        <span v-tooltip="$dayjs(project.queued).format('YYYY/MM/D hh:mm:ss')">{{
+        <span v-tooltip="$dayjs(project.queued).format('YYYY/MM/DD hh:mm:ss')">{{
           fromNow(project.queued)
         }}</span>
       </span>

@@ -68,24 +68,24 @@ const props = withDefaults(
 const currentDate = ref(dayjs())
 const recent = computed(() => props.entry.date.isAfter(currentDate.value.subtract(1, 'week')))
 const future = computed(() => props.entry.date.isAfter(currentDate.value))
-const dateTooltip = computed(() => props.entry.date.format('MMMM D, YYYY [at] h:mm A'))
+const dateTooltip = computed(() => props.entry.date.format('YYYY/MM/DD hh:mm:ss'))
 
 const relativeDate = computed(() => props.entry.date.fromNow())
-const longDate = computed(() => props.entry.date.format('MMMM D, YYYY'))
+const longDate = computed(() => props.entry.date.format('YYYY/MM/DD'))
 const versionName = computed(() => props.entry.version ?? longDate.value)
 
 const messages = defineMessages({
   web: {
     id: 'changelog.product.web',
-    defaultMessage: 'Website',
+    defaultMessage: '网站',
   },
   servers: {
     id: 'changelog.product.servers',
-    defaultMessage: 'Servers',
+    defaultMessage: '服务器',
   },
   app: {
     id: 'changelog.product.app',
-    defaultMessage: 'App',
+    defaultMessage: '启动器',
   },
   api: {
     id: 'changelog.product.api',
@@ -93,7 +93,7 @@ const messages = defineMessages({
   },
   justNow: {
     id: 'changelog.justNow',
-    defaultMessage: 'Just now',
+    defaultMessage: '刚才',
   },
 })
 </script>

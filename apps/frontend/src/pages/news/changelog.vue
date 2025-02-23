@@ -1,7 +1,7 @@
 <template>
   <div class="page experimental-styles-within">
-    <h1 class="m-0 text-3xl font-extrabold">Changelog</h1>
-    <p class="my-3">Keep up-to-date on what's new with Modrinth.</p>
+    <h1 class="m-0 text-3xl font-extrabold">更新日志</h1>
+    <p class="my-3">随时了解 Modrinth 的最新动态。</p>
     <NuxtPage />
   </div>
 </template>

@@ -2,7 +2,7 @@
 resolver = '2'
 members = [
   './packages/app-lib',
-	'./apps/app-playground',
+  './apps/app-playground',
   './apps/app',
   './apps/labrinth',
   './apps/daedalus_client',

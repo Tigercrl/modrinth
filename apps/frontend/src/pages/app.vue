@@ -517,7 +517,7 @@ useSeoMeta({
           </div>
           <h3>性能</h3>
           <p>
-            ModrinthApp 比许多流行启动器的表现更好，只占用 150MB 的内存！
+            Modrinth App 比许多流行启动器的表现更好，只占用 150MB 的内存！
           </p>
         </div>
         <div class="feature gradient-border website">
@@ -811,7 +811,7 @@ useSeoMeta({
             </svg>
             <h3>关注资源</h3>
           </div>
-          <div class="description">一键保存您喜爱的内容并接收更新。</div>
+          <div class="description">一键保存您喜爱的资源并接收更新。</div>
         </div>
       </div>
     </div>

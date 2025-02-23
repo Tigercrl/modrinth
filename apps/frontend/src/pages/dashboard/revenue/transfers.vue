@@ -56,7 +56,7 @@
         <div class="payout-info">
           <div>
             <strong>
-              {{ $dayjs(payout.created).format('YYYY/MM/D hh:mm:ss') }}
+              {{ $dayjs(payout.created).format('YYYY/MM/DD hh:mm:ss') }}
             </strong>
           </div>
           <div>

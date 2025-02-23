@@ -84,7 +84,7 @@
         <span>{{ report.reporterUser.username }}</span>
       </nuxt-link><!--
       --><span>，举报时间：</span><!--
-      --><span v-tooltip="$dayjs(report.created).format('YYYY/MM/D hh:mm:ss')">{{
+      --><span v-tooltip="$dayjs(report.created).format('YYYY/MM/DD hh:mm:ss')">{{
           fromNow(report.created)
         }}</span><!--
       --><span>，举报 ID：</span><!--

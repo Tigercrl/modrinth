@@ -91,7 +91,7 @@
                     v-model="searchQuery"
                     type="search"
                     name="search"
-                    :placeholder="`请搜索内容...`"
+                    :placeholder="`请搜索资源...`"
                     autocomplete="off"
                     @input="updateSearchProjects"
                   />

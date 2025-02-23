@@ -328,7 +328,7 @@ const messages = defineMessages({
   },
   lockedDescription: {
     id: 'search.filter.locked.default.description',
-    defaultMessage: '解锁此过滤器可能使您安装不兼容的内容。',
+    defaultMessage: '解锁此过滤器可能使您安装不兼容的资源。',
   },
 })
 </script>

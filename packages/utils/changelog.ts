@@ -1,5 +1,7 @@
 import dayjs from 'dayjs'
 
+dayjs().locale('zh-cn')
+
 export type Product = 'web' | 'servers' | 'api' | 'app'
 
 export type VersionEntry = {

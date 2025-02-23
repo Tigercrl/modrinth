@@ -1,88 +1,140 @@
 <template>
   <div>
     <section class="universal-card">
+      <h2 class="label__title size-card-header">许可证</h2>
+      <p class="label__description">
+        为您的{{ formatProjectType(project.project_type).toLowerCase() }}选择一个合适的许可证是非常重要的。您可以从列表中选择或提供自定义许可证。您也可以为您选择的许可证提供自定义 URL，否则将显示许可证内容。有关更多信息，请参阅我们的
+        <a
+          href="https://blog.modrinth.com/licensing-guide/"
+          target="_blank"
+          rel="noopener"
+          class="text-link"
+        >
+          许可证选择指南
+        </a>。
+      </p>
+
       <div class="adjacent-input">
         <label for="license-multiselect">
-          <span class="label__title size-card-header">许可证</span>
+          <span class="label__title">选择一个许可证</span>
           <span class="label__description">
-            为您的{{ $formatProjectType(project.project_type) }}选择一个合适的许可证是非常重要的。您可以从列表中选择或提供自定义许可证。您也可以为您选择的许可证提供自定义 URL，否则将显示许可证内容。
-            <span v-if="license && license.friendly === 'Custom'" class="label__subdescription">
-              请输入
-              <a href="https://spdx.org/licenses/" target="_blank" rel="noopener" class="text-link">
-                SPDX 许可证标识</a
-              >。
-              如果您的许可证没有 SPDX 标识（例如，如果您自己编写了许可证，或者许可证是特定于 Minecraft 的），只需勾选该框并输入许可证的名称即可。
-            </span>
-            <span class="label__subdescription">
-              感到困惑？有关更多信息，请参阅我们的
-              <a
-                href="https://blog.modrinth.com/licensing-guide/"
-                target="_blank"
-                rel="noopener"
-                class="text-link"
-              >
-                许可指南</a
-              >。
-            </span>
+            允许和禁止用户使用您的资源做什么。
           </span>
         </label>
-        <div class="input-stack">
-          <Multiselect
-            id="license-multiselect"
+
+        <div class="w-1/2">
+          <DropdownSelect
             v-model="license"
+            name="许可证选择"
+            :options="builtinLicenses"
+            :display-name="(chosen: BuiltinLicense) => chosen.friendly"
             placeholder="请选择许可证..."
-            track-by="short"
-            label="friendly"
-            :options="defaultLicenses"
-            :searchable="true"
-            :close-on-select="true"
-            :show-labels="false"
-            :class="{
-              'known-error': license?.short === '' && showKnownErrors,
-            }"
+          />
+        </div>
+      </div>
+
+      <div class="adjacent-input" v-if="license.requiresOnlyOrLater">
+        <label for="or-later-checkbox">
+          <span class="label__title">后续版本</span>
+          <span class="label__description">
+            您选择的许可证可以允许后续版本。如果您选中此复选框，则用户可以在许可证后续版本的规定下使用您的资源。
+          </span>
+        </label>
+
+        <Checkbox
+          id="or-later-checkbox"
+          v-model="allowOrLater"
+          :disabled="!hasPermission"
+          description="允许后续版本"
+          class="w-1/2"
+        >
+          允许后续版本
+        </Checkbox>
+      </div>
+
+      <div class="adjacent-input">
+        <label for="license-url">
+          <span class="label__title">许可证 URL</span>
+          <span class="label__description" v-if="license?.friendly !== '自定义'">
+            完整许可证文本的网站位置。如果您不提供链接，则将显示许可证文本。
+          </span>
+          <span class="label__description" v-else>
+            完整许可证文本的网站位置。您必须提供链接，因为您正在自定义许可证。
+          </span>
+        </label>
+
+        <div class="w-1/2">
+          <input
+            id="license-url"
+            v-model="licenseUrl"
+            type="url"
+            maxlength="2048"
+            :placeholder="license?.friendly !== '自定义' ? `许可证 URL（可选）` : `许可证 URL`"
+            :disabled="!hasPermission || licenseId === 'LicenseRef-Unknown'"
+            class="w-full"
+          />
+        </div>
+      </div>
+
+      <div class="adjacent-input" v-if="license?.friendly === '自定义'">
+        <label for="license-spdx" v-if="!nonSpdxLicense">
+          <span class="label__title">SPDX 标识</span>
+          <span class="label__description">
+            如果您的许可证没有
+            <a href="https://spdx.org/licenses/" target="_blank" rel="noopener" class="text-link">
+              SPDX 标识</a
+            >，只需勾选复选框并输入许可证的名称即可。
+          </span>
+        </label>
+        <label for="license-name" v-else>
+          <span class="label__title">许可证名称</span>
+          <span class="label__description"
+            >许可证的完整名称。如果许可证有SPDX标识，请取消选中复选框并使用标识。</span
+          >
+        </label>
+
+        <div class="input-stack w-1/2">
+          <input
+            v-if="!nonSpdxLicense"
+            v-model="license.short"
+            id="license-spdx"
+            class="w-full"
+            type="text"
+            maxlength="128"
+            placeholder="SPDX identifier"
             :disabled="!hasPermission"
           />
-          <Checkbox
-            v-if="license?.requiresOnlyOrLater"
-            v-model="allowOrLater"
+          <input
+            v-else
+            v-model="license.short"
+            id="license-name"
+            class="w-full"
+            type="text"
+            maxlength="128"
+            placeholder="License name"
             :disabled="!hasPermission"
-            description="允许许可证的更新版本"
-          >
-            允许许可证的更新版本
-          </Checkbox>
+          />
+
           <Checkbox
-            v-if="license?.friendly === 'Custom'"
+            v-if="license?.friendly === '自定义'"
             v-model="nonSpdxLicense"
             :disabled="!hasPermission"
             description="许可证没有一个 SPDX 标识"
           >
             许可证没有一个 SPDX 标识
           </Checkbox>
-          <input
-            v-if="license?.friendly === 'Custom'"
-            v-model="license.short"
-            type="text"
-            maxlength="2048"
-            :placeholder="nonSpdxLicense ? '许可证名称' : 'SPDX 标识'"
-            :class="{
-              'known-error': license.short === '' && showKnownErrors,
-            }"
-            :disabled="!hasPermission"
-          />
-          <input
-            v-model="licenseUrl"
-            type="url"
-            maxlength="2048"
-            placeholder="许可证 URL（可选）"
-            :disabled="!hasPermission || licenseId === 'LicenseRef-Unknown'"
-          />
         </div>
       </div>
+
       <div class="input-stack">
         <button
           type="button"
           class="iconified-button brand-button"
-          :disabled="!hasChanges || license === null"
+          :disabled="
+            !hasChanges ||
+            !hasPermission ||
+            (license.friendly === 'Custom' && (license.short === '' || licenseUrl === ''))
+          "
           @click="saveChanges()"
         >
           <SaveIcon/>
@@ -93,199 +145,109 @@
   </div>
 </template>
 
-<script>
-import Multiselect from "vue-multiselect";
-import Checkbox from "~/components/ui/Checkbox";
+<script setup lang="ts">
+import { Checkbox, DropdownSelect } from "@modrinth/ui";
+import {
+  TeamMemberPermission,
+  builtinLicenses,
+  formatProjectType,
+  type BuiltinLicense,
+  type Project,
+  type TeamMember,
+} from "@modrinth/utils";
+import { computed, ref, type Ref } from "vue";
 import SaveIcon from "~/assets/images/utils/save.svg?component";
 
-export default defineNuxtComponent({
-  components: {
-    Multiselect,
-    Checkbox,
-    SaveIcon,
-  },
-  props: {
-    project: {
-      type: Object,
-      default() {
-        return {};
-      },
-    },
-    currentMember: {
-      type: Object,
-      default() {
-        return null;
-      },
-    },
-    patchProject: {
-      type: Function,
-      default() {
-        return () => {
-          this.$notify({
-            group: "main",
-            title: "发生错误",
-            text: "资源信息修改函数未定义",
-            type: "error",
-          });
-        };
-      },
-    },
-  },
-  data() {
-    return {
-      licenseUrl: "",
-      license: {friendly: "", short: "", requiresOnlyOrLater: false},
-      allowOrLater: this.project.license.id.includes("-or-later"),
-      nonSpdxLicense: this.project.license.id.includes("LicenseRef-"),
-      showKnownErrors: false,
-    };
-  },
-  async setup(props) {
-    const defaultLicenses = shallowRef([
-      {friendly: "自定义", short: ""},
-      {
-        friendly: "保留所有权利 / 无许可证",
-        short: "All-Rights-Reserved",
-      },
-      {friendly: "Apache License 2.0", short: "Apache-2.0"},
-      {
-        friendly: '两句版BSD许可证',
-        short: "BSD-2-Clause",
-      },
-      {
-        friendly: '三句版BSD许可证',
-        short: "BSD-3-Clause",
-      },
-      {
-        friendly: "CC0（公有领域等效）",
-        short: "CC0-1.0",
-      },
-      {friendly: "CC-BY 4.0", short: "CC-BY-4.0"},
-      {
-        friendly: "CC-BY-SA 4.0",
-        short: "CC-BY-SA-4.0",
-      },
-      {
-        friendly: "CC-BY-NC 4.0",
-        short: "CC-BY-NC-4.0",
-      },
-      {
-        friendly: "CC-BY-NC-SA 4.0",
-        short: "CC-BY-NC-SA-4.0",
-      },
-      {
-        friendly: "CC-BY-ND 4.0",
-        short: "CC-BY-ND-4.0",
-      },
-      {
-        friendly: "CC-BY-NC-ND 4.0",
-        short: "CC-BY-NC-ND-4.0",
-      },
-      {
-        friendly: "GNU Affero 通用公共许可证 v3",
-        short: "AGPL-3.0",
-        requiresOnlyOrLater: true,
-      },
-      {
-        friendly: "GNU 宽通用公共许可证 v2.1",
-        short: "LGPL-2.1",
-        requiresOnlyOrLater: true,
-      },
-      {
-        friendly: "GNU 宽通用公共许可证 v3",
-        short: "LGPL-3.0",
-        requiresOnlyOrLater: true,
-      },
-      {
-        friendly: "GNU 通用公共许可证 v2",
-        short: "GPL-2.0",
-        requiresOnlyOrLater: true,
-      },
-      {
-        friendly: "GNU 通用公共许可证 v3",
-        short: "GPL-3.0",
-        requiresOnlyOrLater: true,
-      },
-      {friendly: "ISC 许可证", short: "ISC"},
-      {friendly: "MIT 许可证", short: "MIT"},
-      {friendly: "Mozilla 公共许可证 2.0", short: "MPL-2.0"},
-      {friendly: "zlib 许可证", short: "Zlib"},
-    ]);
+const props = defineProps<{
+  project: Project;
+  currentMember: TeamMember | undefined;
+  patchProject: (payload: Object, quiet?: boolean) => Object;
+}>();
 
-    const licenseUrl = ref(props.project.license.url);
-
-    const licenseId = props.project.license.id;
-    const trimmedLicenseId = licenseId
-      .replaceAll("-only", "")
-      .replaceAll("-or-later", "")
-      .replaceAll("LicenseRef-", "");
-
-    const license = ref(
-      defaultLicenses.value.find((x) => x.short === trimmedLicenseId) ?? {
-        friendly: "Custom",
-        short: licenseId.replaceAll("LicenseRef-", ""),
-      },
-    );
-
-    if (licenseId === "LicenseRef-Unknown") {
-      license.value = {
-        friendly: "Unknown",
-        short: licenseId.replaceAll("LicenseRef-", ""),
-      };
-    }
-
-    return {
-      defaultLicenses,
-      licenseUrl,
-      license,
-    };
-  },
-  computed: {
-    hasPermission() {
-      const EDIT_DETAILS = 1 << 2;
-      return (this.currentMember.permissions & EDIT_DETAILS) === EDIT_DETAILS;
-    },
-    licenseId() {
-      let id = "";
-      if (this.license === null) return id;
-      if (
-        (this.nonSpdxLicense && this.license.friendly === "Custom") ||
-        this.license.short === "All-Rights-Reserved" ||
-        this.license.short === "Unknown"
-      ) {
-        id += "LicenseRef-";
-      }
-      id += this.license.short;
-      if (this.license.requiresOnlyOrLater) {
-        id += this.allowOrLater ? "-or-later" : "-only";
-      }
-      if (this.nonSpdxLicense && this.license.friendly === "Custom") {
-        id = id.replaceAll(" ", "-");
-      }
-      return id;
-    },
-    patchData() {
-      const data = {};
-
-      if (this.licenseId !== this.project.license.id) {
-        data.license_id = this.licenseId;
-        data.license_url = this.licenseUrl ? this.licenseUrl : null;
-      } else if (this.licenseUrl !== this.project.license.url) {
-        data.license_url = this.licenseUrl ? this.licenseUrl : null;
-      }
-
-      return data;
-    },
-    hasChanges() {
-      return Object.keys(this.patchData).length > 0;
-    },
-  },
-  methods: {
-    saveChanges() {
-      if (this.hasChanges) {
-        this.patchProject(this.patchData);
-      }
-    },
-  },
+const licenseUrl = ref(props.project.license.url);
+const license: Ref<{
+  friendly: string;
+  short: string;
+  requiresOnlyOrLater?: boolean;
+}> = ref({
+  friendly: "",
+  short: "",
+  requiresOnlyOrLater: false,
 });
+
+const allowOrLater = ref(props.project.license.id.includes("-or-later"));
+const nonSpdxLicense = ref(props.project.license.id.includes("LicenseRef-"));
+
+const oldLicenseId = props.project.license.id;
+const trimmedLicenseId = oldLicenseId
+  .replaceAll("-only", "")
+  .replaceAll("-or-later", "")
+  .replaceAll("LicenseRef-", "");
+
+license.value = builtinLicenses.find((x) => x.short === trimmedLicenseId) ?? {
+  friendly: "自定义",
+  short: oldLicenseId.replaceAll("LicenseRef-", ""),
+  requiresOnlyOrLater: oldLicenseId.includes("-or-later"),
+};
+
+if (oldLicenseId === "LicenseRef-Unknown") {
+  // Mark it as not having a license, forcing the user to select one
+  license.value = {
+    friendly: "",
+    short: oldLicenseId.replaceAll("LicenseRef-", ""),
+    requiresOnlyOrLater: false,
+  };
+}
+
+const hasPermission = computed(() => {
+  return (props.currentMember?.permissions ?? 0) & TeamMemberPermission.EDIT_DETAILS;
+});
+
+const licenseId = computed(() => {
+  let id = "";
+
+  if (
+    (nonSpdxLicense && license.value.friendly === "自定义") ||
+    license.value.short === "All-Rights-Reserved" ||
+    license.value.short === "Unknown"
+  ) {
+    id += "LicenseRef-";
+  }
+
+  id += license.value.short;
+  if (license.value.requiresOnlyOrLater) {
+    id += allowOrLater.value ? "-or-later" : "-only";
+  }
+
+  if (nonSpdxLicense && license.value.friendly === "自定义") {
+    id = id.replaceAll(" ", "-");
+  }
+
+  return id;
+});
+
+const patchRequestPayload = computed(() => {
+  const payload: {
+    license_id?: string;
+    license_url?: string | null; // null = remove url
+  } = {};
+
+  if (licenseId.value !== props.project.license.id) {
+    payload.license_id = licenseId.value;
+  }
+
+  if (licenseUrl.value !== props.project.license.url) {
+    payload.license_url = licenseUrl.value ? licenseUrl.value : null;
+  }
+
+  return payload;
+});
+
+const hasChanges = computed(() => {
+  return Object.keys(patchRequestPayload.value).length > 0;
+});
+
+function saveChanges() {
+  props.patchProject(patchRequestPayload.value);
+}
 </script>

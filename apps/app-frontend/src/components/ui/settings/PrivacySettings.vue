@@ -29,17 +29,7 @@ watch(
         Modrinth 的广告提供商（Aditude）会根据您的偏好显示广告。通过禁用此选项，您的广告将不再显示基于您的兴趣显示。
       </p>
     </div>
-    <Toggle
-      id="personalized-ads"
-      :model-value="settings.personalized_ads"
-      :checked="false"
-      disabled
-      @update:model-value="
-        (e) => {
-          settings.personalized_ads = false
-        }
-      "
-    />
+    <Toggle id="personalized-ads" v-model="settings.personalized_ads" />
   </div>
 
   <div class="mt-4 flex items-center justify-between gap-4">
@@ -49,17 +39,7 @@ watch(
         Modrinth 收集匿名分析和使用数据以改善用户体验并定制您的体验。通过禁用此选项，您的数据将不再被收集。
       </p>
     </div>
-    <Toggle
-      id="opt-out-analytics"
-      :model-value="settings.telemetry"
-      :checked="false"
-      disabled
-      @update:model-value="
-        (e) => {
-          settings.telemetry = e
-        }
-      "
-    />
+    <Toggle id="opt-out-analytics" v-model="settings.telemetry" />
   </div>
 
   <div class="mt-4 flex items-center justify-between gap-4">
@@ -72,10 +52,6 @@ watch(
         注意：这不会阻止任何特定于实例的 Discord Rich Presence 集成，例如模组的集成。（需要重启应用生效）
       </p>
     </div>
-    <Toggle
-      id="disable-discord-rpc"
-      v-model="settings.discord_rpc"
-      :checked="settings.discord_rpc"
-    />
+    <Toggle id="disable-discord-rpc" v-model="settings.discord_rpc" />
   </div>
 </template>

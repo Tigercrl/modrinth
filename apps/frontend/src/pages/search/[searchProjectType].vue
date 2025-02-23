@@ -269,7 +269,8 @@
                   <button
                     v-if="
                       result.installed ||
-                      server.content.data.find((x) => x.project_id === result.project_id) ||
+                      (server?.content?.data &&
+                        server.content.data.find((x) => x.project_id === result.project_id)) ||
                       server.general?.project?.id === result.project_id
                     "
                     disabled
@@ -386,7 +387,9 @@ async function updateServerContext() {
     if (!auth.value.user) {
       router.push("/auth/sign-in?redirect=" + encodeURIComponent(route.fullPath));
     } else if (route.query.sid !== null) {
-      server.value = await usePyroServer(route.query.sid, ["general", "content"]);
+      server.value = await usePyroServer(route.query.sid, ["general", "content"], {
+        waitForModules: true,
+      });
     }
   }
 
@@ -505,8 +508,8 @@ async function serverInstall(project) {
       ) ?? versions[0];
 
     if (projectType.value.id === "modpack") {
-      await server.value.general?.reinstall(
-        route.query.sid,
+      await server.value.general.reinstall(
+        server.value.serverId,
         false,
         project.project_id,
         version.id,
@@ -514,7 +517,7 @@ async function serverInstall(project) {
         eraseDataOnInstall.value,
       );
       project.installed = true;
-      navigateTo(`/servers/manage/${route.query.sid}/options/loader`);
+      navigateTo(`/servers/manage/${server.value.serverId}/options/loader`);
     } else if (projectType.value.id === "mod") {
       await server.value.content.install("mod", version.project_id, version.id);
       await server.value.refresh(["content"]);

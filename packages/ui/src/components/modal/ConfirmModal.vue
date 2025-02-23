@@ -10,8 +10,8 @@
       <label v-if="hasToType" for="confirmation" class="confirmation-label">
         <span>
           <strong>请在下方输入</strong>
-          <em class="confirmation-text">{{ confirmationText }}</em>
-          <strong>以继续</strong>
+          <em class="confirmation-text"> {{ confirmationText }} </em>
+          <strong>以继续：</strong>
         </span>
       </label>
       <div class="confirmation-input">

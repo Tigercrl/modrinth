@@ -2,15 +2,16 @@
   <NewModal ref="purchaseModal">
     <template #title>
       <span class="text-contrast text-xl font-extrabold">
-        <template v-if="product.metadata.type === 'midas'">订阅 Modrinth Plus！</template>
-        <template v-else-if="product.metadata.type === 'pyro'"
-        >订阅 Modrinth 服务器！</template
-        >
+        <template v-if="productType === 'midas'">订阅 Modrinth+！</template>
+        <template v-else-if="productType === 'pyro'">
+          <template v-if="existingSubscription"> 升级服务器方案 </template>
+          <template v-else> 订阅 Modrinth 服务器！</template>
+        </template>
         <template v-else>购买项目</template>
       </span>
     </template>
     <div class="flex items-center gap-1 pb-4">
-      <template v-if="product.metadata.type === 'pyro' && !projectId">
+      <template v-if="productType === 'pyro' && !projectId">
         <span
           :class="{
             'text-secondary': purchaseModalStep !== 0,
@@ -24,23 +25,20 @@
       </template>
       <span
         :class="{
-          'text-secondary':
-            purchaseModalStep !== (product.metadata.type === 'pyro' && !projectId ? 1 : 0),
-          'font-bold':
-            purchaseModalStep === (product.metadata.type === 'pyro' && !projectId ? 1 : 0),
+          'text-secondary': purchaseModalStep !== (productType === 'pyro' && !projectId ? 1 : 0),
+          'font-bold': purchaseModalStep === (productType === 'pyro' && !projectId ? 1 : 0),
         }"
       >
-        {{ product.metadata.type === 'pyro' ? '续费' : '方案' }}<span class="hidden sm:inline">{{
-          product.metadata.type === 'pyro' ? '间隔' : '选择'
+        {{ productType === 'pyro' ? '续费' : '方案' }}
+        <span class="hidden sm:inline">{{
+          productType === 'pyro' ? '间隔' : '选择'
         }}</span>
       </span>
       <ChevronRightIcon class="h-5 w-5 text-secondary"/>
       <span
         :class="{
-          'text-secondary':
-            purchaseModalStep !== (product.metadata.type === 'pyro' && !projectId ? 2 : 1),
-          'font-bold':
-            purchaseModalStep === (product.metadata.type === 'pyro' && !projectId ? 2 : 1),
+          'text-secondary': purchaseModalStep !== (productType === 'pyro' && !projectId ? 2 : 1),
+          'font-bold': purchaseModalStep === (productType === 'pyro' && !projectId ? 2 : 1),
         }"
       >
         购买
@@ -48,20 +46,18 @@
       <ChevronRightIcon class="h-5 w-5 text-secondary"/>
       <span
         :class="{
-          'text-secondary':
-            purchaseModalStep !== (product.metadata.type === 'pyro' && !projectId ? 3 : 2),
-          'font-bold':
-            purchaseModalStep === (product.metadata.type === 'pyro' && !projectId ? 3 : 2),
+          'text-secondary': purchaseModalStep !== (productType === 'pyro' && !projectId ? 3 : 2),
+          'font-bold': purchaseModalStep === (productType === 'pyro' && !projectId ? 3 : 2),
         }"
       >
         检查
       </span>
     </div>
     <div
-      v-if="product.metadata.type === 'pyro' && !projectId && purchaseModalStep === 0"
+      v-if="productType === 'pyro' && !projectId && purchaseModalStep === 0"
       class="md:w-[600px] flex flex-col gap-4"
     >
-      <div>
+      <div v-if="!existingSubscription">
         <p class="my-2 text-lg font-bold">配置服务器</p>
         <div class="flex flex-col gap-4">
           <input v-model="serverName" placeholder="Server name" class="input" maxlength="48"/>
@@ -104,13 +100,20 @@
       </div>
       <div v-if="customServer">
         <div class="flex gap-2 items-center">
-          <p class="my-2 text-lg font-bold">配置内存大小</p>
+          <p class="my-2 text-lg font-bold">
+            <template v-if="existingSubscription">升级内存大小</template>
+            <template v-else>配置内存大小</template>
+          </p>
           <IssuesIcon
             v-if="customServerConfig.ramInGb < 4"
             v-tooltip="'这可能不足以运行 Minecraft 服务器。'"
             class="h-6 w-6 text-orange"
           />
         </div>
+        <p v-if="existingPlan" class="mt-1 mb-2 text-secondary">
+          当前方案含有 <strong>{{ existingPlan.metadata.ram / 1024 }} GB 内存</strong> 和
+          <strong>{{ existingPlan.metadata.cpu }} vCPU</strong>.
+        </p>
         <div class="flex flex-col gap-4">
           <div class="flex w-full gap-2 items-center">
             <Slider
@@ -136,30 +139,17 @@
               <input v-model="customServerConfig.storageGbFormatted" disabled class="input"/>
             </div>
           </div>
-          <div
-            v-else
-            class="flex justify-between rounded-2xl border-2 border-solid border-blue bg-bg-blue p-4 font-semibold text-contrast"
+          <Admonition
+            v-else-if="customOutOfStock && customMatchingProduct"
+            type="info"
+            header="此方案暂时售罄"
           >
-            <div class="flex w-full justify-between gap-2">
-              <div class="flex flex-row gap-4">
-                <InfoIcon class="hidden flex-none h-8 w-8 text-blue sm:block"/>
-
-                <div v-if="customOutOfStock && customMatchingProduct" class="flex flex-col gap-2">
-                  <div class="font-semibold">该方案暂时售罄</div>
-                  <div class="font-normal">
-                    您选择的内存大小<a :href="outOfStockUrl" class="underline"
-                                       target="_blank">暂时售罄</a>。请稍后再试，或尝试不同大小的内存。
-                  </div>
-                </div>
-                <div v-else class="flex flex-col gap-2">
-                  <div class="font-semibold">我们似乎无法找到您选择的方案</div>
-                  <div class="font-normal">
-                    我们目前无法找到您选择的内存大小的服务器。请稍后再试，或尝试不同大小的内存。
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+            您选择的内存大小
+            <a :href="outOfStockUrl" class="underline" target="_blank">暂时售罄</a>。请稍后再试，或尝试不同大小的内存。
+          </Admonition>
+          <Admonition v-else type="info" header="我们似乎无法找到您选择的方案">
+            我们目前无法找到您选择的内存大小的服务器。请稍后再试，或尝试不同大小的内存。
+          </Admonition>
 
           <div class="flex items-center gap-2">
             <InfoIcon class="hidden sm:block"/>
@@ -176,6 +166,14 @@
     >
       <div>
         <p class="my-2 text-lg font-bold">选择续费间隔</p>
+        <div v-if="existingPlan" class="flex flex-col gap-3 mb-4 text-secondary">
+          <p class="m-0">
+            以下价格反映了您升级方案的新<strong>续订费用</strong>。
+          </p>
+          <p class="m-0">
+            现在您将按比例收取当前方案剩余部分的费用。
+          </p>
+        </div>
         <div class="flex flex-col gap-4">
           <div
             v-for="([interval, rawPrice], index) in Object.entries(price.prices.intervals)"
@@ -244,7 +242,10 @@
       v-if="purchaseModalStep === (mutatedProduct.metadata.type === 'pyro' && !projectId ? 3 : 2)"
       class="md:w-[650px]"
     >
-      <div v-if="mutatedProduct.metadata.type === 'pyro'" class="r-4 rounded-xl bg-bg p-4 mb-4">
+      <div
+        v-if="mutatedProduct.metadata.type === 'pyro' && !existingSubscription"
+        class="r-4 rounded-xl bg-bg p-4 mb-4"
+      >
         <p class="my-2 text-lg font-bold text-primary">服务器信息</p>
         <div class="flex items-center gap-4">
           <img
@@ -264,12 +265,19 @@
         <div class="r-4 rounded-xl bg-bg p-4">
           <p class="my-2 text-lg font-bold text-primary">支付详情</p>
           <div class="mb-2 flex justify-between">
-            <span class="text-secondary"
-            >{{ mutatedProduct.metadata.type === 'midas' ? 'Modrinth+' : 'Modrinth 服务器' }}
-              {{ selectedPlan }}</span
-            >
-            <span class="text-secondary text-end">
-              {{ formatPrice(locale, price.prices.intervals[selectedPlan], price.currency_code) }} /
+            <span class="text-secondary">
+              {{ mutatedProduct.metadata.type === 'midas' ? 'Modrinth+' : 'Modrinth 服务器' }}
+              {{
+                existingPlan
+                  ? `(${dayjs(renewalDate).diff(dayjs(), 'days')} days prorated)`
+                  : selectedPlan
+              }}
+            </span>
+            <span v-if="existingPlan" class="text-secondary text-end">
+              {{ formatPrice(locale, total - tax, price.currency_code) }}
+            </span>
+            <span v-else class="text-secondary text-end">
+              {{ formatPrice(locale, total - tax, price.currency_code) }} /
               {{ selectedPlan }}
             </span>
           </div>
@@ -282,7 +290,7 @@
           <div class="mt-4 flex justify-between border-0 border-t border-solid border-code-bg pt-4">
             <span class="text-lg font-bold">今日总计</span>
             <span class="text-lg font-extrabold text-primary text-end">
-              {{ formatPrice(locale, price.prices.intervals[selectedPlan], price.currency_code) }}
+              {{ formatPrice(locale, total, price.currency_code) }}
             </span>
           </div>
         </div>
@@ -377,10 +385,13 @@
       <p class="m-0 mt-9 text-sm text-secondary">
         <strong>点击“订阅”后，您将购买一个自动续费订阅。</strong>
         <br/>
-        从今天开始，您将被收取
+        从
+        {{ existingPlan ? dayjs(renewalDate).format('YYYY/MM/DD') : '今天' }}
+        开始，您将被收取
         {{ formatPrice(locale, price.prices.intervals[selectedPlan], price.currency_code) }} /
-        {{ selectedPlan }} 外加适用税，直到您取消预订为止。
-        <br/>
+        {{ selectedPlan }}
+        外加适用税，直到您取消预订为止。
+        <br />
         您可以随时从设置页面取消。
       </p>
       <p v-if="mutatedProduct.metadata.type === 'pyro'" class="mb-2 mt-4 text-secondary">
@@ -405,12 +416,19 @@
           :disabled="
             paymentLoading ||
             (mutatedProduct.metadata.type === 'pyro' && !projectId && !serverName) ||
-            customAllowedToContinue
+            customNotAllowedToContinue ||
+            upgradeNotAllowedToContinue
           "
           @click="nextStep"
         >
-          <RightArrowIcon/>
-          {{ mutatedProduct.metadata.type === 'pyro' && !projectId ? '下一步' : '确认' }}
+          <template v-if="customServer && customLoading">
+            <SpinnerIcon class="animate-spin" />
+            正在检查可用性...
+          </template>
+          <template v-else>
+            <RightArrowIcon />
+            {{ mutatedProduct.metadata.type === 'pyro' && !projectId ? '下一步' : '确认' }}
+          </template>
         </button>
       </template>
       <template
@@ -486,6 +504,7 @@
 import {computed, nextTick, reactive, ref, watch} from 'vue'
 import NewModal from '../modal/NewModal.vue'
 import {
+  SpinnerIcon,
   CardIcon,
   CheckCircleIcon,
   ChevronRightIcon,
@@ -505,6 +524,8 @@ import {defineMessages, useVIntl} from '@vintl/vintl'
 import {Multiselect} from 'vue-multiselect'
 import Checkbox from '../base/Checkbox.vue'
 import Slider from '../base/Slider.vue'
+import dayjs from 'dayjs'
+import Admonition from '../base/Admonition.vue'
 
 const {locale, formatMessage} = useVIntl()
 
@@ -580,7 +601,24 @@ const props = defineProps({
     required: false,
     default: '',
   },
+  existingSubscription: {
+    type: Object,
+    required: false,
+    default: null,
+  },
+  existingPlan: {
+    type: Object,
+    required: false,
+    default: null,
+  },
+  renewalDate: {
+    type: String,
+    required: false,
+    default: null,
+  },
 })
+
+const productType = computed(() => (props.customServer ? 'pyro' : props.product.metadata.type))
 
 const messages = defineMessages({
   paymentMethodCardDisplay: {
@@ -600,11 +638,11 @@ const paymentMethodTypes = defineMessages({
   },
   diners: {
     id: 'omorphia.component.purchase_modal.payment_method_type.diners',
-    defaultMessage: '大莱卡',
+    defaultMessage: 'Diners Club',
   },
   discover: {
     id: 'omorphia.component.purchase_modal.payment_method_type.discover',
-    defaultMessage: '发现卡',
+    defaultMessage: 'Discover',
   },
   eftpos: {
     id: 'omorphia.component.purchase_modal.payment_method_type.eftpos',
@@ -613,7 +651,7 @@ const paymentMethodTypes = defineMessages({
   jcb: {id: 'omorphia.component.purchase_modal.payment_method_type.jcb', defaultMessage: 'JCB'},
   mastercard: {
     id: 'omorphia.component.purchase_modal.payment_method_type.mastercard',
-    defaultMessage: '万事达卡',
+    defaultMessage: 'MasterCard',
   },
   unionpay: {
     id: 'omorphia.component.purchase_modal.payment_method_type.unionpay',
@@ -663,7 +701,7 @@ const total = ref()
 
 const serverName = ref(props.serverName || '')
 const serverLoader = ref('Vanilla')
-const eulaAccepted = ref(false)
+const eulaAccepted = ref(!!props.existingSubscription)
 
 const mutatedProduct = ref({...props.product})
 const customMinRam = ref(0)
@@ -671,10 +709,14 @@ const customMaxRam = ref(0)
 const customMatchingProduct = ref()
 const customOutOfStock = ref(false)
 const customLoading = ref(true)
-const customAllowedToContinue = computed(
+const customNotAllowedToContinue = computed(
   () =>
     props.customServer &&
+    !props.existingSubscription &&
     (!customMatchingProduct.value || customLoading.value || customOutOfStock.value),
+)
+const upgradeNotAllowedToContinue = computed(
+  () => props.existingSubscription && (!hasUpgradeCapacityForConfig.value || customLoading.value),
 )
 
 const customServerConfig = reactive({
@@ -688,7 +730,9 @@ const updateCustomServerProduct = () => {
     (product) => product.metadata.ram === customServerConfig.ram,
   )
 
-  if (customMatchingProduct.value) mutatedProduct.value = {...customMatchingProduct.value}
+  if (customMatchingProduct.value) {
+    mutatedProduct.value = { ...customMatchingProduct.value }
+  }
 }
 
 const formatPlan = (name) => {
@@ -711,24 +755,37 @@ const updateCustomServerStock = async () => {
 
   updateCustomServerStockTimeout = setTimeout(async () => {
     if (props.fetchCapacityStatuses) {
-      const capacityStatus = await props.fetchCapacityStatuses(mutatedProduct.value)
-      if (capacityStatus.custom?.available === 0) {
-        customOutOfStock.value = true
+      if (props.existingSubscription) {
+        if (mutatedProduct.value) {
+          const capacityStatus = await props.fetchCapacityStatuses(
+            props.existingSubscription.metadata.id,
+            mutatedProduct.value,
+          )
+          customOutOfStock.value = capacityStatus.custom?.available === 0
+          console.log(capacityStatus)
+        }
       } else {
-        customOutOfStock.value = false
+        const capacityStatus = await props.fetchCapacityStatuses(mutatedProduct.value)
+        customOutOfStock.value = capacityStatus.custom?.available === 0
       }
-      customLoading.value = false
     } else {
       console.error('No fetchCapacityStatuses function provided.')
       customOutOfStock.value = true
     }
+    customLoading.value = false
   }, 300)
 }
 
-if (props.customServer) {
+function updateRamValues() {
   const ramValues = props.product.map((product) => product.metadata.ram / 1024)
   customMinRam.value = Math.min(...ramValues)
   customMaxRam.value = Math.max(...ramValues)
+
+  customServerConfig.ramInGb = customMinRam.value
+}
+
+if (props.customServer) {
+  updateRamValues()
 
   const updateProductAndStock = () => {
     updateCustomServerProduct()
@@ -909,16 +966,25 @@ async function refreshPayment(confirmationId, paymentMethodId) {
         id: paymentMethodId,
       }
 
-    const result = await props.sendBillingRequest({
-      charge: {
-        type: 'new',
-        product_id: mutatedProduct.value.id,
-        interval: selectedPlan.value,
-      },
-      existing_payment_intent: paymentIntentId.value,
-      metadata: metadata.value,
-      ...base,
-    })
+    const result = await props.sendBillingRequest(
+      props.existingSubscription
+        ? {
+            interval: selectedPlan.value,
+            cancelled: false,
+            product: mutatedProduct.value.id,
+            payment_method: paymentMethodId,
+          }
+        : {
+            charge: {
+              type: 'new',
+              product_id: mutatedProduct.value.id,
+              interval: selectedPlan.value,
+            },
+            existing_payment_intent: paymentIntentId.value,
+            metadata: metadata.value,
+            ...base,
+          },
+    )
 
     if (!paymentIntentId.value) {
       paymentIntentId.value = result.payment_intent_id
@@ -932,10 +998,14 @@ async function refreshPayment(confirmationId, paymentMethodId) {
 
     if (confirmationId) {
       confirmationToken.value = confirmationId
-      inputtedPaymentMethod.value = result.payment_method
+      if (result.payment_method) {
+        inputtedPaymentMethod.value = result.payment_method
+      }
     }
 
-    selectedPaymentMethod.value = result.payment_method
+    if (result.payment_method) {
+      selectedPaymentMethod.value = result.payment_method
+    }
   } catch (err) {
     props.onError(err)
   }
@@ -957,11 +1027,20 @@ async function submitPayment() {
   paymentLoading.value = false
 }
 
+const hasUpgradeCapacityForConfig = computed(() => {
+  // TODO: Check for upgrade capacity here when Pyro provides route
+  return props.existingPlan
+})
+
 defineExpose({
   show: () => {
+    if (props.customServer) {
+      updateRamValues()
+    }
+
     stripe = Stripe(props.publishableKey)
 
-    selectedPlan.value = 'yearly'
+    selectedPlan.value = props.existingSubscription ? props.existingSubscription.interval : 'yearly'
     serverName.value = props.serverName || ''
     serverLoader.value = 'Vanilla'
 

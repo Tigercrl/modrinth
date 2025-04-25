@@ -3,18 +3,22 @@
     <section class="universal-card">
       <Breadcrumbs
         v-if="history"
-        current-title="历史"
-        :link-stack="[{ href: `/dashboard/notifications`, label: '通知' }]"
+        current-title="History"
+        :link-stack="[{ href: `/dashboard/notifications`, label: 'Notifications' }]"
       />
       <div class="header__row">
         <div class="header__title">
-          <h2 v-if="history" class="text-2xl">历史通知</h2>
-          <h2 v-else class="text-2xl">通知</h2>
+          <h2 v-if="history" class="text-2xl">Notification history</h2>
+          <h2 v-else class="text-2xl">Notifications</h2>
         </div>
         <template v-if="!history">
-          <Button v-if="hasRead" @click="updateRoute()"> <HistoryIcon /> 查看历史通知 </Button>
+          <Button v-if="hasRead" @click="updateRoute()">
+            <HistoryIcon />
+            View history
+          </Button>
           <Button v-if="notifications.length > 0" color="danger" @click="readAll()">
-            <CheckCheckIcon /> 全部标记为已读
+            <CheckCheckIcon />
+            Mark all as read
           </Button>
         </template>
       </div>
@@ -22,12 +26,12 @@
         v-if="notifTypes.length > 1"
         v-model="selectedType"
         :items="notifTypes"
-        :format-label="(x) => (x === 'all' ? '所有' : $formatProjectType(x))"
+        :format-label="(x) => (x === 'all' ? 'All' : $formatProjectType(x).replace('_', ' ') + 's')"
         :capitalize="false"
       />
-      <p v-if="pending">加载中...</p>
+      <p v-if="pending">Loading notifications...</p>
       <template v-else-if="error">
-        <p>发生错误：</p>
+        <p>Error loading notifications:</p>
         <pre>
           {{ error }}
         </pre>
@@ -44,26 +48,25 @@
           @update:notifications="() => refresh()"
         />
       </template>
-      <p v-else>您没有任何未读通知。</p>
+      <p v-else>You don't have any unread notifications.</p>
       <Pagination :page="page" :count="pages" @switch-page="changePage" />
     </section>
   </div>
 </template>
 <script setup>
 import { Button, Chips } from "@modrinth/ui";
-import { HistoryIcon } from "@modrinth/assets";
+import { HistoryIcon, CheckCheckIcon } from "@modrinth/assets";
 import {
   fetchExtraNotificationData,
   groupNotifications,
   markAsRead,
 } from "~/helpers/notifications.js";
 import NotificationItem from "~/components/ui/NotificationItem.vue";
-import CheckCheckIcon from "~/assets/images/utils/check-check.svg?component";
 import Breadcrumbs from "~/components/ui/Breadcrumbs.vue";
 import Pagination from "~/components/ui/Pagination.vue";
 
 useHead({
-  title: "通知 - Modrinth",
+  title: "Notifications - Modrinth",
 });
 
 const auth = await useAuth();

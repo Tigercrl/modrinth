@@ -5,14 +5,14 @@
       :link-stack="[{ href: '/dashboard/revenue', label: 'Revenue' }]"
     />
 
-    <h2>提现</h2>
+    <h2>Withdraw</h2>
 
-    <h3>地区</h3>
+    <h3>Region</h3>
     <Multiselect
       id="country-multiselect"
       v-model="country"
       class="country-multiselect"
-      placeholder="请选择国家..."
+      placeholder="Select country..."
       track-by="id"
       label="name"
       :options="countries"
@@ -22,16 +22,16 @@
       :allow-empty="false"
     />
 
-    <h3>提现方式</h3>
+    <h3>Withdraw method</h3>
 
     <div class="iconified-input">
-      <label class="hidden" for="search">搜索</label>
-      <SearchIcon aria-hidden="true"/>
+      <label class="hidden" for="search">Search</label>
+      <SearchIcon aria-hidden="true" />
       <input
         id="search"
         v-model="search"
         name="search"
-        placeholder="搜索方式..."
+        placeholder="Search options..."
         autocomplete="off"
       />
     </div>
@@ -71,29 +71,29 @@
             </template>
             <div v-else class="placeholder">
               <template v-if="method.type === 'venmo'">
-                <VenmoIcon class="enlarge"/>
+                <VenmoIcon class="enlarge" />
               </template>
               <template v-else>
-                <PayPalIcon v-if="method.type === 'paypal'"/>
+                <PayPalIcon v-if="method.type === 'paypal'" />
                 <span>{{ method.name }}</span>
               </template>
             </div>
           </div>
           <div class="label">
-            <RadioButtonChecked v-if="selectedMethodId === method.id" class="radio"/>
-            <RadioButtonIcon v-else class="radio"/>
+            <RadioButtonCheckedIcon v-if="selectedMethodId === method.id" class="radio" />
+            <RadioButtonIcon v-else class="radio" />
             <span>{{ method.name }}</span>
           </div>
         </button>
       </div>
     </div>
 
-    <h3>金额</h3>
+    <h3>Amount</h3>
     <p>
-      您将提现您从 Modrinth 的 “创作者激励计划” 中获得的收益。您希望将
-      <strong>{{ $formatMoney(userBalance.available) }}</strong>
-      收益中的多少转入
-      {{ selectedMethod.name }}？
+      You are initiating a transfer of your revenue from Modrinth's Creator Monetization Program.
+      How much of your
+      <strong>{{ $formatMoney(userBalance.available) }}</strong> balance would you like to transfer
+      transfer to {{ selectedMethod.name }}?
     </p>
     <div class="confirmation-input">
       <template v-if="selectedMethod.interval.fixed">
@@ -106,17 +106,19 @@
       <template v-else-if="minWithdrawAmount == maxWithdrawAmount">
         <div>
           <p>
-            此方法单次提现金额固定为
-            <strong>{{ $formatMoney(minWithdrawAmount) }}</strong>。
+            This method has a fixed transfer amount of
+            <strong>{{ $formatMoney(minWithdrawAmount) }}</strong
+            >.
           </p>
         </div>
       </template>
       <template v-else>
         <div>
           <p>
-            此方法至少提现
-            <strong>{{ $formatMoney(minWithdrawAmount) }}</strong>，且最多提现
-            <strong>{{ $formatMoney(maxWithdrawAmount) }}</strong>。
+            This method has a minimum transfer amount of
+            <strong>{{ $formatMoney(minWithdrawAmount) }}</strong> and a maximum transfer amount of
+            <strong>{{ $formatMoney(maxWithdrawAmount) }}</strong
+            >.
           </p>
           <input
             id="confirmation"
@@ -124,10 +126,10 @@
             type="text"
             pattern="^\d*(\.\d{0,2})?$"
             autocomplete="off"
-            placeholder="请输入提现金额..."
+            placeholder="Amount to transfer..."
           />
           <p>
-            您将提现 <strong>{{ $formatMoney(parsedAmount) }}</strong>。
+            You have entered <strong>{{ $formatMoney(parsedAmount) }}</strong> to transfer.
           </p>
         </div>
       </template>
@@ -135,20 +137,24 @@
 
     <div class="confirm-text">
       <template v-if="knownErrors.length === 0 && amount">
-        <Checkbox v-if="fees > 0" v-model="agreedFees" description="同意收取手续费">
-          我明白我收到的金额中将扣除约 {{ $formatMoney(fees) }} 作为 {{ $formatWallet(selectedMethod.type) }} 手续费。
+        <Checkbox v-if="fees > 0" v-model="agreedFees" description="Consent to fee">
+          I acknowledge that an estimated
+          {{ $formatMoney(fees) }} will be deducted from the amount I receive to cover
+          {{ $formatWallet(selectedMethod.type) }} processing fees.
         </Checkbox>
         <Checkbox v-model="agreedTransfer" description="Confirm transfer">
           <template v-if="selectedMethod.type === 'tremendous'">
-            我确认我正在发起转账，我将收到一封包含如何完成提现说明的电子邮件，邮箱地址为：{{ withdrawAccount }}
+            I confirm that I am initiating a transfer and I will receive further instructions on how
+            to redeem this payment via email to: {{ withdrawAccount }}
           </template>
           <template v-else>
-            我确认我正在发起转账至 {{ $formatWallet(selectedMethod.type) }} 账户：{{ withdrawAccount }}
+            I confirm that I am initiating a transfer to the following
+            {{ $formatWallet(selectedMethod.type) }} account: {{ withdrawAccount }}
           </template>
         </Checkbox>
         <Checkbox v-model="agreedTerms" class="rewards-checkbox">
-          我同意
-          <nuxt-link to="/legal/cmp" class="text-link">创作者激励条款</nuxt-link>
+          I agree to the
+          <nuxt-link to="/legal/cmp" class="text-link">Rewards Program Terms</nuxt-link>
         </Checkbox>
       </template>
       <template v-else>
@@ -159,8 +165,8 @@
     </div>
     <div class="button-group">
       <nuxt-link to="/dashboard/revenue" class="iconified-button">
-        <XIcon/>
-        取消
+        <XIcon />
+        Cancel
       </nuxt-link>
       <button
         :disabled="
@@ -173,27 +179,26 @@
         class="iconified-button brand-button"
         @click="withdraw"
       >
-        <TransferIcon/>
-        提现
+        <TransferIcon />
+        Withdraw
       </button>
     </div>
   </section>
 </template>
 
 <script setup>
-import {Multiselect} from "vue-multiselect";
+import { Multiselect } from "vue-multiselect";
 import {
   PayPalIcon,
-  RadioButtonChecked,
-  RadioButtonIcon,
   SearchIcon,
-  TransferIcon,
+  RadioButtonIcon,
+  RadioButtonCheckedIcon,
   XIcon,
+  TransferIcon,
 } from "@modrinth/assets";
-import {Breadcrumbs, Checkbox, Chips} from "@modrinth/ui";
-import {all} from "iso-3166-1";
+import { Chips, Checkbox, Breadcrumbs } from "@modrinth/ui";
+import { all } from "iso-3166-1";
 import VenmoIcon from "~/assets/images/external/venmo.svg?component";
-import {useCountryNames} from "~/utils/analytics.js";
 
 const auth = await useAuth();
 const data = useNuxtApp();
@@ -201,21 +206,21 @@ const data = useNuxtApp();
 const countries = computed(() =>
   all().map((x) => ({
     id: x.alpha2,
-    name: useCountryNames()(x.alpha2),
+    name: x.alpha2 === "TW" ? "Taiwan" : x.country,
   })),
 );
 const search = ref("");
 
 const amount = ref("");
 const country = ref(
-  countries.value.find((x) => x.id === (auth.value.user.payout_data.paypal_region ?? "CN")),
+  countries.value.find((x) => x.id === (auth.value.user.payout_data.paypal_region ?? "US")),
 );
 
-const [{data: userBalance}, {data: payoutMethods, refresh: refreshPayoutMethods}] =
+const [{ data: userBalance }, { data: payoutMethods, refresh: refreshPayoutMethods }] =
   await Promise.all([
-    useAsyncData(`payout/balance`, () => useBaseFetch(`payout/balance`, {apiVersion: 3})),
+    useAsyncData(`payout/balance`, () => useBaseFetch(`payout/balance`, { apiVersion: 3 })),
     useAsyncData(`payout/methods?country=${country.value.id}`, () =>
-      useBaseFetch(`payout/methods?country=${country.value.id}`, {apiVersion: 3}),
+      useBaseFetch(`payout/methods?country=${country.value.id}`, { apiVersion: 3 }),
     ),
   ]);
 
@@ -244,7 +249,7 @@ const getIntervalRange = (intervalType) => {
     return [];
   }
 
-  const {min, max, values} = intervalType;
+  const { min, max, values } = intervalType;
   if (values) {
     const first = values[0];
     const last = values.slice(-1)[0];
@@ -280,31 +285,31 @@ const withdrawAccount = computed(() => {
 const knownErrors = computed(() => {
   const errors = [];
   if (selectedMethod.value.type === "paypal" && !auth.value.user.payout_data.paypal_address) {
-    errors.push("请在仪表盘中绑定 PayPal 账户以继续。");
+    errors.push("Please link your PayPal account in the dashboard to proceed.");
   }
   if (selectedMethod.value.type === "venmo" && !auth.value.user.payout_data.venmo_handle) {
-    errors.push("请在仪表盘中绑定 Venmo 账户以继续。");
+    errors.push("Please set your Venmo handle in the dashboard to proceed.");
   }
   if (selectedMethod.value.type === "tremendous") {
     if (!auth.value.user.email) {
-      errors.push("请在账户设置中设置邮箱地址以继续。");
+      errors.push("Please set your email address in your account settings to proceed.");
     }
     if (!auth.value.user.email_verified) {
-      errors.push("请验证您的邮箱地址以继续。");
+      errors.push("Please verify your email address to proceed.");
     }
   }
 
   if (!parsedAmount.value && amount.value.length > 0) {
-    errors.push(`${amount.value} 不是一个有效的金额。`);
+    errors.push(`${amount.value} is not a valid amount`);
   } else if (
     parsedAmount.value > userBalance.value.available ||
     parsedAmount.value > maxWithdrawAmount.value
   ) {
     const maxAmount = Math.min(userBalance.value.available, maxWithdrawAmount.value);
-    errors.push(`金额不能大于 ${data.$formatMoney(maxAmount)}`);
+    errors.push(`The amount must be no more than ${data.$formatMoney(maxAmount)}`);
   } else if (parsedAmount.value <= fees.value || parsedAmount.value < minWithdrawAmount.value) {
     const minAmount = Math.max(fees.value + 0.01, minWithdrawAmount.value);
-    errors.push(`金额不能小于 ${data.$formatMoney(minAmount)}`);
+    errors.push(`The amount must be at least ${data.$formatMoney(minAmount)}`);
   }
 
   return errors;
@@ -351,18 +356,20 @@ async function withdraw() {
     await navigateTo("/dashboard/revenue");
     data.$notify({
       group: "main",
-      title: "提现成功",
+      title: "Withdrawal complete",
       text:
         selectedMethod.value.type === "tremendous"
-          ? "一封包含如何完成提现说明的电子邮件已发送至您邮箱！"
-          : `收益已转入您的 ${data.$formatWallet(selectedMethod.value.type)} 账户！`,
+          ? "An email has been sent to your account with further instructions on how to redeem your payout!"
+          : `Payment has been sent to your ${data.$formatWallet(
+              selectedMethod.value.type,
+            )} account!`,
       type: "success",
     });
   } catch (err) {
     data.$notify({
       group: "main",
-      title: "发生错误",
-      text: err.data.description,
+      title: "An error occurred",
+      text: err.data ? err.data.description : err,
       type: "error",
     });
   }

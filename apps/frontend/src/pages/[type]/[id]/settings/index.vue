@@ -1,22 +1,22 @@
 <template>
   <div>
-    <ModalConfirm
+    <ConfirmModal
       ref="modal_confirm"
-      title="您确定要删除此资源吗？"
-      description="如果您继续，此资源的所有版本和数据将从我们的服务器中删除。这会导致其他依赖此资源的资源出现问题，请慎重考虑。"
+      title="Are you sure you want to delete this project?"
+      description="If you proceed, all versions and any attached data will be removed from our servers. This may break other projects, so be careful."
       :has-to-type="true"
       :confirmation-text="project.title"
-      proceed-label="删除"
+      proceed-label="Delete"
       @proceed="deleteProject"
     />
     <section class="universal-card">
       <div class="label">
         <h3>
-          <span class="label__title size-card-header">资源信息</span>
+          <span class="label__title size-card-header">Project information</span>
         </h3>
       </div>
       <label for="project-icon">
-        <span class="label__title">图标</span>
+        <span class="label__title">Icon</span>
       </label>
       <div class="input-group">
         <Avatar
@@ -32,12 +32,12 @@
             :show-icon="true"
             accept="image/png,image/jpeg,image/gif,image/webp"
             class="choose-image iconified-button"
-            prompt="上传图标"
-            aria-label="上传图标"
+            prompt="Upload icon"
+            aria-label="Upload icon"
             :disabled="!hasPermission"
             @change="showPreviewImage"
           >
-            <UploadIcon aria-hidden="true"/>
+            <UploadIcon aria-hidden="true" />
           </FileInput>
           <button
             v-if="!deletedIcon && (previewImage || project.icon_url)"
@@ -45,14 +45,14 @@
             :disabled="!hasPermission"
             @click="markIconForDeletion"
           >
-            <TrashIcon aria-hidden="true"/>
-            删除图标
+            <TrashIcon aria-hidden="true" />
+            Remove icon
           </button>
         </div>
       </div>
 
       <label for="project-name">
-        <span class="label__title">名称</span>
+        <span class="label__title">Name</span>
       </label>
       <input
         id="project-name"
@@ -80,7 +80,7 @@
       </div>
 
       <label for="project-summary">
-        <span class="label__title">简介</span>
+        <span class="label__title">Summary</span>
       </label>
       <div class="textarea-wrapper summary-input">
         <textarea
@@ -101,20 +101,21 @@
       >
         <div class="adjacent-input">
           <label for="project-env-client">
-            <span class="label__title">客户端</span>
+            <span class="label__title">Client-side</span>
             <span class="label__description">
-              请选择该{{
-                $formatProjectType(project.project_type).toLowerCase()
-              }}是否在客户端中有效。请注意，仅仅因为在单人游戏下工作并不意味着它在客户端中有效。
+              Select based on if the
+              {{ $formatProjectType(project.project_type).toLowerCase() }} has functionality on the
+              client side. Just because a mod works in Singleplayer doesn't mean it has actual
+              client-side functionality.
             </span>
           </label>
           <Multiselect
             id="project-env-client"
             v-model="clientSide"
             class="small-multiselect"
-            placeholder="请选择..."
+            placeholder="Select one"
             :options="sideTypes"
-            :custom-label="formatSideType"
+            :custom-label="(value) => value.charAt(0).toUpperCase() + value.slice(1)"
             :searchable="false"
             :close-on-select="true"
             :show-labels="false"
@@ -124,20 +125,21 @@
         </div>
         <div class="adjacent-input">
           <label for="project-env-server">
-            <span class="label__title">服务器</span>
+            <span class="label__title">Server-side</span>
             <span class="label__description">
-              请选择该{{
-                $formatProjectType(project.project_type).toLowerCase()
-              }}是否在<strong>逻辑</strong>服务器中有效。请注意，单人游戏包含了一个集成的服务器。
+              Select based on if the
+              {{ $formatProjectType(project.project_type).toLowerCase() }} has functionality on the
+              <strong>logical</strong> server. Remember that Singleplayer contains an integrated
+              server.
             </span>
           </label>
           <Multiselect
             id="project-env-server"
             v-model="serverSide"
             class="small-multiselect"
-            placeholder="请选择..."
+            placeholder="Select one"
             :options="sideTypes"
-            :custom-label="formatSideType"
+            :custom-label="(value) => value.charAt(0).toUpperCase() + value.slice(1)"
             :searchable="false"
             :close-on-select="true"
             :show-labels="false"
@@ -148,41 +150,40 @@
       </template>
       <div class="adjacent-input">
         <label for="project-visibility">
-          <span class="label__title">可见性</span>
+          <span class="label__title">Visibility</span>
           <div class="label__description">
-            公共和已归档资源可被搜索。隐藏资源在搜索或个人资料中不可见，只能通过链接访问。私密资源只能由创作者访问。
+            Public and archived projects are visible in search. Unlisted projects are published, but
+            not visible in search or on user profiles. Private projects are only accessible by
+            members of the project.
 
-            <p>如果过审：</p>
+            <p>If approved by the moderators:</p>
             <ul class="visibility-info">
               <li>
                 <CheckIcon
                   v-if="visibility === 'approved' || visibility === 'archived'"
                   class="good"
                 />
-                <ExitIcon v-else class="bad"/>
-                {{ hasModifiedVisibility() ? "将" : "" }}可被搜索
+                <XIcon v-else class="bad" />
+                {{ hasModifiedVisibility() ? "Will be v" : "V" }}isible in search
               </li>
               <li>
-                <ExitIcon
-                  v-if="visibility === 'unlisted' || visibility === 'private'"
-                  class="bad"
-                />
-                <CheckIcon v-else class="good"/>
-                {{ hasModifiedVisibility() ? "将" : "" }}可在个人资料中看到
+                <XIcon v-if="visibility === 'unlisted' || visibility === 'private'" class="bad" />
+                <CheckIcon v-else class="good" />
+                {{ hasModifiedVisibility() ? "Will be v" : "V" }}isible on profile
               </li>
               <li>
-                <CheckIcon v-if="visibility !== 'private'" class="good"/>
+                <CheckIcon v-if="visibility !== 'private'" class="good" />
                 <IssuesIcon
                   v-else
                   v-tooltip="{
                     content:
                       visibility === 'private'
-                        ? '仅创作者可见'
+                        ? 'Only members will be able to view the project.'
                         : '',
                   }"
                   class="warn"
                 />
-                {{ hasModifiedVisibility() ? "将" : "" }}可通过 URL 访问
+                {{ hasModifiedVisibility() ? "Will be v" : "V" }}isible via URL
               </li>
             </ul>
           </div>
@@ -191,7 +192,7 @@
           id="project-visibility"
           v-model="visibility"
           class="small-multiselect"
-          placeholder="请选择..."
+          placeholder="Select one"
           :options="tags.approvedStatuses"
           :custom-label="(value) => formatProjectStatus(value)"
           :searchable="false"
@@ -208,8 +209,8 @@
           :disabled="!hasChanges"
           @click="saveChanges()"
         >
-          <SaveIcon aria-hidden="true"/>
-          保存改动
+          <SaveIcon aria-hidden="true" />
+          Save changes
         </button>
       </div>
     </section>
@@ -217,11 +218,12 @@
     <section class="universal-card">
       <div class="label">
         <h3>
-          <span class="label__title size-card-header">删除资源</span>
+          <span class="label__title size-card-header">Delete project</span>
         </h3>
       </div>
       <p>
-        这将会从 Modrinth 的服务器和搜索中删除您的资源，请慎重考虑！
+        Removes your project from Modrinth's servers and search. Clicking on this will delete your
+        project, so be extra careful!
       </p>
       <button
         type="button"
@@ -229,27 +231,20 @@
         :disabled="!hasDeletePermission"
         @click="$refs.modal_confirm.show()"
       >
-        <TrashIcon aria-hidden="true"/>
-        删除资源
+        <TrashIcon aria-hidden="true" />
+        Delete project
       </button>
     </section>
   </div>
 </template>
 
 <script setup>
-import {Multiselect} from "vue-multiselect";
-
-import {formatProjectStatus} from "@modrinth/utils";
+import { formatProjectStatus } from "@modrinth/utils";
+import { UploadIcon, SaveIcon, TrashIcon, XIcon, IssuesIcon, CheckIcon } from "@modrinth/assets";
+import { Multiselect } from "vue-multiselect";
+import { ConfirmModal } from "@modrinth/ui";
 import Avatar from "~/components/ui/Avatar.vue";
-import ModalConfirm from "~/components/ui/ModalConfirm.vue";
 import FileInput from "~/components/ui/FileInput.vue";
-
-import UploadIcon from "~/assets/images/utils/upload.svg?component";
-import SaveIcon from "~/assets/images/utils/save.svg?component";
-import TrashIcon from "~/assets/images/utils/trash.svg?component";
-import ExitIcon from "~/assets/images/utils/x.svg?component";
-import IssuesIcon from "~/assets/images/utils/issues.svg?component";
-import CheckIcon from "~/assets/images/utils/check.svg?component";
 
 const props = defineProps({
   project: {
@@ -265,20 +260,17 @@ const props = defineProps({
   patchProject: {
     type: Function,
     required: true,
-    default: () => {
-    },
+    default: () => {},
   },
   patchIcon: {
     type: Function,
     required: true,
-    default: () => {
-    },
+    default: () => {},
   },
   resetProject: {
     type: Function,
     required: true,
-    default: () => {
-    },
+    default: () => {},
   },
 });
 
@@ -310,19 +302,6 @@ const hasDeletePermission = computed(() => {
 });
 
 const sideTypes = ["required", "optional", "unsupported"];
-
-const formatSideType = (type) => {
-  switch (type) {
-    case "required":
-      return "必需";
-    case "optional":
-      return "可选";
-    case "unsupported":
-      return "不支持";
-    default:
-      return $capitalizeString(type);
-  }
-};
 
 const patchData = computed(() => {
   const data = {};

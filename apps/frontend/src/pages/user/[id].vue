@@ -1,33 +1,33 @@
 <template>
   <div v-if="user" class="experimental-styles-within">
-    <ModalCreation ref="modal_creation"/>
-    <CollectionCreateModal ref="modal_collection_creation"/>
-    <NewModal v-if="auth.user && isStaff(auth.user)" ref="userDetailsModal" header="用户信息">
+    <ModalCreation ref="modal_creation" />
+    <CollectionCreateModal ref="modal_collection_creation" />
+    <NewModal v-if="auth.user && isStaff(auth.user)" ref="userDetailsModal" header="User details">
       <div class="flex flex-col gap-3">
         <div class="flex flex-col gap-1">
-          <span class="text-lg font-bold text-primary">邮箱</span>
+          <span class="text-lg font-bold text-primary">Email</span>
           <div>
             <span
-              v-tooltip="user.email_verified ? '已验证' : '未验证'"
+              v-tooltip="user.email_verified ? 'Email verified' : 'Email not verified'"
               class="flex w-fit items-center gap-1"
             >
               <span>{{ user.email }}</span>
-              <CheckIcon v-if="user.email_verified" class="h-4 w-4 text-brand"/>
-              <XIcon v-else class="h-4 w-4 text-red"/>
+              <CheckIcon v-if="user.email_verified" class="h-4 w-4 text-brand" />
+              <XIcon v-else class="h-4 w-4 text-red" />
             </span>
           </div>
         </div>
 
         <div class="flex flex-col gap-1">
-          <span class="text-lg font-bold text-primary"> 登录方式 </span>
+          <span class="text-lg font-bold text-primary"> Auth providers </span>
           <span>{{ user.auth_providers.join(", ") }}</span>
         </div>
 
         <div class="flex flex-col gap-1">
-          <span class="text-lg font-bold text-primary"> 付款方式</span>
+          <span class="text-lg font-bold text-primary"> Payment methods</span>
           <span>
             <template v-if="user.payout_data?.paypal_address">
-              PayPal ({{ user.payout_data.paypal_address }} - {{ user.payout_data.paypal_country }})
+              Paypal ({{ user.payout_data.paypal_address }} - {{ user.payout_data.paypal_country }})
             </template>
             <template v-if="user.payout_data?.paypal_address && user.payout_data?.venmo_address">
               ,
@@ -39,16 +39,16 @@
         </div>
 
         <div class="flex flex-col gap-1">
-          <span class="text-lg font-bold text-primary"> 密码 </span>
+          <span class="text-lg font-bold text-primary"> Has password </span>
           <span>
-            {{ user.has_password ? "已设置" : "未设置" }}
+            {{ user.has_password ? "Yes" : "No" }}
           </span>
         </div>
 
         <div class="flex flex-col gap-1">
-          <span class="text-lg font-bold text-primary"> OTP </span>
+          <span class="text-lg font-bold text-primary"> Has TOTP </span>
           <span>
-            {{ user.has_totp ? "已设置" : "未设置" }}
+            {{ user.has_totp ? "Yes" : "No" }}
           </span>
         </div>
       </div>
@@ -57,7 +57,7 @@
       <div class="normal-page__header py-4">
         <ContentPageHeader>
           <template #icon>
-            <Avatar :src="user.avatar_url" :alt="user.username" size="96px" circle/>
+            <Avatar :src="user.avatar_url" :alt="user.username" size="96px" circle />
           </template>
           <template #title>
             {{ user.username }}
@@ -67,24 +67,24 @@
               user.bio
                 ? user.bio
                 : projects.length === 0
-                  ? "Modrinth 用户"
-                  : "Modrinth 创作者"
+                  ? "A Modrinth user."
+                  : "A Modrinth creator."
             }}
           </template>
           <template #stats>
             <div
               class="flex items-center gap-2 border-0 border-r border-solid border-divider pr-4 font-semibold"
             >
-              <BoxIcon class="h-6 w-6 text-secondary"/>
-              资源：
+              <BoxIcon class="h-6 w-6 text-secondary" />
               {{ formatCompactNumber(projects?.length || 0) }}
+              projects
             </div>
             <div
               class="flex items-center gap-2 border-0 border-r border-solid border-divider pr-4 font-semibold"
             >
-              <DownloadIcon class="h-6 w-6 text-secondary"/>
-              下载：
+              <DownloadIcon class="h-6 w-6 text-secondary" />
               {{ formatCompactNumber(sumDownloads) }}
+              downloads
             </div>
             <div
               v-tooltip="
@@ -95,15 +95,15 @@
               "
               class="flex items-center gap-2 font-semibold"
             >
-              <CalendarIcon class="h-6 w-6 text-secondary"/>
-              加入：
+              <CalendarIcon class="h-6 w-6 text-secondary" />
+              Joined
               {{ formatRelativeTime(user.created) }}
             </div>
           </template>
           <template #actions>
             <ButtonStyled size="large">
               <NuxtLink v-if="auth.user && auth.user.id === user.id" to="/settings/profile">
-                <EditIcon aria-hidden="true"/>
+                <EditIcon aria-hidden="true" />
                 {{ formatMessage(commonMessages.editButton) }}
               </NuxtLink>
             </ButtonStyled>
@@ -136,27 +136,27 @@
                     shown: auth.user && isStaff(auth.user),
                   },
                 ]"
-                aria-label="更多选项"
+                aria-label="More options"
               >
-                <MoreVerticalIcon aria-hidden="true"/>
+                <MoreVerticalIcon aria-hidden="true" />
                 <template #manage-projects>
-                  <BoxIcon aria-hidden="true"/>
+                  <BoxIcon aria-hidden="true" />
                   {{ formatMessage(messages.profileManageProjectsButton) }}
                 </template>
                 <template #report>
-                  <ReportIcon aria-hidden="true"/>
+                  <ReportIcon aria-hidden="true" />
                   {{ formatMessage(commonMessages.reportButton) }}
                 </template>
                 <template #copy-id>
-                  <ClipboardCopyIcon aria-hidden="true"/>
+                  <ClipboardCopyIcon aria-hidden="true" />
                   {{ formatMessage(commonMessages.copyIdButton) }}
                 </template>
                 <template #open-billing>
-                  <CurrencyIcon aria-hidden="true"/>
+                  <CurrencyIcon aria-hidden="true" />
                   {{ formatMessage(messages.billingButton) }}
                 </template>
                 <template #open-info>
-                  <InfoIcon aria-hidden="true"/>
+                  <InfoIcon aria-hidden="true" />
                   {{ formatMessage(messages.infoButton) }}
                 </template>
               </OverflowMenu>
@@ -166,7 +166,7 @@
       </div>
       <div class="normal-page__content">
         <div v-if="navLinks.length >= 2" class="mb-4 max-w-full overflow-x-auto">
-          <NavTabs :links="navLinks"/>
+          <NavTabs :links="navLinks" />
         </div>
         <div v-if="projects.length > 0">
           <div
@@ -209,10 +209,16 @@
           </div>
         </div>
         <div v-else-if="route.params.projectType !== 'collections'" class="error">
-          <UpToDate class="icon"/>
-          <br/>
+          <UpToDate class="icon" />
+          <br />
           <span v-if="auth.user && auth.user.id === user.id" class="preserve-lines text">
-            您没有任何资源。<br/>点此<a class="link" @click.prevent="$refs.modal_creation.show()">创建资源</a>。
+            <IntlFormatted :message-id="messages.profileNoProjectsAuthLabel">
+              <template #create-link="{ children }">
+                <a class="link" @click.prevent="$refs.modal_creation.show()">
+                  <component :is="() => children" />
+                </a>
+              </template>
+            </IntlFormatted>
           </span>
           <span v-else class="text">{{ formatMessage(messages.profileNoProjectsLabel) }}</span>
         </div>
@@ -226,12 +232,12 @@
             class="card collection-item"
           >
             <div class="collection">
-              <Avatar :src="collection.icon_url" class="icon"/>
+              <Avatar :src="collection.icon_url" class="icon" />
               <div class="details">
                 <h2 class="title">{{ collection.name }}</h2>
                 <div class="stats">
-                  <LibraryIcon aria-hidden="true"/>
-                  收藏夹
+                  <LibraryIcon aria-hidden="true" />
+                  Collection
                 </div>
               </div>
             </div>
@@ -247,20 +253,20 @@
               </div>
               <div class="stats">
                 <template v-if="collection.status === 'listed'">
-                  <WorldIcon/>
-                  <span> 公共 </span>
+                  <GlobeIcon />
+                  <span> Public </span>
                 </template>
                 <template v-else-if="collection.status === 'unlisted'">
-                  <LinkIcon/>
-                  <span> 隐藏 </span>
+                  <LinkIcon />
+                  <span> Unlisted </span>
                 </template>
                 <template v-else-if="collection.status === 'private'">
-                  <LockIcon/>
-                  <span> 私密 </span>
+                  <LockIcon />
+                  <span> Private </span>
                 </template>
                 <template v-else-if="collection.status === 'rejected'">
-                  <XIcon/>
-                  <span> 未过审 </span>
+                  <XIcon />
+                  <span> Rejected </span>
                 </template>
               </div>
             </div>
@@ -270,10 +276,19 @@
           v-if="route.params.projectType === 'collections' && collections.length === 0"
           class="error"
         >
-          <UpToDate class="icon"/>
-          <br/>
+          <UpToDate class="icon" />
+          <br />
           <span v-if="auth.user && auth.user.id === user.id" class="preserve-lines text">
-            您没有任何收藏夹。<br/>点此<a class="link" @click.prevent="(event) => $refs.modal_collection_creation.show(event)">创建收藏夹</a>。
+            <IntlFormatted :message-id="messages.profileNoCollectionsAuthLabel">
+              <template #create-link="{ children }">
+                <a
+                  class="link"
+                  @click.prevent="(event) => $refs.modal_collection_creation.show(event)"
+                >
+                  <component :is="() => children" />
+                </a>
+              </template>
+            </IntlFormatted>
           </span>
           <span v-else class="text">{{ formatMessage(messages.profileNoCollectionsLabel) }}</span>
         </div>
@@ -289,7 +304,7 @@
               class="organization"
               :to="`/organization/${org.slug}`"
             >
-              <Avatar :src="org.icon_url" :alt="'Icon for ' + org.name" size="3rem"/>
+              <Avatar :src="org.icon_url" :alt="'Icon for ' + org.name" size="3rem" />
             </nuxt-link>
           </div>
         </div>
@@ -297,48 +312,54 @@
           <h2 class="text-lg text-contrast">{{ formatMessage(messages.profileBadges) }}</h2>
           <div class="flex flex-wrap gap-2">
             <div v-for="badge in badges" :key="badge">
-              <StaffBadge v-if="badge === 'staff'" class="h-14 w-14"/>
-              <ModBadge v-else-if="badge === 'mod'" class="h-14 w-14"/>
+              <StaffBadge v-if="badge === 'staff'" class="h-14 w-14" />
+              <ModBadge v-else-if="badge === 'mod'" class="h-14 w-14" />
               <nuxt-link v-else-if="badge === 'plus'" to="/plus">
-                <PlusBadge class="h-14 w-14"/>
+                <PlusBadge class="h-14 w-14" />
               </nuxt-link>
-              <TenMClubBadge v-else-if="badge === '10m-club'" class="h-14 w-14"/>
-              <EarlyAdopterBadge v-else-if="badge === 'early-adopter'" class="h-14 w-14"/>
-              <AlphaTesterBadge v-else-if="badge === 'alpha-tester'" class="h-14 w-14"/>
-              <BetaTesterBadge v-else-if="badge === 'beta-tester'" class="h-14 w-14"/>
+              <TenMClubBadge v-else-if="badge === '10m-club'" class="h-14 w-14" />
+              <EarlyAdopterBadge v-else-if="badge === 'early-adopter'" class="h-14 w-14" />
+              <AlphaTesterBadge v-else-if="badge === 'alpha-tester'" class="h-14 w-14" />
+              <BetaTesterBadge v-else-if="badge === 'beta-tester'" class="h-14 w-14" />
             </div>
           </div>
         </div>
+        <AdPlaceholder
+          v-if="!auth.user || !isPermission(auth.user.badges, 1 << 0) || flags.showAdsWithPlus"
+        />
       </div>
     </div>
   </div>
 </template>
 <script setup>
 import {
-  BoxIcon,
-  CalendarIcon,
-  CheckIcon,
-  ClipboardCopyIcon,
-  CurrencyIcon,
-  DownloadIcon,
-  InfoIcon,
   LibraryIcon,
+  BoxIcon,
   LinkIcon,
   LockIcon,
-  MoreVerticalIcon,
   XIcon,
+  CalendarIcon,
+  DownloadIcon,
+  ClipboardCopyIcon,
+  MoreVerticalIcon,
+  CurrencyIcon,
+  InfoIcon,
+  CheckIcon,
+  ReportIcon,
+  EditIcon,
+  GlobeIcon,
 } from "@modrinth/assets";
 import {
-  ButtonStyled,
-  commonMessages,
-  ContentPageHeader,
-  NewModal,
   OverflowMenu,
+  ButtonStyled,
+  ContentPageHeader,
+  commonMessages,
+  NewModal,
 } from "@modrinth/ui";
-import {isStaff} from "~/helpers/users.js";
+import { isStaff } from "~/helpers/users.js";
 import NavTabs from "~/components/ui/NavTabs.vue";
 import ProjectCard from "~/components/ui/ProjectCard.vue";
-import {reportUser} from "~/utils/report-helpers.ts";
+import { reportUser } from "~/utils/report-helpers.ts";
 
 import StaffBadge from "~/assets/images/badges/staff.svg?component";
 import ModBadge from "~/assets/images/badges/mod.svg?component";
@@ -348,13 +369,11 @@ import EarlyAdopterBadge from "~/assets/images/badges/early-adopter.svg?componen
 import AlphaTesterBadge from "~/assets/images/badges/alpha-tester.svg?component";
 import BetaTesterBadge from "~/assets/images/badges/beta-tester.svg?component";
 
-import ReportIcon from "~/assets/images/utils/report.svg?component";
 import UpToDate from "~/assets/images/illustrations/up_to_date.svg?component";
-import EditIcon from "~/assets/images/utils/edit.svg?component";
-import WorldIcon from "~/assets/images/utils/world.svg?component";
 import ModalCreation from "~/components/ui/ModalCreation.vue";
 import Avatar from "~/components/ui/Avatar.vue";
 import CollectionCreateModal from "~/components/ui/CollectionCreateModal.vue";
+import AdPlaceholder from "~/components/ui/AdPlaceholder.vue";
 
 const data = useNuxtApp();
 const route = useNativeRoute();
@@ -364,68 +383,95 @@ const tags = useTags();
 const flags = useFeatureFlags();
 
 const vintl = useVIntl();
-const {formatMessage} = vintl;
+const { formatMessage } = vintl;
 
 const formatCompactNumber = useCompactNumber();
 
 const formatRelativeTime = useRelativeTime();
 
 const messages = defineMessages({
+  profileProjectsStats: {
+    id: "profile.stats.projects",
+    defaultMessage:
+      "{count, plural, one {<stat>{count}</stat> project} other {<stat>{count}</stat> projects}}",
+  },
+  profileDownloadsStats: {
+    id: "profile.stats.downloads",
+    defaultMessage:
+      "{count, plural, one {<stat>{count}</stat> project download} other {<stat>{count}</stat> project downloads}}",
+  },
+  profileProjectsFollowersStats: {
+    id: "profile.stats.projects-followers",
+    defaultMessage:
+      "{count, plural, one {<stat>{count}</stat> project follower} other {<stat>{count}</stat> project followers}}",
+  },
+  profileJoinedAt: {
+    id: "profile.joined-at",
+    defaultMessage: "Joined <date>{ago}</date>",
+  },
+  profileUserId: {
+    id: "profile.user-id",
+    defaultMessage: "User ID: {id}",
+  },
+  profileDetails: {
+    id: "profile.label.details",
+    defaultMessage: "Details",
+  },
   profileOrganizations: {
     id: "profile.label.organizations",
-    defaultMessage: "组织",
+    defaultMessage: "Organizations",
   },
   profileBadges: {
     id: "profile.label.badges",
-    defaultMessage: "徽章",
+    defaultMessage: "Badges",
   },
   profileManageProjectsButton: {
     id: "profile.button.manage-projects",
-    defaultMessage: "管理资源",
+    defaultMessage: "Manage projects",
   },
   profileMetaDescription: {
     id: "profile.meta.description",
-    defaultMessage: "在 Modrinth 上下载 {username} 的资源",
+    defaultMessage: "Download {username}'s projects on Modrinth",
   },
   profileMetaDescriptionWithBio: {
     id: "profile.meta.description-with-bio",
-    defaultMessage: "{bio} - 在 Modrinth 上下载 {username} 的资源",
+    defaultMessage: "{bio} - Download {username}'s projects on Modrinth",
   },
   profileNoProjectsLabel: {
     id: "profile.label.no-projects",
-    defaultMessage: "无资源",
+    defaultMessage: "This user has no projects!",
   },
   profileNoProjectsAuthLabel: {
     id: "profile.label.no-projects-auth",
     defaultMessage:
-      "您没有任何资源。\n点此<create-link>创建资源</create-link>。",
+      "You don't have any projects.\nWould you like to <create-link>create one</create-link>?",
   },
   profileNoCollectionsLabel: {
     id: "profile.label.no-collections",
-    defaultMessage: "无收藏夹",
+    defaultMessage: "This user has no collections!",
   },
   profileNoCollectionsAuthLabel: {
     id: "profile.label.no-collections-auth",
     defaultMessage:
-      "您没有任何收藏夹。\n点此<create-link>创建收藏夹</create-link>。",
+      "You don't have any collections.\nWould you like to <create-link>create one</create-link>?",
   },
   billingButton: {
     id: "profile.button.billing",
-    defaultMessage: "管理用户付款方式",
+    defaultMessage: "Manage user billing",
   },
   infoButton: {
     id: "profile.button.info",
-    defaultMessage: "查看用户信息",
+    defaultMessage: "View user details",
   },
   userNotFoundError: {
     id: "profile.error.not-found",
-    defaultMessage: "未找到用户",
+    defaultMessage: "User not found",
   },
 });
 
 let user, projects, organizations, collections;
 try {
-  [{data: user}, {data: projects}, {data: organizations}, {data: collections}] =
+  [{ data: user }, { data: projects }, { data: organizations }, { data: collections }] =
     await Promise.all([
       useAsyncData(`user/${route.params.id}`, () => useBaseFetch(`user/${route.params.id}`)),
       useAsyncData(
@@ -452,7 +498,7 @@ try {
         }),
       ),
       useAsyncData(`user/${route.params.id}/collections`, () =>
-        useBaseFetch(`user/${route.params.id}/collections`, {apiVersion: 3}),
+        useBaseFetch(`user/${route.params.id}/collections`, { apiVersion: 3 }),
       ),
     ]);
 } catch {
@@ -472,17 +518,17 @@ if (!user.value) {
 }
 
 if (user.value.username !== route.params.id) {
-  await navigateTo(`/user/${user.value.username}`, {redirectCode: 301});
+  await navigateTo(`/user/${user.value.username}`, { redirectCode: 301 });
 }
 
 const title = computed(() => `${user.value.username} - Modrinth`);
 const description = computed(() =>
   user.value.bio
     ? formatMessage(messages.profileMetaDescriptionWithBio, {
-      bio: user.value.bio,
-      username: user.value.username,
-    })
-    : formatMessage(messages.profileMetaDescription, {username: user.value.username}),
+        bio: user.value.bio,
+        username: user.value.username,
+      })
+    : formatMessage(messages.profileMetaDescription, { username: user.value.username }),
 );
 
 useSeoMeta({

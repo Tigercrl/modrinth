@@ -7,7 +7,7 @@
           {{ auth.user.username }}
         </h1>
         <NuxtLink class="goto-link" :to="`/user/${auth.user.username}`">
-          访问个人资料
+          Visit your profile
           <ChevronRightIcon class="featured-header-chevron" aria-hidden="true" />
         </NuxtLink>
       </div>
@@ -15,13 +15,14 @@
     <div class="dashboard-notifications">
       <section class="universal-card">
         <div class="header__row">
-          <h2 class="header__title text-2xl">通知</h2>
+          <h2 class="header__title text-2xl">Notifications</h2>
           <nuxt-link
             v-if="notifications.length > 0"
             class="goto-link"
             to="/dashboard/notifications"
           >
-            查看更多 <ChevronRightIcon />
+            See all
+            <ChevronRightIcon />
           </nuxt-link>
         </div>
         <template v-if="notifications.length > 0">
@@ -41,14 +42,15 @@
             class="goto-link view-more-notifs mt-4"
             to="/dashboard/notifications"
           >
-            查看剩余 {{ extraNotifs }} 个通知
+            View {{ extraNotifs }} more notification{{ extraNotifs === 1 ? "" : "s" }}
             <ChevronRightIcon />
           </nuxt-link>
         </template>
         <div v-else class="universal-body">
-          <p>您没有未读通知。</p>
+          <p>You have no unread notifications.</p>
           <nuxt-link class="iconified-button !mt-4" to="/dashboard/notifications/history">
-            <HistoryIcon /> 查看历史通知
+            <HistoryIcon />
+            View notification history
           </nuxt-link>
         </div>
       </section>
@@ -56,17 +58,18 @@
 
     <div class="dashboard-analytics">
       <section class="universal-card">
-        <h2>数据分析</h2>
+        <h2>Analytics</h2>
         <div class="grid-display">
           <div class="grid-display__item">
-            <div class="label">累计下载</div>
+            <div class="label">Total downloads</div>
             <div class="value">
               {{ $formatNumber(projects.reduce((agg, x) => agg + x.downloads, 0)) }}
             </div>
             <span
-              >（来自
+              >from
               {{ downloadsProjectCount }}
-              个资源）</span>
+              project{{ downloadsProjectCount === 1 ? "" : "s" }}</span
+            >
             <!--          <NuxtLink class="goto-link" to="/dashboard/analytics"-->
             <!--            >View breakdown-->
             <!--            <ChevronRightIcon-->
@@ -75,16 +78,17 @@
             <!--          /></NuxtLink>-->
           </div>
           <div class="grid-display__item">
-            <div class="label">累计关注</div>
+            <div class="label">Total followers</div>
             <div class="value">
               {{ $formatNumber(projects.reduce((agg, x) => agg + x.followers, 0)) }}
             </div>
             <span>
               <span
-                >（来自
-                {{ followersProjectCount }}
-              个资源）</span
-              ></span>
+                >from {{ followersProjectCount }} project{{
+                  followersProjectCount === 1 ? "" : "s"
+                }}</span
+              ></span
+            >
           </div>
         </div>
       </section>
@@ -92,14 +96,13 @@
   </div>
 </template>
 <script setup>
-import ChevronRightIcon from "~/assets/images/utils/chevron-right.svg?component";
-import HistoryIcon from "~/assets/images/utils/history.svg?component";
+import { ChevronRightIcon, HistoryIcon } from "@modrinth/assets";
 import Avatar from "~/components/ui/Avatar.vue";
 import NotificationItem from "~/components/ui/NotificationItem.vue";
 import { fetchExtraNotificationData, groupNotifications } from "~/helpers/notifications.js";
 
 useHead({
-  title: "仪表盘 - Modrinth",
+  title: "Dashboard - Modrinth",
 });
 
 const auth = await useAuth();

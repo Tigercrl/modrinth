@@ -5,6 +5,27 @@
   <div class="pointer-events-none absolute inset-0 z-[-1]">
     <div id="absolute-background-teleport" class="relative"></div>
   </div>
+  <div class="pointer-events-none absolute inset-0 z-50">
+    <div
+      class="over-the-top-random-animation"
+      :style="{ '--_r-count': rCount }"
+      :class="{ threshold: rCount > 20, 'rings-expand': rCount >= 40 }"
+    >
+      <div>
+        <div
+          class="animation-ring-3 flex items-center justify-center rounded-full border-4 border-solid border-brand bg-brand-highlight opacity-40"
+        ></div>
+        <div
+          class="animation-ring-2 flex items-center justify-center rounded-full border-4 border-solid border-brand bg-brand-highlight opacity-60"
+        ></div>
+        <div
+          class="animation-ring-1 flex items-center justify-center rounded-full border-4 border-solid border-brand bg-brand-highlight text-9xl font-extrabold text-contrast"
+        >
+          ?
+        </div>
+      </div>
+    </div>
+  </div>
   <div ref="main_page" class="layout" :class="{ 'expanded-mobile-nav': isBrowseMenuOpen }">
     <div
       v-if="auth.user && !auth.user.email_verified && route.path !== '/auth/verify-email'"
@@ -19,7 +40,7 @@
       <template v-else>
         <span>{{ formatMessage(addEmailBannerMessages.title) }}</span>
         <nuxt-link class="btn" to="/settings/account">
-          <SettingsIcon aria-hidden="true"/>
+          <SettingsIcon aria-hidden="true" />
           {{ formatMessage(addEmailBannerMessages.action) }}
         </nuxt-link>
       </template>
@@ -35,7 +56,7 @@
     >
       <span>{{ formatMessage(subscriptionPaymentFailedBannerMessages.title) }}</span>
       <nuxt-link class="btn" to="/settings/billing">
-        <SettingsIcon aria-hidden="true"/>
+        <SettingsIcon aria-hidden="true" />
         {{ formatMessage(subscriptionPaymentFailedBannerMessages.action) }}
       </nuxt-link>
     </div>
@@ -47,26 +68,41 @@
       class="site-banner site-banner--warning [&>*]:z-[6]"
     >
       <div class="site-banner__title">
-        <IssuesIcon aria-hidden="true"/>
+        <IssuesIcon aria-hidden="true" />
         <span>{{ formatMessage(stagingBannerMessages.title) }}</span>
       </div>
       <div class="site-banner__description">
         {{ formatMessage(stagingBannerMessages.description) }}
       </div>
       <div class="site-banner__actions">
-        <Button transparent icon-only :action="hideStagingBanner" aria-label="关闭横幅"
-        >
-          <XIcon aria-hidden="true"
-          />
-        </Button>
+        <Button transparent icon-only :action="hideStagingBanner" aria-label="Close banner"
+          ><XIcon aria-hidden="true"
+        /></Button>
+      </div>
+    </div>
+    <div
+      v-if="generatedStateErrors && generatedStateErrors.length > 0"
+      class="site-banner site-banner--warning [&>*]:z-[6]"
+    >
+      <div class="site-banner__title">
+        <IssuesIcon aria-hidden="true" />
+        <span>{{ formatMessage(failedToBuildBannerMessages.title) }}</span>
+      </div>
+      <div class="site-banner__description">
+        {{
+          formatMessage(failedToBuildBannerMessages.description, {
+            errors: generatedStateErrors,
+            url: config.public.apiBaseUrl,
+          })
+        }}
       </div>
     </div>
     <header
       class="experimental-styles-within desktop-only relative z-[5] mx-auto grid max-w-[1280px] grid-cols-[1fr_auto] items-center gap-2 px-6 py-4 lg:grid-cols-[auto_1fr_auto]"
     >
       <div>
-        <NuxtLink to="/" aria-label="Modrinth 主页">
-          <BrandTextLogo aria-hidden="true" class="h-7 w-auto text-contrast"/>
+        <NuxtLink to="/" aria-label="Modrinth home page">
+          <BrandTextLogo aria-hidden="true" class="h-7 w-auto text-contrast" />
         </NuxtLink>
       </div>
       <div
@@ -80,10 +116,7 @@
               route.name === 'search-mods' ? 'main-nav-primary' : 'main-nav-secondary'
             "
           >
-            <nuxt-link to="/mods">
-              <BoxIcon aria-hidden="true"/>
-              模组
-            </nuxt-link>
+            <nuxt-link to="/mods"> <BoxIcon aria-hidden="true" /> Mods </nuxt-link>
           </ButtonStyled>
           <ButtonStyled
             type="transparent"
@@ -95,8 +128,7 @@
             "
           >
             <nuxt-link to="/resourcepacks">
-              <PaintBrushIcon aria-hidden="true"/>
-              资源包
+              <PaintBrushIcon aria-hidden="true" /> Resource Packs
             </nuxt-link>
           </ButtonStyled>
           <ButtonStyled
@@ -106,10 +138,7 @@
               route.name === 'search-datapacks' ? 'main-nav-primary' : 'main-nav-secondary'
             "
           >
-            <nuxt-link to="/datapacks">
-              <BracesIcon aria-hidden="true"/>
-              数据包
-            </nuxt-link>
+            <nuxt-link to="/datapacks"> <BracesIcon aria-hidden="true" /> Data Packs </nuxt-link>
           </ButtonStyled>
           <ButtonStyled
             type="transparent"
@@ -118,10 +147,7 @@
               route.name === 'search-modpacks' ? 'main-nav-primary' : 'main-nav-secondary'
             "
           >
-            <nuxt-link to="/modpacks">
-              <PackageOpenIcon aria-hidden="true"/>
-              整合包
-            </nuxt-link>
+            <nuxt-link to="/modpacks"> <PackageOpenIcon aria-hidden="true" /> Modpacks </nuxt-link>
           </ButtonStyled>
           <ButtonStyled
             type="transparent"
@@ -130,10 +156,7 @@
               route.name === 'search-shaders' ? 'main-nav-primary' : 'main-nav-secondary'
             "
           >
-            <nuxt-link to="/shaders">
-              <GlassesIcon aria-hidden="true"/>
-              光影
-            </nuxt-link>
+            <nuxt-link to="/shaders"> <GlassesIcon aria-hidden="true" /> Shaders </nuxt-link>
           </ButtonStyled>
           <ButtonStyled
             type="transparent"
@@ -142,10 +165,7 @@
               route.name === 'search-plugins' ? 'main-nav-primary' : 'main-nav-secondary'
             "
           >
-            <nuxt-link to="/plugins">
-              <PlugIcon aria-hidden="true"/>
-              插件
-            </nuxt-link>
+            <nuxt-link to="/plugins"> <PlugIcon aria-hidden="true" /> Plugins </nuxt-link>
           </ButtonStyled>
         </template>
         <template v-else>
@@ -209,38 +229,21 @@
                 v-else-if="route.name === 'search-plugins' || route.path.startsWith('/plugin/')"
                 aria-hidden="true"
               />
-              <CompassIcon v-else aria-hidden="true"/>
-              <span class="hidden md:contents">探索资源</span>
-              <span class="contents md:hidden">探索</span>
-              <DropdownIcon aria-hidden="true" class="h-5 w-5 text-secondary"/>
+              <CompassIcon v-else aria-hidden="true" />
+              <span class="hidden md:contents">Discover content</span>
+              <span class="contents md:hidden">Discover</span>
+              <DropdownIcon aria-hidden="true" class="h-5 w-5 text-secondary" />
 
-              <template #mods>
-                <BoxIcon aria-hidden="true"/>
-                模组
-              </template>
+              <template #mods> <BoxIcon aria-hidden="true" /> Mods </template>
               <template #resourcepacks>
-                <PaintBrushIcon aria-hidden="true"/>
-                资源包
+                <PaintBrushIcon aria-hidden="true" /> Resource Packs
               </template>
-              <template #datapacks>
-                <BracesIcon aria-hidden="true"/>
-                数据包
-              </template>
-              <template #plugins>
-                <PlugIcon aria-hidden="true"/>
-                插件
-              </template>
-              <template #shaders>
-                <GlassesIcon aria-hidden="true"/>
-                光影
-              </template>
-              <template #modpacks>
-                <PackageOpenIcon aria-hidden="true"/>
-                整合包
-              </template>
+              <template #datapacks> <BracesIcon aria-hidden="true" /> Data Packs </template>
+              <template #plugins> <PlugIcon aria-hidden="true" /> Plugins </template>
+              <template #shaders> <GlassesIcon aria-hidden="true" /> Shaders </template>
+              <template #modpacks> <PackageOpenIcon aria-hidden="true" /> Modpacks </template>
             </TeleportOverflowMenu>
           </ButtonStyled>
-
           <ButtonStyled
             type="transparent"
             :highlighted="
@@ -252,27 +255,74 @@
             "
           >
             <nuxt-link to="/servers">
-              <ServerIcon aria-hidden="true"/>
-              托管服务器
+              <ServerIcon aria-hidden="true" />
+              Host a server
             </nuxt-link>
           </ButtonStyled>
           <ButtonStyled type="transparent" :highlighted="route.name === 'app'">
             <nuxt-link to="/app">
-              <DownloadIcon aria-hidden="true"/>
-              <span class="hidden md:contents">获取 Modrinth App</span>
+              <DownloadIcon aria-hidden="true" />
+              <span class="hidden md:contents">Get Modrinth App</span>
               <span class="contents md:hidden">Modrinth App</span>
             </nuxt-link>
           </ButtonStyled>
         </template>
       </div>
-      <div class="flex items-center gap-2">
+      <div class="flex items-center gap-1">
+        <ButtonStyled type="transparent">
+          <OverflowMenu
+            v-if="auth.user && isStaff(auth.user)"
+            class="btn-dropdown-animation flex items-center gap-1 rounded-xl bg-transparent px-2 py-1"
+            position="bottom"
+            direction="left"
+            :dropdown-id="`${basePopoutId}-staff`"
+            aria-label="Create new..."
+            :options="[
+              {
+                id: 'review-projects',
+                color: 'orange',
+                link: '/moderation/review',
+              },
+              {
+                id: 'review-reports',
+                color: 'orange',
+                link: '/moderation/reports',
+              },
+              {
+                divider: true,
+                shown: isAdmin(auth.user),
+              },
+              {
+                id: 'user-lookup',
+                color: 'primary',
+                link: '/admin/user_email',
+                shown: isAdmin(auth.user),
+              },
+              {
+                id: 'servers-notices',
+                color: 'primary',
+                link: '/admin/servers/notices',
+                shown: isAdmin(auth.user),
+              },
+            ]"
+          >
+            <ModrinthIcon aria-hidden="true" />
+            <DropdownIcon aria-hidden="true" class="h-5 w-5 text-secondary" />
+            <template #review-projects> <ScaleIcon aria-hidden="true" /> Review projects </template>
+            <template #review-reports> <ReportIcon aria-hidden="true" /> Reports </template>
+            <template #user-lookup> <UserIcon aria-hidden="true" /> Lookup by email </template>
+            <template #servers-notices>
+              <IssuesIcon aria-hidden="true" /> Manage server notices
+            </template>
+          </OverflowMenu>
+        </ButtonStyled>
         <ButtonStyled type="transparent">
           <OverflowMenu
             v-if="auth.user"
             class="btn-dropdown-animation flex items-center gap-1 rounded-xl bg-transparent px-2 py-1"
             position="bottom"
             direction="left"
-            :dropdown-id="createPopoutId"
+            :dropdown-id="`${basePopoutId}-create`"
             aria-label="Create new..."
             :options="[
               {
@@ -290,94 +340,54 @@
               },
             ]"
           >
-            <PlusIcon aria-hidden="true"/>
-            <DropdownIcon aria-hidden="true" class="h-5 w-5 text-secondary"/>
-            <template #new-project>
-              <BoxIcon aria-hidden="true"/>
-              创建资源
-            </template>
+            <PlusIcon aria-hidden="true" />
+            <DropdownIcon aria-hidden="true" class="h-5 w-5 text-secondary" />
+            <template #new-project> <BoxIcon aria-hidden="true" /> New project </template>
             <!-- <template #import-project> <BoxImportIcon /> Import project </template>-->
             <template #new-collection>
-              <CollectionIcon aria-hidden="true"/>
-              创建收藏夹
+              <CollectionIcon aria-hidden="true" /> New collection
             </template>
             <template #new-organization>
-              <OrganizationIcon aria-hidden="true"/>
-              创建组织
+              <OrganizationIcon aria-hidden="true" /> New organization
             </template>
           </OverflowMenu>
         </ButtonStyled>
         <OverflowMenu
           v-if="auth.user"
-          :dropdown-id="userPopoutId"
+          :dropdown-id="`${basePopoutId}-user`"
           class="btn-dropdown-animation flex items-center gap-1 rounded-xl bg-transparent px-2 py-1"
           :options="userMenuOptions"
         >
-          <Avatar :src="auth.user.avatar_url" aria-hidden="true" circle/>
-          <DropdownIcon class="h-5 w-5 text-secondary"/>
-          <template #profile>
-            <UserIcon aria-hidden="true"/>
-            个人资料
-          </template>
-          <template #notifications>
-            <BellIcon aria-hidden="true"/>
-            通知
-          </template>
-          <template #saved>
-            <BookmarkIcon aria-hidden="true"/>
-            收藏夹
-          </template>
-          <template #servers>
-            <ServerIcon aria-hidden="true"/>
-            托管的服务器
-          </template>
+          <Avatar :src="auth.user.avatar_url" aria-hidden="true" circle />
+          <DropdownIcon class="h-5 w-5 text-secondary" />
+          <template #profile> <UserIcon aria-hidden="true" /> Profile </template>
+          <template #notifications> <BellIcon aria-hidden="true" /> Notifications </template>
+          <template #saved> <BookmarkIcon aria-hidden="true" /> Saved projects </template>
+          <template #servers> <ServerIcon aria-hidden="true" /> My servers </template>
           <template #plus>
-            <ArrowBigUpDashIcon aria-hidden="true"/>
-            升级到 Modrinth+
+            <ArrowBigUpDashIcon aria-hidden="true" /> Upgrade to Modrinth+
           </template>
-          <template #settings>
-            <SettingsIcon aria-hidden="true"/>
-            设置
-          </template>
-          <template #flags>
-            <ReportIcon aria-hidden="true"/>
-            实验性功能
-          </template>
-          <template #projects>
-            <BoxIcon aria-hidden="true"/>
-            资源
-          </template>
+          <template #settings> <SettingsIcon aria-hidden="true" /> Settings </template>
+          <template #flags> <ReportIcon aria-hidden="true" /> Feature flags </template>
+          <template #projects> <BoxIcon aria-hidden="true" /> Projects </template>
           <template #organizations>
-            <OrganizationIcon aria-hidden="true"/>
-            组织
+            <OrganizationIcon aria-hidden="true" /> Organizations
           </template>
-          <template #revenue>
-            <CurrencyIcon aria-hidden="true"/>
-            收益
-          </template>
-          <template #analytics>
-            <ChartIcon aria-hidden="true"/>
-            数据分析
-          </template>
-          <template #moderation>
-            <ModerationIcon aria-hidden="true"/>
-            管理
-          </template>
-          <template #sign-out>
-            <LogOutIcon aria-hidden="true"/>
-            登出
-          </template>
+          <template #revenue> <CurrencyIcon aria-hidden="true" /> Revenue </template>
+          <template #analytics> <ChartIcon aria-hidden="true" /> Analytics </template>
+          <template #moderation> <ScaleIcon aria-hidden="true" /> Moderation </template>
+          <template #sign-out> <LogOutIcon aria-hidden="true" /> Sign out </template>
         </OverflowMenu>
         <template v-else>
           <ButtonStyled color="brand">
             <nuxt-link to="/auth/sign-in">
               <LogInIcon aria-hidden="true" />
-              登录
+              Sign in
             </nuxt-link>
           </ButtonStyled>
           <ButtonStyled circular>
-            <nuxt-link v-tooltip="'设置'" to="/settings">
-              <SettingsIcon aria-label="设置" />
+            <nuxt-link v-tooltip="'Settings'" to="/settings">
+              <SettingsIcon aria-label="Settings" />
             </nuxt-link>
           </ButtonStyled>
         </template>
@@ -426,26 +436,25 @@
             </div>
           </NuxtLink>
           <nuxt-link v-else class="iconified-button brand-button" to="/auth/sign-in">
-            <LogInIcon aria-hidden="true"/>
-            {{ formatMessage(commonMessages.signInButton) }}
+            <LogInIcon aria-hidden="true" /> {{ formatMessage(commonMessages.signInButton) }}
           </nuxt-link>
         </div>
         <div class="links">
           <template v-if="auth.user">
             <button class="iconified-button danger-button" @click="logoutUser()">
-              <LogOutIcon aria-hidden="true"/>
+              <LogOutIcon aria-hidden="true" />
               {{ formatMessage(commonMessages.signOutButton) }}
             </button>
             <button class="iconified-button" @click="$refs.modal_creation.show()">
-              <PlusIcon aria-hidden="true"/>
+              <PlusIcon aria-hidden="true" />
               {{ formatMessage(commonMessages.createAProjectButton) }}
             </button>
             <NuxtLink class="iconified-button" to="/dashboard/collections">
-              <LibraryIcon class="icon"/>
+              <LibraryIcon class="icon" />
               {{ formatMessage(commonMessages.collectionsLabel) }}
             </NuxtLink>
             <NuxtLink class="iconified-button" to="/servers/manage">
-              <ServerIcon class="icon"/>
+              <ServerIcon class="icon" />
               {{ formatMessage(commonMessages.serversLabel) }}
             </NuxtLink>
             <NuxtLink
@@ -453,21 +462,21 @@
               class="iconified-button"
               to="/moderation"
             >
-              <ModerationIcon aria-hidden="true"/>
+              <ScaleIcon aria-hidden="true" />
               {{ formatMessage(commonMessages.moderationLabel) }}
             </NuxtLink>
             <NuxtLink v-if="flags.developerMode" class="iconified-button" to="/flags">
-              <ReportIcon aria-hidden="true"/>
-              实验性功能
+              <ReportIcon aria-hidden="true" />
+              Feature flags
             </NuxtLink>
           </template>
           <NuxtLink class="iconified-button" to="/settings">
-            <SettingsIcon aria-hidden="true"/>
+            <SettingsIcon aria-hidden="true" />
             {{ formatMessage(commonMessages.settingsLabel) }}
           </NuxtLink>
           <button class="iconified-button" @click="changeTheme">
-            <MoonIcon v-if="$theme.active === 'light'" class="icon"/>
-            <SunIcon v-else class="icon"/>
+            <MoonIcon v-if="$theme.active === 'light'" class="icon" />
+            <SunIcon v-else class="icon" />
             <span class="dropdown-item__text">
               {{ formatMessage(messages.changeTheme) }}
             </span>
@@ -481,7 +490,7 @@
           :title="formatMessage(navMenuMessages.home)"
           aria-label="Home"
         >
-          <HomeIcon aria-hidden="true"/>
+          <HomeIcon aria-hidden="true" />
         </NuxtLink>
         <button
           class="tab button-animation"
@@ -491,10 +500,10 @@
           @click="toggleBrowseMenu()"
         >
           <template v-if="auth.user">
-            <SearchIcon aria-hidden="true"/>
+            <SearchIcon aria-hidden="true" />
           </template>
           <template v-else>
-            <SearchIcon aria-hidden="true" class="smaller"/>
+            <SearchIcon aria-hidden="true" class="smaller" />
             {{ formatMessage(navMenuMessages.search) }}
           </template>
         </button>
@@ -502,7 +511,7 @@
           <NuxtLink
             to="/dashboard/notifications"
             class="tab button-animation"
-            aria-label="通知"
+            aria-label="Notifications"
             :class="{
               'no-active': isMobileMenuOpen || isBrowseMenuOpen,
             }"
@@ -514,26 +523,26 @@
               }
             "
           >
-            <NotificationIcon aria-hidden="true"/>
+            <BellIcon aria-hidden="true" />
           </NuxtLink>
           <NuxtLink
             to="/dashboard"
             class="tab button-animation"
-            aria-label="仪表盘"
+            aria-label="Dashboard"
             :title="formatMessage(commonMessages.dashboardLabel)"
           >
-            <ChartIcon aria-hidden="true"/>
+            <ChartIcon aria-hidden="true" />
           </NuxtLink>
         </template>
         <button
           class="tab button-animation"
           :title="formatMessage(messages.toggleMenu)"
-          :aria-label="isMobileMenuOpen ? '关闭菜单' : '开启菜单'"
+          :aria-label="isMobileMenuOpen ? 'Close menu' : 'Open menu'"
           @click="toggleMobileMenu()"
         >
           <template v-if="!auth.user">
-            <HamburgerIcon v-if="!isMobileMenuOpen" aria-hidden="true"/>
-            <CrossIcon v-else aria-hidden="true"/>
+            <HamburgerIcon v-if="!isMobileMenuOpen" aria-hidden="true" />
+            <XIcon v-else aria-hidden="true" />
           </template>
           <template v-else>
             <Avatar
@@ -554,18 +563,17 @@
       <OrganizationCreateModal ref="modal_organization_creation" />
       <slot id="main" />
     </main>
-    <footer class="experimental-styles-within">
-      <div class="flex justify-center p-6 text-center text-sm font-medium">
-        {{ formatMessage(footerMessages.legalDisclaimer) }}
-      </div>
-      <div class="footer-brand-background border-0 border-t-[1px] border-solid">
+    <footer
+      class="footer-brand-background experimental-styles-within border-0 border-t-[1px] border-solid"
+    >
+      <div class="mx-auto flex max-w-screen-xl flex-col gap-6 p-6 pb-20 sm:px-12 md:py-12">
         <div
-          class="mx-auto grid max-w-screen-xl grid-cols-1 flex-col gap-4 p-7 pb-24 text-primary sm:px-12 md:grid-cols-[1fr_2fr] md:py-12 lg:grid-cols-[auto_auto_auto_auto_auto]"
+          class="grid grid-cols-1 gap-4 text-primary md:grid-cols-[1fr_2fr] lg:grid-cols-[auto_auto_auto_auto_auto]"
         >
           <div
             class="flex flex-col items-center gap-3 md:items-start"
             role="region"
-            aria-label="Modrinth 信息"
+            aria-label="Modrinth information"
           >
             <BrandTextLogo
               aria-hidden="true"
@@ -604,9 +612,7 @@
                   </template>
                 </IntlFormatted>
               </p>
-              <p class="m-0">© 2025 Rinth, Inc. 由<span>
-          <a class="text-link" href="/user/Tigercrl">Tigercrl</a>
-        </span>汉化）</p>
+              <p class="m-0">© 2025 Rinth, Inc.</p>
             </div>
           </div>
           <div class="mt-4 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:contents">
@@ -637,61 +643,66 @@
             </div>
           </div>
         </div>
+        <div class="flex justify-center text-center text-xs font-medium text-secondary opacity-50">
+          {{ formatMessage(footerMessages.legalDisclaimer) }}
+        </div>
       </div>
     </footer>
   </div>
 </template>
 <script setup>
 import {
+  ModrinthIcon,
   ArrowBigUpDashIcon,
-  BellIcon,
-  BellIcon as NotificationIcon,
   BookmarkIcon,
-  BoxIcon,
-  BracesIcon,
-  ChartIcon,
-  CollectionIcon,
-  CompassIcon,
-  CurrencyIcon,
-  DownloadIcon,
-  DropdownIcon,
-  GlassesIcon,
-  HamburgerIcon,
-  HomeIcon,
-  IssuesIcon,
-  LibraryIcon,
+  ServerIcon,
   LogInIcon,
-  LogOutIcon,
+  DownloadIcon,
+  LibraryIcon,
+  XIcon,
+  IssuesIcon,
+  ReportIcon,
+  CompassIcon,
+  HamburgerIcon,
+  SearchIcon,
+  BellIcon,
+  SettingsIcon,
+  HomeIcon,
   MoonIcon,
-  OrganizationIcon,
-  PackageOpenIcon,
-  PaintBrushIcon,
+  SunIcon,
   PlugIcon,
   PlusIcon,
-  ReportIcon,
-  ScaleIcon as ModerationIcon,
-  SearchIcon,
-  ServerIcon,
-  SettingsIcon,
-  SunIcon,
+  DropdownIcon,
+  LogOutIcon,
+  ChartIcon,
+  BoxIcon,
+  CollectionIcon,
+  OrganizationIcon,
   UserIcon,
+  CurrencyIcon,
+  BracesIcon,
+  GlassesIcon,
+  PaintBrushIcon,
+  PackageOpenIcon,
   DiscordIcon,
   BlueskyIcon,
   TumblrIcon,
   TwitterIcon,
   MastodonIcon,
   GitHubIcon,
-  XIcon as CrossIcon,
+  ScaleIcon,
 } from "@modrinth/assets";
-import {Avatar, Button, ButtonStyled, commonMessages, OverflowMenu} from "@modrinth/ui";
+import { Button, ButtonStyled, OverflowMenu, Avatar, commonMessages } from "@modrinth/ui";
+import { isAdmin, isStaff } from "@modrinth/utils";
+import { errors as generatedStateErrors } from "~/generated/state.json";
 
 import ModalCreation from "~/components/ui/ModalCreation.vue";
-import {getProjectTypeMessage} from "~/utils/i18n-project-type.ts";
+import { getProjectTypeMessage } from "~/utils/i18n-project-type.ts";
 import CollectionCreateModal from "~/components/ui/CollectionCreateModal.vue";
 import OrganizationCreateModal from "~/components/ui/OrganizationCreateModal.vue";
 import TeleportOverflowMenu from "~/components/ui/servers/TeleportOverflowMenu.vue";
 
-const {formatMessage} = useVIntl();
+const { formatMessage } = useVIntl();
 
 const app = useNuxtApp();
 const auth = await useAuth();
@@ -702,30 +713,30 @@ const flags = useFeatureFlags();
 
 const config = useRuntimeConfig();
 const route = useNativeRoute();
+const router = useNativeRouter();
 const link = config.public.siteUrl + route.path.replace(/\/+$/, "");
 
-const createPopoutId = useId();
-const userPopoutId = useId();
+const basePopoutId = useId();
 
 const verifyEmailBannerMessages = defineMessages({
   title: {
     id: "layout.banner.verify-email.title",
-    defaultMessage: "为了安全起见，请验证您 Modrinth 账户的邮箱地址。",
+    defaultMessage: "For security purposes, please verify your email address on Modrinth.",
   },
   action: {
     id: "layout.banner.verify-email.action",
-    defaultMessage: "重新发送验证邮件",
+    defaultMessage: "Re-send verification email",
   },
 });
 
 const addEmailBannerMessages = defineMessages({
   title: {
     id: "layout.banner.add-email.title",
-    defaultMessage: "为了安全起见，请设置您 Modrinth 账户的邮箱地址。",
+    defaultMessage: "For security purposes, please enter your email on Modrinth.",
   },
   action: {
     id: "layout.banner.add-email.button",
-    defaultMessage: "账户设置",
+    defaultMessage: "Visit account settings",
   },
 });
 
@@ -733,65 +744,77 @@ const subscriptionPaymentFailedBannerMessages = defineMessages({
   title: {
     id: "layout.banner.subscription-payment-failed.title",
     defaultMessage:
-      "您的订阅未能自动续订。请更新您的付款方式，以防止权益丢失。",
+      "Your subscription failed to renew. Please update your payment method to prevent losing access.",
   },
   action: {
     id: "layout.banner.subscription-payment-failed.button",
-    defaultMessage: "更新付款方式",
+    defaultMessage: "Update billing info",
   },
 });
 
 const stagingBannerMessages = defineMessages({
   title: {
     id: "layout.banner.staging.title",
-    defaultMessage: "您正在访问 Modrinth 的开发环境",
+    defaultMessage: "You’re viewing Modrinth’s staging environment.",
   },
   description: {
     id: "layout.banner.staging.description",
     defaultMessage:
-      "测试环境完全独立于生产环境的 Modrinth 数据库，用于测试和调试目的。并且可能运行比生产环境更新的 Modrinth 后端或前端的开发版本。（译者注：把 .env.example 重命名为 .env 即可改成生产环境）",
+      "The staging environment is completely separate from the production Modrinth database. This is used for testing and debugging purposes, and may be running in-development versions of the Modrinth backend or frontend newer than the production instance.",
+  },
+});
+
+const failedToBuildBannerMessages = defineMessages({
+  title: {
+    id: "layout.banner.build-fail.title",
+    defaultMessage: "Error generating state from API when building.",
+  },
+  description: {
+    id: "layout.banner.build-fail.description",
+    defaultMessage:
+      "This deploy of Modrinth's frontend failed to generate state from the API. This may be due to an outage or an error in configuration. Rebuild when the API is available. Error codes: {errors}; Current API URL is: {url}",
   },
 });
 
 const navMenuMessages = defineMessages({
   home: {
     id: "layout.nav.home",
-    defaultMessage: "主页",
+    defaultMessage: "Home",
   },
   search: {
     id: "layout.nav.search",
-    defaultMessage: "搜索",
+    defaultMessage: "Search",
   },
 });
 
 const messages = defineMessages({
   toggleMenu: {
     id: "layout.menu-toggle.action",
-    defaultMessage: "开关菜单",
+    defaultMessage: "Toggle menu",
   },
   yourAvatarAlt: {
     id: "layout.avatar.alt",
-    defaultMessage: "您的头像",
+    defaultMessage: "Your avatar",
   },
   getModrinthApp: {
     id: "layout.action.get-modrinth-app",
-    defaultMessage: "获取 Modrinth App",
+    defaultMessage: "Get Modrinth App",
   },
   changeTheme: {
     id: "layout.action.change-theme",
-    defaultMessage: "修改主题",
+    defaultMessage: "Change theme",
   },
 });
 
 const footerMessages = defineMessages({
   openSource: {
     id: "layout.footer.open-source",
-    defaultMessage: "Modrinth 是<github-link>开源的</github-link>。",
+    defaultMessage: "Modrinth is <github-link>open source</github-link>.",
   },
   legalDisclaimer: {
     id: "layout.footer.legal-disclaimer",
     defaultMessage:
-      "非 MINECRAFT 官方服务。未经 MOJANG 或 MICROSOFT 批准，也不与 MOJANG 或 MICROSOFT 关联",
+      "NOT AN OFFICIAL MINECRAFT SERVICE. NOT APPROVED BY OR ASSOCIATED WITH MOJANG OR MICROSOFT.",
   },
 });
 
@@ -809,8 +832,8 @@ useSeoMeta({
     formatMessage({
       id: "layout.meta.description",
       defaultMessage:
-        "在 Modrinth 上下载 Minecraft 模组，插件，数据包，着色器，资源包和整合包。" +
-        "使用 Modrinth 现代，易于使用的接口和 API 来探索和发布资源。",
+        "Download Minecraft mods, plugins, datapacks, shaders, resourcepacks, and modpacks on Modrinth. " +
+        "Discover and publish projects on Modrinth with a modern, easy to use interface and API.",
     }),
   publisher: "Modrinth",
   themeColor: "#1bd96a",
@@ -822,7 +845,7 @@ useSeoMeta({
   ogDescription: () =>
     formatMessage({
       id: "layout.meta.og-description",
-      defaultMessage: "探索和发布 Minecraft 资源！",
+      defaultMessage: "Discover and publish Minecraft content!",
     }),
   ogType: "website",
   ogImage: "https://cdn.modrinth.com/modrinth-new.png",
@@ -964,12 +987,57 @@ const isDiscoveringSubpage = computed(
   () => route.name && route.name.startsWith("type-id") && !route.query.sid,
 );
 
+const rCount = ref(0);
+
+const randomProjects = ref([]);
+const disableRandomProjects = ref(false);
+
+const disableRandomProjectsForRoute = computed(
+  () =>
+    route.name.startsWith("servers") ||
+    route.name.includes("settings") ||
+    route.name.includes("admin"),
+);
+
+async function onKeyDown(event) {
+  if (disableRandomProjects.value || disableRandomProjectsForRoute.value) {
+    return;
+  }
+
+  if (event.key === "r") {
+    rCount.value++;
+
+    if (randomProjects.value.length < 3) {
+      randomProjects.value = await useBaseFetch("projects_random?count=50").catch((err) => {
+        console.error(err);
+        return [];
+      });
+    }
+  }
+
+  if (rCount.value >= 40) {
+    rCount.value = 0;
+    const randomProject = randomProjects.value[0];
+    await router.push(`/project/${randomProject.slug}`);
+    randomProjects.value.splice(0, 1);
+  }
+}
+
+function onKeyUp(event) {
+  if (event.key === "r") {
+    rCount.value = 0;
+  }
+}
+
 onMounted(() => {
   if (window && import.meta.client) {
     window.history.scrollRestoration = "auto";
   }
 
   runAnalytics();
+
+  window.addEventListener("keydown", onKeyDown);
+  window.addEventListener("keyup", onKeyUp);
 });
 
 watch(
@@ -997,15 +1065,15 @@ function developerModeIncrement() {
     if (flags.value.developerMode) {
       app.$notify({
         group: "main",
-        title: "开发模式已启用",
-        text: "开发模式已启用",
+        title: "Developer mode activated",
+        text: "Developer mode has been enabled",
         type: "success",
       });
     } else {
       app.$notify({
         group: "main",
-        title: "开发模式已禁用",
-        text: "开发模式已禁用",
+        title: "Developer mode deactivated",
+        text: "Developer mode has been disabled",
         type: "success",
       });
     }
@@ -1033,23 +1101,19 @@ function runAnalytics() {
           Authorization: auth.value.token,
         },
       })
-        .then(() => {
-        })
-        .catch(() => {
-        });
+        .then(() => {})
+        .catch(() => {});
     });
   } catch (e) {
     console.error(`Sending analytics failed (CORS error? If so, ignore)`, e);
   }
 }
-
 function toggleMobileMenu() {
   isMobileMenuOpen.value = !isMobileMenuOpen.value;
   if (isMobileMenuOpen.value) {
     isBrowseMenuOpen.value = false;
   }
 }
-
 function toggleBrowseMenu() {
   isBrowseMenuOpen.value = !isBrowseMenuOpen.value;
 
@@ -1058,7 +1122,7 @@ function toggleBrowseMenu() {
   }
 }
 
-const {cycle: changeTheme} = useTheme();
+const { cycle: changeTheme } = useTheme();
 
 function hideStagingBanner() {
   cosmetics.value.hideStagingBanner = true;
@@ -1110,24 +1174,30 @@ const socialLinks = [
 
 const footerLinks = [
   {
-    label: formatMessage(defineMessage({ id: "layout.footer.about", defaultMessage: "关于" })),
+    label: formatMessage(defineMessage({ id: "layout.footer.about", defaultMessage: "About" })),
     links: [
       {
         href: "https://blog.modrinth.com",
         label: formatMessage(
-          defineMessage({ id: "layout.footer.about.blog", defaultMessage: "博客" }),
+          defineMessage({ id: "layout.footer.about.blog", defaultMessage: "Blog" }),
         ),
       },
       {
         href: "/news/changelog",
         label: formatMessage(
-          defineMessage({ id: "layout.footer.about.changelog", defaultMessage: "更新日志" }),
+          defineMessage({ id: "layout.footer.about.changelog", defaultMessage: "Changelog" }),
         ),
       },
       {
         href: "https://status.modrinth.com",
         label: formatMessage(
-          defineMessage({ id: "layout.footer.about.status", defaultMessage: "状态" }),
+          defineMessage({ id: "layout.footer.about.status", defaultMessage: "Status" }),
+        ),
+      },
+      {
+        href: "https://careers.modrinth.com",
+        label: formatMessage(
+          defineMessage({ id: "layout.footer.about.careers", defaultMessage: "Careers" }),
         ),
       },
       {
@@ -1135,7 +1205,7 @@ const footerLinks = [
         label: formatMessage(
           defineMessage({
             id: "layout.footer.about.rewards-program",
-            defaultMessage: "创作者激励",
+            defaultMessage: "Rewards Program",
           }),
         ),
       },
@@ -1143,7 +1213,7 @@ const footerLinks = [
   },
   {
     label: formatMessage(
-      defineMessage({ id: "layout.footer.products", defaultMessage: "产品" }),
+      defineMessage({ id: "layout.footer.products", defaultMessage: "Products" }),
     ),
     links: [
       {
@@ -1171,7 +1241,7 @@ const footerLinks = [
   },
   {
     label: formatMessage(
-      defineMessage({ id: "layout.footer.resources", defaultMessage: "资源" }),
+      defineMessage({ id: "layout.footer.resources", defaultMessage: "Resources" }),
     ),
     links: [
       {
@@ -1186,7 +1256,7 @@ const footerLinks = [
       {
         href: "https://crowdin.com/project/modrinth",
         label: formatMessage(
-          defineMessage({ id: "layout.footer.resources.translate", defaultMessage: "翻译" }),
+          defineMessage({ id: "layout.footer.resources.translate", defaultMessage: "Translate" }),
         ),
       },
       {
@@ -1194,7 +1264,7 @@ const footerLinks = [
         label: formatMessage(
           defineMessage({
             id: "layout.footer.resources.report-issues",
-            defaultMessage: "汇报问题",
+            defaultMessage: "Report issues",
           }),
         ),
       },
@@ -1203,25 +1273,25 @@ const footerLinks = [
         label: formatMessage(
           defineMessage({
             id: "layout.footer.resources.api-docs",
-            defaultMessage: "API 文档",
+            defaultMessage: "API documentation",
           }),
         ),
       },
     ],
   },
   {
-    label: formatMessage(defineMessage({ id: "layout.footer.legal", defaultMessage: "条款" })),
+    label: formatMessage(defineMessage({ id: "layout.footer.legal", defaultMessage: "Legal" })),
     links: [
       {
         href: "/legal/rules",
         label: formatMessage(
-          defineMessage({ id: "layout.footer.legal.rules", defaultMessage: "内容规则" }),
+          defineMessage({ id: "layout.footer.legal.rules", defaultMessage: "Content Rules" }),
         ),
       },
       {
         href: "/legal/terms",
         label: formatMessage(
-          defineMessage({ id: "layout.footer.legal.terms-of-use", defaultMessage: "使用条款" }),
+          defineMessage({ id: "layout.footer.legal.terms-of-use", defaultMessage: "Terms of Use" }),
         ),
       },
       {
@@ -1229,7 +1299,7 @@ const footerLinks = [
         label: formatMessage(
           defineMessage({
             id: "layout.footer.legal.privacy-policy",
-            defaultMessage: "隐私政策",
+            defaultMessage: "Privacy Policy",
           }),
         ),
       },
@@ -1238,7 +1308,7 @@ const footerLinks = [
         label: formatMessage(
           defineMessage({
             id: "layout.footer.legal.security-notice",
-            defaultMessage: "安全提醒",
+            defaultMessage: "Security Notice",
           }),
         ),
       },
@@ -1553,6 +1623,116 @@ const footerLinks = [
 .footer-brand-background {
   background: var(--brand-gradient-strong-bg);
   border-color: var(--brand-gradient-border);
+}
+
+.over-the-top-random-animation {
+  position: fixed;
+  z-index: 100;
+  inset: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  pointer-events: none;
+  scale: 0.5;
+  transition: all 0.5s ease-out;
+  opacity: 0;
+  animation:
+    tilt-shaking calc(0.2s / (max((var(--_r-count) - 20), 1) / 20)) linear infinite,
+    translate-x-shaking calc(0.3s / (max((var(--_r-count) - 20), 1) / 20)) linear infinite,
+    translate-y-shaking calc(0.25s / (max((var(--_r-count) - 20), 1) / 20)) linear infinite;
+
+  &.threshold {
+    opacity: 1;
+  }
+
+  &.rings-expand {
+    scale: 0.8;
+    opacity: 0;
+
+    .animation-ring-1 {
+      width: 25rem;
+      height: 25rem;
+    }
+    .animation-ring-2 {
+      width: 50rem;
+      height: 50rem;
+    }
+    .animation-ring-3 {
+      width: 100rem;
+      height: 100rem;
+    }
+  }
+
+  > div {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: fit-content;
+    height: fit-content;
+
+    > * {
+      position: absolute;
+      scale: calc(1 + max((var(--_r-count) - 20), 0) * 0.1);
+      transition: all 0.2s ease-out;
+      width: 20rem;
+      height: 20rem;
+    }
+  }
+}
+
+@keyframes tilt-shaking {
+  0% {
+    rotate: 0deg;
+  }
+  25% {
+    rotate: calc(1deg * (var(--_r-count) - 20));
+  }
+  50% {
+    rotate: 0deg;
+  }
+  75% {
+    rotate: calc(-1deg * (var(--_r-count) - 20));
+  }
+  100% {
+    rotate: 0deg;
+  }
+}
+
+@keyframes translate-x-shaking {
+  0% {
+    translate: 0;
+  }
+  25% {
+    translate: calc(2px * (var(--_r-count) - 20));
+  }
+  50% {
+    translate: 0;
+  }
+  75% {
+    translate: calc(-2px * (var(--_r-count) - 20));
+  }
+  100% {
+    translate: 0;
+  }
+}
+
+@keyframes translate-y-shaking {
+  0% {
+    transform: translateY(0);
+  }
+  25% {
+    transform: translateY(calc(2px * (var(--_r-count) - 20)));
+  }
+  50% {
+    transform: translateY(0);
+  }
+  75% {
+    transform: translateY(calc(-2px * (var(--_r-count) - 20)));
+  }
+  100% {
+    transform: translateY(0);
+  }
 }
 </style>
 <style src="vue-multiselect/dist/vue-multiselect.css"></style>

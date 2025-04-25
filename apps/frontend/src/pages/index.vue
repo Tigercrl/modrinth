@@ -1,48 +1,48 @@
 <template>
   <div>
     <div class="landing-hero">
-      <ModrinthIcon class="modrinth-icon" />
+      <ModrinthIcon class="modrinth-icon text-brand" />
       <h1 class="main-header">
+        The place for Minecraft
         <div class="animate-strong">
-          Minecraft&nbsp;
           <span>
             <strong
               v-for="projectType in tags.projectTypes"
               :key="projectType.id"
               class="main-header-strong"
             >
-              {{ projectType.display }} <br/>
+              {{ projectType.display }}s <br />
             </strong>
-            <strong class="main-header-strong">服务器 <br/></strong>
-            <strong class="main-header-strong">模组</strong>
+            <strong class="main-header-strong">servers <br /></strong>
+            <strong class="main-header-strong">mods</strong>
           </span>
         </div>
-        的聚集地
       </h1>
       <h2>
-        通过我们为社区打造的开源平台探索、游玩、分享 Minecraft 资源。
+        Discover, play, and share Minecraft content through our open-source platform built for the
+        community.
       </h2>
       <div class="button-group">
         <ButtonStyled color="brand" size="large">
           <nuxt-link to="/mods">
-            <CompassIcon aria-hidden="true"/>
-            探索模组
+            <CompassIcon aria-hidden="true" />
+            Discover mods
           </nuxt-link>
         </ButtonStyled>
         <ButtonStyled size="large" type="outlined">
           <nuxt-link v-if="!auth.user" to="/auth/sign-up" rel="noopener nofollow">
-            <LogInIcon aria-hidden="true"/>
-            登录
+            <LogInIcon aria-hidden="true" />
+            Sign up
           </nuxt-link>
           <nuxt-link v-else to="/dashboard/projects">
-            <DashboardIcon aria-hidden="true"/>
-            仪表盘
+            <DashboardIcon aria-hidden="true" />
+            Go to dashboard
           </nuxt-link>
         </ButtonStyled>
       </div>
     </div>
     <div class="users-section-outer">
-      <div class="projects-showcase">
+      <div v-if="rows" class="projects-showcase">
         <div v-for="(row, index) in rows" :key="index" class="row">
           <div v-for="n in 2" :key="n" class="row__content" :class="{ offset: index % 2 }">
             <nuxt-link
@@ -51,7 +51,7 @@
               class="project button-animation"
               :to="`/${project.project_type}/${project.slug ? project.slug : project.id}`"
             >
-              <Avatar :src="project.icon_url" :alt="project.title" size="sm" loading="lazy"/>
+              <Avatar :src="project.icon_url" :alt="project.title" size="sm" loading="lazy" />
               <div class="project-info">
                 <span class="title">
                   {{ project.title }}
@@ -64,60 +64,50 @@
           </div>
         </div>
       </div>
-      <div class="projects-transition"/>
+      <div v-else class="relative z-[10] w-full text-center text-xl font-bold text-contrast">
+        Failed to load random projects :(
+      </div>
+      <div class="projects-transition" />
       <div class="users-section">
         <div class="section-header">
-          <div class="section-label green">对于玩家</div>
-          <h2 class="section-tagline">探索 50,000+ 资源</h2>
+          <div class="section-label green">For Players</div>
+          <h2 class="section-tagline">Discover over 50,000 creations</h2>
           <p class="section-description">
-            从各色的生物群系到阴森的地牢，您一定可以找到各色资源将您的游戏体验提升到一个新高度。
+            From magical biomes to cursed dungeons, you can be sure to find content to bring your
+            gameplay to the next level.
           </p>
         </div>
         <div class="feature-blob">
           <div class="blob-text">
-            <h3>快速容易地找到您想要的资源</h3>
+            <h3>Find what you want, quickly and easily</h3>
             <p>
-              Modrinth 快速的搜索引擎和强大的过滤器可以让您在输入时找到您想要的资源。
+              Modrinth's lightning-fast search and powerful filters let you find what you want as
+              you type.
             </p>
           </div>
           <div class="blob-demonstration gradient-border bigger">
             <div class="demo-search">
               <div class="search-controls">
                 <div class="iconified-input">
-                  <label class="hidden" for="search">搜索</label>
-                  <SearchIcon aria-hidden="true"/>
+                  <label class="hidden" for="search">Search</label>
+                  <SearchIcon aria-hidden="true" />
                   <input
                     id="search"
                     v-model="searchQuery"
                     type="search"
                     name="search"
-                    :placeholder="`请搜索资源...`"
+                    :placeholder="`Search...`"
                     autocomplete="off"
                     @input="updateSearchProjects"
                   />
                 </div>
                 <div class="sort-by">
-                  <span class="label">排列方式</span>
+                  <span class="label">Sort by</span>
                   <Multiselect
                     v-model="sortType"
-                    placeholder="请选择..."
+                    placeholder="Select one"
                     class="selector"
-                    :custom-label="(value) => {
-                      switch (value) {
-                        case 'relevance':
-                          return '相关性'
-                        case 'downloads':
-                          return '下载量'
-                        case 'follows':
-                          return '关注量'
-                        case 'newest':
-                          return '发布时间'
-                        case 'updated':
-                          return '更新时间'
-                        default:
-                          return value.charAt(0).toUpperCase() + value.slice(1)
-                      }
-                    }"
+                    :custom-label="(value) => value.charAt(0).toUpperCase() + value.slice(1)"
                     :options="['relevance', 'downloads', 'follows', 'updated', 'newest']"
                     :searchable="false"
                     :close-on-select="true"
@@ -155,12 +145,12 @@
         </div>
         <div class="feature-blob reverse">
           <div class="blob-text">
-            <h3>关注您喜欢的资源</h3>
-            <p>您喜欢的资源更新时您将会收到通知</p>
+            <h3>Follow projects you love</h3>
+            <p>Get notified every time your favorite projects update and stay in the loop</p>
           </div>
           <div class="blob-demonstration gradient-border">
             <div class="notifs-demo">
-              <h3>通知</h3>
+              <h3>Notifications</h3>
               <div class="notifications">
                 <div
                   v-for="(notification, index) in notifications"
@@ -171,30 +161,31 @@
                     :to="`${notification.project_type}/${notification.slug}`"
                     :title="notification.title"
                   >
-                    <Avatar size="md" :src="notification.icon_url" :alt="notification.title"/>
+                    <Avatar size="md" :src="notification.icon_url" :alt="notification.title" />
                   </nuxt-link>
                   <div>
                     <nuxt-link
                       :to="`${notification.project_type}/${notification.slug}`"
                       class="notif-header"
                     >
-                      {{ notification.title }} 更新了版本 {{ ["1.1.2", "1.0.3", "15.1"][index] }}！
+                      {{ notification.title }} has been updated!
                     </nuxt-link>
                     <p class="notif-desc">
-                      分类：{{
+                      Version {{ ["1.1.2", "1.0.3", "15.1"][index] }} has been released for
+                      {{
                         $capitalizeString(
                           notification.display_categories[
-                          notification.display_categories.length - 1
-                            ],
+                            notification.display_categories.length - 1
+                          ],
                         )
-                      }}｜Minecraft 版本：{{
-                        notification.versions[notification.versions.length - 1]
                       }}
+                      {{ notification.versions[notification.versions.length - 1] }}
                     </p>
                     <div class="date">
-                      <CalendarIcon aria-hidden="true"/>
+                      <CalendarIcon aria-hidden="true" />
                       <span>
-                        更新时间：{{ fromNow(notification.date_modified) }}
+                        Received
+                        {{ fromNow(notification.date_modified) }}
                       </span>
                     </div>
                   </div>
@@ -205,11 +196,12 @@
         </div>
         <div class="feature-blob">
           <div class="blob-text">
-            <h3>使用您最喜欢的启动器游玩</h3>
+            <h3>Play with your favorite launcher</h3>
             <p>
-              Modrinth 的开源 API 允许启动器与 Modrinth 进行深度集成。您可以使用我们自主研发的
-              <nuxt-link class="title-link" to="/app">Modrinth App</nuxt-link>
-              或其他流行的启动器，如 ATLauncher，MultiMC，和 Prism Launcher 等进行游戏。
+              Modrinth's open-source API lets launchers add deep integration with Modrinth. You can
+              use Modrinth through
+              <nuxt-link class="title-link" to="/app">our own app</nuxt-link>
+              and some of the most popular launchers like ATLauncher, MultiMC, and Prism Launcher.
             </p>
           </div>
           <div class="blob-demonstration gradient-border">
@@ -234,10 +226,14 @@
                   title="Prism Launcher"
                   aria-label="Prism Launcher"
                 >
-                  <PrismLauncherLogo aria-hidden="true"/>
+                  <PrismLauncherLogo aria-hidden="true" />
                 </a>
-                <nuxt-link to="/app" class="graphic gradient-border" aria-label="Modrinth App">
-                  <ModrinthIcon aria-hidden="true"/>
+                <nuxt-link
+                  to="/app"
+                  class="graphic gradient-border text-brand"
+                  aria-label="Modrinth App"
+                >
+                  <ModrinthIcon aria-hidden="true" />
                 </nuxt-link>
                 <a
                   rel="noopener"
@@ -246,7 +242,7 @@
                   title="ATLauncher"
                   aria-label="ATLauncher"
                 >
-                  <ATLauncherLogo aria-hidden="true"/>
+                  <ATLauncherLogo aria-hidden="true" />
                 </a>
               </div>
             </div>
@@ -256,10 +252,10 @@
     </div>
     <div class="creator-section">
       <div class="section-header">
-        <div class="section-label blue">对于创作者</div>
-        <h2 class="section-tagline">向全世界分享您的作品</h2>
+        <div class="section-label blue">For Creators</div>
+        <h2 class="section-tagline">Share your content with the world</h2>
         <p class="section-description">
-          向您的作品提供一个线上“家园”，使您的作品接触到大量的忠实玩家
+          Give an online home to your creations and reach a massive audience of dedicated players
         </p>
       </div>
       <div class="features">
@@ -279,15 +275,16 @@
                   y2="37"
                   gradientUnits="userSpaceOnUse"
                 >
-                  <stop stop-color="#C1E1B1"/>
-                  <stop offset="1" stop-color="#A7BDE6"/>
+                  <stop stop-color="#C1E1B1" />
+                  <stop offset="1" stop-color="#A7BDE6" />
                 </linearGradient>
               </defs>
             </svg>
           </div>
-          <h3>探索</h3>
+          <h3>Discovery</h3>
           <p>
-            让您的资源通过搜索、主页、Discord 服务器、以及在未来的更多的方式被成千上万的用户发现！
+            Get your project discovered by thousands of users through search, our home page, Discord
+            server, and more ways to come in the future!
           </p>
         </div>
         <div class="feature gradient-border">
@@ -306,14 +303,14 @@
                   y2="23.5"
                   gradientUnits="userSpaceOnUse"
                 >
-                  <stop stop-color="#C1E1B1"/>
-                  <stop offset="1" stop-color="#A7BDE6"/>
+                  <stop stop-color="#C1E1B1" />
+                  <stop offset="1" stop-color="#A7BDE6" />
                 </linearGradient>
               </defs>
             </svg>
           </div>
-          <h3>团队管理</h3>
-          <p>轻松地邀请组织成员、管理角色和权限</p>
+          <h3>Team Management</h3>
+          <p>Invite your teammates and manage roles and permissions with ease</p>
         </div>
         <div class="feature gradient-border">
           <div class="icon gradient-border">
@@ -331,14 +328,14 @@
                   y2="29.375"
                   gradientUnits="userSpaceOnUse"
                 >
-                  <stop stop-color="#C1E1B1"/>
-                  <stop offset="1" stop-color="#A7BDE6"/>
+                  <stop stop-color="#C1E1B1" />
+                  <stop offset="1" stop-color="#A7BDE6" />
                 </linearGradient>
               </defs>
             </svg>
           </div>
-          <h3>创作者激励</h3>
-          <p>通过您的资源赚取网站的广告收入，并随时提现您的收入</p>
+          <h3>Monetization</h3>
+          <p>Get paid ad revenue from your project pages and withdraw your funds at any time</p>
         </div>
         <div class="feature gradient-border">
           <div class="icon gradient-border">
@@ -356,15 +353,16 @@
                   y2="38.25"
                   gradientUnits="userSpaceOnUse"
                 >
-                  <stop stop-color="#C1E1B1"/>
-                  <stop offset="1" stop-color="#A7BDE6"/>
+                  <stop stop-color="#C1E1B1" />
+                  <stop offset="1" stop-color="#A7BDE6" />
                 </linearGradient>
               </defs>
             </svg>
           </div>
-          <h3>多样化的生态系统</h3>
+          <h3>Diverse Ecosystem</h3>
           <p>
-            在您的构建工具中集成 Minotaur，以便在发布新版本时自动上传到 Modrinth
+            Integrate with your build tools through Minotaur for automatic uploads right when you
+            release a new version
           </p>
         </div>
         <div class="feature gradient-border">
@@ -383,14 +381,14 @@
                   y2="38.25"
                   gradientUnits="userSpaceOnUse"
                 >
-                  <stop stop-color="#C1E1B1"/>
-                  <stop offset="1" stop-color="#A7BDE6"/>
+                  <stop stop-color="#C1E1B1" />
+                  <stop offset="1" stop-color="#A7BDE6" />
                 </linearGradient>
               </defs>
             </svg>
           </div>
-          <h3>数据和统计</h3>
-          <p>获得关于页面浏览量、下载计数和收入的详细报告（汉化站的访问暂不支持计入数据统计）</p>
+          <h3>Data and Statistics</h3>
+          <p>Get detailed reports on page views, download counts, and revenue</p>
         </div>
         <div class="feature gradient-border">
           <div class="icon gradient-border">
@@ -408,15 +406,15 @@
                   y2="31.5"
                   gradientUnits="userSpaceOnUse"
                 >
-                  <stop stop-color="#C1E1B1"/>
-                  <stop offset="1" stop-color="#A7BDE6"/>
+                  <stop stop-color="#C1E1B1" />
+                  <stop offset="1" stop-color="#A7BDE6" />
                 </linearGradient>
               </defs>
             </svg>
           </div>
-          <h3>不断发展</h3>
+          <h3>Constantly Evolving</h3>
           <p>
-            通过 Modrinth 团队的不断更新获得最好的模组安装体验
+            Get the best modding experience possible with constant updates from the Modrinth team
           </p>
         </div>
       </div>
@@ -430,7 +428,7 @@
         class="light-height modrinth-icon"
       >
         <g clip-path="url(#clip0_419_237)">
-          <rect x="176" width="512" height="512" fill="url(#paint0_linear_419_237)"/>
+          <rect x="176" width="512" height="512" fill="url(#paint0_linear_419_237)" />
           <g opacity="0.5">
             <path
               d="M176 274.069H219.65C221.89 299.001 228.25 322.42 238.87 345.249C245.4 342.033 251.37 338.016 257.52 334.3C263.76 330.534 270.07 326.908 276.62 323.061C276.21 321.669 275.95 320.216 275.37 318.914C271.05 309.378 268.47 299.251 266.32 289.114C265.03 283.054 264.41 276.743 263.73 270.513C262.89 262.86 262.94 255.257 263.11 247.654C263.26 241.083 264.11 234.482 265.21 227.991C266.88 218.064 269.39 208.308 272.94 198.852C276.79 188.594 281.19 178.588 287.21 169.382C291.19 163.292 294.97 157.021 299.53 151.382C306.3 142.998 313.75 135.214 322.12 128.273C330.05 121.692 338.16 115.421 347.18 110.483C354.15 106.676 361.39 103.341 368.66 100.115C379.13 95.4674 390.24 92.873 401.39 90.4289C410.67 88.4055 430.03 87.3237 438.96 88.6158C438.51 95.9282 436.63 103.05 435.44 110.262C434.26 117.394 432.94 124.496 431.6 132.109C428.15 132.44 424.73 132.7 421.32 133.121C416.25 133.752 411.15 134.263 406.15 135.265C395.4 137.428 385.13 141.044 375.33 145.973C366.85 150.23 358.98 155.398 351.89 161.709C348.8 164.464 345.52 167.048 342.67 170.033C335.77 177.225 329.99 185.279 324.68 193.713C320.48 200.364 317.45 207.536 314.8 214.839C312.05 222.422 310.33 230.315 308.95 238.308C307.43 247.093 307.9 255.898 308.2 264.653C308.48 272.867 310.18 281 312.49 288.934C313.45 292.239 314.44 295.535 315.62 299.481C332.06 289.705 348.08 280.169 364.47 270.422C361.92 263.631 359.46 257.16 357.05 250.669C354.63 244.178 352.26 237.667 349.78 230.926C352.79 227.871 355.71 224.936 358.6 221.971C369.97 210.291 381.46 198.712 392.6 186.821C395.77 183.436 399.36 181.913 403.66 181.062C414.16 178.978 424.63 176.734 435.11 174.541C441.87 173.128 448.62 171.686 455.69 170.193C461.36 177.175 467.08 184.217 472.94 191.439C471.8 192.671 470.85 193.783 469.82 194.815C463 201.656 455.97 208.308 449.41 215.4C446.18 218.896 442.34 220.709 438.01 221.961C433.09 223.383 428.16 224.745 423.25 226.198C422.5 226.418 421.73 226.909 421.19 227.48C416.62 232.298 412.15 237.216 407.55 241.995C405.9 243.697 405.89 245.31 406.67 247.424C408.91 253.474 410.92 259.604 413.12 265.674C413.5 266.716 414.27 267.668 415.04 268.499C419.55 273.377 424.05 278.266 428.73 282.974C429.48 283.725 431.24 284.055 432.33 283.775C438.57 282.182 444.72 280.289 450.94 278.636C453.49 277.955 455.32 276.443 457.01 274.559C460.1 271.094 463.55 267.898 466.27 264.172C469.55 259.684 473.91 257.901 479.09 256.82C483.44 255.908 487.58 254.045 491.83 252.673C496.23 251.25 500.69 249.998 505.07 248.495C507.08 247.804 508.18 248.305 508.99 250.198C512.16 257.671 515.4 265.114 518.76 272.917C515.97 276.342 513.04 279.918 510.13 283.515C505.45 289.304 500.81 295.124 496.12 300.904C492.16 305.782 487.86 310.42 484.26 315.549C481.66 319.255 478.09 320.717 474.16 321.959C462.33 325.716 450.52 329.502 438.69 333.268C431.61 335.522 424.51 337.756 416.91 340.16C415.33 338.648 413.45 337.055 411.81 335.232C407.16 330.053 402.62 324.794 398.03 319.565C395.63 316.831 393.3 314.006 390.79 311.382C388.08 308.557 387.52 308.557 384.41 310.42C377.88 314.337 371.33 318.243 364.82 322.19C356.32 327.328 347.85 332.507 339.09 337.836C341.26 341.482 344.39 344.257 347.49 346.811C353.22 351.539 359.26 355.907 365.37 360.144C376.53 367.867 388.92 372.815 402.07 376.081C409.82 378.004 417.59 379.286 425.6 379.076C426.74 379.046 427.88 379.446 429.02 379.516C430.64 379.617 432.27 379.667 433.88 379.587C435.19 379.526 436.48 379.106 437.79 379.076C442.03 378.966 442.07 378.996 443.29 383.443C446.74 396.014 450.16 408.585 453.58 421.167C453.7 421.597 453.65 422.068 453.7 422.88C449 423.28 444.42 423.781 439.83 424.022C436.17 424.212 432.5 423.961 428.83 424.092C414.81 424.593 401.08 422.469 387.69 418.733C366.28 412.763 346.56 403.216 328.88 389.523C320.7 383.183 313.41 375.95 306.16 368.648C304.89 367.366 303.97 365.743 302.78 364.371C300.52 361.746 299.87 361.526 296.85 363.189C292.49 365.583 288.24 368.167 283.98 370.722C277.72 374.458 271.49 378.234 265.25 382.001C264.56 382.421 263.91 382.902 263.18 383.403C263.7 387.54 267.09 389.654 269.19 392.448C272.55 396.946 276.45 401.113 280.58 404.939C286.77 410.669 293.38 415.938 299.77 421.457C306.94 427.658 314.86 432.756 322.98 437.604C332.25 443.144 341.84 448.092 351.94 451.808C361.7 455.394 371.65 458.54 381.69 461.244C388.49 463.077 395.62 463.678 402.56 465.061C414.21 467.385 425.99 467.224 437.75 466.924C444.49 466.754 451.21 465.622 457.94 465.071C465.69 464.44 473.25 462.767 480.79 461.014C492.41 458.319 503.64 454.453 514.64 449.795C530.77 442.963 545.63 433.968 559.65 423.601C570.63 415.477 580.59 406.061 589.5 395.774C598.25 385.667 606.72 375.209 612.97 363.219C615.56 358.241 618.38 353.382 621.25 348.184C635.52 353.322 649.65 358.411 664.03 363.59C663.75 364.691 663.65 365.663 663.26 366.484C655.92 381.77 647.35 396.285 636.95 409.727C628.93 420.105 620.71 430.292 611.17 439.307C604.8 445.327 598.41 451.358 591.25 456.496C584.53 461.314 578.16 466.653 571.24 471.151C556.34 480.857 540.49 488.721 523.9 495.262C508.29 501.412 492.07 505.198 475.79 508.774C468.91 510.287 461.7 510.297 454.64 511.058C453.74 511.158 452.89 511.679 452.02 512H409.02C405.58 510.147 401.69 510.908 398.04 510.127C392.73 508.995 387.16 509.055 381.91 507.763C370.54 504.958 359.16 502.043 348.04 498.387C335.77 494.35 323.98 489.101 312.56 482.941C300.86 476.63 289.55 469.779 278.84 461.945C269.2 454.894 260.11 447.171 251.49 438.927C248.39 435.952 245.88 432.356 242.77 429.391C235.89 422.83 230.17 415.267 224.57 407.704C218.48 399.48 212.95 390.755 208.03 381.78C197.57 362.698 188.92 342.835 183.67 321.579C180.7 309.558 177.71 297.578 176.89 285.177C176.86 284.787 176.32 284.436 176.02 284.065C176.02 280.73 176.02 277.404 176.02 274.069H176Z"
@@ -442,7 +440,7 @@
             />
           </g>
         </g>
-        <rect y="194" width="865" height="318" fill="url(#paint1_linear_419_237)"/>
+        <rect y="194" width="865" height="318" fill="url(#paint1_linear_419_237)" />
         <defs>
           <linearGradient
             id="paint0_linear_419_237"
@@ -452,8 +450,8 @@
             y2="512"
             gradientUnits="userSpaceOnUse"
           >
-            <stop stop-color="#E7FFEF"/>
-            <stop offset="0.678759" stop-color="white"/>
+            <stop stop-color="#E7FFEF" />
+            <stop offset="0.678759" stop-color="white" />
           </linearGradient>
           <linearGradient
             id="paint1_linear_419_237"
@@ -463,11 +461,11 @@
             y2="315.861"
             gradientUnits="userSpaceOnUse"
           >
-            <stop stop-color="#F9FFFB" stop-opacity="0"/>
-            <stop offset="1" stop-color="#F9FFFB"/>
+            <stop stop-color="#F9FFFB" stop-opacity="0" />
+            <stop offset="1" stop-color="#F9FFFB" />
           </linearGradient>
           <clipPath id="clip0_419_237">
-            <rect x="176" width="512" height="512" rx="256" fill="white"/>
+            <rect x="176" width="512" height="512" rx="256" fill="white" />
           </clipPath>
         </defs>
       </svg>
@@ -479,7 +477,7 @@
         class="modrinth-icon"
       >
         <g clip-path="url(#clip0_127_331)">
-          <rect width="512" height="512" fill="url(#paint0_linear_127_331)"/>
+          <rect width="512" height="512" fill="url(#paint0_linear_127_331)" />
           <g style="mix-blend-mode: overlay">
             <g opacity="0.5">
               <path
@@ -502,25 +500,25 @@
             y2="512"
             gradientUnits="userSpaceOnUse"
           >
-            <stop stop-color="#05CE45"/>
-            <stop offset="0.678759" stop-color="#051F10"/>
+            <stop stop-color="#05CE45" />
+            <stop offset="0.678759" stop-color="#051F10" />
           </linearGradient>
           <clipPath id="clip0_127_331">
-            <rect width="512" height="512" rx="256" fill="white"/>
+            <rect width="512" height="512" rx="256" fill="white" />
           </clipPath>
         </defs>
       </svg>
       <div class="overlay">
         <h2 class="main-header">
-          阅读更多信息<br/>
-          <strong class="main-header-strong">Modrinth 博客</strong>
+          Read more about <br />
+          <strong class="main-header-strong">Modrinth</strong>
         </h2>
         <ButtonStyled color="brand">
           <a
             href="https://blog.modrinth.com/?utm_source=website&utm_source=homepage&utm_campaign=newsletter"
           >
-            <NewspaperIcon/>
-            前往博客
+            <NewspaperIcon />
+            Visit the blog
           </a>
         </ButtonStyled>
       </div>
@@ -528,18 +526,23 @@
   </div>
 </template>
 <script setup>
-import {Multiselect} from "vue-multiselect";
-import {ButtonStyled} from "@modrinth/ui";
-import {CompassIcon, DashboardIcon, LogInIcon, NewspaperIcon} from "@modrinth/assets";
-import SearchIcon from "~/assets/images/utils/search.svg?component";
-import CalendarIcon from "~/assets/images/utils/calendar.svg?component";
-import ModrinthIcon from "~/assets/images/logo.svg?component";
+import { Multiselect } from "vue-multiselect";
+import { ButtonStyled } from "@modrinth/ui";
+import {
+  CompassIcon,
+  LogInIcon,
+  DashboardIcon,
+  NewspaperIcon,
+  SearchIcon,
+  CalendarIcon,
+  ModrinthIcon,
+} from "@modrinth/assets";
 import PrismLauncherLogo from "~/assets/images/external/prism.svg?component";
 import ATLauncherLogo from "~/assets/images/external/atlauncher.svg?component";
 import Avatar from "~/components/ui/Avatar.vue";
 import ProjectCard from "~/components/ui/ProjectCard.vue";
 
-import {homePageNotifs, homePageProjects, homePageSearch} from "~/generated/state.json";
+import { homePageProjects, homePageSearch, homePageNotifs } from "~/generated/state.json";
 
 const searchQuery = ref("leave");
 const sortType = ref("relevance");
@@ -547,23 +550,27 @@ const sortType = ref("relevance");
 const auth = await useAuth();
 const tags = useTags();
 
-const newProjects = homePageProjects.slice(0, 40);
-const val = Math.ceil(newProjects.length / 3);
-const rows = ref([
-  newProjects.slice(0, val),
-  newProjects.slice(val, val * 2),
-  newProjects.slice(val * 2, val * 3),
-]);
+const newProjects = homePageProjects?.slice(0, 40);
+const val = Math.ceil(newProjects?.length / 3);
+const rows = ref(
+  newProjects.length > 0
+    ? [
+        newProjects.slice(0, val),
+        newProjects.slice(val, val * 2),
+        newProjects.slice(val * 2, val * 3),
+      ]
+    : undefined,
+);
 
-const notifications = ref(homePageNotifs.hits ?? []);
-const searchProjects = ref(homePageSearch.hits ?? []);
+const notifications = ref(homePageNotifs?.hits ?? []);
+const searchProjects = ref(homePageSearch?.hits ?? []);
 
 async function updateSearchProjects() {
   const res = await useBaseFetch(
     `search?limit=3&query=${searchQuery.value}&index=${sortType.value}`,
   );
 
-  searchProjects.value = res.hits ?? [];
+  searchProjects.value = res?.hits ?? [];
 }
 </script>
 
@@ -615,9 +622,9 @@ async function updateSearchProjects() {
     z-index: 1;
     inset: 0;
     background: linear-gradient(
-        180deg,
-        var(--landing-transition-gradient-end) 0%,
-        var(--landing-transition-gradient-start) 100%
+      180deg,
+      var(--landing-transition-gradient-end) 0%,
+      var(--landing-transition-gradient-start) 100%
     );
     height: 12.5rem;
     width: 100%;
@@ -629,9 +636,9 @@ async function updateSearchProjects() {
     width: 100%;
     height: 12.5rem;
     background: linear-gradient(
-        0deg,
-        var(--landing-transition-gradient-end) 0%,
-        var(--landing-transition-gradient-start) 100%
+      0deg,
+      var(--landing-transition-gradient-end) 0%,
+      var(--landing-transition-gradient-start) 100%
     );
   }
 
@@ -701,8 +708,9 @@ async function updateSearchProjects() {
         gap: 1rem;
         border-radius: 1rem;
         border: 1px solid var(--landing-border-color);
-        transition: background 0.5s ease-in-out,
-        transform 0.05s ease-in-out;
+        transition:
+          background 0.5s ease-in-out,
+          transform 0.05s ease-in-out;
         // Removed due to lag on mobile :(
 
         &:hover {
@@ -844,8 +852,9 @@ async function updateSearchProjects() {
               }
 
               input {
-                box-shadow: inset 0 0 0 transparent,
-                0 0 0 0.25rem var(--color-brand-shadow);
+                box-shadow:
+                  inset 0 0 0 transparent,
+                  0 0 0 0.25rem var(--color-brand-shadow);
                 color: var(--color-button-text-active);
               }
             }
@@ -854,7 +863,7 @@ async function updateSearchProjects() {
               display: flex;
               gap: 0.75rem;
               align-items: center;
-              min-width: 13rem;
+              min-width: 12.25rem;
 
               .selector {
                 max-width: 8rem;
@@ -1011,8 +1020,9 @@ async function updateSearchProjects() {
         width: 4rem;
         height: 4rem;
         background: #020305;
-        box-shadow: 2px 2px 12px rgba(0, 0, 0, 0.16),
-        inset 2px 2px 32px #393d5e;
+        box-shadow:
+          2px 2px 12px rgba(0, 0, 0, 0.16),
+          inset 2px 2px 32px #393d5e;
         border-radius: 1rem;
 
         svg {
@@ -1093,10 +1103,12 @@ async function updateSearchProjects() {
     border-radius: 1rem;
     background: var(--landing-border-gradient);
 
-    -webkit-mask: linear-gradient(#fff 0 0) content-box,
-    linear-gradient(#fff 0 0);
-    mask: linear-gradient(#fff 0 0) content-box,
-    linear-gradient(#fff 0 0);
+    -webkit-mask:
+      linear-gradient(#fff 0 0) content-box,
+      linear-gradient(#fff 0 0);
+    mask:
+      linear-gradient(#fff 0 0) content-box,
+      linear-gradient(#fff 0 0);
     -webkit-mask-composite: xor;
     mask-composite: exclude;
   }
@@ -1174,9 +1186,8 @@ async function updateSearchProjects() {
   justify-content: center;
 
   > span {
-    position: relative;
+    position: absolute;
     top: 0;
-    text-align: center;
     animation: slide 12s infinite;
 
     @media (prefers-reduced-motion) {

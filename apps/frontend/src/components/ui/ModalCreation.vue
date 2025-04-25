@@ -1,10 +1,10 @@
 <template>
-  <NewModal ref="modal" header="创建资源">
+  <NewModal ref="modal" header="Creating a project">
     <div class="flex flex-col gap-3">
       <div class="flex flex-col gap-2">
         <label for="name">
           <span class="text-lg font-semibold text-contrast">
-            名称
+            Name
             <span class="text-brand-red">*</span>
           </span>
         </label>
@@ -13,7 +13,7 @@
           v-model="name"
           type="text"
           maxlength="64"
-          placeholder="请输入资源名称..."
+          placeholder="Enter project name..."
           autocomplete="off"
           @input="updatedName()"
         />
@@ -40,26 +40,26 @@
       <div class="flex flex-col gap-2">
         <label for="visibility" class="flex flex-col gap-1">
           <span class="text-lg font-semibold text-contrast">
-            可见性
+            Visibility
             <span class="text-brand-red">*</span>
           </span>
-          <span> 资源过审后的可见性。 </span>
+          <span> The visibility of your project after it has been approved. </span>
         </label>
         <DropdownSelect
           id="visibility"
           v-model="visibility"
           :options="visibilities"
           :display-name="(x) => x.display"
-          name="可见性"
+          name="Visibility"
         />
       </div>
       <div class="flex flex-col gap-2">
         <label for="additional-information" class="flex flex-col gap-1">
           <span class="text-lg font-semibold text-contrast">
-            简介
+            Summary
             <span class="text-brand-red">*</span>
           </span>
-          <span> 介绍一下此资源。 </span>
+          <span> A sentence or two that describes your project. </span>
         </label>
         <div class="textarea-wrapper">
           <textarea id="additional-information" v-model="description" maxlength="256" />
@@ -69,13 +69,13 @@
         <ButtonStyled color="brand">
           <button @click="createProject">
             <PlusIcon aria-hidden="true" />
-            创建资源
+            Create project
           </button>
         </ButtonStyled>
         <ButtonStyled>
           <button @click="cancel">
             <XIcon aria-hidden="true" />
-            取消
+            Cancel
           </button>
         </ButtonStyled>
       </div>
@@ -182,8 +182,8 @@ async function createProject() {
   } catch (err) {
     app.$notify({
       group: "main",
-      title: "发生错误",
-      text: err.data.description,
+      title: "An error occurred",
+      text: err.data ? err.data.description : err,
       type: "error",
     });
   }

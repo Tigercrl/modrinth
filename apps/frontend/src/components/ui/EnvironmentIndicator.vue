@@ -13,11 +13,11 @@
   >
     <template v-if="clientSide === 'optional' && serverSide === 'optional'">
       <GlobeIcon aria-hidden="true" />
-      双端任一安装
+      Client or server
     </template>
     <template v-else-if="clientSide === 'required' && serverSide === 'required'">
       <GlobeIcon aria-hidden="true" />
-      双端均需安装
+      Client and server
     </template>
     <template
       v-else-if="
@@ -26,7 +26,7 @@
       "
     >
       <ClientIcon aria-hidden="true" />
-      仅客户端
+      Client
     </template>
     <template
       v-else-if="
@@ -35,24 +35,21 @@
       "
     >
       <ServerIcon aria-hidden="true" />
-      仅服务器
+      Server
     </template>
     <template v-else-if="serverSide === 'unsupported' && clientSide === 'unsupported'">
       <GlobeIcon aria-hidden="true" />
-      双端均不支持
+      Unsupported
     </template>
     <template v-else-if="alwaysShow">
       <InfoIcon aria-hidden="true" />
-      {{ formatProjectType(type) }}
+      A {{ type }}
     </template>
   </span>
 </template>
+
 <script setup>
-import InfoIcon from "~/assets/images/utils/info.svg?component";
-import ClientIcon from "~/assets/images/utils/client.svg?component";
-import GlobeIcon from "~/assets/images/utils/globe.svg?component";
-import ServerIcon from "~/assets/images/utils/server.svg?component";
-import {formatProjectType} from "@modrinth/utils";
+import { InfoIcon, ClientIcon, GlobeIcon, ServerIcon } from "@modrinth/assets";
 
 defineProps({
   type: {
@@ -100,6 +97,7 @@ const tags = useTags();
   display: flex;
   color: var(--color-text) !important;
   font-weight: bold;
+
   svg {
     margin-right: 0.2rem;
   }

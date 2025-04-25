@@ -126,7 +126,7 @@
 
 <script setup>
 import { DropdownSelect } from "@modrinth/ui";
-import SaveIcon from "~/assets/images/utils/save.svg?component";
+import { SaveIcon } from "@modrinth/assets";
 
 const tags = useTags();
 
@@ -250,6 +250,7 @@ function updateDonationLinks() {
   }
   donationLinks.value = links;
 }
+
 function checkDifference(newLink, existingLink) {
   if (newLink === "" && existingLink !== null) {
     return true;

@@ -106,13 +106,16 @@
           </p>
           <IssuesIcon
             v-if="customServerConfig.ramInGb < 4"
-            v-tooltip="'这可能不足以运行 Minecraft 服务器。'"
+            v-tooltip="'此配置可能不足以运行 Minecraft 服务器。'"
             class="h-6 w-6 text-orange"
           />
         </div>
         <p v-if="existingPlan" class="mt-1 mb-2 text-secondary">
-          当前方案含有 <strong>{{ existingPlan.metadata.ram / 1024 }} GB 内存</strong> 和
-          <strong>{{ existingPlan.metadata.cpu }} vCPU</strong>.
+          您当前的计划包含 <strong>{{ existingPlan.metadata.ram / 1024 }} GB 内存</strong>和
+          <strong
+            >{{ existingPlan.metadata.cpu / 2 }} 个共享 CPU（可突发至
+            {{ existingPlan.metadata.cpu }} 个 CPU）</strong
+          >。
         </p>
         <div class="flex flex-col gap-4">
           <div class="flex w-full gap-2 items-center">
@@ -131,12 +134,28 @@
             class="flex sm:flex-row flex-col gap-4 w-full"
           >
             <div class="flex flex-col w-full gap-2">
-              <div class="font-semibold">虚拟 CPU</div>
-              <input v-model="mutatedProduct.metadata.cpu" disabled class="input"/>
+              <div class="font-semibold">共享 CPU</div>
+              <input :value="sharedCpus" disabled class="input w-full" />
+            </div>
+            <div class="flex flex-col w-full gap-2">
+              <div class="font-semibold flex items-center gap-1">
+                最大 CPU 突发
+                <UnknownIcon
+                  v-tooltip="
+                    'CPU 突发功能允许您的服务器临时使用更多线程来帮助缓解 TPS 的峰值。更多详情请参阅 Modrinth 服务器常见问题解答。'
+                  "
+                  class="h-4 w-4text-secondary opacity-60"
+                />
+              </div>
+              <input :value="mutatedProduct.metadata.cpu" disabled class="input w-full" />
             </div>
             <div class="flex flex-col w-full gap-2">
               <div class="font-semibold">存储</div>
-              <input v-model="customServerConfig.storageGbFormatted" disabled class="input"/>
+              <input
+                v-model="customServerConfig.storageGbFormatted"
+                disabled
+                class="input w-full"
+              />
             </div>
           </div>
           <Admonition
@@ -151,10 +170,10 @@
             我们目前无法找到您选择的内存大小的服务器。请稍后再试，或尝试不同大小的内存。
           </Admonition>
 
-          <div class="flex items-center gap-2">
-            <InfoIcon class="hidden sm:block"/>
+          <div class="flex gap-2">
+            <InfoIcon class="hidden sm:block shrink-0 mt-1" />
             <span class="text-sm text-secondary">
-              存储和虚拟 CPU 目前不可配置。
+              存储空间和共享 CPU 数量目前无法单独配置，而是根据您选择的内存容量来确定。
             </span>
           </div>
         </div>
@@ -181,8 +200,8 @@
             class="flex cursor-pointer items-center gap-2"
             @click="selectedPlan = interval"
           >
-            <RadioButtonChecked v-if="selectedPlan === interval" class="h-8 w-8 text-brand"/>
-            <RadioButtonIcon v-else class="h-8 w-8 text-secondary"/>
+            <RadioButtonCheckedIcon v-if="selectedPlan === interval" class="h-8 w-8 text-brand" />
+            <RadioButtonIcon v-else class="h-8 w-8 text-secondary" />
             <span
               class="text-lg capitalize"
               :class="{ 'text-secondary': selectedPlan !== interval }"
@@ -487,12 +506,12 @@
           :disabled="paymentLoading || !eulaAccepted"
           @click="submitPayment"
         >
-          <CheckCircleIcon/>
+          <CheckCircleIcon />
           订阅
         </button>
         <!-- Default Subscribe Button, so M+ still works -->
         <button v-else class="btn btn-primary" :disabled="paymentLoading" @click="submitPayment">
-          <CheckCircleIcon/>
+          <CheckCircleIcon />
           订阅
         </button>
       </template>
@@ -504,6 +523,7 @@
 import {computed, nextTick, reactive, ref, watch} from 'vue'
 import NewModal from '../modal/NewModal.vue'
 import {
+  UnknownIcon,
   SpinnerIcon,
   CardIcon,
   CheckCircleIcon,
@@ -513,7 +533,7 @@ import {
   IssuesIcon,
   PayPalIcon,
   PlusIcon,
-  RadioButtonChecked,
+  RadioButtonCheckedIcon,
   RadioButtonIcon,
   RightArrowIcon,
   XIcon,
@@ -716,7 +736,7 @@ const customNotAllowedToContinue = computed(
     (!customMatchingProduct.value || customLoading.value || customOutOfStock.value),
 )
 const upgradeNotAllowedToContinue = computed(
-  () => props.existingSubscription && (!hasUpgradeCapacityForConfig.value || customLoading.value),
+  () => props.existingSubscription && (customOutOfStock.value || customLoading.value),
 )
 
 const customServerConfig = reactive({
@@ -781,7 +801,11 @@ function updateRamValues() {
   customMinRam.value = Math.min(...ramValues)
   customMaxRam.value = Math.max(...ramValues)
 
-  customServerConfig.ramInGb = customMinRam.value
+  if (props.product.some((product) => product.metadata.ram / 1024 === 4)) {
+    customServerConfig.ramInGb = 4
+  } else {
+    customServerConfig.ramInGb = customMinRam.value
+  }
 }
 
 if (props.customServer) {
@@ -846,6 +870,10 @@ const metadata = computed(() => {
     }
   }
   return null
+})
+
+const sharedCpus = computed(() => {
+  return (mutatedProduct.value?.metadata?.cpu ?? 0) / 2
 })
 
 function nextStep() {
@@ -1026,11 +1054,6 @@ async function submitPayment() {
   }
   paymentLoading.value = false
 }
-
-const hasUpgradeCapacityForConfig = computed(() => {
-  // TODO: Check for upgrade capacity here when Pyro provides route
-  return props.existingPlan
-})
 
 defineExpose({
   show: () => {

@@ -6,7 +6,7 @@
       tabindex="-1"
       :to="`/${$getProjectTypeForUrl(type, categories)}/${id}`"
     >
-      <Avatar :src="iconUrl" :alt="name" size="md" no-shadow loading="lazy"/>
+      <Avatar :src="iconUrl" :alt="name" size="md" no-shadow loading="lazy" />
     </nuxt-link>
     <nuxt-link
       class="gallery"
@@ -15,7 +15,7 @@
       :to="`/${$getProjectTypeForUrl(type, categories)}/${id}`"
       :style="color ? `background-color: ${toColor};` : ''"
     >
-      <img v-if="featuredImage" :src="featuredImage" alt="gallery image" loading="lazy"/>
+      <img v-if="featuredImage" :src="featuredImage" alt="gallery image" loading="lazy" />
     </nuxt-link>
     <div class="title">
       <nuxt-link :to="`/${$getProjectTypeForUrl(type, categories)}/${id}`">
@@ -24,13 +24,12 @@
         </h2>
       </nuxt-link>
       <p v-if="author" class="author">
-        （创作者：<!--
-      --><nuxt-link class="title-link" :to="'/user/' + author">
+        by
+        <nuxt-link class="title-link" :to="'/user/' + author">
           {{ author }}
-        </nuxt-link><!--
-      -->）
+        </nuxt-link>
       </p>
-      <Badge v-if="status && status !== 'approved'" :type="status" class="status"/>
+      <Badge v-if="status && status !== 'approved'" :type="status" class="status" />
     </div>
     <p class="description">
       {{ description }}
@@ -54,51 +53,47 @@
     </Categories>
     <div class="stats">
       <div v-if="downloads" class="stat">
-        <DownloadIcon aria-hidden="true"/>
+        <DownloadIcon aria-hidden="true" />
         <p>
           <strong>{{ $formatNumber(downloads) }}</strong
-          ><span class="stat-label"> 下载</span>
+          ><span class="stat-label"> download<span v-if="downloads !== '1'">s</span></span>
         </p>
       </div>
       <div v-if="follows" class="stat">
-        <HeartIcon aria-hidden="true"/>
+        <HeartIcon aria-hidden="true" />
         <p>
           <strong>{{ $formatNumber(follows) }}</strong
-          ><span class="stat-label"> 关注</span>
+          ><span class="stat-label"> follower<span v-if="follows !== '1'">s</span></span>
         </p>
       </div>
       <div class="buttons">
-        <slot/>
+        <slot />
       </div>
       <div
         v-if="showUpdatedDate"
-        v-tooltip="$dayjs(updatedAt).format('YYYY/MM/DD hh:mm:ss')"
+        v-tooltip="$dayjs(updatedAt).format('MMMM D, YYYY [at] h:mm A')"
         class="stat date"
       >
-        <EditIcon aria-hidden="true"/>
-        <span class="date-label">更新时间：</span>{{ fromNow(updatedAt) }}
+        <UpdatedIcon aria-hidden="true" />
+        <span class="date-label">Updated </span>{{ fromNow(updatedAt) }}
       </div>
       <div
         v-else-if="showCreatedDate"
-        v-tooltip="$dayjs(createdAt).format('YYYY/MM/DD hh:mm:ss')"
+        v-tooltip="$dayjs(createdAt).format('MMMM D, YYYY [at] h:mm A')"
         class="stat date"
       >
-        <CalendarIcon aria-hidden="true"/>
-        <span class="date-label">发布时间：</span>{{ fromNow(createdAt) }}
+        <CalendarIcon aria-hidden="true" />
+        <span class="date-label">Published </span>{{ fromNow(createdAt) }}
       </div>
     </div>
   </article>
 </template>
 
 <script>
+import { CalendarIcon, UpdatedIcon, DownloadIcon, HeartIcon } from "@modrinth/assets";
 import Categories from "~/components/ui/search/Categories.vue";
 import Badge from "~/components/ui/Badge.vue";
 import EnvironmentIndicator from "~/components/ui/EnvironmentIndicator.vue";
-
-import CalendarIcon from "~/assets/images/utils/calendar.svg?component";
-import EditIcon from "~/assets/images/utils/updated.svg?component";
-import DownloadIcon from "~/assets/images/utils/download.svg?component";
-import HeartIcon from "~/assets/images/utils/heart.svg?component";
 import Avatar from "~/components/ui/Avatar.vue";
 
 export default {
@@ -108,7 +103,7 @@ export default {
     Categories,
     Badge,
     CalendarIcon,
-    EditIcon,
+    UpdatedIcon,
     DownloadIcon,
     HeartIcon,
   },
@@ -123,7 +118,7 @@ export default {
     },
     name: {
       type: String,
-      default: "资源名称",
+      default: "Project Name",
     },
     author: {
       type: String,
@@ -131,7 +126,7 @@ export default {
     },
     description: {
       type: String,
-      default: "无简介",
+      default: "A _type description",
     },
     iconUrl: {
       type: String,
@@ -219,7 +214,7 @@ export default {
   setup() {
     const tags = useTags();
 
-    return {tags};
+    return { tags };
   },
   computed: {
     projectTypeDisplay() {
@@ -312,8 +307,9 @@ export default {
     img,
     svg {
       border-radius: var(--size-rounded-lg);
-      box-shadow: -2px -2px 0 2px var(--color-raised-bg),
-      2px -2px 0 2px var(--color-raised-bg);
+      box-shadow:
+        -2px -2px 0 2px var(--color-raised-bg),
+        2px -2px 0 2px var(--color-raised-bg);
     }
   }
 

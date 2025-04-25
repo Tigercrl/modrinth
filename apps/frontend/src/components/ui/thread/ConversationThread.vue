@@ -2,23 +2,25 @@
   <div>
     <Modal
       ref="modalSubmit"
-      :header="isRejected(project) ? '重新提交审核' : '提交审核'"
+      :header="isRejected(project) ? 'Resubmit for review' : 'Submit for review'"
     >
       <div class="modal-submit universal-body">
         <span>
-          您将重新提交资源 <span class="project-title">{{ project.title }}</span> 给审核员进行审核。
+          You're submitting <span class="project-title">{{ project.title }}</span> to be reviewed
+          again by the moderators.
         </span>
         <span>
-          请确保您已经处理了来自审核团队的改进需求。
+          Make sure you have addressed the comments from the moderation team.
           <span class="known-errors">
-            重复提交而不解决审核团队的改进需求可能导致帐户封禁。
+            Repeated submissions without addressing the moderators' comments may result in an
+            account suspension.
           </span>
         </span>
         <Checkbox
           v-model="submissionConfirmation"
           description="Confirm I have addressed the messages from the moderators"
         >
-          我确认我妥当地处理了来自审核团队的改进需求
+          I confirm that I have properly addressed the moderators' comments.
         </Checkbox>
         <div class="input-group push-right">
           <button
@@ -26,14 +28,15 @@
             :disabled="!submissionConfirmation"
             @click="resubmit()"
           >
-            <ModerationIcon aria-hidden="true"/>
-            重新提交审核
+            <ScaleIcon aria-hidden="true" />
+            Resubmit for review
           </button>
         </div>
       </div>
     </Modal>
     <div v-if="flags.developerMode" class="thread-id">
-      对话ID：<CopyCode :text="thread.id"/>
+      Thread ID:
+      <CopyCode :text="thread.id" />
     </div>
     <div v-if="sortedMessages.length > 0" class="messages universal-card recessed">
       <ThreadMessage
@@ -49,17 +52,17 @@
       />
     </div>
     <template v-if="report && report.closed">
-      <p>此对话已关闭，您不能继续发送任何消息。</p>
+      <p>This thread is closed and new messages cannot be sent to it.</p>
       <button v-if="isStaff(auth.user)" class="iconified-button" @click="reopenReport()">
-        <CloseIcon aria-hidden="true"/>
-        重新开启对话
+        <CheckCircleIcon aria-hidden="true" />
+        Reopen thread
       </button>
     </template>
     <template v-else-if="!report || !report.closed">
       <div class="markdown-editor-spacing">
         <MarkdownEditor
           v-model="replyBody"
-          :placeholder="sortedMessages.length > 0 ? '回复消息...' : '发送消息...'"
+          :placeholder="sortedMessages.length > 0 ? 'Reply to thread...' : 'Send a message...'"
           :on-image-upload="onUploadImage"
         />
       </div>
@@ -70,12 +73,12 @@
           :disabled="!replyBody"
           @click="sendReply()"
         >
-          <ReplyIcon aria-hidden="true"/>
-          回复
+          <ReplyIcon aria-hidden="true" />
+          Reply
         </button>
         <button v-else class="btn btn-primary" :disabled="!replyBody" @click="sendReply()">
-          <SendIcon aria-hidden="true"/>
-          发送
+          <SendIcon aria-hidden="true" />
+          Send
         </button>
         <button
           v-if="isStaff(auth.user)"
@@ -83,8 +86,8 @@
           :disabled="!replyBody"
           @click="sendReply(null, true)"
         >
-          <ModerationIcon aria-hidden="true"/>
-          添加备注
+          <ScaleIcon aria-hidden="true" />
+          Add private note
         </button>
         <template v-if="currentMember && !isStaff(auth.user)">
           <template v-if="isRejected(project)">
@@ -93,16 +96,16 @@
               class="iconified-button moderation-button"
               @click="openResubmitModal(true)"
             >
-              <ModerationIcon aria-hidden="true"/>
-              重新提交审核并回复消息
+              <ScaleIcon aria-hidden="true" />
+              Resubmit for review with reply
             </button>
             <button
               v-else
               class="iconified-button moderation-button"
               @click="openResubmitModal(false)"
             >
-              <ModerationIcon aria-hidden="true"/>
-              重新提交审核
+              <ScaleIcon aria-hidden="true" />
+              Resubmit for review
             </button>
           </template>
         </template>
@@ -115,12 +118,12 @@
                 class="iconified-button danger-button"
                 @click="closeReport(true)"
               >
-                <CloseIcon aria-hidden="true"/>
-                回复并关闭对话
+                <CheckCircleIcon aria-hidden="true" />
+                Close with reply
               </button>
               <button v-else class="iconified-button danger-button" @click="closeReport()">
-                <CloseIcon aria-hidden="true"/>
-                关闭对话
+                <CheckCircleIcon aria-hidden="true" />
+                Close thread
               </button>
             </template>
           </template>
@@ -132,8 +135,8 @@
                 :disabled="isApproved(project)"
                 @click="sendReply(requestedStatus)"
               >
-                <CheckIcon aria-hidden="true"/>
-                通过并回复消息
+                <CheckIcon aria-hidden="true" />
+                Approve with reply
               </button>
               <button
                 v-else
@@ -141,8 +144,8 @@
                 :disabled="isApproved(project)"
                 @click="setStatus(requestedStatus)"
               >
-                <CheckIcon aria-hidden="true"/>
-                通过
+                <CheckIcon aria-hidden="true" />
+                Approve
               </button>
               <div class="joined-buttons">
                 <button
@@ -151,8 +154,8 @@
                   :disabled="project.status === 'rejected'"
                   @click="sendReply('rejected')"
                 >
-                  <CrossIcon aria-hidden="true"/>
-                  驳回并回复
+                  <XIcon aria-hidden="true" />
+                  Reject with reply
                 </button>
                 <button
                   v-else
@@ -160,8 +163,8 @@
                   :disabled="project.status === 'rejected'"
                   @click="setStatus('rejected')"
                 >
-                  <CrossIcon aria-hidden="true"/>
-                  驳回
+                  <XIcon aria-hidden="true" />
+                  Reject
                 </button>
                 <OverflowMenu
                   class="btn btn-danger btn-dropdown-animation icon-only"
@@ -191,14 +194,14 @@
                         ]
                   "
                 >
-                  <DropdownIcon style="rotate: 180deg" aria-hidden="true"/>
+                  <DropdownIcon style="rotate: 180deg" aria-hidden="true" />
                   <template #withhold-reply>
-                    <EyeOffIcon aria-hidden="true"/>
-                    保留并回复
+                    <EyeOffIcon aria-hidden="true" />
+                    Withhold with reply
                   </template>
                   <template #withhold>
-                    <EyeOffIcon aria-hidden="true"/>
-                    保留
+                    <EyeOffIcon aria-hidden="true" />
+                    Withhold
                   </template>
                 </OverflowMenu>
               </div>
@@ -211,20 +214,22 @@
 </template>
 
 <script setup>
-import {MarkdownEditor, OverflowMenu} from "@modrinth/ui";
-import {DropdownIcon} from "@modrinth/assets";
-import {useImageUpload} from "~/composables/image-upload.ts";
+import { OverflowMenu, MarkdownEditor } from "@modrinth/ui";
+import {
+  DropdownIcon,
+  ReplyIcon,
+  SendIcon,
+  CheckCircleIcon,
+  XIcon,
+  EyeOffIcon,
+  CheckIcon,
+  ScaleIcon,
+} from "@modrinth/assets";
+import { useImageUpload } from "~/composables/image-upload.ts";
 import CopyCode from "~/components/ui/CopyCode.vue";
-import ReplyIcon from "~/assets/images/utils/reply.svg?component";
-import SendIcon from "~/assets/images/utils/send.svg?component";
-import CloseIcon from "~/assets/images/utils/check-circle.svg?component";
-import CrossIcon from "~/assets/images/utils/x.svg?component";
-import EyeOffIcon from "~/assets/images/utils/eye-off.svg?component";
-import CheckIcon from "~/assets/images/utils/check.svg?component";
-import ModerationIcon from "~/assets/images/sidebar/admin.svg?component";
 import ThreadMessage from "~/components/ui/thread/ThreadMessage.vue";
-import {isStaff} from "~/helpers/users.js";
-import {isApproved, isRejected} from "~/helpers/projects.js";
+import { isStaff } from "~/helpers/users.js";
+import { isApproved, isRejected } from "~/helpers/projects.js";
 import Modal from "~/components/ui/Modal.vue";
 import Checkbox from "~/components/ui/Checkbox.vue";
 
@@ -246,8 +251,7 @@ const props = defineProps({
   setStatus: {
     type: Function,
     required: false,
-    default: () => {
-    },
+    default: () => {},
   },
   currentMember: {
     type: Object,
@@ -304,7 +308,7 @@ async function updateThreadLocal() {
 const imageIDs = ref([]);
 
 async function onUploadImage(file) {
-  const response = await useImageUpload(file, {context: "thread_message"});
+  const response = await useImageUpload(file, { context: "thread_message" });
 
   imageIDs.value.push(response.id);
   // Keep the last 10 entries of image IDs

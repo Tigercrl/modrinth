@@ -1,75 +1,73 @@
 <script setup lang="ts">
 import Fuse from "fuse.js/dist/fuse.basic";
-import {commonSettingsMessages} from "@modrinth/ui";
-import RadioButtonIcon from "~/assets/images/utils/radio-button.svg?component";
-import RadioButtonCheckedIcon from "~/assets/images/utils/radio-button-checked.svg?component";
-import WarningIcon from "~/assets/images/utils/issues.svg?component";
-import {isModifierKeyDown} from "~/helpers/events.ts";
+import { commonSettingsMessages } from "@modrinth/ui";
+import { RadioButtonIcon, RadioButtonCheckedIcon, IssuesIcon } from "@modrinth/assets";
+import { isModifierKeyDown } from "~/helpers/events.ts";
 
 const vintl = useVIntl();
-const {formatMessage} = vintl;
+const { formatMessage } = vintl;
 
 const messages = defineMessages({
   languagesDescription: {
     id: "settings.language.description",
     defaultMessage:
-      "请选择网站的语言。翻译由 <crowdin-link>Crowdin</crowdin-link> 上的贡献者提供。（要是 Crowdin 有用还要汉化站干啥）",
+      "Choose your preferred language for the site. Translations are contributed by volunteers <crowdin-link>on Crowdin</crowdin-link>.",
   },
   automaticLocale: {
     id: "settings.language.languages.automatic",
-    defaultMessage: "跟随系统",
+    defaultMessage: "Sync with the system language",
   },
   noResults: {
     id: "settings.language.languages.search.no-results",
-    defaultMessage: "未找到您搜索的语言",
+    defaultMessage: "No languages match your search.",
   },
   searchFieldDescription: {
     id: "settings.language.languages.search-field.description",
-    defaultMessage: "提交语言",
+    defaultMessage: "Submit to focus the first search result",
   },
   searchFieldPlaceholder: {
     id: "settings.language.languages.search-field.placeholder",
-    defaultMessage: "搜索语言...",
+    defaultMessage: "Search for a language...",
   },
   searchResultsAnnouncement: {
     id: "settings.language.languages.search-results-announcement",
     defaultMessage:
-      "{matches, plural, =0 {没有} one {# 个} other {# 个}} 语言匹配您的搜索。",
+      "{matches, plural, =0 {No languages match} one {# language matches} other {# languages match}} your search.",
   },
   loadFailed: {
     id: "settings.language.languages.load-failed",
-    defaultMessage: "无法应用语言。请重试。",
+    defaultMessage: "Cannot load this language. Try again in a bit.",
   },
   languageLabelApplying: {
     id: "settings.language.languages.language-label-applying",
-    defaultMessage: "应用语言 {label} 中...",
+    defaultMessage: "{label}. Applying...",
   },
   languageLabelError: {
     id: "settings.language.languages.language-label-error",
-    defaultMessage: "应用语言 {label} 时发生错误",
+    defaultMessage: "{label}. Error",
   },
 });
 
 const categoryNames = defineMessages({
   auto: {
     id: "settings.language.categories.auto",
-    defaultMessage: "自动",
+    defaultMessage: "Automatic",
   },
   default: {
     id: "settings.language.categories.default",
-    defaultMessage: "标准语言",
+    defaultMessage: "Standard languages",
   },
   fun: {
     id: "settings.language.categories.fun",
-    defaultMessage: "梗语言",
+    defaultMessage: "Fun languages",
   },
   experimental: {
     id: "settings.language.categories.experimental",
-    defaultMessage: "实验性语言",
+    defaultMessage: "Experimental languages",
   },
   searchResult: {
     id: "settings.language.categories.search-result",
-    defaultMessage: "搜索结果",
+    defaultMessage: "Search results",
   },
 });
 
@@ -120,7 +118,7 @@ const $locales = computed(() => {
     category: "auto",
     searchTerms: [
       "automatic",
-      "跟随系统",
+      "Sync with the system language",
       formatMessage(messages.automaticLocale),
     ],
   });
@@ -199,7 +197,7 @@ const $categories = computed(() => {
 
 const $searchResults = computed(() => {
   return new Map<Category, Locale[]>([
-    ["searchResult", isQueryEmpty() ? [] : fuse.search($query.value).map(({item}) => item)],
+    ["searchResult", isQueryEmpty() ? [] : fuse.search($query.value).map(({ item }) => item)],
   ]);
 });
 
@@ -271,11 +269,11 @@ function getItemLabel(locale: Locale) {
     : `${locale.translatedName}. ${locale.displayName}`;
 
   if ($changingTo.value === locale.tag) {
-    return formatMessage(messages.languageLabelApplying, {label});
+    return formatMessage(messages.languageLabelApplying, { label });
   }
 
   if ($failedLocale.value === locale.tag) {
-    return formatMessage(messages.languageLabelError, {label});
+    return formatMessage(messages.languageLabelError, { label });
   }
 
   return label;
@@ -288,11 +286,13 @@ function getItemLabel(locale: Locale) {
       <h2 class="text-2xl">{{ formatMessage(commonSettingsMessages.language) }}</h2>
 
       <div class="card-description">
-        请选择网站的语言。翻译由
-        <a href="https://crowdin.com/project/modrinth">
-          Crowdin
-        </a>
-        上的贡献者提供。（要是 Crowdin 有用还要汉化站干啥）
+        <IntlFormatted :message-id="messages.languagesDescription">
+          <template #crowdin-link="{ children }">
+            <a href="https://crowdin.com/project/modrinth">
+              <component :is="() => children" />
+            </a>
+          </template>
+        </IntlFormatted>
       </div>
 
       <div class="search-container">
@@ -317,8 +317,8 @@ function getItemLabel(locale: Locale) {
             isQueryEmpty()
               ? ""
               : formatMessage(messages.searchResultsAnnouncement, {
-                matches: $searchResults.get("searchResult")?.length ?? 0,
-              })
+                  matches: $searchResults.get("searchResult")?.length ?? 0,
+                })
           }}
         </div>
       </div>
@@ -355,8 +355,8 @@ function getItemLabel(locale: Locale) {
               @click="(e) => onItemClick(e, locale)"
               @keydown="(e) => onItemKeydown(e, locale)"
             >
-              <RadioButtonCheckedIcon v-if="$activeLocale === locale.tag" class="radio"/>
-              <RadioButtonIcon v-else class="radio"/>
+              <RadioButtonCheckedIcon v-if="$activeLocale === locale.tag" class="radio" />
+              <RadioButtonIcon v-else class="radio" />
 
               <div class="language-names">
                 <div class="language-name">
@@ -374,7 +374,7 @@ function getItemLabel(locale: Locale) {
               :id="`language__${locale.tag}__fail`"
               class="language-load-error"
             >
-              <WarningIcon/>
+              <IssuesIcon />
               {{ formatMessage(messages.loadFailed) }}
             </div>
           </template>
@@ -429,13 +429,13 @@ function getItemLabel(locale: Locale) {
     height: 100%;
 
     background-image: linear-gradient(
-        102deg,
-        rgba(0, 0, 0, 0) 0%,
-        rgba(0, 0, 0, 0) 20%,
-        rgba(0, 0, 0, 0.1) 45%,
-        rgba(0, 0, 0, 0.1) 50%,
-        rgba(0, 0, 0, 0) 80%,
-        rgba(0, 0, 0, 0) 100%
+      102deg,
+      rgba(0, 0, 0, 0) 0%,
+      rgba(0, 0, 0, 0) 20%,
+      rgba(0, 0, 0, 0.1) 45%,
+      rgba(0, 0, 0, 0.1) 50%,
+      rgba(0, 0, 0, 0) 80%,
+      rgba(0, 0, 0, 0) 100%
     );
 
     background-repeat: no-repeat;
@@ -444,13 +444,13 @@ function getItemLabel(locale: Locale) {
     .dark-mode &,
     .oled-mode & {
       background-image: linear-gradient(
-          102deg,
-          rgba(255, 255, 255, 0) 0%,
-          rgba(255, 255, 255, 0) 20%,
-          rgba(255, 255, 255, 0.1) 45%,
-          rgba(255, 255, 255, 0.1) 50%,
-          rgba(255, 255, 255, 0) 80%,
-          rgba(255, 255, 255, 0) 100%
+        102deg,
+        rgba(255, 255, 255, 0) 0%,
+        rgba(255, 255, 255, 0) 20%,
+        rgba(255, 255, 255, 0.1) 45%,
+        rgba(255, 255, 255, 0.1) 50%,
+        rgba(255, 255, 255, 0) 80%,
+        rgba(255, 255, 255, 0) 100%
       );
     }
 

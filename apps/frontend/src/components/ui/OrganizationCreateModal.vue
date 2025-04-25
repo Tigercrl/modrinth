@@ -1,10 +1,10 @@
 <template>
-  <NewModal ref="modal" header="创建组织">
+  <NewModal ref="modal" header="Creating an organization">
     <div class="flex flex-col gap-3">
       <div class="flex flex-col gap-2">
         <label for="name">
           <span class="text-lg font-semibold text-contrast">
-            名称
+            Name
             <span class="text-brand-red">*</span>
           </span>
         </label>
@@ -40,29 +40,30 @@
       <div class="flex flex-col gap-2">
         <label for="additional-information" class="flex flex-col gap-1">
           <span class="text-lg font-semibold text-contrast">
-            简介
+            Summary
             <span class="text-brand-red">*</span>
           </span>
-          <span>介绍一下此组织。</span>
+          <span>A sentence or two that describes your organization.</span>
         </label>
         <div class="textarea-wrapper">
-          <textarea id="additional-information" v-model="description" maxlength="256"/>
+          <textarea id="additional-information" v-model="description" maxlength="256" />
         </div>
       </div>
       <p class="m-0 max-w-[30rem]">
-        您将成为该组织的所有者，但您可以随时邀请其他用户加入并转让所有权。
+        You will be the owner of this organization, but you can invite other members and transfer
+        ownership at any time.
       </p>
       <div class="flex gap-2">
         <ButtonStyled color="brand">
           <button @click="createOrganization">
-            <PlusIcon aria-hidden="true"/>
-            创建组织
+            <PlusIcon aria-hidden="true" />
+            Create organization
           </button>
         </ButtonStyled>
         <ButtonStyled>
           <button @click="modal.hide()">
-            <XIcon aria-hidden="true"/>
-            取消
+            <XIcon aria-hidden="true" />
+            Cancel
           </button>
         </ButtonStyled>
       </div>
@@ -70,8 +71,8 @@
   </NewModal>
 </template>
 <script setup>
-import {PlusIcon, XIcon} from "@modrinth/assets";
-import {ButtonStyled, NewModal} from "@modrinth/ui";
+import { XIcon, PlusIcon } from "@modrinth/assets";
+import { ButtonStyled, NewModal } from "@modrinth/ui";
 
 const router = useNativeRouter();
 
@@ -104,14 +105,13 @@ async function createOrganization() {
     console.error(err);
     addNotification({
       group: "main",
-      title: "发生错误",
-      text: err.data.description,
+      title: "An error occurred",
+      text: err.data ? err.data.description : err,
       type: "error",
     });
   }
   stopLoading();
 }
-
 function show(event) {
   name.value = "";
   description.value = "";

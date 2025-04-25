@@ -49,6 +49,14 @@ export const commonMessages = defineMessages({
     id: 'label.description',
     defaultMessage: '简介',
   },
+  downloadButton: {
+    id: 'button.download',
+    defaultMessage: 'Download',
+  },
+  downloadingButton: {
+    id: 'button.downloading',
+    defaultMessage: 'Downloading',
+  },
   editButton: {
     id: 'button.edit',
     defaultMessage: '修改',
@@ -144,6 +152,10 @@ export const commonMessages = defineMessages({
   uploadImageButton: {
     id: 'button.upload-image',
     defaultMessage: '上传图片',
+  },
+  removeImageButton: {
+    id: 'button.remove-image',
+    defaultMessage: 'Remove image',
   },
   visibilityLabel: {
     id: 'label.visibility',

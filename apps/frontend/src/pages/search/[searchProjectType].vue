@@ -4,7 +4,7 @@
     :class="{ 'alt-layout': !cosmetics.rightSearchLayout }"
   >
     <Head>
-      <Title>搜索{{ projectType.display }} - Modrinth</Title>
+      <Title>Search {{ projectType.display }}s - Modrinth</Title>
     </Head>
     <Teleport v-if="flags.searchBackground" to="#absolute-background-teleport">
       <div class="search-background"></div>
@@ -34,12 +34,13 @@
           </nuxt-link>
           <ButtonStyled>
             <nuxt-link :to="`/servers/manage/${server.serverId}/content`">
-              <LeftArrowIcon /> 返回服务器
+              <LeftArrowIcon />
+              Back to server
             </nuxt-link>
           </ButtonStyled>
         </div>
         <h1 class="m-0 text-xl font-extrabold leading-none text-contrast">
-          安装资源至服务器
+          Install content to server
         </h1>
       </template>
       <NavTabs
@@ -52,8 +53,14 @@
       :class="{
         'normal-page__sidebar': true,
       }"
-      aria-label="过滤器"
+      aria-label="Filters"
     >
+      <AdPlaceholder
+        v-if="
+          (!auth.user || !isPermission(auth.user.badges, 1 << 0) || flags.showAdsWithPlus) &&
+          !server
+        "
+      />
       <div v-if="filtersMenuOpen" class="fixed inset-0 z-40 bg-bg"></div>
       <div
         class="flex flex-col gap-3"
@@ -65,7 +72,7 @@
           v-if="filtersMenuOpen"
           class="sticky top-0 z-10 mx-1 flex items-center justify-between gap-3 border-0 border-b-[1px] border-solid border-divider bg-bg-raised px-6 py-4"
         >
-          <h3 class="m-0 text-lg text-contrast">过滤器</h3>
+          <h3 class="m-0 text-lg text-contrast">Filters</h3>
           <ButtonStyled circular>
             <button
               @click="
@@ -81,26 +88,27 @@
         </div>
         <div v-if="server && projectType.id === 'modpack'" class="rounded-2xl bg-bg-raised">
           <div class="flex flex-row items-center gap-2 px-6 py-4 text-contrast">
-            <h3 class="m-0 text-lg">选项</h3>
+            <h3 class="m-0 text-lg">Options</h3>
           </div>
           <div class="flex flex-row items-center justify-between gap-2 px-6">
-            <label for="erase-data-on-install"> 安装时清除所有数据 </label>
+            <label for="erase-data-on-install"> Erase all data on install </label>
             <input
               id="erase-data-on-install"
               v-model="eraseDataOnInstall"
-              label="安装时清除所有数据"
+              label="Erase all data on install"
               class="switch stylized-toggle flex-none"
               type="checkbox"
             />
           </div>
           <div class="px-6 py-4 text-sm">
-            如果启用该选项，现有的资源、世界和配置文件等将在安装所选整合包时被删除。
+            If enabled, existing mods, worlds, and configurations, will be deleted before installing
+            the selected modpack.
           </div>
         </div>
         <div v-if="server && projectType.id !== 'modpack'" class="rounded-2xl bg-bg-raised p-4">
           <Checkbox
             v-model="serverHideInstalled"
-            label="隐藏已安装资源"
+            label="Hide installed content"
             class="filter-checkbox"
             @update:model-value="updateSearchResults()"
           />
@@ -132,7 +140,7 @@
           <template #locked-mod_loader>
             {{ formatMessage(messages.modLoaderProvidedByServer) }}
           </template>
-          <template #sync-button> {{ formatMessage(messages.syncFilterButton) }} </template>
+          <template #sync-button> {{ formatMessage(messages.syncFilterButton) }}</template>
         </SearchSidebarFilter>
       </div>
     </aside>
@@ -146,7 +154,7 @@
             autocomplete="off"
             spellcheck="false"
             type="text"
-            :placeholder="`搜索${projectType.display}...`"
+            :placeholder="`Search ${projectType.display}s...`"
             @input="updateSearchResults()"
           />
           <Button v-if="query" class="r-btn" @click="() => (query = '')">
@@ -158,59 +166,44 @@
             v-slot="{ selected }"
             v-model="currentSortType"
             class="!w-auto flex-grow md:flex-grow-0"
-            name="排列方式"
+            name="Sort by"
             :options="sortTypes"
-            :display-name="(option) => {
-              switch (option?.display) {
-                case 'Relevance':
-                  return '相关性'
-                case 'Downloads':
-                  return '下载量'
-                case 'Followers':
-                  return '关注量'
-                case 'Date published':
-                  return '发布时间'
-                case 'Date updated':
-                  return '更新时间'
-                default:
-                  return option?.display
-              }
-            }"
+            :display-name="(option) => option?.display"
             @change="updateSearchResults()"
           >
-            <span class="font-semibold text-primary">排列方式：</span>
+            <span class="font-semibold text-primary">Sort by: </span>
             <span class="font-semibold text-secondary">{{ selected }}</span>
           </DropdownSelect>
           <DropdownSelect
             v-slot="{ selected }"
             v-model="maxResults"
-            name="显示数目"
+            name="Max results"
             :options="currentMaxResultsOptions"
             :default-value="maxResults"
             :model-value="maxResults"
             class="!w-auto flex-grow md:flex-grow-0"
             @change="updateSearchResults()"
           >
-            <span class="font-semibold text-primary">显示数目：</span>
+            <span class="font-semibold text-primary">View: </span>
             <span class="font-semibold text-secondary">{{ selected }}</span>
           </DropdownSelect>
           <div class="lg:hidden">
             <ButtonStyled>
               <button @click="filtersMenuOpen = true">
-                <FilterIcon/>
-                过滤结果...
+                <FilterIcon />
+                Filter results...
               </button>
             </ButtonStyled>
           </div>
           <ButtonStyled circular>
             <button
-              v-tooltip="formatMessage(commonMessages[`${cosmetics.searchDisplayMode[projectType.id]}InputView`]) + '视图'"
-              :aria-label="formatMessage(commonMessages[`${cosmetics.searchDisplayMode[projectType.id]}InputView`]) + '视图'"
+              v-tooltip="$capitalizeString(cosmetics.searchDisplayMode[projectType.id]) + ' view'"
+              :aria-label="$capitalizeString(cosmetics.searchDisplayMode[projectType.id]) + ' view'"
               @click="cycleSearchDisplayMode()"
             >
-              <GridIcon v-if="cosmetics.searchDisplayMode[projectType.id] === 'grid'"/>
-              <ImageIcon v-else-if="cosmetics.searchDisplayMode[projectType.id] === 'gallery'"/>
-              <ListIcon v-else/>
+              <GridIcon v-if="cosmetics.searchDisplayMode[projectType.id] === 'grid'" />
+              <ImageIcon v-else-if="cosmetics.searchDisplayMode[projectType.id] === 'gallery'" />
+              <ListIcon v-else />
             </button>
           </ButtonStyled>
           <Pagination
@@ -229,7 +222,7 @@
         />
         <LogoAnimated v-if="searchLoading && !noLoad" />
         <div v-else-if="results && results.hits && results.hits.length === 0" class="no-results">
-          <p>没有找到任何资源！</p>
+          <p>No results found for your query!</p>
         </div>
         <div v-else class="search-results-container">
           <div
@@ -237,7 +230,7 @@
             class="project-list"
             :class="'display-mode--' + cosmetics.searchDisplayMode[projectType.id]"
             role="list"
-            aria-label="搜索结果"
+            aria-label="Search results"
           >
             <template v-for="result in results?.hits" :key="result.project_id">
               <ProjectCard
@@ -276,19 +269,19 @@
                     disabled
                     class="btn btn-outline btn-primary"
                   >
-                    <CheckIcon/>
-                    已安装
+                    <CheckIcon />
+                    Installed
                   </button>
                   <button
                     v-else-if="result.installing"
                     disabled
                     class="btn btn-outline btn-primary"
                   >
-                    安装中...
+                    Installing...
                   </button>
                   <button v-else class="btn btn-outline btn-primary" @click="serverInstall(result)">
-                    <DownloadIcon/>
-                    安装
+                    <DownloadIcon />
+                    Install
                   </button>
                 </template>
               </ProjectCard>
@@ -328,16 +321,22 @@ import {
   NewProjectCard,
   SearchFilterControl,
 } from "@modrinth/ui";
-import { CheckIcon, DownloadIcon, GameIcon, LeftArrowIcon, XIcon } from "@modrinth/assets";
+import {
+  CheckIcon,
+  DownloadIcon,
+  GameIcon,
+  LeftArrowIcon,
+  XIcon,
+  SearchIcon,
+  FilterIcon,
+  GridIcon,
+  ListIcon,
+  ImageIcon,
+} from "@modrinth/assets";
 import { computed } from "vue";
 import ProjectCard from "~/components/ui/ProjectCard.vue";
 import LogoAnimated from "~/components/brand/LogoAnimated.vue";
-
-import SearchIcon from "~/assets/images/utils/search.svg?component";
-import FilterIcon from "~/assets/images/utils/filter.svg?component";
-import GridIcon from "~/assets/images/utils/grid.svg?component";
-import ListIcon from "~/assets/images/utils/list.svg?component";
-import ImageIcon from "~/assets/images/utils/image.svg?component";
+import AdPlaceholder from "~/components/ui/AdPlaceholder.vue";
 import NavTabs from "~/components/ui/NavTabs.vue";
 
 const { formatMessage } = useVIntl();
@@ -354,6 +353,7 @@ const flags = useFeatureFlags();
 const auth = await useAuth();
 
 const projectType = ref();
+
 function setProjectType() {
   const projType = tags.value.projectTypes.find(
     (x) => x.id === route.path.replaceAll(/^\/|s\/?$/g, ""), // Removes prefix `/` and suffixes `s` and `s/`
@@ -363,6 +363,7 @@ function setProjectType() {
     projectType.value = projType;
   }
 }
+
 setProjectType();
 router.afterEach(() => {
   setProjectType();
@@ -408,7 +409,7 @@ async function updateServerContext() {
 
 const serverFilters = computed(() => {
   const filters = [];
-  if (server.value) {
+  if (server.value && projectType.value.id !== "modpack") {
     const gameVersion = server.value.general?.mc_version;
     if (gameVersion) {
       filters.push({
@@ -424,6 +425,15 @@ const serverFilters = computed(() => {
     if (platform && modLoaders.includes(platform)) {
       filters.push({
         type: "mod_loader",
+        option: platform,
+      });
+    }
+
+    const pluginLoaders = ["paper", "purpur"];
+
+    if (platform && pluginLoaders.includes(platform)) {
+      filters.push({
+        type: "plugin_loader",
         option: platform,
       });
     }
@@ -479,19 +489,19 @@ const {
 const messages = defineMessages({
   gameVersionProvidedByServer: {
     id: "search.filter.locked.server-game-version.title",
-    defaultMessage: "游戏版本已跟随服务器",
+    defaultMessage: "Game version is provided by the server",
   },
   modLoaderProvidedByServer: {
     id: "search.filter.locked.server-loader.title",
-    defaultMessage: "加载器类型已跟随服务器",
+    defaultMessage: "Loader is provided by the server",
   },
   providedByServer: {
     id: "search.filter.locked.server",
-    defaultMessage: "已跟随服务器",
+    defaultMessage: "Provided by the server",
   },
   syncFilterButton: {
     id: "search.filter.locked.server.sync",
-    defaultMessage: "跟随服务器",
+    defaultMessage: "Sync with server",
   },
 });
 
@@ -622,21 +632,21 @@ function setClosestMaxResults() {
 
 const selectableProjectTypes = computed(() => {
   return [
-    {label: "模组", href: `/mods`},
-    {label: "资源包", href: `/resourcepacks`},
-    {label: "数据包", href: `/datapacks`},
-    {label: "光影", href: `/shaders`},
-    {label: "整合包", href: `/modpacks`},
-    {label: "插件", href: `/plugins`},
+    { label: "Mods", href: `/mods` },
+    { label: "Resource Packs", href: `/resourcepacks` },
+    { label: "Data Packs", href: `/datapacks` },
+    { label: "Shaders", href: `/shaders` },
+    { label: "Modpacks", href: `/modpacks` },
+    { label: "Plugins", href: `/plugins` },
   ];
 });
 
 const ogTitle = computed(
-  () => `搜索${projectType.value.display}${query.value ? " | " + query.value : ""}`,
+  () => `Search ${projectType.value.display}s${query.value ? " | " + query.value : ""}`,
 );
 const description = computed(
   () =>
-    `即刻在 Modrinth 上搜索浏览成千上万的 Minecraft ${projectType.value.display}，并获得准确的搜索结果。精准的过滤器可以帮助您快速找到符合条件的 Minecraft ${projectType.value.display}。`,
+    `Search and browse thousands of Minecraft ${projectType.value.display}s on Modrinth with instant, accurate search results. Our filters help you quickly find the best Minecraft ${projectType.value.display}s.`,
 );
 
 useSeoMeta({

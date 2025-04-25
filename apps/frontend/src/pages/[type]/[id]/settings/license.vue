@@ -147,6 +147,7 @@
 
 <script setup lang="ts">
 import { Checkbox, DropdownSelect } from "@modrinth/ui";
+import { SaveIcon } from "@modrinth/assets";
 import {
   TeamMemberPermission,
   builtinLicenses,
@@ -156,7 +157,6 @@ import {
   type TeamMember,
 } from "@modrinth/utils";
 import { computed, ref, type Ref } from "vue";
-import SaveIcon from "~/assets/images/utils/save.svg?component";
 
 const props = defineProps<{
   project: Project;

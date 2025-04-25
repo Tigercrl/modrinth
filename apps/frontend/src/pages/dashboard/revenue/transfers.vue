@@ -2,23 +2,25 @@
   <div>
     <section class="universal-card payout-history">
       <Breadcrumbs
-        current-title="提现历史"
-        :link-stack="[{ href: '/dashboard/revenue', label: '收益' }]"
+        current-title="Transfer history"
+        :link-stack="[{ href: '/dashboard/revenue', label: 'Revenue' }]"
       />
-      <h2>提现历史</h2>
-      <p>您从 Modrinth 提现的所有资金都将在此列出：</p>
+      <h2>Transfer history</h2>
+      <p>All of your withdrawals from your Modrinth balance will be listed here:</p>
       <div class="input-group">
         <DropdownSelect
           v-model="selectedYear"
           :options="years"
-          :display-name="(x) => (x === 'all' ? '所有时间' : x)"
-          name="年份过滤器"
+          :display-name="(x) => (x === 'all' ? 'All years' : x)"
+          name="Year filter"
         />
         <DropdownSelect
           v-model="selectedMethod"
           :options="methods"
-          :display-name="$formatWallet"
-          name="方式过滤器"
+          :display-name="
+            (x) => (x === 'all' ? 'Any method' : x === 'paypal' ? 'PayPal' : capitalizeString(x))
+          "
+          name="Method filter"
         />
       </div>
       <p>
@@ -26,20 +28,20 @@
           selectedYear !== "all"
             ? selectedMethod !== "all"
               ? formatMessage(messages.transfersTotalYearMethod, {
-                amount: $formatMoney(totalAmount),
-                year: selectedYear,
-                method: formatWallet(selectedMethod),
-              })
+                  amount: $formatMoney(totalAmount),
+                  year: selectedYear,
+                  method: selectedMethod,
+                })
               : formatMessage(messages.transfersTotalYear, {
-                amount: $formatMoney(totalAmount),
-                year: selectedYear,
-              })
+                  amount: $formatMoney(totalAmount),
+                  year: selectedYear,
+                })
             : selectedMethod !== "all"
               ? formatMessage(messages.transfersTotalMethod, {
-                amount: $formatMoney(totalAmount),
-                method: formatWallet(selectedMethod),
-              })
-              : formatMessage(messages.transfersTotal, {amount: $formatMoney(totalAmount)})
+                  amount: $formatMoney(totalAmount),
+                  method: selectedMethod,
+                })
+              : formatMessage(messages.transfersTotal, { amount: $formatMoney(totalAmount) })
         }}
       </p>
       <div
@@ -48,33 +50,33 @@
         class="universal-card recessed payout"
       >
         <div class="platform">
-          <PayPalIcon v-if="payout.method === 'paypal'"/>
-          <TremendousIcon v-else-if="payout.method === 'tremendous'"/>
-          <VenmoIcon v-else-if="payout.method === 'venmo'"/>
-          <UnknownIcon v-else/>
+          <PayPalIcon v-if="payout.method === 'paypal'" />
+          <TremendousIcon v-else-if="payout.method === 'tremendous'" />
+          <VenmoIcon v-else-if="payout.method === 'venmo'" />
+          <UnknownIcon v-else />
         </div>
         <div class="payout-info">
           <div>
             <strong>
-              {{ $dayjs(payout.created).format('YYYY/MM/DD hh:mm:ss') }}
+              {{ $dayjs(payout.created).format("MMMM D, YYYY [at] h:mm A") }}
             </strong>
           </div>
           <div>
             <span class="amount">{{ $formatMoney(payout.amount) }}</span>
-            <template v-if="payout.fee">⋅ 手续费 {{ $formatMoney(payout.fee) }}</template>
+            <template v-if="payout.fee">⋅ Fee {{ $formatMoney(payout.fee) }}</template>
           </div>
           <div class="payout-status">
             <span>
-              <Badge v-if="payout.status === 'success'" color="green" type="成功"/>
-              <Badge v-else-if="payout.status === 'cancelling'" color="yellow" type="取消中"/>
-              <Badge v-else-if="payout.status === 'cancelled'" color="red" type="已取消"/>
-              <Badge v-else-if="payout.status === 'failed'" color="red" type="失败"/>
-              <Badge v-else-if="payout.status === 'in-transit'" color="yellow" type="提现中"/>
-              <Badge v-else :type="payout.status"/>
+              <Badge v-if="payout.status === 'success'" color="green" type="Success" />
+              <Badge v-else-if="payout.status === 'cancelling'" color="yellow" type="Cancelling" />
+              <Badge v-else-if="payout.status === 'cancelled'" color="red" type="Cancelled" />
+              <Badge v-else-if="payout.status === 'failed'" color="red" type="Failed" />
+              <Badge v-else-if="payout.status === 'in-transit'" color="yellow" type="In transit" />
+              <Badge v-else :type="payout.status" />
             </span>
             <template v-if="payout.method">
               <span>⋅</span>
-              <span>{{ formatWallet(payout.method) }} ({{ payout.method_address }})</span>
+              <span>{{ $formatWallet(payout.method) }} ({{ payout.method_address }})</span>
             </template>
           </div>
         </div>
@@ -84,8 +86,7 @@
             class="iconified-button raised-button"
             @click="cancelPayout(payout.id)"
           >
-            <XIcon/>
-            取消提现
+            <XIcon /> Cancel payment
           </button>
         </div>
       </div>
@@ -93,24 +94,24 @@
   </div>
 </template>
 <script setup>
-import {PayPalIcon, UnknownIcon, XIcon} from "@modrinth/assets";
-import {Badge, Breadcrumbs, DropdownSelect} from "@modrinth/ui";
+import { XIcon, PayPalIcon, UnknownIcon } from "@modrinth/assets";
+import { capitalizeString } from "@modrinth/utils";
+import { Badge, Breadcrumbs, DropdownSelect } from "@modrinth/ui";
 import dayjs from "dayjs";
 import TremendousIcon from "~/assets/images/external/tremendous.svg?component";
 import VenmoIcon from "~/assets/images/external/venmo-small.svg?component";
-import {formatWallet} from "@modrinth/utils";
 
 const vintl = useVIntl();
-const {formatMessage} = vintl;
+const { formatMessage } = vintl;
 
 useHead({
-  title: "提现历史 - Modrinth",
+  title: "Transfer history - Modrinth",
 });
 
 const data = await useNuxtApp();
 const auth = await useAuth();
 
-const {data: payouts, refresh} = await useAsyncData(`payout`, () =>
+const { data: payouts, refresh } = await useAsyncData(`payout`, () =>
   useBaseFetch(`payout`, {
     apiVersion: 3,
   }),
@@ -156,8 +157,8 @@ async function cancelPayout(id) {
   } catch (err) {
     data.$notify({
       group: "main",
-      title: "发生错误",
-      text: err.data.description,
+      title: "An error occurred",
+      text: err.data ? err.data.description : err,
       type: "error",
     });
   }
@@ -167,19 +168,19 @@ async function cancelPayout(id) {
 const messages = defineMessages({
   transfersTotal: {
     id: "revenue.transfers.total",
-    defaultMessage: "您累积提现了 {amount}。",
+    defaultMessage: "You have withdrawn {amount} in total.",
   },
   transfersTotalYear: {
     id: "revenue.transfers.total.year",
-    defaultMessage: "您在 {year} 年中累积提现了 {amount}。",
+    defaultMessage: "You have withdrawn {amount} in {year}.",
   },
   transfersTotalMethod: {
     id: "revenue.transfers.total.method",
-    defaultMessage: "您使用 {method} 累积提现了 {amount}。",
+    defaultMessage: "You have withdrawn {amount} through {method}.",
   },
   transfersTotalYearMethod: {
     id: "revenue.transfers.total.year_method",
-    defaultMessage: "您在 {year} 年中使用 {method} 累积提现了 {amount}。",
+    defaultMessage: "You have withdrawn {amount} in {year} through {method}.",
   },
 });
 </script>

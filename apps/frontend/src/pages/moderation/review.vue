@@ -10,17 +10,20 @@
         :format-label="(x) => (x === 'all' ? 'All' : $formatProjectType(x) + 's')"
       />
       <button v-if="oldestFirst" class="iconified-button push-right" @click="oldestFirst = false">
-        <SortDescIcon />Sorting by oldest
+        <SortDescendingIcon />
+        Sorting by oldest
       </button>
       <button v-else class="iconified-button push-right" @click="oldestFirst = true">
-        <SortAscIcon />Sorting by newest
+        <SortAscendingIcon />
+        Sorting by newest
       </button>
       <button
         class="btn btn-highlight"
         :disabled="projectsFiltered.length === 0"
         @click="goToProjects()"
       >
-        <ModerationIcon /> Start moderating
+        <ScaleIcon />
+        Start moderating
       </button>
     </div>
     <p v-if="projectType !== 'all'" class="project-count">
@@ -29,11 +32,13 @@
     </p>
     <p v-else class="project-count">There are {{ projects.length }} projects in the queue.</p>
     <p v-if="projectsOver24Hours.length > 0" class="warning project-count">
-      <WarningIcon /> {{ projectsOver24Hours.length }} {{ projectTypePlural }}
+      <IssuesIcon />
+      {{ projectsOver24Hours.length }} {{ projectTypePlural }}
       have been in the queue for over 24 hours.
     </p>
     <p v-if="projectsOver48Hours.length > 0" class="danger project-count">
-      <WarningIcon /> {{ projectsOver48Hours.length }} {{ projectTypePlural }}
+      <IssuesIcon />
+      {{ projectsOver48Hours.length }} {{ projectTypePlural }}
       have been in the queue for over 48 hours.
     </p>
     <div
@@ -88,11 +93,13 @@
         <nuxt-link
           :to="`/${project.inferred_project_type}/${project.slug}`"
           class="iconified-button raised-button"
-          ><EyeIcon /> View project</nuxt-link
         >
+          <EyeIcon />
+          View project
+        </nuxt-link>
       </div>
       <span v-if="project.queued" :class="`submitter-info ${project.age_warning}`">
-        <WarningIcon v-if="project.age_warning" />
+        <IssuesIcon v-if="project.age_warning" />
         Submitted
         <span v-tooltip="$dayjs(project.queued).format('YYYY/MM/DD hh:mm:ss')">{{
           fromNow(project.queued)
@@ -102,15 +109,18 @@
     </div>
   </section>
 </template>
+
 <script setup>
 import { Chips } from "@modrinth/ui";
+import {
+  UnknownIcon,
+  EyeIcon,
+  SortAscendingIcon,
+  SortDescendingIcon,
+  IssuesIcon,
+  ScaleIcon,
+} from "@modrinth/assets";
 import Avatar from "~/components/ui/Avatar.vue";
-import UnknownIcon from "~/assets/images/utils/unknown.svg?component";
-import EyeIcon from "~/assets/images/utils/eye.svg?component";
-import SortAscIcon from "~/assets/images/utils/sort-asc.svg?component";
-import SortDescIcon from "~/assets/images/utils/sort-desc.svg?component";
-import WarningIcon from "~/assets/images/utils/issues.svg?component";
-import ModerationIcon from "~/assets/images/sidebar/admin.svg?component";
 import Badge from "~/components/ui/Badge.vue";
 import { formatProjectType } from "@modrinth/utils";
 
@@ -166,17 +176,45 @@ const projectTypes = computed(() => {
   return [...set];
 });
 
+function segmentData(data, segmentSize = 800) {
+  return data.reduce((acc, curr, index) => {
+    const segment = Math.floor(index / segmentSize);
+
+    if (!acc[segment]) {
+      acc[segment] = [];
+    }
+    acc[segment].push(curr);
+    return acc;
+  }, []);
+}
+
+function fetchSegmented(data, createUrl, options = {}) {
+  return Promise.all(segmentData(data).map((ids) => useBaseFetch(createUrl(ids), options))).then(
+    (results) => results.flat(),
+  );
+}
+
+function asEncodedJsonArray(data) {
+  return encodeURIComponent(JSON.stringify(data));
+}
+
 if (projects.value) {
   const teamIds = projects.value.map((x) => x.team_id);
-  const organizationIds = projects.value.filter((x) => x.organization).map((x) => x.organization);
+  const orgIds = projects.value.filter((x) => x.organization).map((x) => x.organization);
 
-  const url = `teams?ids=${encodeURIComponent(JSON.stringify(teamIds))}`;
-  const orgUrl = `organizations?ids=${encodeURIComponent(JSON.stringify(organizationIds))}`;
-  const { data: result } = await useAsyncData(url, () => useBaseFetch(url));
-  const { data: orgs } = await useAsyncData(orgUrl, () => useBaseFetch(orgUrl, { apiVersion: 3 }));
+  const [{ data: teams }, { data: orgs }] = await Promise.all([
+    useAsyncData(`teams?ids=${asEncodedJsonArray(teamIds)}`, () =>
+      fetchSegmented(teamIds, (ids) => `teams?ids=${asEncodedJsonArray(ids)}`),
+    ),
+    useAsyncData(`organizations?ids=${asEncodedJsonArray(orgIds)}`, () =>
+      fetchSegmented(orgIds, (ids) => `organizations?ids=${asEncodedJsonArray(ids)}`, {
+        apiVersion: 3,
+      }),
+    ),
+  ]);
 
-  if (result.value) {
-    members.value = result.value;
+  if (teams.value) {
+    members.value = teams.value;
 
     projects.value = projects.value.map((project) => {
       project.owner = members.value
@@ -198,6 +236,7 @@ if (projects.value) {
     });
   }
 }
+
 async function goToProjects() {
   const project = projectsFiltered.value[0];
   await router.push({

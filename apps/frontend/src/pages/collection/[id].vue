@@ -15,17 +15,17 @@
           <div class="card__overlay input-group">
             <template v-if="canEdit && isEditing === false">
               <Button @click="isEditing = true">
-                <EditIcon aria-hidden="true"/>
+                <EditIcon aria-hidden="true" />
                 {{ formatMessage(commonMessages.editButton) }}
               </Button>
               <Button id="delete-collection" @click="() => $refs.deleteModal.show()">
-                <TrashIcon aria-hidden="true"/>
+                <TrashIcon aria-hidden="true" />
                 {{ formatMessage(commonMessages.deleteLabel) }}
               </Button>
             </template>
             <template v-else-if="canEdit && isEditing === true">
               <PopoutMenu class="btn">
-                <EditIcon aria-hidden="true"/>
+                <EditIcon aria-hidden="true" />
                 {{ formatMessage(messages.editIconButton) }}
                 <template #menu>
                   <span class="icon-edit-menu">
@@ -36,10 +36,10 @@
                       accept="image/png,image/jpeg,image/gif,image/webp"
                       class="btn btn-transparent upload"
                       style="white-space: nowrap"
-                      aria-label="上传图标"
+                      aria-label="Upload icon"
                       @change="showPreviewImage"
                     >
-                      <UploadIcon aria-hidden="true"/>
+                      <UploadIcon aria-hidden="true" />
                       {{ formatMessage(messages.uploadIconButton) }}
                     </FileInput>
                     <Button
@@ -53,7 +53,7 @@
                         }
                       "
                     >
-                      <TrashIcon aria-hidden="true"/>
+                      <TrashIcon aria-hidden="true" />
                       {{ formatMessage(messages.deleteIconButton) }}
                     </Button>
                   </span>
@@ -73,14 +73,14 @@
               <label for="collection-title">
                 <span class="label__title"> {{ formatMessage(commonMessages.titleLabel) }} </span>
               </label>
-              <input id="collection-title" v-model="name" maxlength="255" type="text"/>
+              <input id="collection-title" v-model="name" maxlength="255" type="text" />
               <label for="collection-description">
                 <span class="label__title">
                   {{ formatMessage(commonMessages.descriptionLabel) }}
                 </span>
               </label>
               <div class="textarea-wrapper">
-                <textarea id="collection-description" v-model="summary" maxlength="255"/>
+                <textarea id="collection-description" v-model="summary" maxlength="255" />
               </div>
               <label for="visibility">
                 <span class="label__title">
@@ -104,11 +104,11 @@
             </div>
             <div class="push-right input-group">
               <Button @click="isEditing = false">
-                <XIcon aria-hidden="true"/>
+                <XIcon aria-hidden="true" />
                 {{ formatMessage(commonMessages.cancelButton) }}
               </Button>
               <Button color="primary" @click="saveChanges()">
-                <SaveIcon aria-hidden="true"/>
+                <SaveIcon aria-hidden="true" />
                 {{ formatMessage(commonMessages.saveButton) }}
               </Button>
             </div>
@@ -116,14 +116,14 @@
           <!-- Content -->
           <template v-if="!isEditing">
             <div class="page-header__icon">
-              <Avatar size="md" :src="collection.icon_url"/>
+              <Avatar size="md" :src="collection.icon_url" />
             </div>
             <div class="page-header__text">
               <h1 class="title">{{ collection.name }}</h1>
 
               <div>
                 <span class="collection-label">
-                  <BoxIcon aria-hidden="true"/> {{ formatMessage(messages.collectionLabel) }}
+                  <BoxIcon aria-hidden="true" /> {{ formatMessage(messages.collectionLabel) }}
                 </span>
               </div>
 
@@ -132,29 +132,29 @@
                   <p>{{ collection.description }}</p>
                 </div>
 
-                <hr class="card-divider"/>
+                <hr class="card-divider" />
 
                 <div v-if="canEdit" class="primary-stat">
                   <template v-if="collection.status === 'listed'">
-                    <WorldIcon class="primary-stat__icon" aria-hidden="true"/>
+                    <GlobeIcon class="primary-stat__icon" aria-hidden="true" />
                     <div class="primary-stat__text">
                       <strong> {{ formatMessage(commonMessages.publicLabel) }} </strong>
                     </div>
                   </template>
                   <template v-else-if="collection.status === 'unlisted'">
-                    <LinkIcon class="primary-stat__icon" aria-hidden="true"/>
+                    <LinkIcon class="primary-stat__icon" aria-hidden="true" />
                     <div class="primary-stat__text">
                       <strong> {{ formatMessage(commonMessages.unlistedLabel) }} </strong>
                     </div>
                   </template>
                   <template v-else-if="collection.status === 'private'">
-                    <LockIcon class="primary-stat__icon" aria-hidden="true"/>
+                    <LockIcon class="primary-stat__icon" aria-hidden="true" />
                     <div class="primary-stat__text">
                       <strong> {{ formatMessage(commonMessages.privateLabel) }} </strong>
                     </div>
                   </template>
                   <template v-else-if="collection.status === 'rejected'">
-                    <XIcon class="primary-stat__icon" aria-hidden="true"/>
+                    <XIcon class="primary-stat__icon" aria-hidden="true" />
                     <div class="primary-stat__text">
                       <strong> {{ formatMessage(commonMessages.rejectedLabel) }} </strong>
                     </div>
@@ -163,12 +163,18 @@
               </div>
 
               <div class="primary-stat">
-                <LibraryIcon class="primary-stat__icon" aria-hidden="true"/>
+                <LibraryIcon class="primary-stat__icon" aria-hidden="true" />
                 <div v-if="projects" class="primary-stat__text">
-                  <span class="primary-stat__counter">
-                    {{ formatCompactNumber(projects.length || 0) }}
-                  </span>
-                  资源
+                  <IntlFormatted
+                    :message-id="messages.projectsCountLabel"
+                    :values="{ count: formatCompactNumber(projects.length || 0) }"
+                  >
+                    <template #stat="{ children }">
+                      <span class="primary-stat__counter">
+                        <component :is="() => normalizeChildren(children)" />
+                      </span>
+                    </template>
+                  </IntlFormatted>
                 </div>
               </div>
 
@@ -182,7 +188,7 @@
                   "
                   class="date"
                 >
-                  <CalendarIcon aria-hidden="true"/>
+                  <CalendarIcon aria-hidden="true" />
                   <label>
                     {{
                       formatMessage(messages.createdAtLabel, {
@@ -203,7 +209,7 @@
                   "
                   class="date"
                 >
-                  <UpdatedIcon aria-hidden="true"/>
+                  <UpdatedIcon aria-hidden="true" />
                   <label>
                     {{
                       formatMessage(messages.updatedAtLabel, {
@@ -215,7 +221,7 @@
               </div>
             </div>
 
-            <hr class="card-divider"/>
+            <hr class="card-divider" />
 
             <div class="collection-info">
               <h2 class="card-header">{{ formatMessage(messages.curatedByLabel) }}</h2>
@@ -224,7 +230,7 @@
                   class="team-member columns button-transparent"
                   :to="'/user/' + creator.username"
                 >
-                  <Avatar :src="creator.avatar_url" :alt="creator.username" size="sm" circle/>
+                  <Avatar :src="creator.avatar_url" :alt="creator.username" size="sm" circle />
 
                   <div class="member-info">
                     <p class="name">{{ creator.username }}</p>
@@ -242,6 +248,9 @@
             </div>
           </template>
         </div>
+        <AdPlaceholder
+          v-if="!auth.user || !isPermission(auth.user.badges, 1 << 0) || flags.showAdsWithPlus"
+        />
       </div>
       <div class="normal-page__content">
         <nav class="navigation-card">
@@ -260,14 +269,22 @@
             ]"
           />
           <button
-            v-tooltip="formatMessage(commonMessages[`${cosmetics.searchDisplayMode.collection || 'list'}InputView`]) + '视图'"
-            :aria-label="formatMessage(commonMessages[`${cosmetics.searchDisplayMode.collection || 'list'}InputView`]) + '视图'"
+            v-tooltip="
+              formatMessage(
+                commonMessages[`${cosmetics.searchDisplayMode.collection || 'list'}InputView`],
+              )
+            "
+            :aria-label="
+              formatMessage(
+                commonMessages[`${cosmetics.searchDisplayMode.collection || 'list'}InputView`],
+              )
+            "
             class="square-button"
             @click="cycleSearchDisplayMode()"
           >
-            <GridIcon v-if="cosmetics.searchDisplayMode.collection === 'grid'"/>
-            <ImageIcon v-else-if="cosmetics.searchDisplayMode.collection === 'gallery'"/>
-            <ListIcon v-else/>
+            <GridIcon v-if="cosmetics.searchDisplayMode.collection === 'grid'" />
+            <ImageIcon v-else-if="cosmetics.searchDisplayMode.collection === 'gallery'" />
+            <ListIcon v-else />
           </button>
         </nav>
 
@@ -316,7 +333,7 @@
                 }
               "
             >
-              <TrashIcon aria-hidden="true"/>
+              <TrashIcon aria-hidden="true" />
               {{ formatMessage(messages.removeProjectButton) }}
             </button>
             <button
@@ -324,16 +341,22 @@
               class="iconified-button"
               @click="unfollowProject(project)"
             >
-              <TrashIcon aria-hidden="true"/>
+              <TrashIcon aria-hidden="true" />
               {{ formatMessage(messages.unfollowProjectButton) }}
             </button>
           </ProjectCard>
         </div>
         <div v-else class="error">
-          <UpToDate class="icon"/>
-          <br/>
+          <UpToDate class="icon" />
+          <br />
           <span v-if="auth.user && auth.user.id === creator.id" class="preserve-lines text">
-            该收藏夹没有任何资源。<br/>点此<a class="link" @click.prevent="$router.push('/mods')">添加资源</a>。
+            <IntlFormatted :message-id="messages.noProjectsAuthLabel">
+              <template #create-link="{ children }">
+                <a class="link" @click.prevent="$router.push('/mods')">
+                  <component :is="() => children" />
+                </a>
+              </template>
+            </IntlFormatted>
           </span>
           <span v-else class="text">{{ formatMessage(messages.noProjectsLabel) }}</span>
         </div>
@@ -358,107 +381,108 @@ import {
   UpdatedIcon,
   UploadIcon,
   XIcon,
+  GlobeIcon,
 } from "@modrinth/assets";
 import {
-  PopoutMenu,
-  FileInput,
-  DropdownSelect,
   Avatar,
   Button,
   commonMessages,
   ConfirmModal,
+  DropdownSelect,
+  FileInput,
+  PopoutMenu,
 } from "@modrinth/ui";
 
 import { isAdmin } from "@modrinth/utils";
-import WorldIcon from "assets/images/utils/world.svg";
 import UpToDate from "assets/images/illustrations/up_to_date.svg";
 import { addNotification } from "~/composables/notifs.js";
 import NavRow from "~/components/ui/NavRow.vue";
 import ProjectCard from "~/components/ui/ProjectCard.vue";
+import AdPlaceholder from "~/components/ui/AdPlaceholder.vue";
 
 const vintl = useVIntl();
-const {formatMessage} = vintl;
+const { formatMessage } = vintl;
 const formatRelativeTime = useRelativeTime();
 const formatCompactNumber = useCompactNumber();
 
 const messages = defineMessages({
   collectionDescription: {
     id: "collection.description",
-    defaultMessage: "{description} - 在 Modrinth 上查看 {username} 的收藏夹 {name}",
+    defaultMessage: "{description} - View the collection {name} by {username} on Modrinth",
   },
   collectionLabel: {
     id: "collection.label.collection",
-    defaultMessage: "收藏夹",
+    defaultMessage: "Collection",
   },
   collectionTitle: {
     id: "collection.title",
-    defaultMessage: "{name} - 收藏夹",
+    defaultMessage: "{name} - Collection",
   },
   editIconButton: {
     id: "collection.button.edit-icon",
-    defaultMessage: "修改图标",
+    defaultMessage: "Edit icon",
   },
   deleteIconButton: {
     id: "collection.button.delete-icon",
-    defaultMessage: "删除图标",
+    defaultMessage: "Delete icon",
   },
   createdAtLabel: {
     id: "collection.label.created-at",
-    defaultMessage: "创建时间：{ago}",
+    defaultMessage: "Created {ago}",
   },
   collectionNotFoundError: {
     id: "collection.error.not-found",
-    defaultMessage: "未找到收藏夹",
+    defaultMessage: "Collection not found",
   },
   curatedByLabel: {
     id: "collection.label.curated-by",
-    defaultMessage: "创建者：",
+    defaultMessage: "Curated by",
   },
   deleteModalDescription: {
     id: "collection.delete-modal.description",
-    defaultMessage: "这将会永远删除此收藏夹。此操作不能撤消。",
+    defaultMessage: "This will remove this collection forever. This action cannot be undone.",
   },
   deleteModalTitle: {
     id: "collection.delete-modal.title",
-    defaultMessage: "您确定要删除此收藏夹吗？",
+    defaultMessage: "Are you sure you want to delete this collection?",
   },
   followingCollectionDescription: {
     id: "collection.description.following",
-    defaultMessage: "自动生成的您关注资源的收藏夹。",
+    defaultMessage: "Auto-generated collection of all the projects you're following.",
   },
   noProjectsLabel: {
     id: "collection.label.no-projects",
-    defaultMessage: "无资源",
+    defaultMessage: "This collection has no projects!",
   },
   noProjectsAuthLabel: {
     id: "collection.label.no-projects-auth",
     defaultMessage:
-      "该收藏夹没有任何资源。\n点此<create-link>添加资源</create-link>。",
+      "You don't have any projects.\nWould you like to <create-link>add one</create-link>?",
   },
   ownerLabel: {
     id: "collection.label.owner",
-    defaultMessage: "创建者",
+    defaultMessage: "Owner",
   },
   projectsCountLabel: {
     id: "collection.label.projects-count",
     defaultMessage:
-      "<stat>{count}</stat> 资源",
+      "{count, plural, one {<stat>{count}</stat> project} other {<stat>{count}</stat> projects}}",
   },
   removeProjectButton: {
     id: "collection.button.remove-project",
-    defaultMessage: "删除资源",
+    defaultMessage: "Remove project",
   },
   unfollowProjectButton: {
     id: "collection.button.unfollow-project",
-    defaultMessage: "取消关注",
+    defaultMessage: "Unfollow project",
   },
   updatedAtLabel: {
     id: "collection.label.updated-at",
-    defaultMessage: "更新时间：{ago}",
+    defaultMessage: "Updated {ago}",
   },
   uploadIconButton: {
     id: "collection.button.upload-icon",
-    defaultMessage: "上传图标",
+    defaultMessage: "Upload icon",
   },
 });
 
@@ -492,7 +516,7 @@ try {
       created: auth.value.user.created,
       updated: auth.value.user.created,
     });
-    [{data: projects, refresh: refreshProjects}] = await Promise.all([
+    [{ data: projects, refresh: refreshProjects }] = await Promise.all([
       useAsyncData(
         `user/${auth.value.user.id}/follows`,
         () => useBaseFetch(`user/${auth.value.user.id}/follows`),
@@ -508,15 +532,14 @@ try {
       ),
     ]);
     creator = ref(auth.value.user);
-    refreshCollection = async () => {
-    };
+    refreshCollection = async () => {};
   } else {
     const val = await useAsyncData(`collection/${route.params.id}`, () =>
-      useBaseFetch(`collection/${route.params.id}`, {apiVersion: 3}),
+      useBaseFetch(`collection/${route.params.id}`, { apiVersion: 3 }),
     );
     collection = val.data;
     refreshCollection = val.refresh;
-    [{data: creator}, {data: projects, refresh: refreshProjects}] = await Promise.all([
+    [{ data: creator }, { data: projects, refresh: refreshProjects }] = await Promise.all([
       await useAsyncData(`user/${collection.value.user}`, () =>
         useBaseFetch(`user/${collection.value.user}`),
       ),
@@ -556,7 +579,7 @@ if (!collection.value) {
 }
 
 const title = computed(() =>
-  formatMessage(messages.collectionTitle, {name: collection.value.name}),
+  formatMessage(messages.collectionTitle, { name: collection.value.name }),
 );
 
 useSeoMeta({
@@ -630,7 +653,7 @@ async function saveChanges() {
       method: "PATCH",
       body: {
         name: name.value,
-        description: summary.value,
+        description: summary.value || null,
         status: visibility.value,
         new_projects: newProjectIds,
       },
@@ -674,7 +697,7 @@ async function deleteCollection() {
     addNotification({
       group: "main",
       title: formatMessage(commonMessages.errorNotificationTitle),
-      text: err.data.description,
+      text: err.data ? err.data.description : err,
       type: "error",
     });
   }

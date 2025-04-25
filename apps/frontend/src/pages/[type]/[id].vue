@@ -1,18 +1,18 @@
 <template>
   <Teleport v-if="flags.projectBackground" to="#fixed-background-teleport">
-    <ProjectBackgroundGradient :project="project"/>
+    <ProjectBackgroundGradient :project="project" />
   </Teleport>
   <div v-if="route.name.startsWith('type-id-settings')" class="normal-page">
     <div class="normal-page__sidebar">
       <aside class="universal-card">
         <Breadcrumbs
-          current-title="设置"
+          current-title="Settings"
           :link-stack="[
             {
               href: organization
                 ? `/organization/${organization.slug}/settings/projects`
                 : `/dashboard/projects`,
-              label: '资源',
+              label: 'Projects',
             },
             {
               href: `/${project.project_type}/${project.slug ? project.slug : project.id}`,
@@ -32,81 +32,81 @@
             <h1 class="wrap-as-needed">
               {{ project.title }}
             </h1>
-            <Badge :type="project.status"/>
+            <Badge :type="project.status" />
           </div>
         </div>
-        <h2>资源设置</h2>
+        <h2>Project settings</h2>
         <NavStack>
           <NavStackItem
             :link="`/${project.project_type}/${project.slug ? project.slug : project.id}/settings`"
-            label="通用"
+            label="General"
           >
-            <SettingsIcon aria-hidden="true"/>
+            <SettingsIcon aria-hidden="true" />
           </NavStackItem>
           <NavStackItem
             :link="`/${project.project_type}/${
               project.slug ? project.slug : project.id
             }/settings/tags`"
-            label="标签"
+            label="Tags"
           >
-            <TagsIcon aria-hidden="true"/>
+            <TagsIcon aria-hidden="true" />
           </NavStackItem>
           <NavStackItem
             :link="`/${project.project_type}/${
               project.slug ? project.slug : project.id
             }/settings/description`"
-            label="描述"
+            label="Description"
           >
-            <DescriptionIcon aria-hidden="true"/>
+            <DescriptionIcon aria-hidden="true" />
           </NavStackItem>
           <NavStackItem
             :link="`/${project.project_type}/${
               project.slug ? project.slug : project.id
             }/settings/license`"
-            label="许可证"
+            label="License"
           >
-            <CopyrightIcon aria-hidden="true"/>
+            <CopyrightIcon aria-hidden="true" />
           </NavStackItem>
           <NavStackItem
             :link="`/${project.project_type}/${
               project.slug ? project.slug : project.id
             }/settings/links`"
-            label="链接"
+            label="Links"
           >
-            <LinksIcon aria-hidden="true"/>
+            <LinksIcon aria-hidden="true" />
           </NavStackItem>
           <NavStackItem
             :link="`/${project.project_type}/${
               project.slug ? project.slug : project.id
             }/settings/members`"
-            label="成员"
+            label="Members"
           >
-            <UsersIcon aria-hidden="true"/>
+            <UsersIcon aria-hidden="true" />
           </NavStackItem>
-          <h3>信息</h3>
+          <h3>View</h3>
           <NavStackItem
             :link="`/${project.project_type}/${
               project.slug ? project.slug : project.id
             }/settings/analytics`"
-            label="数据分析"
+            label="Analytics"
             chevron
           >
-            <ChartIcon aria-hidden="true"/>
+            <ChartIcon aria-hidden="true" />
           </NavStackItem>
-          <h3>上传</h3>
+          <h3>Upload</h3>
           <NavStackItem
             :link="`/${project.project_type}/${project.slug ? project.slug : project.id}/gallery`"
-            label="画廊"
+            label="Gallery"
             chevron
           >
-            <GalleryIcon aria-hidden="true"/>
+            <GalleryIcon aria-hidden="true" />
           </NavStackItem>
           <NavStackItem
             :link="`/${project.project_type}/${project.slug ? project.slug : project.id}/versions`"
-            label="版本"
+            label="Versions"
             chevron
           >
-            <VersionIcon aria-hidden="true"/>
+            <VersionIcon aria-hidden="true" />
           </NavStackItem>
         </NavStack>
       </aside>
@@ -148,21 +148,21 @@
   <div v-else class="experimental-styles-within">
     <NewModal ref="settingsModal">
       <template #title>
-        <Avatar :src="project.icon_url" :alt="project.title" class="icon" size="32px"/>
-        <span class="text-lg font-extrabold text-contrast"> 设置 </span>
+        <Avatar :src="project.icon_url" :alt="project.title" class="icon" size="32px" />
+        <span class="text-lg font-extrabold text-contrast"> Settings </span>
       </template>
     </NewModal>
     <NewModal ref="modalLicense" :header="project.license.name ? project.license.name : 'License'">
       <template #title>
-        <Avatar :src="project.icon_url" :alt="project.title" class="icon" size="32px" no-shadow/>
+        <Avatar :src="project.icon_url" :alt="project.title" class="icon" size="32px" no-shadow />
         <span class="text-lg font-extrabold text-contrast">
-          {{ project.license.name ? project.license.name : "许可证" }}
+          {{ project.license.name ? project.license.name : "License" }}
         </span>
       </template>
       <div
         class="markdown-body"
         v-html="
-          renderString(licenseText).isEmpty ? '正在加载许可证内容...' : renderString(licenseText)
+          renderString(licenseText).isEmpty ? 'Loading license text...' : renderString(licenseText)
         "
       />
     </NewModal>
@@ -180,7 +180,7 @@
         <div
           class="animation-ring-1 flex items-center justify-center rounded-full border-4 border-solid border-brand bg-brand-highlight"
         >
-          <DownloadIcon class="h-20 w-20 text-contrast"/>
+          <DownloadIcon class="h-20 w-20 text-contrast" />
         </div>
       </div>
     </div>
@@ -198,9 +198,9 @@
       "
     >
       <template #title>
-        <Avatar :src="project.icon_url" :alt="project.title" class="icon" size="32px"/>
+        <Avatar :src="project.icon_url" :alt="project.title" class="icon" size="32px" />
         <div class="truncate text-lg font-extrabold text-contrast">
-          下载 {{ project.title }}
+          Download {{ project.title }}
         </div>
       </template>
       <template #default>
@@ -219,9 +219,9 @@
                   :href="`modrinth://mod/${project.slug}`"
                   @click="() => installWithApp()"
                 >
-                  <ModrinthIcon aria-hidden="true"/>
-                  安装到 Modrinth App 实例
-                  <ExternalIcon aria-hidden="true"/>
+                  <ModrinthIcon aria-hidden="true" />
+                  Install with Modrinth App
+                  <ExternalIcon aria-hidden="true" />
                 </a>
               </ButtonStyled>
               <Accordion ref="getModrinthAppAccordion">
@@ -229,25 +229,25 @@
                   class="mt-2 flex justify-center text-brand-blue hover:underline"
                   to="/app"
                 >
-                  没有 Modrinth App？
+                  Don't have Modrinth App?
                 </nuxt-link>
               </Accordion>
             </div>
 
             <div class="flex items-center gap-4 px-4">
               <div class="flex h-[2px] w-full rounded-2xl bg-button-bg"></div>
-              <span class="flex-shrink-0 text-sm font-semibold text-secondary">或</span>
+              <span class="flex-shrink-0 text-sm font-semibold text-secondary"> or </span>
               <div class="flex h-[2px] w-full rounded-2xl bg-button-bg"></div>
             </div>
           </div>
           <div class="mx-auto flex w-fit flex-col gap-2">
             <ButtonStyled v-if="project.game_versions.length === 1">
               <div class="disabled button-like">
-                <GameIcon aria-hidden="true"/>
+                <GameIcon aria-hidden="true" />
                 {{
                   currentGameVersion
-                    ? `游戏版本：${currentGameVersion}`
-                    : "错误：未找到任何游戏版本"
+                    ? `Game version: ${currentGameVersion}`
+                    : "Error: no game versions found"
                 }}
                 <InfoIcon
                   v-tooltip="`${project.title} is only available for ${currentGameVersion}`"
@@ -268,21 +268,21 @@
               "
             >
               <template #title>
-                <GameIcon aria-hidden="true"/>
+                <GameIcon aria-hidden="true" />
                 {{
-                  currentGameVersion ? `游戏版本：${currentGameVersion}` : "请选择游戏版本..."
+                  currentGameVersion ? `Game version: ${currentGameVersion}` : "Select game version"
                 }}
               </template>
               <div class="iconified-input mb-2 flex w-full">
-                <label for="game-versions-filtering" hidden>搜索游戏版本...</label>
-                <SearchIcon aria-hidden="true"/>
+                <label for="game-versions-filtering" hidden>Search game versions...</label>
+                <SearchIcon aria-hidden="true" />
                 <input
                   id="game-versions-filtering"
                   ref="gameVersionFilterInput"
                   v-model="versionFilter"
                   type="search"
                   autocomplete="off"
-                  placeholder="搜索游戏版本..."
+                  placeholder="Search game versions..."
                 />
               </div>
               <ScrollablePanel :class="project.game_versions.length > 4 ? 'h-[15rem]' : ''">
@@ -328,14 +328,14 @@
                     "
                   >
                     {{ gameVersion }}
-                    <CheckIcon v-if="userSelectedGameVersion === gameVersion"/>
+                    <CheckIcon v-if="userSelectedGameVersion === gameVersion" />
                   </button>
                 </ButtonStyled>
               </ScrollablePanel>
               <Checkbox
                 v-model="showAllVersions"
                 class="mx-1"
-                :label="`显示所有版本（快照等）`"
+                :label="`Show all versions`"
                 :disabled="!!versionFilter"
               />
             </Accordion>
@@ -343,11 +343,11 @@
               v-if="project.loaders.length === 1 && project.project_type !== 'resourcepack'"
             >
               <div class="disabled button-like">
-                <WrenchIcon aria-hidden="true"/>
+                <WrenchIcon aria-hidden="true" />
                 {{
                   currentPlatform
-                    ? `加载器：${formatCategory(currentPlatform)}`
-                    : "错误：未找到任何加载器"
+                    ? `Platform: ${formatCategory(currentPlatform)}`
+                    : "Error: no platforms found"
                 }}
                 <InfoIcon
                   v-tooltip="
@@ -370,11 +370,11 @@
               "
             >
               <template #title>
-                <WrenchIcon aria-hidden="true"/>
+                <WrenchIcon aria-hidden="true" />
                 {{
                   currentPlatform
-                    ? `加载器：${formatCategory(currentPlatform)}`
-                    : "请选择加载器..."
+                    ? `Platform: ${formatCategory(currentPlatform)}`
+                    : "Select platform"
                 }}
               </template>
               <ScrollablePanel :class="project.loaders.length > 4 ? 'h-[15rem]' : ''">
@@ -413,7 +413,7 @@
                     "
                   >
                     {{ formatCategory(platform) }}
-                    <CheckIcon v-if="userSelectedPlatform === platform"/>
+                    <CheckIcon v-if="userSelectedPlatform === platform" />
                   </button>
                 </ButtonStyled>
               </ScrollablePanel>
@@ -448,13 +448,14 @@
                 !filteredAlpha
               "
             >
-              无 {{ formatCategory(currentPlatform) }} {{ currentGameVersion }} 的可用版本。
+              No versions available for {{ currentGameVersion }} and
+              {{ formatCategory(currentPlatform) }}.
             </p>
           </AutomaticAccordion>
         </div>
       </template>
     </NewModal>
-    <CollectionCreateModal ref="modal_collection" :project-ids="[project.id]"/>
+    <CollectionCreateModal ref="modal_collection" :project-ids="[project.id]" />
     <div
       class="new-page sidebar"
       :class="{
@@ -474,8 +475,8 @@
                 :color="route.name === 'type-id-version-version' ? `standard` : `brand`"
               >
                 <button @click="(event) => downloadModal.show(event)">
-                  <DownloadIcon aria-hidden="true"/>
-                  下载
+                  <DownloadIcon aria-hidden="true" />
+                  Download
                 </button>
               </ButtonStyled>
             </div>
@@ -486,11 +487,11 @@
                 :color="route.name === 'type-id-version-version' ? `standard` : `brand`"
               >
                 <button
-                  aria-label="下载"
+                  aria-label="Download"
                   class="flex sm:hidden"
                   @click="(event) => downloadModal.show(event)"
                 >
-                  <DownloadIcon aria-hidden="true"/>
+                  <DownloadIcon aria-hidden="true" />
                 </button>
               </ButtonStyled>
             </div>
@@ -504,24 +505,24 @@
               >
                 <button
                   v-if="auth.user"
-                  v-tooltip="following ? `取消关注` : `关注`"
-                  :aria-label="following ? `取消关注` : `关注`"
+                  v-tooltip="following ? `Unfollow` : `Follow`"
+                  :aria-label="following ? `Unfollow` : `Follow`"
                   @click="userFollowProject(project)"
                 >
-                  <HeartIcon :fill="following ? 'currentColor' : 'none'" aria-hidden="true"/>
+                  <HeartIcon :fill="following ? 'currentColor' : 'none'" aria-hidden="true" />
                 </button>
-                <nuxt-link v-else v-tooltip="'关注'" to="/auth/sign-in" aria-label="关注">
-                  <HeartIcon aria-hidden="true"/>
+                <nuxt-link v-else v-tooltip="'Follow'" to="/auth/sign-in" aria-label="Follow">
+                  <HeartIcon aria-hidden="true" />
                 </nuxt-link>
               </ButtonStyled>
               <ButtonStyled size="large" circular>
                 <PopoutMenu
                   v-if="auth.user"
                   :tooltip="
-                    collections.some((x) => x.projects.includes(project.id)) ? '已收藏' : '收藏'
+                    collections.some((x) => x.projects.includes(project.id)) ? 'Saved' : 'Save'
                   "
                   from="top-right"
-                  aria-label="收藏"
+                  aria-label="Save"
                   :dropdown-id="`${baseId}-save`"
                 >
                   <BookmarkIcon
@@ -536,7 +537,7 @@
                     <input
                       v-model="displayCollectionsSearch"
                       type="text"
-                      placeholder="请选择收藏夹..."
+                      placeholder="Search collections..."
                       class="search-input menu-search"
                     />
                     <div v-if="collections.length > 0" class="collections-list text-primary">
@@ -553,53 +554,53 @@
                       </Checkbox>
                     </div>
                     <div v-else class="menu-text">
-                      <p class="popout-text">未找到收藏夹</p>
+                      <p class="popout-text">No collections found.</p>
                     </div>
                     <button
                       class="btn collection-button"
                       @click="(event) => $refs.modal_collection.show(event)"
                     >
-                      <PlusIcon aria-hidden="true"/>
-                      创建新收藏夹
+                      <PlusIcon aria-hidden="true" />
+                      Create new collection
                     </button>
                   </template>
                 </PopoutMenu>
-                <nuxt-link v-else v-tooltip="'登录以收藏'" to="/auth/sign-in" aria-label="登录以收藏">
-                  <BookmarkIcon aria-hidden="true"/>
+                <nuxt-link v-else v-tooltip="'Save'" to="/auth/sign-in" aria-label="Save">
+                  <BookmarkIcon aria-hidden="true" />
                 </nuxt-link>
               </ButtonStyled>
               <template #fallback>
                 <ButtonStyled size="large" circular>
                   <button
                     v-if="auth.user"
-                    v-tooltip="`关注`"
-                    :aria-label="`关注`"
+                    v-tooltip="`Follow`"
+                    :aria-label="`Follow`"
                     @click="userFollowProject(project)"
                   >
-                    <HeartIcon aria-hidden="true"/>
+                    <HeartIcon aria-hidden="true" />
                   </button>
-                  <nuxt-link v-else v-tooltip="'关注'" to="/auth/sign-in" aria-label="关注">
-                    <HeartIcon aria-hidden="true"/>
+                  <nuxt-link v-else v-tooltip="'Follow'" to="/auth/sign-in" aria-label="Follow">
+                    <HeartIcon aria-hidden="true" />
                   </nuxt-link>
                 </ButtonStyled>
                 <ButtonStyled size="large" circular>
-                  <nuxt-link v-tooltip="'收藏'" to="/auth/sign-in" aria-label="收藏">
-                    <BookmarkIcon aria-hidden="true"/>
+                  <nuxt-link v-tooltip="'Save'" to="/auth/sign-in" aria-label="Save">
+                    <BookmarkIcon aria-hidden="true" />
                   </nuxt-link>
                 </ButtonStyled>
               </template>
             </ClientOnly>
             <ButtonStyled v-if="auth.user && currentMember" size="large" circular>
               <nuxt-link
-                v-tooltip="'设置'"
+                v-tooltip="'Settings'"
                 :to="`/${project.project_type}/${project.slug ? project.slug : project.id}/settings`"
               >
-                <SettingsIcon aria-hidden="true"/>
+                <SettingsIcon aria-hidden="true" />
               </nuxt-link>
             </ButtonStyled>
             <ButtonStyled size="large" circular type="transparent">
               <OverflowMenu
-                :tooltip="'更多选项'"
+                :tooltip="'More options'"
                 :options="[
                   {
                     id: 'analytics',
@@ -638,25 +639,25 @@
                   },
                   { id: 'copy-id', action: () => copyId() },
                 ]"
-                aria-label="更多选项"
+                aria-label="More options"
                 :dropdown-id="`${baseId}-more-options`"
               >
-                <MoreVerticalIcon aria-hidden="true"/>
+                <MoreVerticalIcon aria-hidden="true" />
                 <template #analytics>
-                  <ChartIcon aria-hidden="true"/>
-                  数据分析
+                  <ChartIcon aria-hidden="true" />
+                  Analytics
                 </template>
                 <template #moderation-checklist>
-                  <ScaleIcon aria-hidden="true"/>
-                  审核
+                  <ScaleIcon aria-hidden="true" />
+                  Review project
                 </template>
                 <template #report>
-                  <ReportIcon aria-hidden="true"/>
-                  举报
+                  <ReportIcon aria-hidden="true" />
+                  Report
                 </template>
                 <template #copy-id>
-                  <ClipboardCopyIcon aria-hidden="true"/>
-                  复制 ID
+                  <ClipboardCopyIcon aria-hidden="true" />
+                  Copy ID
                 </template>
               </OverflowMenu>
             </ButtonStyled>
@@ -678,7 +679,8 @@
           :tags="tags"
         />
         <MessageBanner v-if="project.status === 'archived'" message-type="warning" class="my-4">
-          {{ project.title }} 已归档。除非创作者决定取消归档，否则 {{ project.title }} 将不会再发布任何更新。
+          {{ project.title }} has been archived. {{ project.title }} will not receive any further
+          updates unless the author decides to unarchive the project.
         </MessageBanner>
       </div>
       <div class="normal-page__sidebar">
@@ -686,6 +688,12 @@
           :project="project"
           :tags="tags"
           class="card flex-card experimental-styles-within"
+        />
+        <AdPlaceholder
+          v-if="
+            (!auth.user || !isPermission(auth.user.badges, 1 << 0) || flags.showAdsWithPlus) &&
+            tags.approvedStatuses.includes(project.status)
+          "
         />
         <ProjectSidebarLinks
           :project="project"
@@ -711,9 +719,9 @@
           <h2>{{ formatMessage(detailsMessages.title) }}</h2>
           <div class="details-list">
             <div class="details-list__item">
-              <BookTextIcon aria-hidden="true"/>
+              <BookTextIcon aria-hidden="true" />
               <div>
-                {{ formatMessage(detailsMessages.licensed) }}
+                Licensed
                 <a
                   v-if="project.license.url"
                   class="text-link hover:underline"
@@ -722,7 +730,7 @@
                   rel="noopener nofollow ugc"
                 >
                   {{ licenseIdDisplay }}
-                  <ExternalIcon aria-hidden="true" class="external-icon ml-1 mt-[-1px] inline"/>
+                  <ExternalIcon aria-hidden="true" class="external-icon ml-1 mt-[-1px] inline" />
                 </a>
                 <span
                   v-else-if="
@@ -739,42 +747,42 @@
             </div>
             <div
               v-if="project.approved"
-              v-tooltip="$dayjs(project.approved).format('YYYY/MM/DD hh:mm:ss')"
+              v-tooltip="$dayjs(project.approved).format('MMMM D, YYYY [at] h:mm A')"
               class="details-list__item"
             >
-              <CalendarIcon aria-hidden="true"/>
+              <CalendarIcon aria-hidden="true" />
               <div>
-                {{ formatMessage(detailsMessages.published, {date: publishedDate}) }}
+                {{ formatMessage(detailsMessages.published, { date: publishedDate }) }}
               </div>
             </div>
             <div
               v-else
-              v-tooltip="$dayjs(project.published).format('YYYY/MM/DD hh:mm:ss')"
+              v-tooltip="$dayjs(project.published).format('MMMM D, YYYY [at] h:mm A')"
               class="details-list__item"
             >
-              <CalendarIcon aria-hidden="true"/>
+              <CalendarIcon aria-hidden="true" />
               <div>
-                {{ formatMessage(detailsMessages.created, {date: createdDate}) }}
+                {{ formatMessage(detailsMessages.created, { date: createdDate }) }}
               </div>
             </div>
             <div
               v-if="project.status === 'processing' && project.queued"
-              v-tooltip="$dayjs(project.queued).format('YYYY/MM/DD hh:mm:ss')"
+              v-tooltip="$dayjs(project.queued).format('MMMM D, YYYY [at] h:mm A')"
               class="details-list__item"
             >
-              <ScaleIcon aria-hidden="true"/>
+              <ScaleIcon aria-hidden="true" />
               <div>
-                {{ formatMessage(detailsMessages.submitted, {date: submittedDate}) }}
+                {{ formatMessage(detailsMessages.submitted, { date: submittedDate }) }}
               </div>
             </div>
             <div
               v-if="versions.length > 0 && project.updated"
-              v-tooltip="$dayjs(project.updated).format('YYYY/MM/DD hh:mm:ss')"
+              v-tooltip="$dayjs(project.updated).format('MMMM D, YYYY [at] h:mm A')"
               class="details-list__item"
             >
-              <VersionIcon aria-hidden="true"/>
+              <VersionIcon aria-hidden="true" />
               <div>
-                {{ formatMessage(detailsMessages.updated, {date: updatedDate}) }}
+                {{ formatMessage(detailsMessages.updated, { date: updatedDate }) }}
               </div>
             </div>
           </div>
@@ -782,7 +790,7 @@
       </div>
       <div class="normal-page__content">
         <div class="overflow-x-auto">
-          <NavTabs :links="navLinks" class="mb-4"/>
+          <NavTabs :links="navLinks" class="mb-4" />
         </div>
         <NuxtPage
           v-model:project="project"
@@ -817,7 +825,6 @@
 </template>
 <script setup>
 import {
-  AlignLeftIcon as DescriptionIcon,
   BookmarkIcon,
   BookTextIcon,
   CalendarIcon,
@@ -825,11 +832,12 @@ import {
   CheckIcon,
   ClipboardCopyIcon,
   CopyrightIcon,
+  AlignLeftIcon as DescriptionIcon,
   DownloadIcon,
   ExternalIcon,
+  ImageIcon as GalleryIcon,
   GameIcon,
   HeartIcon,
-  ImageIcon as GalleryIcon,
   InfoIcon,
   LinkIcon as LinksIcon,
   MoreVerticalIcon,
@@ -842,6 +850,7 @@ import {
   UsersIcon,
   VersionIcon,
   WrenchIcon,
+  ModrinthIcon,
 } from "@modrinth/assets";
 import {
   Avatar,
@@ -859,11 +868,11 @@ import {
   ScrollablePanel,
 } from "@modrinth/ui";
 import VersionSummary from "@modrinth/ui/src/components/version/VersionSummary.vue";
-import {formatCategory, isRejected, isStaff, isUnderReview, renderString} from "@modrinth/utils";
-import {navigateTo} from "#app";
+import { formatCategory, isRejected, isStaff, isUnderReview, renderString } from "@modrinth/utils";
+import { navigateTo } from "#app";
 import dayjs from "dayjs";
-import ModrinthIcon from "~/assets/images/utils/modrinth.svg?component";
 import Accordion from "~/components/ui/Accordion.vue";
+import AdPlaceholder from "~/components/ui/AdPlaceholder.vue";
 import AutomaticAccordion from "~/components/ui/AutomaticAccordion.vue";
 import Badge from "~/components/ui/Badge.vue";
 import Breadcrumbs from "~/components/ui/Breadcrumbs.vue";
@@ -874,7 +883,8 @@ import NavStack from "~/components/ui/NavStack.vue";
 import NavStackItem from "~/components/ui/NavStackItem.vue";
 import NavTabs from "~/components/ui/NavTabs.vue";
 import ProjectMemberHeader from "~/components/ui/ProjectMemberHeader.vue";
-import {userCollectProject} from "~/composables/user.js";
+import { userCollectProject } from "~/composables/user.js";
+import { reportProject } from "~/utils/report-helpers.ts";
 
 const data = useNuxtApp();
 const route = useNativeRoute();
@@ -886,7 +896,7 @@ const tags = useTags();
 const flags = useFeatureFlags();
 const cosmetics = useCosmetics();
 
-const {formatMessage} = useVIntl();
+const { formatMessage } = useVIntl();
 
 const settingsModal = ref();
 const downloadModal = ref();
@@ -942,27 +952,27 @@ const formatRelativeTime = useRelativeTime();
 const detailsMessages = defineMessages({
   title: {
     id: "project.about.details.title",
-    defaultMessage: "详细信息",
+    defaultMessage: "Details",
   },
   licensed: {
     id: "project.about.details.licensed",
-    defaultMessage: "许可证：",
+    defaultMessage: "Licensed {license}",
   },
   created: {
     id: "project.about.details.created",
-    defaultMessage: "创建时间：{date}",
+    defaultMessage: "Created {date}",
   },
   submitted: {
     id: "project.about.details.submitted",
-    defaultMessage: "提交时间：{date}",
+    defaultMessage: "Submitted {date}",
   },
   published: {
     id: "project.about.details.published",
-    defaultMessage: "发布时间：{date}",
+    defaultMessage: "Published {date}",
   },
   updated: {
     id: "project.about.details.updated",
-    defaultMessage: "更新时间：{date}",
+    defaultMessage: "Updated {date}",
   },
 });
 
@@ -970,16 +980,16 @@ const modalLicense = ref(null);
 const licenseText = ref("");
 
 const createdDate = computed(() =>
-  project.value.published ? formatRelativeTime(project.value.published) : "未知",
+  project.value.published ? formatRelativeTime(project.value.published) : "unknown",
 );
 const submittedDate = computed(() =>
-  project.value.queued ? formatRelativeTime(project.value.queued) : "未知",
+  project.value.queued ? formatRelativeTime(project.value.queued) : "unknown",
 );
 const publishedDate = computed(() =>
-  project.value.approved ? formatRelativeTime(project.value.approved) : "未知",
+  project.value.approved ? formatRelativeTime(project.value.approved) : "unknown",
 );
 const updatedDate = computed(() =>
-  project.value.updated ? formatRelativeTime(project.value.updated) : "未知",
+  project.value.updated ? formatRelativeTime(project.value.updated) : "unknown",
 );
 
 const licenseIdDisplay = computed(() => {
@@ -999,9 +1009,9 @@ async function getLicenseData(event) {
 
   try {
     const text = await useBaseFetch(`tag/license/${project.value.license.id}`);
-    licenseText.value = text.body || "无法加载许可证内容。";
+    licenseText.value = text.body || "License text could not be retrieved.";
   } catch {
-    licenseText.value = "无法加载许可证内容。";
+    licenseText.value = "License text could not be retrieved.";
   }
 }
 
@@ -1040,27 +1050,27 @@ const filteredAlpha = computed(() => {
 const messages = defineMessages({
   downloadsStat: {
     id: "project.stats.downloads-label",
-    defaultMessage: "下载",
+    defaultMessage: "download{count, plural, one {} other {s}}",
   },
   followersStat: {
     id: "project.stats.followers-label",
-    defaultMessage: "关注",
+    defaultMessage: "follower{count, plural, one {} other {s}}",
   },
   descriptionTab: {
     id: "project.description.title",
-    defaultMessage: "描述",
+    defaultMessage: "Description",
   },
   galleryTab: {
     id: "project.gallery.title",
-    defaultMessage: "画廊",
+    defaultMessage: "Gallery",
   },
   versionsTab: {
     id: "project.versions.title",
-    defaultMessage: "版本",
+    defaultMessage: "Versions",
   },
   moderationTab: {
     id: "project.moderation.title",
-    defaultMessage: "审核",
+    defaultMessage: "Moderation",
   },
 });
 
@@ -1068,8 +1078,8 @@ const displayCollectionsSearch = ref("");
 const collections = computed(() =>
   user.value && user.value.collections
     ? user.value.collections.filter((x) =>
-      x.name.toLowerCase().includes(displayCollectionsSearch.value.toLowerCase()),
-    )
+        x.name.toLowerCase().includes(displayCollectionsSearch.value.toLowerCase()),
+      )
     : [],
 );
 
@@ -1083,7 +1093,7 @@ if (
   throw createError({
     fatal: true,
     statusCode: 404,
-    message: "页面不存在",
+    message: "The page could not be found",
   });
 }
 
@@ -1095,15 +1105,20 @@ let project,
   featuredVersions,
   versions,
   organization,
-  resetOrganization;
+  resetOrganization,
+  projectError,
+  membersError,
+  dependenciesError,
+  featuredVersionsError,
+  versionsError;
 try {
   [
-    {data: project, refresh: resetProject},
-    {data: allMembers, refresh: resetMembers},
-    {data: dependencies},
-    {data: featuredVersions},
-    {data: versions},
-    {data: organization, refresh: resetOrganization},
+    { data: project, error: projectError, refresh: resetProject },
+    { data: allMembers, error: membersError, refresh: resetMembers },
+    { data: dependencies, error: dependenciesError },
+    { data: featuredVersions, error: featuredVersionsError },
+    { data: versions, error: versionsError },
+    { data: organization, refresh: resetOrganization },
   ] = await Promise.all([
     useAsyncData(`project/${route.params.id}`, () => useBaseFetch(`project/${route.params.id}`), {
       transform: (project) => {
@@ -1121,7 +1136,7 @@ try {
     }),
     useAsyncData(
       `project/${route.params.id}/members`,
-      () => useBaseFetch(`project/${route.params.id}/members`, {apiVersion: 3}),
+      () => useBaseFetch(`project/${route.params.id}/members`, { apiVersion: 3 }),
       {
         transform: (members) => {
           members.forEach((it, index) => {
@@ -1143,25 +1158,41 @@ try {
       useBaseFetch(`project/${route.params.id}/version`),
     ),
     useAsyncData(`project/${route.params.id}/organization`, () =>
-      useBaseFetch(`project/${route.params.id}/organization`, {apiVersion: 3}),
+      useBaseFetch(`project/${route.params.id}/organization`, { apiVersion: 3 }),
     ),
   ]);
 
   versions = shallowRef(toRaw(versions));
   featuredVersions = shallowRef(toRaw(featuredVersions));
-} catch {
+} catch (err) {
   throw createError({
     fatal: true,
-    statusCode: 404,
-    message: "未找到资源",
+    statusCode: err.statusCode ?? 500,
+    message: "Error loading project data" + (err.message ? `: ${err.message}` : ""),
   });
 }
+
+function handleError(err, project = false) {
+  if (err.value && err.value.statusCode) {
+    throw createError({
+      fatal: true,
+      statusCode: err.value.statusCode,
+      message: err.value.statusCode === 404 && project ? "Project not found" : err.value.message,
+    });
+  }
+}
+
+handleError(projectError, true);
+handleError(membersError);
+handleError(dependenciesError);
+handleError(featuredVersionsError);
+handleError(versionsError);
 
 if (!project.value) {
   throw createError({
     fatal: true,
     statusCode: 404,
-    message: "未找到资源",
+    message: "Project not found",
   });
 }
 
@@ -1174,7 +1205,7 @@ if (project.value.project_type !== route.params.type || route.params.id !== proj
     `/${project.value.project_type}/${project.value.slug}${
       path.length > 0 ? `/${path.join("/")}` : ""
     }`,
-    {redirectCode: 301, replace: true},
+    { redirectCode: 301, replace: true },
   );
 }
 
@@ -1185,8 +1216,8 @@ const members = computed(() => {
   const owner = acceptedMembers.find((x) =>
     organization.value
       ? organization.value.members.some(
-        (orgMember) => orgMember.user.id === x.user.id && orgMember.is_owner,
-      )
+          (orgMember) => orgMember.user.id === x.user.id && orgMember.is_owner,
+        )
       : x.is_owner,
   );
 
@@ -1236,7 +1267,7 @@ versions.value = data.$computeVersions(versions.value, allMembers.value);
 // A: It will incorrectly generate the version slugs because it doesn't have the full context of
 //    all the versions. For example, if version 1.1.0 for Forge is featured but 1.1.0 for Fabric
 //    is not, but the Fabric one was uploaded first, the Forge version would link to the Fabric
-//    version
+///   version
 const featuredIds = featuredVersions.value.map((x) => x.id);
 featuredVersions.value = versions.value.filter((version) => featuredIds.includes(version.id));
 
@@ -1261,7 +1292,9 @@ const following = computed(
 const title = computed(() => `${project.value.title} - Minecraft ${projectTypeDisplay.value}`);
 const description = computed(
   () =>
-    `${project.value.description} - 在 Modrinth 上下载 ${members.value.find((x) => x.is_owner)?.user?.username || "一位创作者"} 创作的${projectTypeDisplay.value} ${project.value.title}`,
+    `${project.value.description} - Download the Minecraft ${projectTypeDisplay.value} ${
+      project.value.title
+    } by ${members.value.find((x) => x.is_owner)?.user?.username || "a Creator"} on Modrinth`,
 );
 
 if (!route.name.startsWith("type-id-settings")) {
@@ -1280,7 +1313,7 @@ if (!route.name.startsWith("type-id-settings")) {
 
 const onUserCollectProject = useClientTry(userCollectProject);
 
-const {version, loader} = route.query;
+const { version, loader } = route.query;
 if (version !== undefined && project.value.game_versions.includes(version)) {
   userSelectedGameVersion.value = version;
 }
@@ -1312,8 +1345,8 @@ async function setProcessing() {
   } catch (err) {
     data.$notify({
       group: "main",
-      title: "发生错误",
-      text: err.data.description,
+      title: "An error occurred",
+      text: err.data ? err.data.description : err,
       type: "error",
     });
   }
@@ -1346,20 +1379,20 @@ async function patchProject(resData, quiet = false) {
     if (!quiet) {
       data.$notify({
         group: "main",
-        title: "资源已更新",
-        text: "您的资源已更新",
+        title: "Project updated",
+        text: "Your project has been updated.",
         type: "success",
       });
-      window.scrollTo({top: 0, behavior: "smooth"});
+      window.scrollTo({ top: 0, behavior: "smooth" });
     }
   } catch (err) {
     data.$notify({
       group: "main",
-      title: "发生错误",
-      text: err.data.description,
+      title: "An error occurred",
+      text: err.data ? err.data.description : err,
       type: "error",
     });
-    window.scrollTo({top: 0, behavior: "smooth"});
+    window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
   stopLoading();
@@ -1385,19 +1418,19 @@ async function patchIcon(icon) {
     result = true;
     data.$notify({
       group: "main",
-      title: "资源图标已更新",
-      text: "您资源的图标已更新。",
+      title: "Project icon updated",
+      text: "Your project's icon has been updated.",
       type: "success",
     });
   } catch (err) {
     data.$notify({
       group: "main",
-      title: "发生错误",
-      text: err.data.description,
+      title: "An error occurred",
+      text: err.data ? err.data.description : err,
       type: "error",
     });
 
-    window.scrollTo({top: 0, behavior: "smooth"});
+    window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
   stopLoading();
@@ -1482,7 +1515,7 @@ const navLinks = computed(() => {
       shown: project.value.gallery.length > 0 || !!currentMember.value,
     },
     {
-      label: "更新日志",
+      label: "Changelog",
       href: `${projectUrl}/changelog`,
       shown: versions.value.length > 0,
     },

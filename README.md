@@ -44,7 +44,7 @@ All packages in this repository are licensed under their respective licenses. Re
 * 汉化部分管理员页面（不会真有中国管理员吧）
 * 汉化部分梗
 
-## TO MODRINTH 对Modrinth的话
+## TO MODRINTH 对 Modrinth 的话
 
 If you have a problem with this idc
 

@@ -11,56 +11,56 @@
       }
     "
   />
-  <EditServerModal ref="editServerModal" :instance="instance" @submit="editServer" />
-  <EditWorldModal ref="editWorldModal" :instance="instance" @submit="editWorld" />
+  <EditServerModal ref="editServerModal" :instance="instance" @submit="editServer"/>
+  <EditWorldModal ref="editWorldModal" :instance="instance" @submit="editWorld"/>
   <ConfirmModalWrapper
     ref="removeServerModal"
-    :title="`Are you sure you want to remove ${serverToRemove?.name ?? 'this server'}?`"
-    :description="`'${serverToRemove?.name}'${serverToRemove?.address === serverToRemove?.name ? ' ' : ` (${serverToRemove?.address})`} will be removed from your list, including in-game, and there will be no way to recover it.`"
+    :title="`你确定要删除${` ${serverToRemove?.name} ` ?? '这个服务器'}吗？`"
+    :description="`“${serverToRemove?.name}${serverToRemove?.address === serverToRemove?.name ? '' : ` (${serverToRemove?.address})`}” 将从服务器列表中删除，包括游戏内，并且将无法恢复。`"
     :markdown="false"
     @proceed="proceedRemoveServer"
   />
   <ConfirmModalWrapper
     ref="deleteWorldModal"
-    :title="`Are you sure you want to permanently delete this world?`"
-    :description="`'${worldToDelete?.name}' will be **permanently deleted**, and there will be no way to recover it.`"
+    :title="`你确定要永久删除这个世界吗？`"
+    :description="`“${worldToDelete?.name}” 将被**永久删除**，并且将无法恢复。`"
     @proceed="proceedDeleteWorld"
   />
   <div v-if="worlds.length > 0" class="flex flex-col gap-4">
     <div class="flex flex-wrap gap-2 items-center">
       <div class="iconified-input flex-grow">
-        <SearchIcon />
+        <SearchIcon/>
         <input
           v-model="searchFilter"
           type="text"
-          :placeholder="`Search worlds...`"
+          :placeholder="`搜索世界...`"
           class="text-input search-input"
           autocomplete="off"
         />
         <Button v-if="searchFilter" class="r-btn" @click="() => (searchFilter = '')">
-          <XIcon />
+          <XIcon/>
         </Button>
       </div>
       <ButtonStyled>
         <button :disabled="refreshingAll" @click="refreshAllWorlds">
           <template v-if="refreshingAll">
-            <SpinnerIcon class="animate-spin" />
-            Refreshing...
+            <SpinnerIcon class="animate-spin"/>
+            刷新中...
           </template>
           <template v-else>
-            <UpdatedIcon />
-            Refresh
+            <UpdatedIcon/>
+            刷新
           </template>
         </button>
       </ButtonStyled>
       <ButtonStyled>
         <button @click="addServerModal?.show()">
-          <PlusIcon />
-          Add a server
+          <PlusIcon/>
+          添加服务器
         </button>
       </ButtonStyled>
     </div>
-    <FilterBar v-model="filters" :options="filterOptions" show-all-options />
+    <FilterBar v-model="filters" :options="filterOptions" show-all-options/>
     <div class="flex flex-col w-full gap-2">
       <WorldItem
         v-for="world in filteredWorlds"
@@ -92,26 +92,26 @@
   <div v-else class="w-full max-w-[48rem] mx-auto flex flex-col mt-6">
     <RadialHeader class="">
       <div class="flex items-center gap-6 w-[32rem] mx-auto">
-        <img src="@/assets/sad-modrinth-bot.webp" alt="" aria-hidden="true" class="h-24" />
-        <span class="text-contrast font-bold text-xl"> You don't have any worlds yet. </span>
+        <img src="@/assets/sad-modrinth-bot.webp" alt="" aria-hidden="true" class="h-24"/>
+        <span class="text-contrast font-bold text-xl"> 此实例当前没有安装任何世界 </span>
       </div>
     </RadialHeader>
     <div class="flex gap-2 mt-4 mx-auto">
       <ButtonStyled>
         <button @click="addServerModal?.show()">
-          <PlusIcon aria-hidden="true" />
-          Add a server
+          <PlusIcon aria-hidden="true"/>
+          添加服务器
         </button>
       </ButtonStyled>
       <ButtonStyled>
         <button :disabled="refreshingAll" @click="refreshAllWorlds">
           <template v-if="refreshingAll">
-            <SpinnerIcon aria-hidden="true" class="animate-spin" />
-            Refreshing...
+            <SpinnerIcon aria-hidden="true" class="animate-spin"/>
+            刷新中...
           </template>
           <template v-else>
-            <UpdatedIcon aria-hidden="true" />
-            Refresh
+            <UpdatedIcon aria-hidden="true"/>
+            刷新
           </template>
         </button>
       </ButtonStyled>
@@ -119,38 +119,38 @@
   </div>
 </template>
 <script setup lang="ts">
-import { ref, computed, onUnmounted, watch } from 'vue'
-import { useRoute } from 'vue-router'
-import type { GameInstance } from '@/helpers/types'
+import {computed, onUnmounted, ref, watch} from 'vue'
+import {useRoute} from 'vue-router'
+import type {GameInstance} from '@/helpers/types'
 import {
   Button,
   ButtonStyled,
-  RadialHeader,
   FilterBar,
   type FilterBarOption,
-  type GameVersion,
   GAME_MODES,
+  type GameVersion,
+  RadialHeader,
 } from '@modrinth/ui'
-import { PlusIcon, SpinnerIcon, UpdatedIcon, SearchIcon, XIcon } from '@modrinth/assets'
+import {PlusIcon, SearchIcon, SpinnerIcon, UpdatedIcon, XIcon} from '@modrinth/assets'
 import {
-  type SingleplayerWorld,
-  type World,
-  type ServerWorld,
-  type ServerData,
-  type ProfileEvent,
-  get_profile_protocol_version,
-  remove_server_from_profile,
   delete_world,
+  get_profile_protocol_version,
+  getWorldIdentifier,
+  handleDefaultProfileUpdateEvent,
+  hasQuickPlaySupport,
+  type ProfileEvent,
+  refreshServerData,
+  refreshServers,
+  refreshWorld,
+  refreshWorlds,
+  remove_server_from_profile,
+  type ServerData,
+  type ServerWorld,
+  type SingleplayerWorld,
+  sortWorlds,
   start_join_server,
   start_join_singleplayer_world,
-  getWorldIdentifier,
-  refreshServerData,
-  refreshWorld,
-  sortWorlds,
-  refreshServers,
-  hasQuickPlaySupport,
-  refreshWorlds,
-  handleDefaultProfileUpdateEvent,
+  type World,
 } from '@/helpers/worlds.ts'
 import AddServerModal from '@/components/ui/world/modal/AddServerModal.vue'
 import EditServerModal from '@/components/ui/world/modal/EditServerModal.vue'
@@ -158,12 +158,12 @@ import EditWorldModal from '@/components/ui/world/modal/EditSingleplayerWorldMod
 import WorldItem from '@/components/ui/world/WorldItem.vue'
 
 import ConfirmModalWrapper from '@/components/ui/modal/ConfirmModalWrapper.vue'
-import { handleError } from '@/store/notifications'
+import {handleError} from '@/store/notifications'
 import type ContextMenu from '@/components/ui/ContextMenu.vue'
-import type { Version } from '@modrinth/utils'
-import { profile_listener } from '@/helpers/events'
-import { get_game_versions } from '@/helpers/tags'
-import { defineMessages } from '@vintl/vintl'
+import type {Version} from '@modrinth/utils'
+import {profile_listener} from '@/helpers/events'
+import {get_game_versions} from '@/helpers/tags'
+import {defineMessages} from '@vintl/vintl'
 
 const route = useRoute()
 
@@ -449,15 +449,15 @@ onUnmounted(() => {
 const messages = defineMessages({
   singleplayer: {
     id: 'instance.worlds.type.singleplayer',
-    defaultMessage: 'Singleplayer',
+    defaultMessage: '单人游戏',
   },
   server: {
     id: 'instance.worlds.type.server',
-    defaultMessage: 'Server',
+    defaultMessage: '服务器',
   },
   available: {
     id: 'instance.worlds.filter.available',
-    defaultMessage: 'Available',
+    defaultMessage: '可用',
   },
 })
 </script>

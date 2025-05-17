@@ -68,19 +68,19 @@ defineExpose({ show })
 const messages = defineMessages({
   title: {
     id: 'instance.edit-world.title',
-    defaultMessage: 'Edit world',
+    defaultMessage: '修改世界信息',
   },
   name: {
     id: 'instance.edit-world.name',
-    defaultMessage: 'Name',
+    defaultMessage: '名称',
   },
   placeholderName: {
     id: 'instance.edit-world.placeholder-name',
-    defaultMessage: 'Minecraft World',
+    defaultMessage: 'Minecraft 世界',
   },
   resetIcon: {
     id: 'instance.edit-world.reset-icon',
-    defaultMessage: 'Reset icon',
+    defaultMessage: '重置图标',
   },
 })
 </script>

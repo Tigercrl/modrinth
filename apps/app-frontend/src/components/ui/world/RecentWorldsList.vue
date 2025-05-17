@@ -1,29 +1,30 @@
 <script setup lang="ts">
 import {
-  type ServerWorld,
-  type ServerData,
-  type WorldWithProfile,
+  get_profile_protocol_version,
   get_recent_worlds,
   getWorldIdentifier,
-  get_profile_protocol_version,
   refreshServerData,
+  type ServerData,
+  type ServerWorld,
   start_join_server,
   start_join_singleplayer_world,
+  type WorldWithProfile,
 } from '@/helpers/worlds.ts'
-import { HeadingLink, GAME_MODES } from '@modrinth/ui'
+import {GAME_MODES, HeadingLink} from '@modrinth/ui'
 import WorldItem from '@/components/ui/world/WorldItem.vue'
 import InstanceItem from '@/components/ui/world/InstanceItem.vue'
-import { watch, onMounted, onUnmounted, ref, computed } from 'vue'
-import type { Dayjs } from 'dayjs'
+import {computed, onMounted, onUnmounted, ref, watch} from 'vue'
+import type {Dayjs} from 'dayjs'
 import dayjs from 'dayjs'
-import { useTheming } from '@/store/theme.ts'
-import { kill, run } from '@/helpers/profile'
-import { handleError } from '@/store/notifications'
-import { trackEvent } from '@/helpers/analytics'
-import { process_listener, profile_listener } from '@/helpers/events'
-import { get_all } from '@/helpers/process'
-import type { GameInstance } from '@/helpers/types'
-import { handleSevereError } from '@/store/error'
+import {useTheming} from '@/store/theme.ts'
+import {kill, run} from '@/helpers/profile'
+import {handleError} from '@/store/notifications'
+import {trackEvent} from '@/helpers/analytics'
+import {process_listener, profile_listener} from '@/helpers/events'
+import {get_all} from '@/helpers/process'
+import type {GameInstance} from '@/helpers/types'
+import {handleSevereError} from '@/store/error'
+import {SpinnerIcon} from '@modrinth/assets'
 
 const props = defineProps<{
   recentInstances: GameInstance[]
@@ -31,6 +32,7 @@ const props = defineProps<{
 
 const theme = useTheming()
 
+const loaded = ref(false)
 const jumpBackInItems = ref<JumpBackInItem[]>([])
 const serverData = ref<Record<string, ServerData>>({})
 const protocolVersions = ref<Record<string, number | null>>({})
@@ -57,17 +59,8 @@ type JumpBackInItem = InstanceJumpBackInItem | WorldJumpBackInItem
 
 const showWorlds = computed(() => theme.getFeatureFlag('worlds_in_home'))
 
-watch([() => props.recentInstances, () => showWorlds.value], async () => {
-  await populateJumpBackIn().catch(() => {
-    console.error('Failed to populate jump back in')
-  })
-})
-
-await populateJumpBackIn().catch(() => {
-  console.error('Failed to populate jump back in')
-})
-
 async function populateJumpBackIn() {
+  loaded.value = false
   console.info('Repopulating jump back in...')
 
   const worldItems: WorldJumpBackInItem[] = []
@@ -113,7 +106,7 @@ async function populateJumpBackIn() {
     )
 
     // initialize server data
-    servers.forEach(({ address }) => {
+    servers.forEach(({address}) => {
       if (!serverData.value[address]) {
         serverData.value[address] = {
           refreshing: true,
@@ -123,7 +116,7 @@ async function populateJumpBackIn() {
 
     // fetch each server's data
     Promise.all(
-      servers.map(({ instancePath, address }) =>
+      servers.map(({instancePath, address}) =>
         refreshServerData(serverData.value[address], protocolVersions.value[instancePath], address),
       ),
     )
@@ -148,6 +141,7 @@ async function populateJumpBackIn() {
   jumpBackInItems.value = items
     .filter((item, index) => index < MIN_JUMP_BACK_IN || item.last_played.isAfter(TWO_WEEKS_AGO))
     .slice(0, MAX_JUMP_BACK_IN)
+  loaded.value = true
 }
 
 async function refreshServer(address: string, instancePath: string) {
@@ -165,7 +159,7 @@ async function joinWorld(world: WorldWithProfile) {
 
 async function playInstance(instance: GameInstance) {
   await run(instance.path)
-    .catch((err) => handleSevereError(err, { profilePath: instance.path }))
+    .catch((err) => handleSevereError(err, {profilePath: instance.path}))
     .finally(() => {
       trackEvent('InstancePlay', {
         loader: instance.loader,
@@ -218,6 +212,16 @@ const checkProcesses = async () => {
 }
 
 onMounted(() => {
+  populateJumpBackIn().catch(() => {
+    console.error('Failed to populate jump back in')
+  }).finally(() => {
+    watch([() => props.recentInstances, () => showWorlds.value], async () => {
+      await populateJumpBackIn().catch(() => {
+        console.error('Failed to populate jump back in')
+      })
+    })
+  })
+
   checkProcesses()
 })
 
@@ -228,18 +232,27 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <div v-if="jumpBackInItems.length > 0" class="flex flex-col gap-2">
-    <HeadingLink v-if="theme.getFeatureFlag('worlds_tab')" to="/worlds" class="mt-1">
-      Jump back in
-    </HeadingLink>
-    <span
-      v-else
-      class="flex mt-1 mb-3 leading-none items-center gap-1 text-primary text-lg font-bold"
-    >
-      Jump back in
+  <div v-if="!loaded || jumpBackInItems.length > 0" class="flex flex-col gap-2">
+    <span class="mt-1 flex gap-2">
+      <HeadingLink v-if="theme.getFeatureFlag('worlds_tab')" to="/worlds">
+      快速启动
+      </HeadingLink>
+      <span
+        v-else
+        class="flex mb-3 leading-none items-center gap-1 text-primary text-lg font-bold"
+      >
+        快速启动
+      </span>
+      <SpinnerIcon
+        v-if="!loaded"
+        v-tooltip="'加载中...'"
+        class="animate-spin w-4 h-4"
+        tabindex="-1"
+      />
     </span>
     <div class="grid-when-huge flex flex-col w-full gap-2">
       <template
+        v-if="loaded"
         v-for="item in jumpBackInItems"
         :key="`${item.instance.path}-${item.type === 'world' ? getWorldIdentifier(item.world) : 'instance'}`"
       >
@@ -291,7 +304,7 @@ onUnmounted(() => {
           "
           @stop="() => stopInstance(item.instance.path)"
         />
-        <InstanceItem v-else :instance="item.instance" />
+        <InstanceItem v-else :instance="item.instance"/>
       </template>
     </div>
   </div>

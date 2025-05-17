@@ -53,7 +53,7 @@ async function install() {
 </script>
 
 <template>
-  <ModalWrapper ref="confirmModal" header="Are you sure?" :on-hide="onInstall">
+  <ModalWrapper ref="confirmModal" header="你确定要继续吗?" :on-hide="onInstall">
     <div class="modal-body">
       <p>您已经安装了该整合包。您确定要再次安装吗？</p>
       <div class="input-group push-right">

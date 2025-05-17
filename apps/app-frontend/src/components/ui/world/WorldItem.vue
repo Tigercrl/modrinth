@@ -127,47 +127,47 @@ const locked = computed(() => props.world.type === 'singleplayer' && props.world
 const messages = defineMessages({
   hardcore: {
     id: 'instance.worlds.hardcore',
-    defaultMessage: 'Hardcore mode',
+    defaultMessage: '极限模式',
   },
   cantConnect: {
     id: 'instance.worlds.cant_connect',
-    defaultMessage: "Can't connect to server",
+    defaultMessage: "无法连接至服务器",
   },
   aMinecraftServer: {
     id: 'instance.worlds.a_minecraft_server',
-    defaultMessage: 'A Minecraft Server',
+    defaultMessage: '一个 Minecraft 服务器',
   },
   noQuickPlay: {
     id: 'instance.worlds.no_quick_play',
-    defaultMessage: 'You can only jump straight into worlds on Minecraft 1.20+',
+    defaultMessage: '你只能快速启动 Minecraft 1.20+ 的世界',
   },
   gameAlreadyOpen: {
     id: 'instance.worlds.game_already_open',
-    defaultMessage: 'Instance is already open',
+    defaultMessage: '实例已启动',
   },
   copyAddress: {
     id: 'instance.worlds.copy_address',
-    defaultMessage: 'Copy address',
+    defaultMessage: '复制地址',
   },
   viewInstance: {
     id: 'instance.worlds.view_instance',
-    defaultMessage: 'View instance',
+    defaultMessage: '查看实例',
   },
   playAnyway: {
     id: 'instance.worlds.play_anyway',
-    defaultMessage: 'Play anyway',
+    defaultMessage: '忽略并启动',
   },
   playInstance: {
     id: 'instance.worlds.play_instance',
-    defaultMessage: 'Play instance',
+    defaultMessage: '启动实例',
   },
   worldInUse: {
     id: 'instance.worlds.world_in_use',
-    defaultMessage: 'World is in use',
+    defaultMessage: '世界已在游戏中',
   },
   dontShowOnHome: {
     id: 'instance.worlds.dont_show_on_home',
-    defaultMessage: `Don't show on Home`,
+    defaultMessage: `不在主页显示`,
   },
 })
 </script>
@@ -219,7 +219,7 @@ const messages = defineMessages({
               <template v-if="serverIncompatible">
                 <IssuesIcon class="shrink-0 text-orange" aria-hidden="true" />
                 <span class="text-orange">
-                  Incompatible version {{ serverStatus.version?.name }}
+                  不兼容的版本 {{ serverStatus.version?.name }}
                 </span>
               </template>
               <template v-else>
@@ -235,7 +235,7 @@ const messages = defineMessages({
                 />
                 <Tooltip :disabled="!hasPlayersTooltip">
                   <span :class="{ 'cursor-help': hasPlayersTooltip }">
-                    {{ formatNumber(serverStatus.players?.online, false) }} online
+                    在线玩家：{{ formatNumber(serverStatus.players?.online, false) }}
                   </span>
                   <template #popper>
                     <div class="flex flex-col gap-1">
@@ -248,14 +248,14 @@ const messages = defineMessages({
               </template>
             </template>
             <template v-else>
-              <NoSignalIcon aria-hidden="true" stroke-width="3px" class="shrink-0" /> Offline
+              <NoSignalIcon aria-hidden="true" stroke-width="3px" class="shrink-0" /> 离线
             </template>
           </div>
         </div>
         <div class="flex items-center gap-2 text-sm text-secondary">
           <div
             v-tooltip="
-              world.last_played ? dayjs(world.last_played).format('MMMM D, YYYY [at] h:mm A') : null
+              world.last_played ? dayjs(world.last_played).format('YYYY/MM/DD hh:mm') : null
             "
             class="w-fit shrink-0"
             :class="{ 'cursor-help smart-clickable:allow-pointer-events': world.last_played }"
@@ -267,7 +267,7 @@ const messages = defineMessages({
                 })
               }}
             </template>
-            <template v-else> Not played yet </template>
+            <template v-else> 暂未游玩过 </template>
           </div>
           <template v-if="instancePath">
             •
@@ -333,7 +333,7 @@ const messages = defineMessages({
             <button
               v-tooltip="
                 serverIncompatible
-                  ? 'Server is incompatible'
+                  ? '服务器版本不兼容'
                   : !supportsQuickPlay
                     ? formatMessage(messages.noQuickPlay)
                     : playingOtherWorld || locked

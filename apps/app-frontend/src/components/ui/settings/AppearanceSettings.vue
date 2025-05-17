@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import { TeleportDropdownMenu, ThemeSelector, Toggle } from '@modrinth/ui'
-import { useTheming } from '@/store/state'
-import { get, set } from '@/helpers/settings.ts'
-import { ref, watch } from 'vue'
-import { getOS } from '@/helpers/utils'
-import type { ColorTheme } from '@/store/theme.ts'
+import {TeleportDropdownMenu, ThemeSelector, Toggle} from '@modrinth/ui'
+import {useTheming} from '@/store/state'
+import {get, set} from '@/helpers/settings.ts'
+import {ref, watch} from 'vue'
+import {getOS} from '@/helpers/utils'
+import type {ColorTheme} from '@/store/theme.ts'
 
 const themeStore = useTheming()
 
@@ -60,7 +60,7 @@ watch(
       <h2 class="m-0 text-lg font-extrabold text-contrast">原生窗口</h2>
       <p class="m-0 mt-1">使用系统窗口框。（需要重启应用生效）</p>
     </div>
-    <Toggle id="native-decorations" v-model="settings.native_decorations" />
+    <Toggle id="native-decorations" v-model="settings.native_decorations"/>
   </div>
 
   <div class="mt-4 flex items-center justify-between">
@@ -68,7 +68,7 @@ watch(
       <h2 class="m-0 text-lg font-extrabold text-contrast">最小化启动器</h2>
       <p class="m-0 mt-1">当 Minecraft 启动时最小化启动器。</p>
     </div>
-    <Toggle id="minimize-launcher" v-model="settings.hide_on_process_start" />
+    <Toggle id="minimize-launcher" v-model="settings.hide_on_process_start"/>
   </div>
 
   <div class="mt-4 flex items-center justify-between">
@@ -96,8 +96,8 @@ watch(
 
   <div class="mt-4 flex items-center justify-between">
     <div>
-      <h2 class="m-0 text-lg font-extrabold text-contrast">Jump back into worlds</h2>
-      <p class="m-0 mt-1">Includes recent worlds in the "Jump back in" section on the Home page.</p>
+      <h2 class="m-0 text-lg font-extrabold text-contrast">快速启动世界</h2>
+      <p class="m-0 mt-1">在主页的“快速启动”栏目中显示最近游玩的世界。</p>
     </div>
     <Toggle
       :model-value="themeStore.getFeatureFlag('worlds_in_home')"

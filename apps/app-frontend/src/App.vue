@@ -383,7 +383,7 @@ function handleAuxClick(e) {
       <NavButton v-tooltip.right="'主页'" to="/">
         <HomeIcon />
       </NavButton>
-      <NavButton v-if="themeStore.featureFlags.worlds_tab" v-tooltip.right="'Worlds'" to="/worlds">
+      <NavButton v-if="themeStore.featureFlags.worlds_tab" v-tooltip.right="'世界'" to="/worlds">
         <WorldIcon />
       </NavButton>
       <NavButton

@@ -23,7 +23,7 @@ export const commonMessages = defineMessages({
   },
   copyPermalinkButton: {
     id: 'button.copy-permalink',
-    defaultMessage: 'Copy permanent link',
+    defaultMessage: '复制永久链接',
   },
   changesSavedLabel: {
     id: 'label.changes-saved',
@@ -55,11 +55,11 @@ export const commonMessages = defineMessages({
   },
   downloadButton: {
     id: 'button.download',
-    defaultMessage: 'Download',
+    defaultMessage: '下载',
   },
   downloadingButton: {
     id: 'button.downloading',
-    defaultMessage: 'Downloading',
+    defaultMessage: '下载中',
   },
   editButton: {
     id: 'button.edit',
@@ -91,7 +91,7 @@ export const commonMessages = defineMessages({
   },
   loadingLabel: {
     id: 'label.loading',
-    defaultMessage: 'Loading...',
+    defaultMessage: '加载中...',
   },
   moderationLabel: {
     id: 'label.moderation',
@@ -103,11 +103,11 @@ export const commonMessages = defineMessages({
   },
   playButton: {
     id: 'button.play',
-    defaultMessage: 'Play',
+    defaultMessage: '启动',
   },
   playedLabel: {
     id: 'label.played',
-    defaultMessage: 'Played {time}',
+    defaultMessage: '上次游玩：{time}',
   },
   privateLabel: {
     id: 'collection.label.private',
@@ -119,7 +119,7 @@ export const commonMessages = defineMessages({
   },
   refreshButton: {
     id: 'button.refresh',
-    defaultMessage: 'Refresh',
+    defaultMessage: '刷新',
   },
   rejectedLabel: {
     id: 'label.rejected',
@@ -127,7 +127,7 @@ export const commonMessages = defineMessages({
   },
   removeButton: {
     id: 'button.remove',
-    defaultMessage: 'Remove',
+    defaultMessage: '删除',
   },
   reportButton: {
     id: 'button.report',
@@ -135,7 +135,7 @@ export const commonMessages = defineMessages({
   },
   openFolderButton: {
     id: 'button.open-folder',
-    defaultMessage: 'Open folder',
+    defaultMessage: '打开文件夹',
   },
   passwordLabel: {
     id: 'label.password',
@@ -155,7 +155,7 @@ export const commonMessages = defineMessages({
   },
   serverLabel: {
     id: 'label.server',
-    defaultMessage: 'Server',
+    defaultMessage: '服务器',
   },
   serversLabel: {
     id: 'label.servers',
@@ -175,11 +175,11 @@ export const commonMessages = defineMessages({
   },
   singleplayerLabel: {
     id: 'label.singleplayer',
-    defaultMessage: 'Singleplayer',
+    defaultMessage: '单人游戏',
   },
   stopButton: {
     id: 'button.stop',
-    defaultMessage: 'Stop',
+    defaultMessage: '停止',
   },
   titleLabel: {
     id: 'label.title',
@@ -195,7 +195,7 @@ export const commonMessages = defineMessages({
   },
   removeImageButton: {
     id: 'button.remove-image',
-    defaultMessage: 'Remove image',
+    defaultMessage: '删除图片',
   },
   visibilityLabel: {
     id: 'label.visibility',

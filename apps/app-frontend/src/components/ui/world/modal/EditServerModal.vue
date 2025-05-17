@@ -86,7 +86,7 @@ defineExpose({ show })
 
 const titleMessage = defineMessage({
   id: 'instance.edit-server.title',
-  defaultMessage: 'Edit server',
+  defaultMessage: '修改服务器信息',
 })
 </script>
 <template>

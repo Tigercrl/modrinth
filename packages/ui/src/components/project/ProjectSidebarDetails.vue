@@ -27,14 +27,14 @@
       </div>
       <div
         v-if="project.approved"
-        v-tooltip="dayjs(project.approved).format('YYYY/MM/DD hh:mm:ss')"
+        v-tooltip="dayjs(project.approved).format('YYYY/MM/DD hh:mm')"
       >
         <CalendarIcon aria-hidden="true" />
         <div>
           {{ formatMessage(messages.published, { date: publishedDate }) }}
         </div>
       </div>
-      <div v-else v-tooltip="dayjs(project.published).format('YYYY/MM/DD hh:mm:ss')">
+      <div v-else v-tooltip="dayjs(project.published).format('YYYY/MM/DD hh:mm')">
         <CalendarIcon aria-hidden="true" />
         <div>
           {{ formatMessage(messages.created, { date: createdDate }) }}
@@ -42,7 +42,7 @@
       </div>
       <div
         v-if="project.status === 'processing' && project.queued"
-        v-tooltip="dayjs(project.queued).format('YYYY/MM/DD hh:mm:ss')"
+        v-tooltip="dayjs(project.queued).format('YYYY/MM/DD hh:mm')"
       >
         <ScaleIcon aria-hidden="true" />
         <div>
@@ -51,7 +51,7 @@
       </div>
       <div
         v-if="hasVersions && project.updated"
-        v-tooltip="dayjs(project.updated).format('YYYY/MM/DD hh:mm:ss')"
+        v-tooltip="dayjs(project.updated).format('YYYY/MM/DD hh:mm')"
       >
         <VersionIcon aria-hidden="true" />
         <div>

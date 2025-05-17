@@ -101,7 +101,7 @@
               subpages: ['version'],
             },
             {
-              label: '图库',
+              label: '画廊',
               href: `/project/${$route.params.id}/gallery`,
               shown: data.gallery.length > 0,
             },

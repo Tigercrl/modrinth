@@ -29,6 +29,10 @@ function getOptionName(option: string) {
       return '资源背景（在模组等资源页面增加渐变背景）'
     case 'page_path':
       return '显示页面路径（左下角）'
+    case 'worlds_in_home':
+      return '主界面快速启动'
+    case 'worlds_tab':
+      return '侧边栏世界'
   }
   return option
 }

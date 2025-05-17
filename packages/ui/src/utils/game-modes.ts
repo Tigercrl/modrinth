@@ -6,35 +6,35 @@ export const GAME_MODES = {
     icon: PickaxeIcon,
     message: defineMessage({
       id: 'instance.worlds.game_mode.survival',
-      defaultMessage: 'Survival mode',
+      defaultMessage: '生存模式',
     }),
   },
   creative: {
     icon: BlocksIcon,
     message: defineMessage({
       id: 'instance.worlds.game_mode.creative',
-      defaultMessage: 'Creative mode',
+      defaultMessage: '创造模式',
     }),
   },
   adventure: {
     icon: CompassIcon,
     message: defineMessage({
       id: 'instance.worlds.game_mode.adventure',
-      defaultMessage: 'Adventure mode',
+      defaultMessage: '冒险模式',
     }),
   },
   spectator: {
     icon: EyeIcon,
     message: defineMessage({
       id: 'instance.worlds.game_mode.spectator',
-      defaultMessage: 'Spectator mode',
+      defaultMessage: '旁观模式',
     }),
   },
   unknown: {
     icon: UnknownIcon,
     message: defineMessage({
       id: 'instance.worlds.game_mode.unknown',
-      defaultMessage: 'Unknown game mode',
+      defaultMessage: '未知模式',
     }),
   },
 }

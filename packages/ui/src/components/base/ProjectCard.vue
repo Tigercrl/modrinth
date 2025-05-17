@@ -215,13 +215,13 @@ export default defineComponent({
       return `rgba(${[r, g, b, 1].join(',')})`
     },
     createdDate() {
-      return dayjs(this.createdAt).format('YYYY/MM/DD hh:mm:ss')
+      return dayjs(this.createdAt).format('YYYY/MM/DD hh:mm')
     },
     sinceCreation() {
       return this.formatRelativeTime(this.createdAt)
     },
     updatedDate() {
-      return dayjs(this.updatedAt).format('YYYY/MM/DD hh:mm:ss')
+      return dayjs(this.updatedAt).format('YYYY/MM/DD hh:mm')
     },
     sinceUpdated() {
       return this.formatRelativeTime(this.updatedAt)

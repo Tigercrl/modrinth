@@ -12,7 +12,7 @@ export default new createRouter({
   routes: [
     {
       path: '/',
-      name: 'Home',
+      name: '主页',
       component: Pages.Index,
       meta: {
         breadcrumb: [{ name: '主页' }],
@@ -20,15 +20,15 @@ export default new createRouter({
     },
     {
       path: '/worlds',
-      name: 'Worlds',
+      name: '世界',
       component: Pages.Worlds,
       meta: {
-        breadcrumb: [{ name: 'Worlds' }],
+        breadcrumb: [{ name: '世界' }],
       },
     },
     {
       path: '/browse/:projectType',
-      name: 'Discover content',
+      name: '探索资源',
       component: Pages.Browse,
       meta: {
         breadcrumb: [{ name: '探索资源' }],
@@ -36,7 +36,7 @@ export default new createRouter({
     },
     {
       path: '/library',
-      name: 'Library',
+      name: '实例管理',
       component: Library.Index,
       meta: {
         breadcrumb: [{ name: '实例管理' }],
@@ -44,30 +44,30 @@ export default new createRouter({
       children: [
         {
           path: '',
-          name: 'Overview',
+          name: '概览',
           component: Library.Overview,
         },
         {
           path: 'downloaded',
-          name: 'Downloaded',
+          name: '已下载',
           component: Library.Downloaded,
         },
         {
           path: 'custom',
-          name: 'Custom',
+          name: '自定义',
           component: Library.Custom,
         },
       ],
     },
     {
       path: '/project/:id',
-      name: 'Project',
+      name: '资源',
       component: Project.Index,
       props: true,
       children: [
         {
           path: '',
-          name: 'Description',
+          name: '简介',
           component: Project.Description,
           meta: {
             useContext: true,
@@ -76,7 +76,7 @@ export default new createRouter({
         },
         {
           path: 'versions',
-          name: 'Versions',
+          name: '版本列表',
           component: Project.Versions,
           meta: {
             useContext: true,
@@ -85,7 +85,7 @@ export default new createRouter({
         },
         {
           path: 'version/:version',
-          name: 'Version',
+          name: '版本',
           component: Project.Version,
           props: true,
           meta: {
@@ -99,18 +99,18 @@ export default new createRouter({
         },
         {
           path: 'gallery',
-          name: 'Gallery',
+          name: '画廊',
           component: Project.Gallery,
           meta: {
             useContext: true,
-            breadcrumb: [{ name: '?Project', link: '/project/{id}/' }, { name: '图库' }],
+            breadcrumb: [{ name: '?Project', link: '/project/{id}/' }, { name: '画廊' }],
           },
         },
       ],
     },
     {
       path: '/instance/:id',
-      name: 'Instance',
+      name: '实例',
       component: Instance.Index,
       props: true,
       children: [
@@ -125,34 +125,34 @@ export default new createRouter({
         // },
         {
           path: 'worlds',
-          name: 'InstanceWorlds',
+          name: '世界',
           component: Instance.Worlds,
           meta: {
             useRootContext: true,
-            breadcrumb: [{ name: '?Instance', link: '/instance/{id}/' }, { name: 'Worlds' }],
+            breadcrumb: [{ name: '?Instance', link: '/instance/{id}/' }, { name: '世界' }],
           },
         },
         {
           path: '',
-          name: 'Mods',
+          name: '资源',
           component: Instance.Mods,
           meta: {
             useRootContext: true,
-            breadcrumb: [{ name: '?Instance', link: '/instance/{id}/' }, { name: 'Content' }],
+            breadcrumb: [{ name: '?Instance', link: '/instance/{id}/' }, { name: '资源' }],
           },
         },
         {
           path: 'projects/:type',
-          name: 'ModsFilter',
+          name: '资源筛选',
           component: Instance.Mods,
           meta: {
             useRootContext: true,
-            breadcrumb: [{ name: '?Instance', link: '/instance/{id}/' }, { name: 'Content' }],
+            breadcrumb: [{ name: '?Instance', link: '/instance/{id}/' }, { name: '资源' }],
           },
         },
         {
           path: 'logs',
-          name: 'Logs',
+          name: '日志',
           component: Instance.Logs,
           meta: {
             useRootContext: true,

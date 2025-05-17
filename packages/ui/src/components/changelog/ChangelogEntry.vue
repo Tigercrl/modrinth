@@ -70,7 +70,7 @@ const props = withDefaults(
 const currentDate = ref(dayjs())
 const recent = computed(() => props.entry.date.isAfter(currentDate.value.subtract(1, 'week')))
 const future = computed(() => props.entry.date.isAfter(currentDate.value))
-const dateTooltip = computed(() => props.entry.date.format('YYYY/MM/DD hh:mm:ss'))
+const dateTooltip = computed(() => props.entry.date.format('YYYY/MM/DD hh:mm'))
 
 const relativeDate = computed(() => formatRelativeTime(props.entry.date.toISOString()))
 const longDate = computed(() => props.entry.date.format('YYYY/MM/DD'))

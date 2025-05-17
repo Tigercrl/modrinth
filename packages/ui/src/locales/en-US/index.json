@@ -1,30 +1,30 @@
 {
   "button.cancel": {
-    "defaultMessage": "Cancel"
+    "defaultMessage": "取消"
   },
   "button.continue": {
-    "defaultMessage": "Continue"
+    "defaultMessage": "继续"
   },
   "button.copy-id": {
-    "defaultMessage": "Copy ID"
+    "defaultMessage": "复制 ID"
   },
   "button.copy-permalink": {
-    "defaultMessage": "Copy permanent link"
+    "defaultMessage": "复制永久链接"
   },
   "button.create-a-project": {
-    "defaultMessage": "Create a project"
+    "defaultMessage": "创建资源"
   },
   "button.download": {
-    "defaultMessage": "Download"
+    "defaultMessage": "下载"
   },
   "button.downloading": {
-    "defaultMessage": "Downloading"
+    "defaultMessage": "下载中"
   },
   "button.edit": {
-    "defaultMessage": "Edit"
+    "defaultMessage": "修改"
   },
   "button.open-folder": {
-    "defaultMessage": "Open folder"
+    "defaultMessage": "打开文件夹"
   },
   "button.play": {
     "defaultMessage": "Play"
@@ -540,6 +540,6 @@
     "defaultMessage": "Sessions"
   },
   "tooltip.date-at-time": {
-    "defaultMessage": "{date, date, long} at {time, time, short}"
+    "defaultMessage": "{date, date, long} {time, time, short}"
   }
 }

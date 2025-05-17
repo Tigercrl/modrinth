@@ -8,7 +8,7 @@ const value = defineModel<boolean>({ required: true })
 
 const labelMessage = defineMessage({
   id: 'instance.edit-world.hide-from-home',
-  defaultMessage: `Hide from the Home page`,
+  defaultMessage: `在主页的“快速启动”栏目中隐藏`,
 })
 
 const label = computed(() => formatMessage(labelMessage))

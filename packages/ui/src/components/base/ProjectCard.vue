@@ -85,7 +85,10 @@ dayjs.extend(relativeTime)
 </script>
 
 <script>
+import { useRelativeTime } from '../../composables'
 import {defineComponent} from 'vue'
+
+dayjs.extend(relativeTime)
 
 export default defineComponent({
   props: {
@@ -197,6 +200,10 @@ export default defineComponent({
       default: null,
     },
   },
+  setup(_) {
+    const formatRelativeTime = useRelativeTime()
+    return { formatRelativeTime }
+  },
   computed: {
     toColor() {
       let color = this.color
@@ -211,13 +218,13 @@ export default defineComponent({
       return dayjs(this.createdAt).format('YYYY/MM/DD hh:mm:ss')
     },
     sinceCreation() {
-      return dayjs(this.createdAt).fromNow()
+      return this.formatRelativeTime(this.createdAt)
     },
     updatedDate() {
       return dayjs(this.updatedAt).format('YYYY/MM/DD hh:mm:ss')
     },
     sinceUpdated() {
-      return dayjs(this.updatedAt).fromNow()
+      return this.formatRelativeTime(this.updatedAt)
     },
   },
   methods: {

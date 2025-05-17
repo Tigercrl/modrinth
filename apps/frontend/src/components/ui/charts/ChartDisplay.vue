@@ -14,7 +14,7 @@
           <CompactChart
             v-if="analytics.formattedData.value.downloads"
             ref="tinyDownloadChart"
-            :title="`下载量`"
+            :title="`Downloads`"
             color="var(--color-brand)"
             :value="formatNumber(analytics.formattedData.value.downloads.sum, false)"
             :data="analytics.formattedData.value.downloads.chart.sumData"
@@ -33,7 +33,7 @@
           <CompactChart
             v-if="analytics.formattedData.value.views"
             ref="tinyViewChart"
-            :title="`浏览量`"
+            :title="`Views`"
             color="var(--color-blue)"
             :value="formatNumber(analytics.formattedData.value.views.sum, false)"
             :data="analytics.formattedData.value.views.chart.sumData"
@@ -50,7 +50,7 @@
           <CompactChart
             v-if="analytics.formattedData.value.revenue"
             ref="tinyRevenueChart"
-            :title="`收益`"
+            :title="`Revenue`"
             color="var(--color-purple)"
             :value="formatMoney(analytics.formattedData.value.revenue.sum, false)"
             :data="analytics.formattedData.value.revenue.chart.sumData"
@@ -76,18 +76,18 @@
               </span>
             </h2>
             <div class="chart-controls__buttons">
-              <Button v-tooltip="'开关资源颜色'" icon-only @click="onToggleColors">
-                <PaletteIcon/>
+              <Button v-tooltip="'Toggle project colors'" icon-only @click="onToggleColors">
+                <PaletteIcon />
               </Button>
-              <Button v-tooltip="'以 CSV 格式下载数据'" icon-only @click="onDownloadSetAsCSV">
-                <DownloadIcon/>
+              <Button v-tooltip="'Download this data as CSV'" icon-only @click="onDownloadSetAsCSV">
+                <DownloadIcon />
               </Button>
-              <Button v-tooltip="'刷新图表'" icon-only @click="resetCharts">
-                <UpdatedIcon/>
+              <Button v-tooltip="'Refresh the chart'" icon-only @click="resetCharts">
+                <UpdatedIcon />
               </Button>
               <DropdownSelect
-                class="range-dropdown"
                 v-model="selectedRange"
+                class="range-dropdown"
                 :options="ranges"
                 name="Time range"
                 :display-name="
@@ -103,7 +103,7 @@
                   v-if="analytics.formattedData.value.downloads && selectedChart === 'downloads'"
                   ref="downloadsChart"
                   type="line"
-                  name="下载数据"
+                  name="Download data"
                   :hide-legend="true"
                   :data="analytics.formattedData.value.downloads.chart.data"
                   :labels="analytics.formattedData.value.downloads.chart.labels"
@@ -118,7 +118,7 @@
                   v-if="analytics.formattedData.value.views && selectedChart === 'views'"
                   ref="viewsChart"
                   type="line"
-                  name="浏览数据"
+                  name="View data"
                   :hide-legend="true"
                   :data="analytics.formattedData.value.views.chart.data"
                   :labels="analytics.formattedData.value.views.chart.labels"
@@ -133,7 +133,7 @@
                   v-if="analytics.formattedData.value.revenue && selectedChart === 'revenue'"
                   ref="revenueChart"
                   type="line"
-                  name="收益数据"
+                  name="Revenue data"
                   :hide-legend="true"
                   :data="analytics.formattedData.value.revenue.chart.data"
                   :labels="analytics.formattedData.value.revenue.chart.labels"
@@ -187,7 +187,7 @@
             class="country-downloads"
           >
             <label>
-              <span class="label__title">按地区划分的下载数据</span>
+              <span class="label__title">Downloads by region</span>
             </label>
             <div class="country-values">
               <div
@@ -197,23 +197,23 @@
               >
                 <div class="country-flag-container">
                   <template v-if="name.toLowerCase() === 'xx' || !name">
-                    <img
-                      src="https://cdn.modrinth.com/placeholder-banner.svg"
-                      alt="国旗占位符"
-                      class="country-flag"
-                    />
+                    <div
+                      class="country-flag flex select-none items-center justify-center bg-bg-raised font-extrabold text-secondary"
+                    >
+                      ?
+                    </div>
                   </template>
                   <template v-else>
                     <img
                       :src="countryCodeToFlag(name)"
-                      :alt="`${countryCodeToName(name)} 的国旗`"
+                      :alt="`${countryCodeToName(name)}'s flag`"
                       class="country-flag"
                     />
                   </template>
                 </div>
                 <div class="country-text">
                   <strong class="country-name"
-                    ><template v-if="name.toLowerCase() === 'xx' || !name">Hidden</template>
+                    ><template v-if="name.toLowerCase() === 'xx' || !name">Other</template>
                     <template v-else>{{ countryCodeToName(name) }}</template>
                   </strong>
                   <span class="data-point">{{ formatNumber(count) }}</span>
@@ -246,7 +246,7 @@
             class="country-downloads"
           >
             <label>
-              <span class="label__title">按地区划分的浏览数据</span>
+              <span class="label__title">Page views by region</span>
             </label>
             <div class="country-values">
               <div
@@ -256,23 +256,23 @@
               >
                 <div class="country-flag-container">
                   <template v-if="name.toLowerCase() === 'xx' || !name">
-                    <img
-                      src="https://cdn.modrinth.com/placeholder-banner.svg"
-                      alt="国旗占位符"
-                      class="country-flag"
-                    />
+                    <div
+                      class="country-flag flex select-none items-center justify-center bg-bg-raised font-extrabold text-secondary"
+                    >
+                      ?
+                    </div>
                   </template>
                   <template v-else>
                     <img
                       :src="countryCodeToFlag(name)"
-                      :alt="`${countryCodeToName(name)} 的国旗`"
+                      :alt="`${countryCodeToName(name)}'s flag`"
                       class="country-flag"
                     />
                   </template>
                 </div>
                 <div class="country-text">
                   <strong class="country-name">
-                    <template v-if="name.toLowerCase() === 'xx' || !name">隐藏</template>
+                    <template v-if="name.toLowerCase() === 'xx' || !name">Other</template>
                     <template v-else>{{ countryCodeToName(name) }}</template>
                   </strong>
                   <span class="data-point">{{ formatNumber(count) }}</span>
@@ -304,15 +304,15 @@
 </template>
 
 <script setup lang="ts">
-import {Button, Card, DropdownSelect} from "@modrinth/ui";
-import {formatCategoryHeader, formatMoney, formatNumber} from "@modrinth/utils";
-import {DownloadIcon, UpdatedIcon} from "@modrinth/assets";
+import { Button, Card, DropdownSelect } from "@modrinth/ui";
+import { formatMoney, formatNumber, formatCategoryHeader } from "@modrinth/utils";
+import { UpdatedIcon, DownloadIcon } from "@modrinth/assets";
 import dayjs from "dayjs";
 import { computed } from "vue";
 
 import { analyticsSetToCSVString, intToRgba } from "~/utils/analytics.js";
 
-import {UiChartsChart as Chart, UiChartsCompactChart as CompactChart} from "#components";
+import { UiChartsCompactChart as CompactChart, UiChartsChart as Chart } from "#components";
 
 import PaletteIcon from "~/assets/icons/palette.svg?component";
 
@@ -436,7 +436,7 @@ onBeforeMount(() => {
 onMounted(() => {
   if (internalRange.value === null) {
     internalRange.value = props.ranges.find(
-      (r) => r.getLabel([dayjs(), dayjs()]) === "过去 30 天",
+      (r) => r.getLabel([dayjs(), dayjs()]) === "Previous 30 days",
     )!;
   }
 
@@ -463,7 +463,7 @@ const selectedRange = computed({
     if (import.meta.client) {
       localStorage.setItem(
         "analyticsSelectedRange",
-        internalRange.value?.getLabel([dayjs(), dayjs()]) ?? "过去 30 天",
+        internalRange.value?.getLabel([dayjs(), dayjs()]) ?? "Previous 30 days",
       );
     }
   },
@@ -481,7 +481,7 @@ const analytics = useFetchAllAnalytics(
 
 const formattedCategorySubtitle = computed(() => {
   return (
-    selectedRange.value?.getLabel([dayjs(startDate.value), dayjs(endDate.value)]) ?? "加载中..."
+    selectedRange.value?.getLabel([dayjs(startDate.value), dayjs(endDate.value)]) ?? "Loading..."
   );
 });
 
@@ -494,7 +494,7 @@ const selectedDataSet = computed(() => {
     case "revenue":
       return analytics.totalData.value.revenue;
     default:
-      throw new Error(`未知图表 ${selectedChart.value}`);
+      throw new Error(`Unknown chart ${selectedChart.value}`);
   }
 });
 const selectedDataSetProjects = computed(() => {
@@ -531,12 +531,12 @@ const onToggleColors = () => {
  * @deprecated Use `ranges` instead
  */
 const defaultResoloutions: Record<string, number> = {
-  "5 分钟": 5,
-  "30 分钟": 30,
-  "1 小时": 60,
-  "12 小时": 720,
-  "1 天": 1440,
-  "1 周": 10080,
+  "5 minutes": 5,
+  "30 minutes": 30,
+  "An hour": 60,
+  "12 hours": 720,
+  "A day": 1440,
+  "A week": 10080,
 };
 
 type DateRange = { startDate: dayjs.Dayjs; endDate: dayjs.Dayjs };
@@ -550,7 +550,7 @@ type RangeObject = {
 
 const defaultRanges: RangeObject[] = [
   {
-    getLabel: () => "过去 30 天",
+    getLabel: () => "Previous 30 minutes",
     getDates: (currentDate: dayjs.Dayjs) => ({
       startDate: dayjs(currentDate).subtract(30, "minute"),
       endDate: currentDate,
@@ -558,7 +558,7 @@ const defaultRanges: RangeObject[] = [
     timeResolution: 1,
   },
   {
-    getLabel: () => "过去 1 小时",
+    getLabel: () => "Previous hour",
     getDates: (currentDate: dayjs.Dayjs) => ({
       startDate: dayjs(currentDate).subtract(1, "hour"),
       endDate: currentDate,
@@ -566,7 +566,7 @@ const defaultRanges: RangeObject[] = [
     timeResolution: 5,
   },
   {
-    getLabel: () => "过去 12 小时",
+    getLabel: () => "Previous 12 hours",
     getDates: (currentDate: dayjs.Dayjs) => ({
       startDate: dayjs(currentDate).subtract(12, "hour"),
       endDate: currentDate,
@@ -574,7 +574,7 @@ const defaultRanges: RangeObject[] = [
     timeResolution: 12,
   },
   {
-    getLabel: () => "过去 24 小时",
+    getLabel: () => "Previous 24 hours",
     getDates: (currentDate: dayjs.Dayjs) => ({
       startDate: dayjs(currentDate).subtract(1, "day"),
       endDate: currentDate,
@@ -582,7 +582,7 @@ const defaultRanges: RangeObject[] = [
     timeResolution: 30,
   },
   {
-    getLabel: () => "今天",
+    getLabel: () => "Today",
     getDates: (currentDate: dayjs.Dayjs) => ({
       startDate: dayjs(currentDate).startOf("day"),
       endDate: currentDate,
@@ -590,7 +590,7 @@ const defaultRanges: RangeObject[] = [
     timeResolution: 30,
   },
   {
-    getLabel: () => "昨天",
+    getLabel: () => "Yesterday",
     getDates: (currentDate: dayjs.Dayjs) => ({
       startDate: dayjs(currentDate).subtract(1, "day").startOf("day"),
       endDate: dayjs(currentDate).startOf("day").subtract(1, "second"),
@@ -598,7 +598,7 @@ const defaultRanges: RangeObject[] = [
     timeResolution: 30,
   },
   {
-    getLabel: () => "本周",
+    getLabel: () => "This week",
     getDates: (currentDate: dayjs.Dayjs) => ({
       startDate: dayjs(currentDate).startOf("week").add(1, "hour"),
       endDate: currentDate,
@@ -606,7 +606,7 @@ const defaultRanges: RangeObject[] = [
     timeResolution: 360,
   },
   {
-    getLabel: () => "上周",
+    getLabel: () => "Last week",
     getDates: (currentDate: dayjs.Dayjs) => ({
       startDate: dayjs(currentDate).subtract(1, "week").startOf("week").add(1, "hour"),
       endDate: dayjs(currentDate).startOf("week").subtract(1, "second"),
@@ -614,7 +614,7 @@ const defaultRanges: RangeObject[] = [
     timeResolution: 1440,
   },
   {
-    getLabel: () => "过去 7 天",
+    getLabel: () => "Previous 7 days",
     getDates: (currentDate: dayjs.Dayjs) => ({
       startDate: dayjs(currentDate).startOf("day").subtract(7, "day").add(1, "hour"),
       endDate: currentDate.startOf("day"),
@@ -622,7 +622,7 @@ const defaultRanges: RangeObject[] = [
     timeResolution: 720,
   },
   {
-    getLabel: () => "本月",
+    getLabel: () => "This month",
     getDates: (currentDate: dayjs.Dayjs) => ({
       startDate: dayjs(currentDate).startOf("month").add(1, "hour"),
       endDate: currentDate,
@@ -630,7 +630,7 @@ const defaultRanges: RangeObject[] = [
     timeResolution: 1440,
   },
   {
-    getLabel: () => "上月",
+    getLabel: () => "Last month",
     getDates: (currentDate: dayjs.Dayjs) => ({
       startDate: dayjs(currentDate).subtract(1, "month").startOf("month").add(1, "hour"),
       endDate: dayjs(currentDate).startOf("month").subtract(1, "second"),
@@ -638,7 +638,7 @@ const defaultRanges: RangeObject[] = [
     timeResolution: 1440,
   },
   {
-    getLabel: () => "过去 30 天",
+    getLabel: () => "Previous 30 days",
     getDates: (currentDate: dayjs.Dayjs) => ({
       startDate: dayjs(currentDate).startOf("day").subtract(30, "day").add(1, "hour"),
       endDate: currentDate.startOf("day"),
@@ -646,7 +646,7 @@ const defaultRanges: RangeObject[] = [
     timeResolution: 1440,
   },
   {
-    getLabel: () => "本季度",
+    getLabel: () => "This quarter",
     getDates: (currentDate: dayjs.Dayjs) => ({
       startDate: dayjs(currentDate).startOf("quarter").add(1, "hour"),
       endDate: currentDate,
@@ -654,7 +654,7 @@ const defaultRanges: RangeObject[] = [
     timeResolution: 1440,
   },
   {
-    getLabel: () => "上季度",
+    getLabel: () => "Last quarter",
     getDates: (currentDate: dayjs.Dayjs) => ({
       startDate: dayjs(currentDate).subtract(1, "quarter").startOf("quarter").add(1, "hour"),
       endDate: dayjs(currentDate).startOf("quarter").subtract(1, "second"),
@@ -662,7 +662,7 @@ const defaultRanges: RangeObject[] = [
     timeResolution: 1440,
   },
   {
-    getLabel: () => "今年",
+    getLabel: () => "This year",
     getDates: (currentDate: dayjs.Dayjs) => ({
       startDate: dayjs(currentDate).startOf("year"),
       endDate: currentDate,
@@ -670,7 +670,7 @@ const defaultRanges: RangeObject[] = [
     timeResolution: 20160,
   },
   {
-    getLabel: () => "去年",
+    getLabel: () => "Last year",
     getDates: (currentDate: dayjs.Dayjs) => ({
       startDate: dayjs(currentDate).subtract(1, "year").startOf("year"),
       endDate: dayjs(currentDate).startOf("year").subtract(1, "second"),
@@ -678,7 +678,7 @@ const defaultRanges: RangeObject[] = [
     timeResolution: 20160,
   },
   {
-    getLabel: () => "过去 1 年",
+    getLabel: () => "Previous year",
     getDates: (currentDate: dayjs.Dayjs) => ({
       startDate: dayjs(currentDate).subtract(1, "year"),
       endDate: dayjs(currentDate),
@@ -686,7 +686,7 @@ const defaultRanges: RangeObject[] = [
     timeResolution: 40320,
   },
   {
-    getLabel: () => "过去 2 年",
+    getLabel: () => "Previous two years",
     getDates: (currentDate: dayjs.Dayjs) => ({
       startDate: dayjs(currentDate).subtract(2, "year"),
       endDate: currentDate,
@@ -694,7 +694,7 @@ const defaultRanges: RangeObject[] = [
     timeResolution: 40320,
   },
   {
-    getLabel: () => "所有时间",
+    getLabel: () => "All Time",
     getDates: (currentDate: dayjs.Dayjs) => ({
       startDate: dayjs(0),
       endDate: currentDate,

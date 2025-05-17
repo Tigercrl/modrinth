@@ -1,5 +1,3 @@
-<!-- TODO: 汉化 -->
-<!-- 不会真有中国人当上审核员了吧？ -->
 <template>
   <section class="universal-card">
     <h2>Review projects</h2>
@@ -54,10 +52,7 @@
     >
       <div class="project-title">
         <div class="mobile-row">
-          <nuxt-link
-            :to="`/${project.inferred_project_type}/${project.slug}`"
-            class="iconified-stacked-link"
-          >
+          <nuxt-link :to="`/project/${project.id}`" class="iconified-stacked-link">
             <Avatar :src="project.icon_url" size="xs" no-shadow raised />
             <span class="stacked">
               <span class="title">{{ project.name }}</span>
@@ -69,7 +64,7 @@
           by
           <nuxt-link
             v-if="project.owner"
-            :to="`/user/${project.owner.user.username}`"
+            :to="`/user/${project.owner.user.id}`"
             class="iconified-link"
           >
             <Avatar :src="project.owner.user.avatar_url" circle size="xxs" raised />
@@ -77,7 +72,7 @@
           </nuxt-link>
           <nuxt-link
             v-else-if="project.org"
-            :to="`/organization/${project.org.slug}`"
+            :to="`/organization/${project.org.id}`"
             class="iconified-link"
           >
             <Avatar :src="project.org.icon_url" circle size="xxs" raised />
@@ -90,10 +85,7 @@
         </div>
       </div>
       <div class="input-group">
-        <nuxt-link
-          :to="`/${project.inferred_project_type}/${project.slug}`"
-          class="iconified-button raised-button"
-        >
+        <nuxt-link :to="`/project/${project.id}`" class="iconified-button raised-button">
           <EyeIcon />
           View project
         </nuxt-link>
@@ -101,8 +93,8 @@
       <span v-if="project.queued" :class="`submitter-info ${project.age_warning}`">
         <IssuesIcon v-if="project.age_warning" />
         Submitted
-        <span v-tooltip="$dayjs(project.queued).format('YYYY/MM/DD hh:mm:ss')">{{
-          fromNow(project.queued)
+        <span v-tooltip="$dayjs(project.queued).format('MMMM D, YYYY [at] h:mm A')">{{
+          formatRelativeTime(project.queued)
         }}</span>
       </span>
       <span v-else class="submitter-info"><UnknownIcon /> Unknown queue date</span>
@@ -111,7 +103,7 @@
 </template>
 
 <script setup>
-import { Chips } from "@modrinth/ui";
+import { Chips, useRelativeTime } from "@modrinth/ui";
 import {
   UnknownIcon,
   EyeIcon,
@@ -122,7 +114,7 @@ import {
 } from "@modrinth/assets";
 import Avatar from "~/components/ui/Avatar.vue";
 import Badge from "~/components/ui/Badge.vue";
-import { formatProjectType } from "@modrinth/utils";
+import { formatProjectType } from "~/plugins/shorthands.js";
 
 useHead({
   title: "Review projects - Modrinth",
@@ -135,6 +127,8 @@ const router = useRouter();
 const now = app.$dayjs();
 const TIME_24H = 86400000;
 const TIME_48H = TIME_24H * 2;
+
+const formatRelativeTime = useRelativeTime();
 
 const { data: projects } = await useAsyncData("moderation/projects?count=1000", () =>
   useBaseFetch("moderation/projects?count=1000", { internal: true }),

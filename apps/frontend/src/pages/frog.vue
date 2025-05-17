@@ -1,6 +1,8 @@
 <!-- TODO: 汉化 -->
 <!-- 此梗在国内不流传 -->
 <script setup lang="ts">
+import { useRelativeTime } from "@modrinth/ui";
+
 const vintl = useVIntl();
 const { formatMessage } = vintl;
 

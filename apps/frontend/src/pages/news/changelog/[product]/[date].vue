@@ -39,13 +39,8 @@ if (!changelogEntry.value) {
     >
       <ChevronLeftIcon /> 查看更多
     </nuxt-link>
-    <Timeline fade-out-end :fade-out-start="!isFirst" :class="{ '-mt-8': !isFirst }">
-      <ChangelogEntry
-        :entry="changelogEntry"
-        :first="isFirst"
-        show-type
-        :class="{ 'mt-8': !isFirst }"
-      />
+    <Timeline fade-out-end :fade-out-start="!isFirst">
+      <ChangelogEntry :entry="changelogEntry" :first="isFirst" show-type />
     </Timeline>
   </div>
 </template>

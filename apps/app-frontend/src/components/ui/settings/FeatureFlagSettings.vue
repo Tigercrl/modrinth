@@ -1,19 +1,16 @@
 <script setup lang="ts">
-import { Toggle } from '@modrinth/ui'
-import { useTheming } from '@/store/state'
-import { ref, watch } from 'vue'
-import { get, set } from '@/helpers/settings'
+import {Toggle} from '@modrinth/ui'
+import {useTheming} from '@/store/state'
+import {ref, watch} from 'vue'
+import {get as getSettings, set as setSettings} from '@/helpers/settings.ts'
+import {DEFAULT_FEATURE_FLAGS, type FeatureFlag} from '@/store/theme.ts'
 
 const themeStore = useTheming()
 
-const settings = ref(await get())
-const options = ref(['project_background', 'page_path'])
+const settings = ref(await getSettings())
+const options = ref<FeatureFlag[]>(Object.keys(DEFAULT_FEATURE_FLAGS))
 
-function getStoreValue(key: string) {
-  return themeStore.featureFlags[key] ?? false
-}
-
-function setStoreValue(key: string, value: boolean) {
+function setFeatureFlag(key: string, value: boolean) {
   themeStore.featureFlags[key] = value
   settings.value.feature_flags[key] = value
 }
@@ -21,13 +18,13 @@ function setStoreValue(key: string, value: boolean) {
 watch(
   settings,
   async () => {
-    await set(settings.value)
+    await setSettings(settings.value)
   },
-  { deep: true },
+  {deep: true},
 )
 
 function getOptionName(option: string) {
-  switch (option) {
+  switch (option.toLowerCase()) {
     case 'project_background':
       return '资源背景（在模组等资源页面增加渐变背景）'
     case 'page_path':
@@ -46,8 +43,8 @@ function getOptionName(option: string) {
 
     <Toggle
       id="advanced-rendering"
-      :model-value="getStoreValue(option)"
-      @update:model-value="() => setStoreValue(option, !themeStore.featureFlags[option])"
+      :model-value="themeStore.getFeatureFlag(option)"
+      @update:model-value="() => setFeatureFlag(option, !themeStore.getFeatureFlag(option))"
     />
   </div>
 </template>

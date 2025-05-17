@@ -4,9 +4,9 @@ import App from '@/App.vue'
 import { createPinia } from 'pinia'
 import FloatingVue from 'floating-vue'
 import 'floating-vue/dist/style.css'
-import {createPlugin} from '@vintl/vintl/plugin'
-import dayjs from "dayjs";
-import "dayjs/locale/zh-cn.js"
+import { createPlugin } from '@vintl/vintl/plugin'
+import * as Sentry from '@sentry/vue'
+import { VueScanPlugin } from '@taijased/vue-render-tracker'
 
 const VIntlPlugin = createPlugin({
   controllerOpts: {
@@ -27,10 +27,18 @@ const VIntlPlugin = createPlugin({
 
 dayjs.locale('zh-cn')
 
+const vueScan = new VueScanPlugin({
+  enabled: false, // Enable or disable the tracker
+  showOverlay: true, // Show overlay to visualize renders
+  log: false, // Log render events to the console
+  playSound: false, // Play sound on each render
+})
+
 const pinia = createPinia()
 
 let app = createApp(App)
 
+app.use(vueScan)
 app.use(router)
 app.use(pinia)
 app.use(FloatingVue, {

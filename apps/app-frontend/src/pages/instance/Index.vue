@@ -1,152 +1,156 @@
 <template>
-  <div
-    class="p-6 pr-2 pb-4"
-    @contextmenu.prevent.stop="(event) => handleRightClick(event, instance.path)"
-  >
-    <ExportModal ref="exportModal" :instance="instance" />
-    <InstanceSettingsModal ref="settingsModal" :instance="instance" :offline="offline" />
-    <ContentPageHeader>
-      <template #icon>
-        <Avatar :src="icon" :alt="instance.name" size="96px" :tint-by="instance.path" />
-      </template>
-      <template #title>
-        {{ instance.name }}
-      </template>
-      <template #summary> </template>
-      <template #stats>
-        <div
-          class="flex items-center gap-2 font-semibold transform capitalize border-0 border-solid border-divider pr-4 md:border-r"
-        >
-          <GameIcon class="h-6 w-6 text-secondary" />
-          {{ instance.loader }} {{ instance.game_version }}
-        </div>
-        <div class="flex items-center gap-2 font-semibold">
-          <TimerIcon class="h-6 w-6 text-secondary" />
-          <template v-if="timePlayed > 0">
-            {{ timePlayedHumanized }}
-          </template>
-          <template v-else> 从未游玩 </template>
-        </div>
-      </template>
-      <template #actions>
-        <div class="flex gap-2">
-          <ButtonStyled
-            v-if="instance.install_stage.includes('installing')"
-            color="brand"
-            size="large"
-          >
-            <button disabled>安装中...</button>
-          </ButtonStyled>
-          <ButtonStyled
-            v-else-if="instance.install_stage !== 'installed'"
-            color="brand"
-            size="large"
-          >
-            <button @click="repairInstance()">
-              <DownloadIcon />
-              修复
-            </button>
-          </ButtonStyled>
-          <ButtonStyled v-else-if="playing === true" color="red" size="large">
-            <button @click="stopInstance('InstancePage')">
-              <StopCircleIcon />
-              停止
-            </button>
-          </ButtonStyled>
-          <ButtonStyled
-            v-else-if="playing === false && loading === false"
-            color="brand"
-            size="large"
-          >
-            <button @click="startInstance('InstancePage')">
-              <PlayIcon />
-              启动
-            </button>
-          </ButtonStyled>
-          <ButtonStyled
-            v-else-if="loading === true && playing === false"
-            color="brand"
-            size="large"
-          >
-            <button disabled>加载中...</button>
-          </ButtonStyled>
-          <ButtonStyled size="large" circular>
-            <button v-tooltip="'实例设置'" @click="settingsModal.show()">
-              <SettingsIcon />
-            </button>
-          </ButtonStyled>
-          <ButtonStyled size="large" type="transparent" circular>
-            <OverflowMenu
-              :options="[
-                {
-                  id: 'open-folder',
-                  action: () => showProfileInFolder(instance.path),
-                },
-                {
-                  id: 'export-mrpack',
-                  action: () => $refs.exportModal.show(),
-                },
-              ]"
-            >
-              <MoreVerticalIcon />
-              <template #share-instance> <UserPlusIcon /> 分享实例 </template>
-              <template #host-a-server> <ServerIcon /> 创建服务器 </template>
-              <template #open-folder> <FolderOpenIcon /> 打开文件夹 </template>
-              <template #export-mrpack> <PackageIcon /> 导出整合包 </template>
-            </OverflowMenu>
-          </ButtonStyled>
-        </div>
-      </template>
-    </ContentPageHeader>
-  </div>
-  <div class="px-6">
-    <NavTabs :links="tabs" />
-  </div>
-  <div class="p-6 pt-4">
-    <RouterView v-slot="{ Component }" :key="instance.path">
-      <template v-if="Component">
-        <Suspense
-          :key="instance.path"
-          @pending="loadingBar.startLoading()"
-          @resolve="loadingBar.stopLoading()"
-        >
-          <component
-            :is="Component"
-            :instance="instance"
-            :options="options"
-            :offline="offline"
-            :playing="playing"
-            :versions="modrinthVersions"
-            :installed="instance.install_stage !== 'installed'"
-          ></component>
-          <template #fallback>
-            <LoadingIndicator />
-          </template>
-        </Suspense>
-      </template>
-    </RouterView>
-  </div>
-  <ContextMenu ref="options" @option-clicked="handleOptionsClick">
-    <template #play> <PlayIcon /> 启动 </template>
-    <template #stop> <StopCircleIcon /> 停止 </template>
-    <template #add_content> <PlusIcon /> 安装资源 </template>
-    <template #edit> <EditIcon /> 修改 </template>
-    <template #copy_path> <ClipboardCopyIcon /> 复制路径 </template>
-    <template #open_folder> <ClipboardCopyIcon /> 打开文件夹 </template>
-    <template #copy_link> <ClipboardCopyIcon /> 复制链接 </template>
-    <template #open_link> <ClipboardCopyIcon /> 在 Modrinth 中打开 <ExternalIcon /> </template>
-    <template #copy_names><EditIcon />复制名称</template>
-    <template #copy_slugs><HashIcon />复制资源关键字</template>
-    <template #copy_links><GlobeIcon />复制链接</template>
-    <template #toggle><EditIcon />切换已选择资源的启用/禁用</template>
-    <template #disable><XIcon />禁用已选择资源</template>
-    <template #enable><CheckCircleIcon />启用已选择资源</template>
-    <template #hide_show><EyeIcon />显示或隐藏未选择资源</template>
-    <template #update_all
-      ><UpdatedIcon />Update {{ selected.length > 0 ? 'selected' : 'all' }}</template
+  <div>
+    <div
+      class="p-6 pr-2 pb-4"
+      @contextmenu.prevent.stop="(event) => handleRightClick(event, instance.path)"
     >
-    <template #filter_update><UpdatedIcon />选择可更新的资源</template>
-  </ContextMenu>
+      <ExportModal ref="exportModal" :instance="instance" />
+      <InstanceSettingsModal ref="settingsModal" :instance="instance" :offline="offline" />
+      <ContentPageHeader>
+        <template #icon>
+          <Avatar :src="icon" :alt="instance.name" size="96px" :tint-by="instance.path" />
+        </template>
+        <template #title>
+          {{ instance.name }}
+        </template>
+        <template #summary> </template>
+        <template #stats>
+          <div
+            class="flex items-center gap-2 font-semibold transform capitalize border-0 border-solid border-divider pr-4 md:border-r"
+          >
+            <GameIcon class="h-6 w-6 text-secondary" />
+            {{ instance.loader }} {{ instance.game_version }}
+          </div>
+          <div class="flex items-center gap-2 font-semibold">
+            <TimerIcon class="h-6 w-6 text-secondary" />
+            <template v-if="timePlayed > 0">
+              {{ timePlayedHumanized }}
+            </template>
+            <template v-else> 从未游玩 </template>
+          </div>
+        </template>
+        <template #actions>
+          <div class="flex gap-2">
+            <ButtonStyled
+              v-if="instance.install_stage.includes('installing')"
+              color="brand"
+              size="large"
+            >
+              <button disabled>安装中...</button>
+            </ButtonStyled>
+            <ButtonStyled
+              v-else-if="instance.install_stage !== 'installed'"
+              color="brand"
+              size="large"
+            >
+              <button @click="repairInstance()">
+                <DownloadIcon />
+                修复
+              </button>
+            </ButtonStyled>
+            <ButtonStyled v-else-if="playing === true" color="red" size="large">
+              <button @click="stopInstance('InstancePage')">
+                <StopCircleIcon />
+                停止
+              </button>
+            </ButtonStyled>
+            <ButtonStyled
+              v-else-if="playing === false && loading === false"
+              color="brand"
+              size="large"
+            >
+              <button @click="startInstance('InstancePage')">
+                <PlayIcon />
+                启动
+              </button>
+            </ButtonStyled>
+            <ButtonStyled
+              v-else-if="loading === true && playing === false"
+              color="brand"
+              size="large"
+            >
+              <button disabled>加载中...</button>
+            </ButtonStyled>
+            <ButtonStyled size="large" circular>
+              <button v-tooltip="'实例设置'" @click="settingsModal.show()">
+                <SettingsIcon />
+              </button>
+            </ButtonStyled>
+            <ButtonStyled size="large" type="transparent" circular>
+              <OverflowMenu
+                :options="[
+                  {
+                    id: 'open-folder',
+                    action: () => showProfileInFolder(instance.path),
+                  },
+                  {
+                    id: 'export-mrpack',
+                    action: () => $refs.exportModal.show(),
+                  },
+                ]"
+              >
+                <MoreVerticalIcon />
+                <template #share-instance> <UserPlusIcon /> 分享实例 </template>
+                <template #host-a-server> <ServerIcon /> 创建服务器 </template>
+                <template #open-folder> <FolderOpenIcon /> 打开文件夹 </template>
+                <template #export-mrpack> <PackageIcon /> 导出整合包 </template>
+              </OverflowMenu>
+            </ButtonStyled>
+          </div>
+        </template>
+      </ContentPageHeader>
+    </div>
+    <div class="px-6">
+      <NavTabs :links="tabs" />
+    </div>
+    <div v-if="!!instance" class="p-6 pt-4">
+      <RouterView v-slot="{ Component }" :key="instance.path">
+        <template v-if="Component">
+          <Suspense
+            :key="instance.path"
+            @pending="loadingBar.startLoading()"
+            @resolve="loadingBar.stopLoading()"
+          >
+            <component
+              :is="Component"
+              :instance="instance"
+              :options="options"
+              :offline="offline"
+              :playing="playing"
+              :versions="modrinthVersions"
+              :installed="instance.install_stage !== 'installed'"
+              @play="updatePlayState"
+              @stop="() => stopInstance('InstanceSubpage')"
+            ></component>
+            <template #fallback>
+              <LoadingIndicator />
+            </template>
+          </Suspense>
+        </template>
+      </RouterView>
+    </div>
+    <ContextMenu ref="options" @option-clicked="handleOptionsClick">
+      <template #play> <PlayIcon /> 启动 </template>
+      <template #stop> <StopCircleIcon /> 停止 </template>
+      <template #add_content> <PlusIcon /> 安装资源 </template>
+      <template #edit> <EditIcon /> 修改 </template>
+      <template #copy_path> <ClipboardCopyIcon /> 复制路径 </template>
+      <template #open_folder> <ClipboardCopyIcon /> 打开文件夹 </template>
+      <template #copy_link> <ClipboardCopyIcon /> 复制链接 </template>
+      <template #open_link> <ClipboardCopyIcon /> 在 Modrinth 中打开 <ExternalIcon /> </template>
+      <template #copy_names><EditIcon /> 复制名称 </template>
+      <template #copy_slugs><HashIcon /> 复制资源关键字 </template>
+      <template #copy_links><GlobeIcon /> 复制链接 </template>
+      <template #toggle><EditIcon /> 切换选择 </template>
+      <template #disable><XIcon /> 禁用已选择资源 </template>
+      <template #enable><CheckCircleIcon />启用已选择资源 </template>
+      <template #hide_show><EyeIcon /> 显示或隐藏未选择资源 </template>
+      <template #update_all
+        ><UpdatedIcon /> 更新 {{ selected.length > 0 ? '已选择' : '全部' }}资源 </template
+      >
+      <template #filter_update><UpdatedIcon />选择可更新的资源</template>
+    </ContextMenu>
+  </div>
 </template>
 <script setup>
 import {
@@ -238,6 +242,10 @@ async function fetchInstance() {
       })
   }
 
+  await updatePlayState()
+}
+
+async function updatePlayState() {
   const runningProcesses = await get_by_profile_path(route.params.id).catch(handleError)
 
   playing.value = runningProcesses.length > 0
@@ -253,14 +261,20 @@ watch(
   },
 )
 
+const basePath = computed(() => `/instance/${encodeURIComponent(route.params.id)}`)
+
 const tabs = computed(() => [
   {
     label: '资源',
-    href: `/instance/${encodeURIComponent(route.params.id)}`,
+    href: `${basePath.value}`,
+  },
+  {
+    label: '世界',
+    href: `${basePath.value}/worlds`,
   },
   {
     label: '日志',
-    href: `/instance/${encodeURIComponent(route.params.id)}/logs`,
+    href: `${basePath.value}/logs`,
   },
 ])
 

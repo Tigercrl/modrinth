@@ -2,7 +2,7 @@
 import { ref } from 'vue'
 import { ConfirmModal } from '@modrinth/ui'
 import { show_ads_window, hide_ads_window } from '@/helpers/ads.js'
-import { useTheming } from '@/store/theme.js'
+import { useTheming } from '@/store/theme.ts'
 
 const themeStore = useTheming()
 
@@ -37,6 +37,10 @@ const props = defineProps({
     type: Boolean,
     default: true,
   },
+  markdown: {
+    type: Boolean,
+    default: true,
+  },
 })
 
 const emit = defineEmits(['proceed'])
@@ -68,6 +72,7 @@ function proceed() {
     :proceed-label="proceedLabel"
     :noblur="!themeStore.advancedRendering"
     :danger="danger"
+    :markdown="markdown"
     @proceed="proceed"
   />
 </template>

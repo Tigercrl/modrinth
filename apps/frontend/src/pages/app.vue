@@ -1,12 +1,12 @@
 <script setup>
 import {
-  BoxIcon,
-  DownloadIcon,
-  EditIcon,
-  LinkIcon,
-  SearchIcon,
-  SendIcon,
   TrashIcon,
+  SearchIcon,
+  BoxIcon,
+  SendIcon,
+  EditIcon,
+  DownloadIcon,
+  LinkIcon,
 } from "@modrinth/assets";
 import Avatar from "~/components/ui/Avatar.vue";
 import LogoAnimated from "~/components/brand/LogoAnimated.vue";
@@ -16,10 +16,9 @@ import ATLauncher from "~/assets/images/external/atlauncher.svg?component";
 import CurseForge from "~/assets/images/external/curseforge.svg?component";
 import Checkbox from "~/components/ui/Checkbox.vue";
 
-import {homePageProjects} from "~/generated/state.json";
+import { homePageProjects } from "~/generated/state.json";
 
 const os = ref(null);
-const macValue = ref(null);
 const downloadWindows = ref(null);
 const downloadLinux = ref(null);
 const downloadSection = ref(null);
@@ -31,8 +30,7 @@ const linuxLinks = {
   thirdParty: "https://support.modrinth.com/en/articles/9298760",
 };
 const macLinks = {
-  appleSilicon: null,
-  intel: null,
+  universal: null,
 };
 
 let downloadLauncher;
@@ -47,14 +45,13 @@ const rows = ref([
   newProjects.slice(val * 4, val * 5),
 ]);
 
-const [{data: launcherUpdates}] = await Promise.all([
+const [{ data: launcherUpdates }] = await Promise.all([
   await useAsyncData("launcherUpdates", () =>
     $fetch("https://launcher-files.modrinth.com/updates.json"),
   ),
 ]);
 
-macLinks.appleSilicon = launcherUpdates.value.platforms["darwin-aarch64"].install_urls[0];
-macLinks.intel = launcherUpdates.value.platforms["darwin-x86_64"].install_urls[0];
+macLinks.universal = launcherUpdates.value.platforms["darwin-aarch64"].install_urls[0];
 windowsLink.value = launcherUpdates.value.platforms["windows-x86_64"].install_urls[0];
 linuxLinks.appImage = launcherUpdates.value.platforms["linux-x86_64"].install_urls[1];
 linuxLinks.deb = launcherUpdates.value.platforms["linux-x86_64"].install_urls[0];
@@ -85,50 +82,6 @@ onMounted(() => {
   }
 });
 
-watch(macValue, () => {
-  if (macValue.value === "下载原版 - Apple Silicon 芯片") {
-    const link = document.createElement("a");
-    link.href = macLinks.appleSilicon;
-    link.download = "";
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-  } else if (macValue.value === "下载原版 - Intel 芯片") {
-    const link = document.createElement("a");
-    link.href = macLinks.intel;
-    link.download = "";
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-  }
-});
-
-function downloadChinese() {
-  const url = 'https://github.com/Tigercrl/modrinth/releases/latest'
-  const mirror = 'https://bgithub.xyz/Tigercrl/modrinth/releases/latest'
-
-  useNuxtApp().$notify({
-    group: "main",
-    title: "请稍后",
-    text: '正在判断是否使用镜像站',
-    type: "info",
-  });
-
-  const controller = new AbortController();
-  const id = setTimeout(() => {
-    controller.abort()
-  }, 3000);
-  fetch('https://raw.githubusercontent.com/Tigercrl/modrinth/refs/heads/main/.npmrc', {
-    signal: controller.signal
-  }).then(() => {
-    clearTimeout(id);
-    open(url, '_blank')
-  }).catch(() => {
-    clearTimeout(id);
-    open(mirror, '_blank')
-  })
-}
-
 const scrollToSection = () => {
   nextTick(() => {
     window.scrollTo({
@@ -138,9 +91,9 @@ const scrollToSection = () => {
   });
 };
 
-const title = "下载 Modrinth App 汉化版！";
+const title = "Download the Modrinth App!";
 const description =
-  "Modrinth App 是一个十分轻量的开源启动器，您可以用它玩您最喜欢的模组，并确保它们处于最新版本。";
+  "The Modrinth App is a unique, open source launcher that allows you to play your favorite mods, and keep them up to date, all in one neat little package.";
 
 useSeoMeta({
   title,
@@ -154,19 +107,20 @@ useSeoMeta({
   <div>
     <div class="landing-hero">
       <h1 class="main-header">
-        下载 Modrinth <br v-if="os"/>
+        Download Modrinth <br v-if="os" />
         App
-        {{ os ? `- ${os}` : "" }}
+        {{ os ? `for ${os}` : "" }}
       </h1>
       <h2 class="main-subheader">
-        Modrinth App 是一个十分轻量的开源启动器，您可以用它玩您最喜欢的模组，并确保它们处于最新版本。
+        The Modrinth App is a unique, open source launcher that allows you to play your favorite
+        mods, and keep them up to date, all in one neat little package.
       </h2>
       <div class="button-group">
         <button
           v-if="os"
           class="iconified-button brand-button btn btn-large"
           rel="noopener nofollow"
-          @click="downloadChinese"
+          @click="downloadLauncher"
         >
           <svg
             v-if="os === 'Linux'"
@@ -218,65 +172,65 @@ useSeoMeta({
               fill="currentColor"
             />
           </svg>
-          下载 Modrinth App<span v-if="os">（汉化版）</span>
+          Download the Modrinth App
         </button>
         <button class="iconified-button outline-button btn btn-large" @click="scrollToSection">
-          更多下载选项
+          More Download Options
         </button>
       </div>
-      <img src="https://cdn-raw.modrinth.com/app-landing/app-screenshot.webp" alt="cube maze"/>
-      <div class="bottom-transition"/>
+      <img src="https://cdn-raw.modrinth.com/app-landing/app-screenshot.webp" alt="cube maze" />
+      <div class="bottom-transition" />
     </div>
     <div class="features">
       <h1 class="subheader">
-        与您使用过的<br/>
-        任何启动器都不一样
+        Unlike any launcher <br />
+        you've used before
       </h1>
       <div class="feature-grid">
         <div class="feature gradient-border mods">
           <div class="search-bar">
-            <h4>已安装模组</h4>
+            <h4>Installed mods</h4>
             <div class="mini-input">
-              <SearchIcon aria-hidden="true"/>
-              <div class="search">搜索模组...</div>
+              <SearchIcon aria-hidden="true" />
+              <div class="search">Search mods</div>
             </div>
           </div>
           <div class="header row">
-            <div/>
-            <div class="cell">名称</div>
-            <div class="cell">版本</div>
-            <div class="cell">操作</div>
+            <div />
+            <div class="cell">Name</div>
+            <div class="cell">Version</div>
+            <div class="cell">Actions</div>
           </div>
           <div class="table">
             <div class="row first">
               <div class="cell">
-                <Avatar size="sm" src="https://cdn.modrinth.com/data/P7dR8mSH/icon.png"/>
+                <Avatar size="sm" src="https://cdn.modrinth.com/data/P7dR8mSH/icon.png" />
               </div>
               <div class="cell">
                 <div class="name">Fabric API</div>
-                <div class="description">（创作者：modmuss）</div>
+                <div class="description">by modmuss</div>
               </div>
               <div class="cell important">0.86.1+1.20.1</div>
               <div class="cell check">
-                <Checkbox :model-value="true" tabindex="-1"/>
+                <Checkbox :model-value="true" tabindex="-1" />
                 <button class="btn icon-only transparent" tabindex="-1">
-                  <TrashIcon/>
+                  <TrashIcon />
                 </button>
               </div>
             </div>
             <div class="row">
               <div class="cell">
-                <Avatar size="sm" src="https://cdn.modrinth.com/data/AANobbMI/icon.png"/>
+                <Avatar size="sm" src="https://cdn.modrinth.com/data/AANobbMI/icon.png" />
               </div>
               <div class="cell">
                 <div class="name">Sodium</div>
-                <div class="description">（创作者：jellysquid3）</div>
+                <div class="description">by jellysquid3</div>
               </div>
               <div class="cell">mc1.20.1-0.5.0</div>
               <div class="cell check">
-                <Checkbox :model-value="true" tabindex="-1"/>
+                <Checkbox :model-value="true" tabindex="-1" />
                 <button class="btn icon-only transparent" tabindex="-1">
-                  <TrashIcon/>
+                  <TrashIcon />
                 </button>
               </div>
             </div>
@@ -289,77 +243,77 @@ useSeoMeta({
               </div>
               <div class="cell">
                 <div class="name">Iris Shaders</div>
-                <div class="description">（创作者：coderbot）</div>
+                <div class="description">by coderbot</div>
               </div>
               <div class="cell">1.6.5+1.20.1</div>
               <div class="cell check">
-                <Checkbox :model-value="true" tabindex="-1"/>
+                <Checkbox :model-value="true" tabindex="-1" />
                 <button class="btn icon-only transparent" tabindex="-1">
-                  <TrashIcon/>
+                  <TrashIcon />
                 </button>
               </div>
             </div>
             <div class="row">
               <div class="cell">
-                <Avatar size="sm" src="https://cdn.modrinth.com/data/gvQqBUqZ/icon.png"/>
+                <Avatar size="sm" src="https://cdn.modrinth.com/data/gvQqBUqZ/icon.png" />
               </div>
               <div class="cell">
                 <div class="name">Lithium</div>
-                <div class="description">（创作者：jellysquid3）</div>
+                <div class="description">by jellysquid3</div>
               </div>
               <div class="cell">mc1.20.1-0.11.2</div>
               <div class="cell check">
-                <Checkbox :model-value="true" tabindex="-1"/>
+                <Checkbox :model-value="true" tabindex="-1" />
                 <button class="btn icon-only transparent" tabindex="-1">
-                  <TrashIcon/>
+                  <TrashIcon />
                 </button>
               </div>
             </div>
             <div class="row">
               <div class="cell">
-                <Avatar size="sm" src="https://cdn.modrinth.com/data/mOgUt4GM/icon.png"/>
+                <Avatar size="sm" src="https://cdn.modrinth.com/data/mOgUt4GM/icon.png" />
               </div>
               <div class="cell">
                 <div class="name">Mod Menu</div>
-                <div class="description">（创作者：Prospector）</div>
+                <div class="description">by Prospector</div>
               </div>
               <div class="cell">7.2.1</div>
               <div class="cell check">
-                <Checkbox :model-value="true" tabindex="-1"/>
+                <Checkbox :model-value="true" tabindex="-1" />
                 <button class="btn icon-only transparent" tabindex="-1">
-                  <TrashIcon/>
+                  <TrashIcon />
                 </button>
               </div>
             </div>
             <div class="row">
               <div class="cell">
-                <Avatar size="sm" src="https://cdn.modrinth.com/data/9s6osm5g/icon.png"/>
+                <Avatar size="sm" src="https://cdn.modrinth.com/data/9s6osm5g/icon.png" />
               </div>
               <div class="cell">
                 <div class="name">Cloth Config API</div>
-                <div class="description">（创作者：shedaniel）</div>
+                <div class="description">by shedaniel</div>
               </div>
               <div class="cell">11.1.106+fabric</div>
               <div class="cell check">
-                <Checkbox :model-value="true" tabindex="-1"/>
+                <Checkbox :model-value="true" tabindex="-1" />
                 <button class="btn icon-only transparent" tabindex="-1">
-                  <TrashIcon/>
+                  <TrashIcon />
                 </button>
               </div>
             </div>
             <div class="row">
               <div class="cell">
-                <Avatar size="sm" src="https://cdn.modrinth.com/data/lhGA9TYQ/icon.png"/>
+                <Avatar size="sm" src="https://cdn.modrinth.com/data/lhGA9TYQ/icon.png" />
               </div>
               <div class="cell">
                 <div class="name">Architectury API</div>
-                <div class="description">（创作者：shedaniel）</div>
+                <div class="description">by shedaniel</div>
               </div>
               <div class="cell">9.1.12+fabric</div>
               <div class="cell check">
-                <Checkbox :model-value="true" tabindex="-1"/>
+                <Checkbox :model-value="true" tabindex="-1" />
                 <button class="btn icon-only transparent" tabindex="-1">
-                  <TrashIcon/>
+                  <TrashIcon />
                 </button>
               </div>
             </div>
@@ -372,42 +326,41 @@ useSeoMeta({
               </div>
               <div class="cell">
                 <div class="name">Craftify</div>
-                <div class="description">（创作者：ThatGravyBoat）</div>
+                <div class="description">by ThatGravyBoat</div>
               </div>
               <div class="cell">8.5.2023</div>
               <div class="cell check">
-                <Checkbox :model-value="true" tabindex="-1"/>
+                <Checkbox :model-value="true" tabindex="-1" />
                 <button class="btn icon-only transparent" tabindex="-1">
-                  <TrashIcon/>
+                  <TrashIcon />
                 </button>
               </div>
             </div>
           </div>
-          <h3>资源管理</h3>
+          <h3>Mod management</h3>
           <p>
-            Modrinth App 可以很轻松地在一个地方管理您所有的资源。您只需要点击按钮，就可以安装、卸载和更新资源。
+            Modrinth makes it easy to manage all your mods in one place. You can install, uninstall,
+            and update mods with a single click.
           </p>
         </div>
         <div class="feature gradient-border playing">
           <div class="text">
-            <h3>游玩您最喜欢的模组</h3>
-            <p>使用 Modrinth App 下载并游玩您最喜欢的资源和整合包。</p>
+            <h3>Play with your favorite mods</h3>
+            <p>Use the Modrinth App to download and play with your favorite mods and modpacks.</p>
           </div>
           <img
             src="https://cdn-raw.modrinth.com/app-landing/cobblemon-launcher.webp"
-            alt="使用 Modrinth App 游玩 Fabric 版本的 Cobblemon"
+            alt="The Modrinth App playing Cobblemon for Fabric"
             class="launcher"
           />
           <img
             src="https://cdn-raw.modrinth.com/app-landing/cobblemon.webp"
-            alt="正在游玩 Fabric 版本 Cobblemon 的 Minecraft"
+            alt="Minecraft playing Cobblemon for Fabric"
             class="minecraft"
           />
         </div>
         <div class="feature gradient-border sharing">
-          <div class="row header">包含模组
-            <EditIcon/>
-          </div>
+          <div class="row header">Included mods <EditIcon /></div>
           <div class="table">
             <div class="row first">
               <div class="cell">
@@ -446,9 +399,10 @@ useSeoMeta({
               <div class="cell">A mod which overhauls the vanilla creepers!</div>
             </div>
           </div>
-          <h3>分享整合包</h3>
+          <h3>Share Modpacks</h3>
           <p>
-            安装，共享并游玩在 Modrinth 上托管的数千个资源和整合包中的任何一个。
+            Build, share, and play modpacks with any of the thousands of mods and modpacks hosted
+            here on Modrinth.
           </p>
           <div class="export-card">
             <Avatar
@@ -456,43 +410,40 @@ useSeoMeta({
             />
             <div class="info">
               <div class="exporting">
-                <div class="tag">
-                  <BoxIcon/>
-                  整合包
-                </div>
+                <div class="tag"><BoxIcon /> Modpack</div>
                 <div class="small-button">
-                  分享
-                  <SendIcon/>
+                  Share
+                  <SendIcon />
                 </div>
               </div>
               <h4 class="name">All of Fabric | Orion</h4>
-              <div class="author">（创作者：AK）</div>
+              <div class="author">by AK</div>
             </div>
           </div>
         </div>
         <div class="feature gradient-border performance">
           <div class="title">
-            <h4>任务管理器</h4>
-            <Badge color="green" type="优良"/>
+            <h4>Activity monitor</h4>
+            <Badge color="green" type="Good performance" />
           </div>
           <div class="header row">
-            <div/>
-            <div class="cell">进程名称</div>
+            <div />
+            <div class="cell">Process name</div>
             <div class="cell">% CPU</div>
-            <div class="cell">内存占用</div>
+            <div class="cell">RAM</div>
           </div>
           <div class="table">
             <div class="row first">
               <div class="cell">
                 <div>
                   <div class="icon-logo modrinth">
-                    <LogoAnimated class="icon"/>
+                    <LogoAnimated class="icon" />
                   </div>
                 </div>
               </div>
               <div class="cell important">Modrinth App</div>
-              <div class="cell important">&lt; 10%</div>
-              <div class="cell important">&lt; 150 MB</div>
+              <div class="cell important">Small</div>
+              <div class="cell important">{{ "< 150 MB" }}</div>
             </div>
             <div class="row">
               <div class="cell">
@@ -511,20 +462,21 @@ useSeoMeta({
                 </div>
               </div>
               <div class="cell">Discord</div>
-              <div class="cell">114514 %</div>
-              <div class="cell">∞ x ∞ MB</div>
+              <div class="cell">1 billion %</div>
+              <div class="cell">∞ * ∞ MB</div>
             </div>
           </div>
-          <h3>性能</h3>
+          <h3>Performant</h3>
           <p>
-            Modrinth App 比许多流行启动器的表现更好，只占用 150MB 的内存！
+            The Modrinth App performs better than many of the leading mod managers, using just 150mb
+            of RAM!
           </p>
         </div>
         <div class="feature gradient-border website">
           <div class="icon-logo">
-            <LogoAnimated class="icon"/>
+            <LogoAnimated class="icon" />
           </div>
-          <div class="ellipsis"/>
+          <div class="ellipsis" />
           <div class="projects-showcase">
             <div v-for="(row, index) in rows" :key="index" class="row">
               <div v-for="n in 2" :key="n" class="row__content" :class="{ offset: index % 2 }">
@@ -534,7 +486,7 @@ useSeoMeta({
                   class="project button-animation gradient-border"
                   :to="`/${project.project_type}/${project.slug ? project.slug : project.id}`"
                 >
-                  <Avatar :src="project.icon_url" :alt="project.title" size="sm" loading="lazy"/>
+                  <Avatar :src="project.icon_url" :alt="project.title" size="sm" loading="lazy" />
                   <div class="project-info">
                     <span class="title">
                       {{ project.title }}
@@ -547,40 +499,42 @@ useSeoMeta({
               </div>
             </div>
           </div>
-          <h3>网站集成</h3>
+          <h3>Website Integration</h3>
           <p>
-            Modrinth App 与网站完全集成，因此您可以在 Modrinth App 中访问所有您最喜欢的资源！
+            The Modrinth App is fully integrated with the website, so you can access all your
+            favorite projects from the app!
           </p>
         </div>
         <div class="feature gradient-border importing">
           <div class="text">
-            <h3>配置导入</h3>
+            <h3>Profile importing</h3>
             <p>
-              从您之前使用的启动器中导入所有配置文件，并在几秒钟内完成 Modrinth App 设置！
+              Import all your favorite profiles from the launcher you were using before, and get
+              started with the Modrinth App in seconds!
             </p>
           </div>
           <div class="inner-ring ring">
             <div class="icon-logo">
-              <LogoAnimated class="icon"/>
+              <LogoAnimated class="icon" />
             </div>
             <div class="launcher-badge top-left">
-              <img src="~/assets/images/external/gdlauncher.png" alt="GDLauncher"/>
+              <img src="~/assets/images/external/gdlauncher.png" alt="GDLauncher" />
             </div>
             <div class="launcher-badge top-right">
-              <img src="~/assets/images/external/multimc.webp" alt="MultiMC"/>
+              <img src="~/assets/images/external/multimc.webp" alt="MultiMC" />
             </div>
             <div class="launcher-badge bottom-left">
-              <PrismIcon/>
+              <PrismIcon />
             </div>
             <div class="launcher-badge bottom-right">
-              <ATLauncher/>
+              <ATLauncher />
             </div>
             <div class="launcher-badge bottom-middle">
-              <CurseForge/>
+              <CurseForge />
             </div>
-            <div class="first-ring"/>
-            <div class="second-ring"/>
-            <div class="third-ring"/>
+            <div class="first-ring" />
+            <div class="second-ring" />
+            <div class="third-ring" />
           </div>
         </div>
       </div>
@@ -608,8 +562,8 @@ useSeoMeta({
                   y2="24"
                   gradientUnits="userSpaceOnUse"
                 >
-                  <stop stop-color="#C1E1B1"/>
-                  <stop offset="1" stop-color="#A7BDE6"/>
+                  <stop stop-color="#C1E1B1" />
+                  <stop offset="1" stop-color="#A7BDE6" />
                 </linearGradient>
               </defs>
             </svg>
@@ -634,18 +588,18 @@ useSeoMeta({
                   y2="24"
                   gradientUnits="userSpaceOnUse"
                 >
-                  <stop stop-color="#A7D0FF"/>
-                  <stop offset="0.414928" stop-color="#00BD3C"/>
+                  <stop stop-color="#A7D0FF" />
+                  <stop offset="0.414928" stop-color="#00BD3C" />
                 </linearGradient>
               </defs>
             </svg>
-            <h3>开源</h3>
+            <h3>Open source</h3>
           </div>
           <div class="description">
-            Modrinth’s launcher 完全开源。您可以在
+            Modrinth’s launcher is fully open source. You can view the source code on our
             <a href="https://github.com/modrinth/theseus" rel="noopener" :target="$external()"
-            >GitHub</a>
-            上查看源代码。
+              >GitHub</a
+            >!
           </div>
         </div>
         <div class="point">
@@ -683,8 +637,8 @@ useSeoMeta({
                   y2="18.75"
                   gradientUnits="userSpaceOnUse"
                 >
-                  <stop stop-color="#C1E1B1"/>
-                  <stop offset="1" stop-color="#A7BDE6"/>
+                  <stop stop-color="#C1E1B1" />
+                  <stop offset="1" stop-color="#A7BDE6" />
                 </linearGradient>
                 <linearGradient
                   id="paint1_linear_897_3802"
@@ -694,11 +648,11 @@ useSeoMeta({
                   y2="21"
                   gradientUnits="userSpaceOnUse"
                 >
-                  <stop stop-color="#C1E1B1"/>
-                  <stop offset="1" stop-color="#A7BDE6"/>
+                  <stop stop-color="#C1E1B1" />
+                  <stop offset="1" stop-color="#A7BDE6" />
                 </linearGradient>
                 <clipPath id="clip0_897_3802">
-                  <rect width="24" height="24" fill="white"/>
+                  <rect width="24" height="24" fill="white" />
                 </clipPath>
               </defs>
             </svg>
@@ -733,8 +687,8 @@ useSeoMeta({
                   y2="18.75"
                   gradientUnits="userSpaceOnUse"
                 >
-                  <stop stop-color="#A7D0FF"/>
-                  <stop offset="0.414928" stop-color="#00BD3C"/>
+                  <stop stop-color="#A7D0FF" />
+                  <stop offset="0.414928" stop-color="#00BD3C" />
                 </linearGradient>
                 <linearGradient
                   id="paint1_linear_944_4973"
@@ -744,15 +698,15 @@ useSeoMeta({
                   y2="21"
                   gradientUnits="userSpaceOnUse"
                 >
-                  <stop stop-color="#A7D0FF"/>
-                  <stop offset="0.414928" stop-color="#00BD3C"/>
+                  <stop stop-color="#A7D0FF" />
+                  <stop offset="0.414928" stop-color="#00BD3C" />
                 </linearGradient>
               </defs>
             </svg>
-            <h3>离线模式</h3>
+            <h3>Offline mode</h3>
           </div>
           <div class="description">
-            无论您是否连接到互联网均可游玩 Minecraft。
+            Play your mods, whether you are connected to the internet, or not.
           </div>
         </div>
         <div class="point">
@@ -778,8 +732,8 @@ useSeoMeta({
                   y2="19.1875"
                   gradientUnits="userSpaceOnUse"
                 >
-                  <stop stop-color="#C1E1B1"/>
-                  <stop offset="1" stop-color="#A7BDE6"/>
+                  <stop stop-color="#C1E1B1" />
+                  <stop offset="1" stop-color="#A7BDE6" />
                 </linearGradient>
               </defs>
             </svg>
@@ -804,23 +758,24 @@ useSeoMeta({
                   y2="19.1875"
                   gradientUnits="userSpaceOnUse"
                 >
-                  <stop stop-color="#A7D0FF"/>
-                  <stop offset="0.414928" stop-color="#00BD3C"/>
+                  <stop stop-color="#A7D0FF" />
+                  <stop offset="0.414928" stop-color="#00BD3C" />
                 </linearGradient>
               </defs>
             </svg>
-            <h3>关注资源</h3>
+            <h3>Follow projects</h3>
           </div>
-          <div class="description">一键保存您喜爱的资源并接收更新。</div>
+          <div class="description">Save content you love and receive updates with one click.</div>
         </div>
       </div>
     </div>
     <div ref="downloadSection" class="footer">
-      <div class="section-badge">下载选项</div>
+      <div class="section-badge">Download options</div>
       <div class="section-subheader">
-        <div class="section-subheader-title">下载 Modrinth App</div>
+        <div class="section-subheader-title">Download the Modrinth App</div>
         <div class="section-subheader-description">
-          Modrinth App 适用于所有电脑操作系统<br/>请选择您想要的版本。
+          Our desktop app is available across all platforms, <br />
+          choose your desired version.
         </div>
       </div>
       <div class="download-section">
@@ -834,17 +789,13 @@ useSeoMeta({
             Windows
           </div>
           <div class="description">
-            <a @click.prevent="downloadChinese">
-              <DownloadIcon/>
-              <span> 下载汉化版 </span>
-            </a>
             <a ref="downloadWindows" :href="windowsLink" download="">
-              <DownloadIcon/>
-              <span> 下载原版 </span>
+              <DownloadIcon />
+              <span> Download the beta </span>
             </a>
           </div>
         </div>
-        <div class="divider"/>
+        <div class="divider" />
         <div class="download-card">
           <div class="title">
             <svg
@@ -861,22 +812,14 @@ useSeoMeta({
             </svg>
             Mac
           </div>
-          <div class="description">
-            <a @click.prevent="downloadChinese">
-              <DownloadIcon/>
-              <span> 下载汉化版 </span>
-            </a>
-            <a :href="macLinks.appleSilicon" download="">
-              <DownloadIcon/>
-              <span> 下载原版 - Apple Silicon 芯片 </span>
-            </a>
-            <a :href="macLinks.intel" download="">
-              <DownloadIcon/>
-              <span> 下载原版 - Intel 芯片 </span>
+          <div class="description apple">
+            <a :href="macLinks.universal" download="">
+              <DownloadIcon />
+              <span> Download the beta </span>
             </a>
           </div>
         </div>
-        <div class="divider"/>
+        <div class="divider" />
         <div class="download-card">
           <div class="title">
             <svg
@@ -906,35 +849,30 @@ useSeoMeta({
             </svg>
             Linux
           </div>
-          <div class="description">
-            <a @click.prevent="downloadChinese">
-              <DownloadIcon/>
-              <span> 下载汉化版 </span>
-            </a>
+          <div class="description apple">
             <a ref="downloadLinux" :href="linuxLinks.appImage" download="">
-              <DownloadIcon/>
-              <span> 下载原版 - AppImage </span>
+              <DownloadIcon />
+              <span> Download the AppImage </span>
             </a>
             <a :href="linuxLinks.deb" download="">
-              <DownloadIcon/>
-              <span> 下载原版 - DEB </span>
+              <DownloadIcon />
+              <span> Download the DEB </span>
             </a>
             <a :href="linuxLinks.rpm" download="">
-              <DownloadIcon/>
-              <span> 下载原版 - RPM </span>
+              <DownloadIcon />
+              <span> Download the RPM </span>
             </a>
             <a :href="linuxLinks.thirdParty" download="">
-              <LinkIcon/>
-              <span> 下载原版 - 第三方包管理器 </span>
+              <LinkIcon />
+              <span> Third-party packages </span>
             </a>
           </div>
         </div>
       </div>
       <p class="terms">
-        下载 Modrinth App 即表示您同意我们的
-        <nuxt-link to="/legal/terms">服务条款</nuxt-link>
-        和
-        <nuxt-link to="/legal/privacy">隐私政策</nuxt-link>。
+        By downloading the Modrinth App you agree to our
+        <nuxt-link to="/legal/terms"> Terms</nuxt-link> and
+        <nuxt-link to="/legal/privacy">Privacy Policy.</nuxt-link>
       </p>
     </div>
     <div class="logo-banner">
@@ -946,7 +884,7 @@ useSeoMeta({
         class="light-height"
       >
         <g clip-path="url(#clip0_419_237)">
-          <rect x="176" width="512" height="512" fill="url(#paint0_linear_419_237)"/>
+          <rect x="176" width="512" height="512" fill="url(#paint0_linear_419_237)" />
           <g opacity="0.5">
             <path
               d="M176 274.069H219.65C221.89 299.001 228.25 322.42 238.87 345.249C245.4 342.033 251.37 338.016 257.52 334.3C263.76 330.534 270.07 326.908 276.62 323.061C276.21 321.669 275.95 320.216 275.37 318.914C271.05 309.378 268.47 299.251 266.32 289.114C265.03 283.054 264.41 276.743 263.73 270.513C262.89 262.86 262.94 255.257 263.11 247.654C263.26 241.083 264.11 234.482 265.21 227.991C266.88 218.064 269.39 208.308 272.94 198.852C276.79 188.594 281.19 178.588 287.21 169.382C291.19 163.292 294.97 157.021 299.53 151.382C306.3 142.998 313.75 135.214 322.12 128.273C330.05 121.692 338.16 115.421 347.18 110.483C354.15 106.676 361.39 103.341 368.66 100.115C379.13 95.4674 390.24 92.873 401.39 90.4289C410.67 88.4055 430.03 87.3237 438.96 88.6158C438.51 95.9282 436.63 103.05 435.44 110.262C434.26 117.394 432.94 124.496 431.6 132.109C428.15 132.44 424.73 132.7 421.32 133.121C416.25 133.752 411.15 134.263 406.15 135.265C395.4 137.428 385.13 141.044 375.33 145.973C366.85 150.23 358.98 155.398 351.89 161.709C348.8 164.464 345.52 167.048 342.67 170.033C335.77 177.225 329.99 185.279 324.68 193.713C320.48 200.364 317.45 207.536 314.8 214.839C312.05 222.422 310.33 230.315 308.95 238.308C307.43 247.093 307.9 255.898 308.2 264.653C308.48 272.867 310.18 281 312.49 288.934C313.45 292.239 314.44 295.535 315.62 299.481C332.06 289.705 348.08 280.169 364.47 270.422C361.92 263.631 359.46 257.16 357.05 250.669C354.63 244.178 352.26 237.667 349.78 230.926C352.79 227.871 355.71 224.936 358.6 221.971C369.97 210.291 381.46 198.712 392.6 186.821C395.77 183.436 399.36 181.913 403.66 181.062C414.16 178.978 424.63 176.734 435.11 174.541C441.87 173.128 448.62 171.686 455.69 170.193C461.36 177.175 467.08 184.217 472.94 191.439C471.8 192.671 470.85 193.783 469.82 194.815C463 201.656 455.97 208.308 449.41 215.4C446.18 218.896 442.34 220.709 438.01 221.961C433.09 223.383 428.16 224.745 423.25 226.198C422.5 226.418 421.73 226.909 421.19 227.48C416.62 232.298 412.15 237.216 407.55 241.995C405.9 243.697 405.89 245.31 406.67 247.424C408.91 253.474 410.92 259.604 413.12 265.674C413.5 266.716 414.27 267.668 415.04 268.499C419.55 273.377 424.05 278.266 428.73 282.974C429.48 283.725 431.24 284.055 432.33 283.775C438.57 282.182 444.72 280.289 450.94 278.636C453.49 277.955 455.32 276.443 457.01 274.559C460.1 271.094 463.55 267.898 466.27 264.172C469.55 259.684 473.91 257.901 479.09 256.82C483.44 255.908 487.58 254.045 491.83 252.673C496.23 251.25 500.69 249.998 505.07 248.495C507.08 247.804 508.18 248.305 508.99 250.198C512.16 257.671 515.4 265.114 518.76 272.917C515.97 276.342 513.04 279.918 510.13 283.515C505.45 289.304 500.81 295.124 496.12 300.904C492.16 305.782 487.86 310.42 484.26 315.549C481.66 319.255 478.09 320.717 474.16 321.959C462.33 325.716 450.52 329.502 438.69 333.268C431.61 335.522 424.51 337.756 416.91 340.16C415.33 338.648 413.45 337.055 411.81 335.232C407.16 330.053 402.62 324.794 398.03 319.565C395.63 316.831 393.3 314.006 390.79 311.382C388.08 308.557 387.52 308.557 384.41 310.42C377.88 314.337 371.33 318.243 364.82 322.19C356.32 327.328 347.85 332.507 339.09 337.836C341.26 341.482 344.39 344.257 347.49 346.811C353.22 351.539 359.26 355.907 365.37 360.144C376.53 367.867 388.92 372.815 402.07 376.081C409.82 378.004 417.59 379.286 425.6 379.076C426.74 379.046 427.88 379.446 429.02 379.516C430.64 379.617 432.27 379.667 433.88 379.587C435.19 379.526 436.48 379.106 437.79 379.076C442.03 378.966 442.07 378.996 443.29 383.443C446.74 396.014 450.16 408.585 453.58 421.167C453.7 421.597 453.65 422.068 453.7 422.88C449 423.28 444.42 423.781 439.83 424.022C436.17 424.212 432.5 423.961 428.83 424.092C414.81 424.593 401.08 422.469 387.69 418.733C366.28 412.763 346.56 403.216 328.88 389.523C320.7 383.183 313.41 375.95 306.16 368.648C304.89 367.366 303.97 365.743 302.78 364.371C300.52 361.746 299.87 361.526 296.85 363.189C292.49 365.583 288.24 368.167 283.98 370.722C277.72 374.458 271.49 378.234 265.25 382.001C264.56 382.421 263.91 382.902 263.18 383.403C263.7 387.54 267.09 389.654 269.19 392.448C272.55 396.946 276.45 401.113 280.58 404.939C286.77 410.669 293.38 415.938 299.77 421.457C306.94 427.658 314.86 432.756 322.98 437.604C332.25 443.144 341.84 448.092 351.94 451.808C361.7 455.394 371.65 458.54 381.69 461.244C388.49 463.077 395.62 463.678 402.56 465.061C414.21 467.385 425.99 467.224 437.75 466.924C444.49 466.754 451.21 465.622 457.94 465.071C465.69 464.44 473.25 462.767 480.79 461.014C492.41 458.319 503.64 454.453 514.64 449.795C530.77 442.963 545.63 433.968 559.65 423.601C570.63 415.477 580.59 406.061 589.5 395.774C598.25 385.667 606.72 375.209 612.97 363.219C615.56 358.241 618.38 353.382 621.25 348.184C635.52 353.322 649.65 358.411 664.03 363.59C663.75 364.691 663.65 365.663 663.26 366.484C655.92 381.77 647.35 396.285 636.95 409.727C628.93 420.105 620.71 430.292 611.17 439.307C604.8 445.327 598.41 451.358 591.25 456.496C584.53 461.314 578.16 466.653 571.24 471.151C556.34 480.857 540.49 488.721 523.9 495.262C508.29 501.412 492.07 505.198 475.79 508.774C468.91 510.287 461.7 510.297 454.64 511.058C453.74 511.158 452.89 511.679 452.02 512H409.02C405.58 510.147 401.69 510.908 398.04 510.127C392.73 508.995 387.16 509.055 381.91 507.763C370.54 504.958 359.16 502.043 348.04 498.387C335.77 494.35 323.98 489.101 312.56 482.941C300.86 476.63 289.55 469.779 278.84 461.945C269.2 454.894 260.11 447.171 251.49 438.927C248.39 435.952 245.88 432.356 242.77 429.391C235.89 422.83 230.17 415.267 224.57 407.704C218.48 399.48 212.95 390.755 208.03 381.78C197.57 362.698 188.92 342.835 183.67 321.579C180.7 309.558 177.71 297.578 176.89 285.177C176.86 284.787 176.32 284.436 176.02 284.065C176.02 280.73 176.02 277.404 176.02 274.069H176Z"
@@ -958,7 +896,7 @@ useSeoMeta({
             />
           </g>
         </g>
-        <rect y="194" width="865" height="318" fill="url(#paint1_linear_419_237)"/>
+        <rect y="194" width="865" height="318" fill="url(#paint1_linear_419_237)" />
         <defs>
           <linearGradient
             id="paint0_linear_419_237"
@@ -968,8 +906,8 @@ useSeoMeta({
             y2="512"
             gradientUnits="userSpaceOnUse"
           >
-            <stop stop-color="#E7FFEF"/>
-            <stop offset="0.678759" stop-color="white"/>
+            <stop stop-color="#E7FFEF" />
+            <stop offset="0.678759" stop-color="white" />
           </linearGradient>
           <linearGradient
             id="paint1_linear_419_237"
@@ -979,17 +917,17 @@ useSeoMeta({
             y2="315.861"
             gradientUnits="userSpaceOnUse"
           >
-            <stop stop-color="#F9FFFB" stop-opacity="0"/>
-            <stop offset="1" stop-color="#F9FFFB"/>
+            <stop stop-color="#F9FFFB" stop-opacity="0" />
+            <stop offset="1" stop-color="#F9FFFB" />
           </linearGradient>
           <clipPath id="clip0_419_237">
-            <rect x="176" width="512" height="512" rx="256" fill="white"/>
+            <rect x="176" width="512" height="512" rx="256" fill="white" />
           </clipPath>
         </defs>
       </svg>
       <svg v-else viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
         <g clip-path="url(#clip0_127_331)">
-          <rect width="512" height="512" fill="url(#paint0_linear_127_331)"/>
+          <rect width="512" height="512" fill="url(#paint0_linear_127_331)" />
           <g style="mix-blend-mode: overlay">
             <g opacity="0.5">
               <path
@@ -1012,24 +950,24 @@ useSeoMeta({
             y2="512"
             gradientUnits="userSpaceOnUse"
           >
-            <stop stop-color="#05CE45"/>
-            <stop offset="0.678759" stop-color="#051F10"/>
+            <stop stop-color="#05CE45" />
+            <stop offset="0.678759" stop-color="#051F10" />
           </linearGradient>
           <clipPath id="clip0_127_331">
-            <rect width="512" height="512" rx="256" fill="white"/>
+            <rect width="512" height="512" rx="256" fill="white" />
           </clipPath>
         </defs>
       </svg>
       <div class="overlay">
         <h2 class="main-header">
-          阅读更多信息<br/>
-          <strong class="main-header-strong">Modrinth 博客</strong>
+          Read more about <br />
+          <strong class="main-header-strong">Modrinth</strong>
         </h2>
         <a
           href="https://blog.modrinth.com/?utm_source=website&utm_source=homepage&utm_campaign=newsletter"
           class="iconified-button brand-button"
         >
-          前往博客
+          Visit the blog
         </a>
       </div>
     </div>
@@ -1039,7 +977,8 @@ useSeoMeta({
 <style scoped lang="scss">
 .landing-hero {
   position: relative;
-  background: #0f1121 url("https://cdn-raw.modrinth.com/app-landing/cube-black.png") no-repeat center 4rem;
+  background: #0f1121 url("https://cdn-raw.modrinth.com/app-landing/cube-black.png") no-repeat
+    center 4rem;
   background-size: cover;
   padding: 6rem 1rem 12rem 1rem;
   margin-top: -5rem;
@@ -1103,7 +1042,6 @@ useSeoMeta({
   line-height: 100%;
   margin: 0 auto;
   padding: 0 4rem 4rem;
-  text-align: center;
 }
 
 .features {
@@ -1433,7 +1371,6 @@ useSeoMeta({
 
       .header {
         font-size: var(--font-size-sm);
-
         .cell {
           color: var(--color-base);
         }
@@ -1511,9 +1448,9 @@ useSeoMeta({
           width: 15rem;
           height: 15rem;
           background: radial-gradient(
-              50% 50% at 50% 50%,
-              rgba(5, 206, 69, 0.19) 0%,
-              rgba(15, 19, 49, 0.25) 100%
+            50% 50% at 50% 50%,
+            rgba(5, 206, 69, 0.19) 0%,
+            rgba(15, 19, 49, 0.25) 100%
           );
         }
 
@@ -1526,12 +1463,12 @@ useSeoMeta({
               50% 50% at 50% 50%,
               rgba(5, 206, 69, 0.19) 0%,
               rgba(15, 19, 49, 0.25) 100%
-          ),
-          radial-gradient(
+            ),
+            radial-gradient(
               50% 50% at 50% 50%,
               rgba(44, 48, 79, 0.25) 0%,
               rgba(32, 35, 50, 0.19) 100%
-          );
+            );
         }
 
         .third-ring {
@@ -1540,9 +1477,9 @@ useSeoMeta({
           height: 35rem;
           opacity: 0.5;
           background: radial-gradient(
-              50% 50% at 50% 50%,
-              rgba(44, 48, 79, 0.25) 0%,
-              rgba(32, 35, 50, 0.19) 100%
+            50% 50% at 50% 50%,
+            rgba(44, 48, 79, 0.25) 0%,
+            rgba(32, 35, 50, 0.19) 100%
           );
         }
       }
@@ -1630,6 +1567,7 @@ useSeoMeta({
       .projects-showcase {
         margin: calc(7rem + var(--gap-xl)) 0 var(--gap-xl);
         z-index: 3;
+        text-align: left;
 
         .row {
           --gap: var(--gap-md);
@@ -1662,8 +1600,9 @@ useSeoMeta({
             gap: 1rem;
             border-radius: 1rem;
             border: 1px solid var(--landing-border-color);
-            transition: background 0.5s ease-in-out,
-            transform 0.05s ease-in-out;
+            transition:
+              background 0.5s ease-in-out,
+              transform 0.05s ease-in-out;
             // Removed due to lag on mobile :(
             background: var(--landing-blob-gradient);
 
@@ -1736,12 +1675,13 @@ useSeoMeta({
       padding: var(--gap-xl);
       z-index: 1;
       background: radial-gradient(
-          50% 50% at 50% 50%,
-          rgba(44, 48, 79, 0.35) 0%,
-          rgba(32, 35, 50, 0.27) 100%
+        50% 50% at 50% 50%,
+        rgba(44, 48, 79, 0.35) 0%,
+        rgba(32, 35, 50, 0.27) 100%
       );
-      box-shadow: 2px 2px 12px 0px rgba(0, 0, 0, 0.16),
-      2px 2px 64px 0px rgba(57, 61, 94, 0.45) inset;
+      box-shadow:
+        2px 2px 12px 0px rgba(0, 0, 0, 0.16),
+        2px 2px 64px 0px rgba(57, 61, 94, 0.45) inset;
       backdrop-filter: blur(6px);
       -webkit-backdrop-filter: blur(6px);
       max-width: 540px;
@@ -1960,18 +1900,20 @@ useSeoMeta({
         font-size: var(--font-size-md);
         color: var(--color-brand);
         gap: var(--gap-sm);
-        align-items: flex-start;
 
         a {
           display: flex;
           align-items: flex-start;
           gap: var(--gap-sm);
           justify-content: center;
-          text-align: left;
 
           &:hover {
             cursor: pointer;
           }
+        }
+
+        &.apple {
+          align-items: flex-start;
         }
       }
 
@@ -2053,10 +1995,12 @@ useSeoMeta({
     border-radius: 1rem;
     background: var(--landing-border-gradient);
 
-    -webkit-mask: linear-gradient(#fff 0 0) content-box,
-    linear-gradient(#fff 0 0);
-    mask: linear-gradient(#fff 0 0) content-box,
-    linear-gradient(#fff 0 0);
+    -webkit-mask:
+      linear-gradient(#fff 0 0) content-box,
+      linear-gradient(#fff 0 0);
+    mask:
+      linear-gradient(#fff 0 0) content-box,
+      linear-gradient(#fff 0 0);
     -webkit-mask-composite: xor;
     mask-composite: exclude;
   }
@@ -2068,9 +2012,9 @@ useSeoMeta({
   width: 100%;
   height: 30rem;
   background: linear-gradient(
-      0deg,
-      var(--landing-transition-gradient-end) 0%,
-      var(--landing-transition-gradient-start) 100%
+    0deg,
+    var(--landing-transition-gradient-end) 0%,
+    var(--landing-transition-gradient-start) 100%
   );
 }
 
@@ -2181,12 +2125,13 @@ useSeoMeta({
 
   .feature {
     background: radial-gradient(
-        50% 50% at 50% 50%,
-        rgba(255, 255, 255, 0.35) 0%,
-        rgba(255, 255, 255, 0.27) 100%
+      50% 50% at 50% 50%,
+      rgba(255, 255, 255, 0.35) 0%,
+      rgba(255, 255, 255, 0.27) 100%
     ) !important;
-    box-shadow: 2px 2px 64px 0px rgba(255, 255, 255, 0.45) inset,
-    2px 2px 12px 0px rgba(0, 0, 0, 0.16) !important;
+    box-shadow:
+      2px 2px 64px 0px rgba(255, 255, 255, 0.45) inset,
+      2px 2px 12px 0px rgba(0, 0, 0, 0.16) !important;
     border: none !important;
   }
 
@@ -2209,9 +2154,9 @@ useSeoMeta({
   .ellipsis {
     opacity: 0.75;
     background: linear-gradient(
-        180deg,
-        rgba(5, 206, 69, 0.15) 0%,
-        rgba(5, 206, 69, 0) 100%
+      180deg,
+      rgba(5, 206, 69, 0.15) 0%,
+      rgba(5, 206, 69, 0) 100%
     ) !important;
   }
 
@@ -2226,25 +2171,25 @@ useSeoMeta({
 
   .first-ring {
     background: linear-gradient(
-        180deg,
-        rgba(5, 206, 69, 0.15) 0%,
-        rgba(5, 206, 69, 0) 100%
+      180deg,
+      rgba(5, 206, 69, 0.15) 0%,
+      rgba(5, 206, 69, 0) 100%
     ) !important;
   }
 
   .second-ring {
     background: linear-gradient(
-        180deg,
-        rgba(5, 206, 69, 0.15) 0%,
-        rgba(5, 206, 69, 0) 100%
+      180deg,
+      rgba(5, 206, 69, 0.15) 0%,
+      rgba(5, 206, 69, 0) 100%
     ) !important;
   }
 
   .third-ring {
     background: linear-gradient(
-        180deg,
-        rgba(5, 206, 69, 0.15) 0%,
-        rgba(5, 206, 69, 0) 100%
+      180deg,
+      rgba(5, 206, 69, 0.15) 0%,
+      rgba(5, 206, 69, 0) 100%
     ) !important;
   }
 

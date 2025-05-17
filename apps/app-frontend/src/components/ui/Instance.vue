@@ -212,7 +212,7 @@ onUnmounted(() => unlisten())
           />
           <ButtonStyled v-else-if="!installed" size="large" color="brand" circular>
             <button
-              v-tooltip="'Repair'"
+              v-tooltip="'修复'"
               class="transition-all scale-75 group-hover:scale-100 group-focus-within:scale-100 origin-bottom opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 card-shadow"
               @click="(e) => repair(e)"
             >

@@ -16,7 +16,7 @@
           </div>
           <div class="table-cell table-text manage">
             <Button v-if="currentSelected.path === javaInstall.path" disabled
-              ><CheckIcon /> 已选择</Button
+              ><CheckIcon /> 已选</Button
             >
             <Button v-else @click="setJavaInstall(javaInstall)"><PlusIcon /> 选择</Button>
           </div>

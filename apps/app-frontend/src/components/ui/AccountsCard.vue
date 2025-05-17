@@ -31,7 +31,7 @@
         <Avatar size="xs" :src="`https://minotar.net/helm/${selectedAccount.id}/128.png`" />
         <div>
           <h4>{{ selectedAccount.username }}</h4>
-          <p>已选择</p>
+          <p>已选</p>
         </div>
         <Button v-tooltip="'登出'" icon-only color="raised" @click="logout(selectedAccount.id)">
           <TrashIcon />

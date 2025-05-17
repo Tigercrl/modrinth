@@ -142,11 +142,11 @@
       <template #copy_slugs><HashIcon /> 复制资源关键字 </template>
       <template #copy_links><GlobeIcon /> 复制链接 </template>
       <template #toggle><EditIcon /> 切换选择 </template>
-      <template #disable><XIcon /> 禁用已选择资源 </template>
-      <template #enable><CheckCircleIcon />启用已选择资源 </template>
+      <template #disable><XIcon /> 禁用已选资源 </template>
+      <template #enable><CheckCircleIcon />启用已选资源 </template>
       <template #hide_show><EyeIcon /> 显示或隐藏未选择资源 </template>
       <template #update_all
-        ><UpdatedIcon /> 更新 {{ selected.length > 0 ? '已选择' : '全部' }}资源 </template
+        ><UpdatedIcon /> 更新 {{ selected.length > 0 ? '已选' : '全部' }}资源 </template
       >
       <template #filter_update><UpdatedIcon />选择可更新的资源</template>
     </ContextMenu>

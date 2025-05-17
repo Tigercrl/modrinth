@@ -835,7 +835,7 @@ const startTyping = () => {
 const handleError = (err) => {
   addNotification({
     group: "main",
-    title: "发生错误",
+    title: "An error occurred",
     type: "error",
     text: err.message ?? (err.data ? err.data.description : err),
   });

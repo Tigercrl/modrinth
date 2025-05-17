@@ -11,7 +11,7 @@
           <label for="email" hidden>
             {{ formatMessage(methodChoiceMessages.emailUsernameLabel) }}
           </label>
-          <MailIcon/>
+          <MailIcon />
           <input
             id="email"
             v-model="email"
@@ -22,11 +22,10 @@
           />
         </div>
 
-        <HCaptcha ref="captcha" v-model="token"/>
+        <HCaptcha ref="captcha" v-model="token" />
 
         <button class="btn btn-primary centered-btn" :disabled="!token" @click="recovery">
-          <SendIcon/>
-          {{ formatMessage(methodChoiceMessages.action) }}
+          <SendIcon /> {{ formatMessage(methodChoiceMessages.action) }}
         </button>
       </template>
       <template v-else-if="step === 'passed_challenge'">
@@ -34,7 +33,7 @@
 
         <div class="iconified-input">
           <label for="password" hidden>{{ formatMessage(commonMessages.passwordLabel) }}</label>
-          <KeyIcon/>
+          <KeyIcon />
           <input
             id="password"
             v-model="newPassword"
@@ -49,7 +48,7 @@
           <label for="confirm-password" hidden>
             {{ formatMessage(commonMessages.passwordLabel) }}
           </label>
-          <KeyIcon/>
+          <KeyIcon />
           <input
             id="confirm-password"
             v-model="confirmNewPassword"
@@ -68,44 +67,44 @@
   </div>
 </template>
 <script setup>
-import {KeyIcon, MailIcon, SendIcon} from "@modrinth/assets";
-import {commonMessages} from "@modrinth/ui";
+import { SendIcon, MailIcon, KeyIcon } from "@modrinth/assets";
+import { commonMessages } from "@modrinth/ui";
 import HCaptcha from "@/components/ui/HCaptcha.vue";
 
-const {formatMessage} = useVIntl();
+const { formatMessage } = useVIntl();
 
 const methodChoiceMessages = defineMessages({
   description: {
     id: "auth.reset-password.method-choice.description",
     defaultMessage:
-      "请在下面输入您的电子邮件，我们将向您发送包含密码重置链接的邮件，以重置您的账户密码。",
+      "Enter your email below and we'll send a recovery link to allow you to recover your account.",
   },
   emailUsernameLabel: {
     id: "auth.reset-password.method-choice.email-username.label",
-    defaultMessage: "用户名或邮箱",
+    defaultMessage: "Email or username",
   },
   emailUsernamePlaceholder: {
     id: "auth.reset-password.method-choice.email-username.placeholder",
-    defaultMessage: "邮箱地址",
+    defaultMessage: "Email",
   },
   action: {
     id: "auth.reset-password.method-choice.action",
-    defaultMessage: "发送密码重置邮件",
+    defaultMessage: "Send recovery email",
   },
 });
 
 const postChallengeMessages = defineMessages({
   description: {
     id: "auth.reset-password.post-challenge.description",
-    defaultMessage: "请在下面输入您的新密码以完成重置。",
+    defaultMessage: "Enter your new password below to gain access to your account.",
   },
   confirmPasswordLabel: {
     id: "auth.reset-password.post-challenge.confirm-password.label",
-    defaultMessage: "重复密码",
+    defaultMessage: "Confirm password",
   },
   action: {
     id: "auth.reset-password.post-challenge.action",
-    defaultMessage: "重置密码",
+    defaultMessage: "Reset password",
   },
 });
 
@@ -115,34 +114,34 @@ const postChallengeMessages = defineMessages({
 const emailSentNotificationMessages = defineMessages({
   title: {
     id: "auth.reset-password.notification.email-sent.title",
-    defaultMessage: "邮件已发送",
+    defaultMessage: "Email sent",
   },
   text: {
     id: "auth.reset-password.notification.email-sent.text",
     defaultMessage:
-      "如果您的账户设置过邮箱地址，我们会向该邮箱发送一封附有说明的邮件。",
+      "An email with instructions has been sent to you if the email was previously saved on your account.",
   },
 });
 
 const passwordResetNotificationMessages = defineMessages({
   title: {
     id: "auth.reset-password.notification.password-reset.title",
-    defaultMessage: "密码已重置",
+    defaultMessage: "Password successfully reset",
   },
   text: {
     id: "auth.reset-password.notification.password-reset.text",
-    defaultMessage: "现在您可以使用新密码登录账户。",
+    defaultMessage: "You can now log-in into your account with your new password.",
   },
 });
 
 const messages = defineMessages({
   title: {
     id: "auth.reset-password.title",
-    defaultMessage: "重置密码",
+    defaultMessage: "Reset Password",
   },
   longTitle: {
     id: "auth.reset-password.title.long",
-    defaultMessage: "重置账户密码",
+    defaultMessage: "Reset your password",
   },
 });
 

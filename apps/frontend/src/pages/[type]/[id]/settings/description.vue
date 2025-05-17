@@ -2,13 +2,14 @@
   <div>
     <div class="universal-card">
       <div class="markdown-disclaimer">
-        <h2>描述</h2>
+        <h2>Description</h2>
         <span class="label__description">
-          您可以在此编写您资源的详细描述。
+          You can type an extended description of your mod here.
           <span class="label__subdescription">
-            描述必须清晰、如实地描述资源的功能。有关全部要求，请参见
-            <nuxt-link class="text-link" target="_blank" to="/legal/rules">内容规则</nuxt-link>
-            第 2.1 节。
+            The description must clearly and honestly describe the purpose and function of the
+            project. See section 2.1 of the
+            <nuxt-link class="text-link" target="_blank" to="/legal/rules">Content Rules</nuxt-link>
+            for the full requirements.
           </span>
         </span>
       </div>
@@ -28,8 +29,8 @@
           type="button"
           @click="saveChanges()"
         >
-          <SaveIcon/>
-          保存改动
+          <SaveIcon />
+          Save changes
         </button>
       </div>
     </div>

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Modal ref="modalOpen" header="转让资源">
+    <Modal ref="modalOpen" header="Transfer Projects">
       <div class="universal-modal items">
         <div class="table">
           <div class="table-head table-row">
@@ -10,11 +10,11 @@
                 @update:model-value="toggleSelectedProjects()"
               />
             </div>
-            <div class="table-cell">图标</div>
-            <div class="table-cell">名称</div>
+            <div class="table-cell">Icon</div>
+            <div class="table-cell">Name</div>
             <div class="table-cell">ID</div>
-            <div class="table-cell">类型</div>
-            <div class="table-cell"/>
+            <div class="table-cell">Type</div>
+            <div class="table-cell" />
           </div>
           <div v-for="project in props.projects" :key="`project-${project.id}`" class="table-row">
             <div class="check-cell table-cell">
@@ -33,7 +33,7 @@
                 <Avatar
                   :src="project.icon_url"
                   aria-hidden="true"
-                  :alt="project.name + ' 的图标'"
+                  :alt="'Icon for ' + project.name"
                   no-shadow
                 />
               </nuxt-link>
@@ -51,19 +51,19 @@
             </div>
 
             <div class="table-cell">
-              <CopyCode :text="project.id"/>
+              <CopyCode :text="project.id" />
             </div>
 
             <div class="table-cell">
-              <BoxIcon/>
+              <BoxIcon />
               <span>{{
-                  $formatProjectType(
-                    $getProjectTypeForDisplay(
-                      project.project_types?.[0] ?? "project",
-                      project.loaders,
-                    ),
-                  )
-                }}</span>
+                $formatProjectType(
+                  $getProjectTypeForDisplay(
+                    project.project_types?.[0] ?? "project",
+                    project.loaders,
+                  ),
+                )
+              }}</span>
             </div>
 
             <div class="table-cell">
@@ -71,41 +71,46 @@
                 class="btn icon-only"
                 :to="`/project/${project.slug ? project.slug : project.id}/settings`"
               >
-                <SettingsIcon/>
+                <SettingsIcon />
               </nuxt-link>
             </div>
           </div>
         </div>
         <div class="push-right input-group">
           <Button @click="$refs.modalOpen?.hide()">
-            <XIcon/>
-            取消
+            <XIcon />
+            Cancel
           </Button>
           <Button :disabled="!selectedProjects?.length" color="primary" @click="onSubmitHandler()">
-            <TransferIcon/>
+            <TransferIcon />
             <span>
-              转让<span>
+              Transfer
+              <span>
                 {{
-                selectedProjects.length === props.projects.length
-                  ? "所有"
-                  : ` ${selectedProjects.length} 个`
-              }}
-              </span>资源
+                  selectedProjects.length === props.projects.length
+                    ? "All"
+                    : selectedProjects.length
+                }}
+              </span>
+              <span>
+                {{ " " }}
+                {{ selectedProjects.length === 1 ? "project" : "projects" }}
+              </span>
             </span>
           </Button>
         </div>
       </div>
     </Modal>
     <Button @click="$refs.modalOpen?.show()">
-      <TransferIcon/>
-      <span>转让资源</span>
+      <TransferIcon />
+      <span>Transfer projects</span>
     </Button>
   </div>
 </template>
 
 <script setup>
-import {BoxIcon, SettingsIcon, TransferIcon, XIcon} from "@modrinth/assets";
-import {Avatar, Button, Checkbox, CopyCode, Modal} from "@modrinth/ui";
+import { BoxIcon, SettingsIcon, TransferIcon, XIcon } from "@modrinth/assets";
+import { Button, Modal, Checkbox, CopyCode, Avatar } from "@modrinth/ui";
 
 const modalOpen = ref(null);
 

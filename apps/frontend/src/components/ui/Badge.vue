@@ -7,33 +7,33 @@
     <template v-if="color"> <span class="circle" /> {{ capitalizeString(type) }}</template>
 
     <!-- User roles -->
-    <template v-else-if="type === 'admin'"> <ModrinthIcon /> Modrinth 团队</template>
-    <template v-else-if="type === 'moderator'"> <ModeratorIcon /> 审核员</template>
-    <template v-else-if="type === 'creator'"><CreatorIcon /> 创作者</template>
-    <template v-else-if="type === 'plus'"><PlusIcon /> Modrinth+</template>
+    <template v-else-if="type === 'admin'"> <ModrinthIcon /> Modrinth Team</template>
+    <template v-else-if="type === 'moderator'"> <ModeratorIcon /> Moderator</template>
+    <template v-else-if="type === 'creator'"><CreatorIcon /> Creator</template>
+    <template v-else-if="type === 'plus'"><PlusIcon /> Modrinth Plus</template>
 
     <!-- Project statuses -->
-    <template v-else-if="type === 'approved'"><GlobeIcon /> 公共</template>
-    <template v-else-if="type === 'approved-general'"><CheckIcon /> 已过审</template>
+    <template v-else-if="type === 'approved'"><GlobeIcon /> Public</template>
+    <template v-else-if="type === 'approved-general'"><CheckIcon /> Approved</template>
     <template v-else-if="type === 'unlisted' || type === 'withheld'"
-      ><LinkIcon /> 隐藏</template
+      ><LinkIcon /> Unlisted</template
     >
-    <template v-else-if="type === 'private'"><LockIcon /> 私密</template>
-    <template v-else-if="type === 'scheduled'"> <CalendarIcon /> 计划中</template>
-    <template v-else-if="type === 'draft'"><DraftIcon /> 草稿</template>
-    <template v-else-if="type === 'archived'"> <ArchiveIcon /> 已归档</template>
-    <template v-else-if="type === 'rejected'"><CrossIcon /> 未过审</template>
-    <template v-else-if="type === 'processing'"> <ProcessingIcon /> 审核中</template>
+    <template v-else-if="type === 'private'"><LockIcon /> Private</template>
+    <template v-else-if="type === 'scheduled'"> <CalendarIcon /> Scheduled</template>
+    <template v-else-if="type === 'draft'"><DraftIcon /> Draft</template>
+    <template v-else-if="type === 'archived'"> <ArchiveIcon /> Archived</template>
+    <template v-else-if="type === 'rejected'"><CrossIcon /> Rejected</template>
+    <template v-else-if="type === 'processing'"> <ProcessingIcon /> Under review</template>
 
     <!-- Team members -->
-    <template v-else-if="type === 'accepted'"><CheckIcon /> 已通过</template>
-    <template v-else-if="type === 'pending'"> <ProcessingIcon /> 等待中 </template>
+    <template v-else-if="type === 'accepted'"><CheckIcon /> Accepted</template>
+    <template v-else-if="type === 'pending'"> <ProcessingIcon /> Pending </template>
 
     <!-- Transaction statuses -->
-    <template v-else-if="type === 'success'"><CheckIcon /> 成功</template>
+    <template v-else-if="type === 'success'"><CheckIcon /> Success</template>
 
     <!-- Report status -->
-    <template v-else-if="type === 'closed'"> <CloseIcon /> 已关闭</template>
+    <template v-else-if="type === 'closed'"> <CloseIcon /> Closed</template>
 
     <!-- Other -->
     <template v-else> <span class="circle" /> {{ capitalizeString(type) }} </template>

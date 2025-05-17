@@ -2,7 +2,13 @@
   <div>
     <MessageBanner v-if="flags.developerMode" message-type="warning" class="developer-message">
       <CodeIcon class="inline-flex" />
-      <strong>开发者模式</strong>已启用。这将允许您查看整个 Modrinth 网站中各种资源的内部 ID，如果您是使用 Modrinth API 的开发者，这可能会对您有所帮助。点击页脚的 Modrinth 徽标 5 次，即可开关开发者模式。
+      <IntlFormatted :message-id="developerModeBanner.description">
+        <template #strong="{ children }">
+          <strong>
+            <component :is="() => normalizeChildren(children)" />
+          </strong>
+        </template>
+      </IntlFormatted>
       <Button :action="() => disableDeveloperMode()">
         {{ formatMessage(developerModeBanner.deactivate) }}
       </Button>
@@ -51,7 +57,7 @@
                   class="radio"
                 />
                 <RadioButtonIcon v-else class="radio" />
-                列表
+                Rows
               </div>
             </button>
             <button
@@ -75,7 +81,7 @@
                   class="radio"
                 />
                 <RadioButtonIcon v-else class="radio" />
-                网格
+                Grid
               </div>
             </button>
             <button
@@ -97,7 +103,7 @@
                   class="radio"
                 />
                 <RadioButtonIcon v-else class="radio" />
-                画廊
+                Gallery
               </div>
             </button>
           </div>
@@ -196,11 +202,11 @@ import { CodeIcon, RadioButtonCheckedIcon, RadioButtonIcon } from "@modrinth/ass
 import { Button, ThemeSelector } from "@modrinth/ui";
 import MessageBanner from "~/components/ui/MessageBanner.vue";
 import type { DisplayLocation } from "~/plugins/cosmetics";
-import { formatProjectType } from "@modrinth/utils";
+import { formatProjectType } from "~/plugins/shorthands.js";
 import { isDarkTheme, type Theme } from "~/plugins/theme/index.ts";
 
 useHead({
-  title: "外观设置 - Modrinth",
+  title: "Display settings - Modrinth",
 });
 
 const { formatMessage } = useVIntl();
@@ -209,120 +215,120 @@ const developerModeBanner = defineMessages({
   description: {
     id: "settings.display.banner.developer-mode.description",
     defaultMessage:
-      "<strong>开发者模式</strong>已启用。这将允许您查看整个 Modrinth 网站中各种资源的内部 ID，如果您是使用 Modrinth API 的开发者，这可能会对您有所帮助。点击页脚的 Modrinth 徽标 5 次，即可开关开发者模式。",
+      "<strong>Developer mode</strong> is active. This will allow you to view the internal IDs of various things throughout Modrinth that may be helpful if you're a developer using the Modrinth API. Click on the Modrinth logo at the bottom of the page 5 times to toggle developer mode.",
   },
   deactivate: {
     id: "settings.display.banner.developer-mode.button",
-    defaultMessage: "禁用开发者模式",
+    defaultMessage: "Deactivate developer mode",
   },
 });
 
 const colorTheme = defineMessages({
   title: {
     id: "settings.display.theme.title",
-    defaultMessage: "主题",
+    defaultMessage: "Color theme",
   },
   description: {
     id: "settings.display.theme.description",
-    defaultMessage: "在此设备上为 Modrinth 选择您喜欢的主题。",
+    defaultMessage: "Select your preferred color theme for Modrinth on this device.",
   },
 });
 
 const projectListLayouts = defineMessages({
   title: {
     id: "settings.display.project-list-layouts.title",
-    defaultMessage: "列表布局",
+    defaultMessage: "Project list layouts",
   },
   description: {
     id: "settings.display.project-list-layouts.description",
     defaultMessage:
-      "为该设备上显示资源列表的每个页面选择您喜欢的布局。",
+      "Select your preferred layout for each page that displays project lists on this device.",
   },
   mod: {
     id: "settings.display.project-list-layouts.mod",
-    defaultMessage: "模组页面",
+    defaultMessage: "Mods page",
   },
   plugin: {
     id: "settings.display.project-list-layouts.plugin",
-    defaultMessage: "插件页面",
+    defaultMessage: "Plugins page",
   },
   datapack: {
     id: "settings.display.project-list-layouts.datapack",
-    defaultMessage: "数据包页面",
+    defaultMessage: "Data Packs page",
   },
   shader: {
     id: "settings.display.project-list-layouts.shader",
-    defaultMessage: "光影页面",
+    defaultMessage: "Shaders page",
   },
   resourcepack: {
     id: "settings.display.project-list-layouts.resourcepack",
-    defaultMessage: "资源包页面",
+    defaultMessage: "Resource Packs page",
   },
   modpack: {
     id: "settings.display.project-list-layouts.modpack",
-    defaultMessage: "整合包页面",
+    defaultMessage: "Modpacks page",
   },
   user: {
     id: "settings.display.project-list-layouts.user",
-    defaultMessage: "用户列表页面",
+    defaultMessage: "User profile pages",
   },
   collection: {
     id: "settings.display.project-list.layouts.collection",
-    defaultMessage: "收藏夹",
+    defaultMessage: "Collection",
   },
 });
 
 const toggleFeatures = defineMessages({
   title: {
     id: "settings.display.flags.title",
-    defaultMessage: "开关功能",
+    defaultMessage: "Toggle features",
   },
   description: {
     id: "settings.display.flags.description",
-    defaultMessage: "在此设备上启用或禁用某些功能。",
+    defaultMessage: "Enable or disable certain features on this device.",
   },
   advancedRenderingTitle: {
     id: "settings.display.sidebar.advanced-rendering.title",
-    defaultMessage: "高级渲染",
+    defaultMessage: "Advanced rendering",
   },
   advancedRenderingDescription: {
     id: "settings.display.sidebar.advanced-rendering.description",
     defaultMessage:
-      "启用高级渲染，例如模糊效果（没有硬件加速时可能导致性能问题）。",
+      "Enables advanced rendering such as blur effects that may cause performance issues without hardware-accelerated rendering.",
   },
   externalLinksNewTabTitle: {
     id: "settings.display.sidebar.external-links-new-tab.title",
-    defaultMessage: "在新标签页打开外部链接",
+    defaultMessage: "Open external links in new tab",
   },
   externalLinksNewTabDescription: {
     id: "settings.display.sidebar.external-links-new-tab.description",
     defaultMessage:
-      "让 Modrinth 以外的链接在新标签页中打开。无论如何设置，同一域名和 Markdown 描述中的链接都会在同一标签页中打开，而广告和编辑页面中的链接则会在新标签页中打开。",
+      "Make links which go outside of Modrinth open in a new tab. No matter this setting, links on the same domain and in Markdown descriptions will open in the same tab, and links on ads and edit pages will open in a new tab.",
   },
   hideModrinthAppPromosTitle: {
     id: "settings.display.sidebar.hide-app-promos.title",
-    defaultMessage: "隐藏 Modrinth App 推广",
+    defaultMessage: "Hide Modrinth App promotions",
   },
   hideModrinthAppPromosDescription: {
     id: "settings.display.sidebar.hide-app-promos.description",
     defaultMessage:
-      '从导航栏中隐藏 “获取 Modrinth App” 按钮，您仍可在主页或页脚找到获取 Modrinth App 页面。',
+      'Hides the "Get Modrinth App" buttons from primary navigation. The Modrinth App page can still be found on the landing page or in the footer.',
   },
   rightAlignedFiltersSidebarTitle: {
     id: "settings.display.sidebar.right-aligned-filters-sidebar.title",
-    defaultMessage: "筛选器侧边栏靠右",
+    defaultMessage: "Right-aligned filters sidebar on search pages",
   },
   rightAlignedFiltersSidebarDescription: {
     id: "settings.display.sidebar.right-aligned-filters-sidebar.description",
-    defaultMessage: "在搜索页面中将筛选器侧边栏放置在搜索结果的右侧。",
+    defaultMessage: "Aligns the filters sidebar to the right of the search results.",
   },
   leftAlignedContentSidebarTitle: {
     id: "settings.display.sidebar.left-aligned-content-sidebar.title",
-    defaultMessage: "资源页面侧边栏靠左",
+    defaultMessage: "Left-aligned sidebar on content pages",
   },
   leftAlignedContentSidebarDescription: {
     id: "settings.display.sidebar.right-aligned-content-sidebar.description",
-    defaultMessage: "在资源页面中将侧边栏放置在页面内容的左边。",
+    defaultMessage: "Aligns the sidebar to the left of the page's content.",
   },
 });
 

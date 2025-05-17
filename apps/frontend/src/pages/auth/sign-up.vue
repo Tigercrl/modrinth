@@ -4,27 +4,27 @@
 
     <section class="third-party">
       <a class="btn discord-btn" :href="getAuthUrl('discord', redirectTarget)">
-        <SSODiscordIcon/>
+        <SSODiscordIcon />
         <span>Discord</span>
       </a>
       <a class="btn" :href="getAuthUrl('github', redirectTarget)">
-        <SSOGitHubIcon/>
+        <SSOGitHubIcon />
         <span>GitHub</span>
       </a>
       <a class="btn" :href="getAuthUrl('microsoft', redirectTarget)">
-        <SSOMicrosoftIcon/>
-        <span>微软</span>
+        <SSOMicrosoftIcon />
+        <span>Microsoft</span>
       </a>
       <a class="btn" :href="getAuthUrl('google', redirectTarget)">
-        <SSOGoogleIcon/>
-        <span>谷歌</span>
+        <SSOGoogleIcon />
+        <span>Google</span>
       </a>
       <a class="btn" :href="getAuthUrl('steam', redirectTarget)">
-        <SSOSteamIcon/>
+        <SSOSteamIcon />
         <span>Steam</span>
       </a>
       <a class="btn" :href="getAuthUrl('gitlab', redirectTarget)">
-        <SSOGitLabIcon/>
+        <SSOGitLabIcon />
         <span>GitLab</span>
       </a>
     </section>
@@ -34,7 +34,7 @@
     <section class="auth-form">
       <div class="iconified-input">
         <label for="email" hidden>{{ formatMessage(messages.emailLabel) }}</label>
-        <MailIcon/>
+        <MailIcon />
         <input
           id="email"
           v-model="email"
@@ -47,7 +47,7 @@
 
       <div class="iconified-input">
         <label for="username" hidden>{{ formatMessage(messages.usernameLabel) }}</label>
-        <UserIcon/>
+        <UserIcon />
         <input
           id="username"
           v-model="username"
@@ -60,7 +60,7 @@
 
       <div class="iconified-input">
         <label for="password" hidden>{{ formatMessage(messages.passwordLabel) }}</label>
-        <KeyIcon/>
+        <KeyIcon />
         <input
           id="password"
           v-model="password"
@@ -73,7 +73,7 @@
 
       <div class="iconified-input">
         <label for="confirm-password" hidden>{{ formatMessage(messages.passwordLabel) }}</label>
-        <KeyIcon/>
+        <KeyIcon />
         <input
           id="confirm-password"
           v-model="confirmPassword"
@@ -92,37 +92,29 @@
       />
 
       <p v-if="!route.query.launcher">
-        创建账户即表示您同意 Modrinth 的
-        <NuxtLink to="/legal/terms" class="text-link">
-          条款
-        </NuxtLink>
-        和
-        <NuxtLink to="/legal/privacy" class="text-link">
-          隐私政策
-        </NuxtLink>
-        。
+        <IntlFormatted :message-id="messages.legalDisclaimer">
+          <template #terms-link="{ children }">
+            <NuxtLink to="/legal/terms" class="text-link">
+              <component :is="() => children" />
+            </NuxtLink>
+          </template>
+          <template #privacy-policy-link="{ children }">
+            <NuxtLink to="/legal/privacy" class="text-link">
+              <component :is="() => children" />
+            </NuxtLink>
+          </template>
+        </IntlFormatted>
       </p>
 
-      <HCaptcha ref="captcha" v-model="token"/>
+      <HCaptcha ref="captcha" v-model="token" />
 
       <button
         class="btn btn-primary continue-btn centered-btn"
         :disabled="!token"
         @click="createAccount"
       >
-        {{ formatMessage(messages.createAccountButton) }}
-        <RightArrowIcon/>
+        {{ formatMessage(messages.createAccountButton) }} <RightArrowIcon />
       </button>
-
-      <p>
-        <IssuesIcon/>
-        电脑端请先下载并运行
-        <a class="text-link" href="/patch.jar"
-           download="ModrinthCnLoginPatch-1.0.0.jar">
-          汉化站修复补丁
-        </a>
-        以进行注册。手机端暂不支持注册。
-      </p>
 
       <div class="auth-form__additional-options">
         {{ formatMessage(messages.alreadyHaveAccountLabel) }}
@@ -142,68 +134,67 @@
 
 <script setup>
 import {
-  IssuesIcon,
+  RightArrowIcon,
+  UserIcon,
+  SSOGitHubIcon,
+  SSOMicrosoftIcon,
+  SSOGoogleIcon,
+  SSOSteamIcon,
+  SSODiscordIcon,
   KeyIcon,
   MailIcon,
-  RightArrowIcon,
-  SSODiscordIcon,
-  SSOGitHubIcon,
   SSOGitLabIcon,
-  SSOGoogleIcon,
-  SSOMicrosoftIcon,
-  SSOSteamIcon,
-  UserIcon
 } from "@modrinth/assets";
-import {Checkbox, commonMessages} from "@modrinth/ui";
+import { Checkbox, commonMessages } from "@modrinth/ui";
 import HCaptcha from "@/components/ui/HCaptcha.vue";
 
-const {formatMessage} = useVIntl();
+const { formatMessage } = useVIntl();
 
 const messages = defineMessages({
   title: {
     id: "auth.sign-up.title",
-    defaultMessage: "注册",
+    defaultMessage: "Sign Up",
   },
   signUpWithTitle: {
     id: "auth.sign-up.title.sign-up-with",
-    defaultMessage: "使用第三方平台注册",
+    defaultMessage: "Sign up with",
   },
   createAccountTitle: {
     id: "auth.sign-up.title.create-account",
-    defaultMessage: "或手动创建账户",
+    defaultMessage: "Or create an account yourself",
   },
   emailLabel: {
     id: "auth.sign-up.email.label",
-    defaultMessage: "邮箱地址",
+    defaultMessage: "Email",
   },
   usernameLabel: {
     id: "auth.sign-up.label.username",
-    defaultMessage: "用户名",
+    defaultMessage: "Username",
   },
   passwordLabel: {
     id: "auth.sign-up.password.label",
-    defaultMessage: "密码",
+    defaultMessage: "Password",
   },
   confirmPasswordLabel: {
     id: "auth.sign-up.confirm-password.label",
-    defaultMessage: "重复密码",
+    defaultMessage: "Confirm password",
   },
   subscribeLabel: {
     id: "auth.sign-up.subscribe.label",
-    defaultMessage: "订阅 Modrinth 更新",
+    defaultMessage: "Subscribe to updates about Modrinth",
   },
   legalDisclaimer: {
     id: "auth.sign-up.legal-dislaimer",
     defaultMessage:
-      "创建账户即表示您同意 Modrinth 的 <terms-link>条款</terms-link> 和 <privacy-policy-link>隐私政策</privacy-policy-link>。",
+      "By creating an account, you agree to Modrinth's <terms-link>Terms</terms-link> and <privacy-policy-link>Privacy Policy</privacy-policy-link>.",
   },
   createAccountButton: {
     id: "auth.sign-up.action.create-account",
-    defaultMessage: "创建账户",
+    defaultMessage: "Create account",
   },
   alreadyHaveAccountLabel: {
     id: "auth.sign-up.sign-in-option.title",
-    defaultMessage: "已经有账户了？",
+    defaultMessage: "Already have an account?",
   },
 });
 

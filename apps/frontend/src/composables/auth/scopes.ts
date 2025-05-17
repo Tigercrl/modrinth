@@ -1,323 +1,323 @@
 export const scopeMessages = defineMessages({
   userReadEmailLabel: {
     id: "scopes.userReadEmail.label",
-    defaultMessage: "邮箱读取",
+    defaultMessage: "Read user email",
   },
   userReadEmailDescription: {
     id: "scopes.userReadEmail.description",
-    defaultMessage: "读取您的邮箱地址",
+    defaultMessage: "Read your email",
   },
   userReadLabel: {
     id: "scopes.userRead.label",
-    defaultMessage: "用户信息读取",
+    defaultMessage: "Read user data",
   },
   userReadDescription: {
     id: "scopes.userRead.description",
-    defaultMessage: "读取您的个人资料信息",
+    defaultMessage: "Access your public profile information",
   },
   userWriteLabel: {
     id: "scopes.userWrite.label",
-    defaultMessage: "用户信息修改",
+    defaultMessage: "Write user data",
   },
   userWriteDescription: {
     id: "scopes.userWrite.description",
-    defaultMessage: "修改您的个人资料信息",
+    defaultMessage: "Write to your profile",
   },
   userDeleteLabel: {
     id: "scopes.userDelete.label",
-    defaultMessage: "账户删除",
+    defaultMessage: "Delete your account",
   },
   userDeleteDescription: {
     id: "scopes.userDelete.description",
-    defaultMessage: "删除您的账户",
+    defaultMessage: "Delete your account",
   },
   userAuthWriteLabel: {
     id: "scopes.userAuthWrite.label",
-    defaultMessage: "登录信息修改",
+    defaultMessage: "Write auth data",
   },
   userAuthWriteDescription: {
     id: "scopes.userAuthWrite.description",
-    defaultMessage: "修改您的登录信息",
+    defaultMessage: "Modify your authentication data",
   },
   notificationReadLabel: {
     id: "scopes.notificationRead.label",
-    defaultMessage: "通知读取",
+    defaultMessage: "Read notifications",
   },
   notificationReadDescription: {
     id: "scopes.notificationRead.description",
-    defaultMessage: "读取您的通知",
+    defaultMessage: "Read your notifications",
   },
   notificationWriteLabel: {
     id: "scopes.notificationWrite.label",
-    defaultMessage: "通知修改",
+    defaultMessage: "Write notifications",
   },
   notificationWriteDescription: {
     id: "scopes.notificationWrite.description",
-    defaultMessage: "读取或删除您的通知",
+    defaultMessage: "Delete/View your notifications",
   },
   payoutsReadLabel: {
     id: "scopes.payoutsRead.label",
-    defaultMessage: "付款读取",
+    defaultMessage: "Read payouts",
   },
   payoutsReadDescription: {
     id: "scopes.payoutsRead.description",
-    defaultMessage: "读取您的账单信息",
+    defaultMessage: "Read your payouts data",
   },
   payoutsWriteLabel: {
     id: "scopes.payoutsWrite.label",
-    defaultMessage: "付款修改",
+    defaultMessage: "Write payouts",
   },
   payoutsWriteDescription: {
     id: "scopes.payoutsWrite.description",
-    defaultMessage: "提现收益",
+    defaultMessage: "Withdraw money",
   },
   analyticsLabel: {
     id: "scopes.analytics.label",
-    defaultMessage: "数据分析读取",
+    defaultMessage: "Read analytics",
   },
   analyticsDescription: {
     id: "scopes.analytics.description",
-    defaultMessage: "读取您的数据分析",
+    defaultMessage: "Access your analytics data",
   },
   projectCreateLabel: {
     id: "scopes.projectCreate.label",
-    defaultMessage: "资源创建",
+    defaultMessage: "Create projects",
   },
   projectCreateDescription: {
     id: "scopes.projectCreate.description",
-    defaultMessage: "创建新资源",
+    defaultMessage: "Create new projects",
   },
   projectReadLabel: {
     id: "scopes.projectRead.label",
-    defaultMessage: "资源读取",
+    defaultMessage: "Read projects",
   },
   projectReadDescription: {
     id: "scopes.projectRead.description",
-    defaultMessage: "读取您所有资源的信息",
+    defaultMessage: "Read all your projects",
   },
   projectWriteLabel: {
     id: "scopes.projectWrite.label",
-    defaultMessage: "资源修改",
+    defaultMessage: "Write projects",
   },
   projectWriteDescription: {
     id: "scopes.projectWrite.description",
-    defaultMessage: "修改资源信息",
+    defaultMessage: "Write to project data",
   },
   projectDeleteLabel: {
     id: "scopes.projectDelete.label",
-    defaultMessage: "资源删除",
+    defaultMessage: "Delete projects",
   },
   projectDeleteDescription: {
     id: "scopes.projectDelete.description",
-    defaultMessage: "删除您的资源",
+    defaultMessage: "Delete your projects",
   },
   versionCreateLabel: {
     id: "scopes.versionCreate.label",
-    defaultMessage: "版本发布",
+    defaultMessage: "Create versions",
   },
   versionCreateDescription: {
     id: "scopes.versionCreate.description",
-    defaultMessage: "发布新的版本",
+    defaultMessage: "Create new versions",
   },
   versionReadLabel: {
     id: "scopes.versionRead.label",
-    defaultMessage: "版本读取",
+    defaultMessage: "Read versions",
   },
   versionReadDescription: {
     id: "scopes.versionRead.description",
-    defaultMessage: "读取所有版本信息",
+    defaultMessage: "Read all versions",
   },
   versionWriteLabel: {
     id: "scopes.versionWrite.label",
-    defaultMessage: "版本修改",
+    defaultMessage: "Write versions",
   },
   versionWriteDescription: {
     id: "scopes.versionWrite.description",
-    defaultMessage: "修改您的版本信息",
+    defaultMessage: "Write to version data",
   },
   versionDeleteLabel: {
     id: "scopes.versionDelete.label",
-    defaultMessage: "版本删除",
+    defaultMessage: "Delete versions",
   },
   versionDeleteDescription: {
     id: "scopes.versionDelete.description",
-    defaultMessage: "删除您的版本",
+    defaultMessage: "Delete a version",
   },
   reportCreateLabel: {
     id: "scopes.reportCreate.label",
-    defaultMessage: "举报创建",
+    defaultMessage: "Create reports",
   },
   reportCreateDescription: {
     id: "scopes.reportCreate.description",
-    defaultMessage: "创建举报",
+    defaultMessage: "Create reports",
   },
   reportReadLabel: {
     id: "scopes.reportRead.label",
-    defaultMessage: "举报读取",
+    defaultMessage: "Read reports",
   },
   reportReadDescription: {
     id: "scopes.reportRead.description",
-    defaultMessage: "读取举报信息",
+    defaultMessage: "Read reports",
   },
   reportWriteLabel: {
     id: "scopes.reportWrite.label",
-    defaultMessage: "举报修改",
+    defaultMessage: "Write reports",
   },
   reportWriteDescription: {
     id: "scopes.reportWrite.description",
-    defaultMessage: "修改举报信息",
+    defaultMessage: "Edit reports",
   },
   reportDeleteLabel: {
     id: "scopes.reportDelete.label",
-    defaultMessage: "举报删除",
+    defaultMessage: "Delete reports",
   },
   reportDeleteDescription: {
     id: "scopes.reportDelete.description",
-    defaultMessage: "删除举报",
+    defaultMessage: "Delete reports",
   },
   threadReadLabel: {
     id: "scopes.threadRead.label",
-    defaultMessage: "对话读取",
+    defaultMessage: "Read threads",
   },
   threadReadDescription: {
     id: "scopes.threadRead.description",
-    defaultMessage: "读取对话信息",
+    defaultMessage: "Read threads",
   },
   threadWriteLabel: {
     id: "scopes.threadWrite.label",
-    defaultMessage: "对话修改",
+    defaultMessage: "Write threads",
   },
   threadWriteDescription: {
     id: "scopes.threadWrite.description",
-    defaultMessage: "修改对话信息",
+    defaultMessage: "Write to threads",
   },
   patCreateLabel: {
     id: "scopes.patCreate.label",
-    defaultMessage: "PAT创建",
+    defaultMessage: "Create PATs",
   },
   patCreateDescription: {
     id: "scopes.patCreate.description",
-    defaultMessage: "创建个人访问令牌",
+    defaultMessage: "Create personal API tokens",
   },
   patReadLabel: {
     id: "scopes.patRead.label",
-    defaultMessage: "PAT读取",
+    defaultMessage: "Read PATs",
   },
   patReadDescription: {
     id: "scopes.patRead.description",
-    defaultMessage: "读取已创建的的个人访问令牌信息",
+    defaultMessage: "View created API tokens",
   },
   patWriteLabel: {
     id: "scopes.patWrite.label",
-    defaultMessage: "PAT 修改",
+    defaultMessage: "Write PATs",
   },
   patWriteDescription: {
     id: "scopes.patWrite.description",
-    defaultMessage: "修改个人访问令牌信息",
+    defaultMessage: "Edit personal API tokens",
   },
   patDeleteLabel: {
     id: "scopes.patDelete.label",
-    defaultMessage: "PAT 删除",
+    defaultMessage: "Delete PATs",
   },
   patDeleteDescription: {
     id: "scopes.patDelete.description",
-    defaultMessage: "删除个人访问令牌",
+    defaultMessage: "Delete your personal API tokens",
   },
   sessionReadLabel: {
     id: "scopes.sessionRead.label",
-    defaultMessage: "会话读取",
+    defaultMessage: "Read sessions",
   },
   sessionReadDescription: {
     id: "scopes.sessionRead.description",
-    defaultMessage: "读取活跃会话",
+    defaultMessage: "Read active sessions",
   },
   sessionDeleteLabel: {
     id: "scopes.sessionDelete.label",
-    defaultMessage: "会话删除",
+    defaultMessage: "Delete sessions",
   },
   sessionDeleteDescription: {
     id: "scopes.sessionDelete.description",
-    defaultMessage: "删除会话",
+    defaultMessage: "Delete sessions",
   },
   performAnalyticsLabel: {
     id: "scopes.performAnalytics.label",
-    defaultMessage: "数据分析执行",
+    defaultMessage: "Perform analytics",
   },
   performAnalyticsDescription: {
     id: "scopes.performAnalytics.description",
-    defaultMessage: "执行数据分析操作",
+    defaultMessage: "Perform analytics actions",
   },
   collectionCreateLabel: {
     id: "scopes.collectionCreate.label",
-    defaultMessage: "收藏夹创建",
+    defaultMessage: "Create collections",
   },
   collectionCreateDescription: {
     id: "scopes.collectionCreate.description",
-    defaultMessage: "创建收藏夹",
+    defaultMessage: "Create collections",
   },
   collectionReadLabel: {
     id: "scopes.collectionRead.label",
-    defaultMessage: "收藏夹读取",
+    defaultMessage: "Read collections",
   },
   collectionReadDescription: {
     id: "scopes.collectionRead.description",
-    defaultMessage: "读取收藏夹内容",
+    defaultMessage: "Read collections",
   },
   collectionWriteLabel: {
     id: "scopes.collectionWrite.label",
-    defaultMessage: "收藏夹修改",
+    defaultMessage: "Write collections",
   },
   collectionWriteDescription: {
     id: "scopes.collectionWrite.description",
-    defaultMessage: "修改收藏夹内容",
+    defaultMessage: "Write to collections",
   },
   collectionDeleteLabel: {
     id: "scopes.collectionDelete.label",
-    defaultMessage: "收藏夹删除",
+    defaultMessage: "Delete collections",
   },
   collectionDeleteDescription: {
     id: "scopes.collectionDelete.description",
-    defaultMessage: "删除收藏夹",
+    defaultMessage: "Delete collections",
   },
   organizationCreateLabel: {
     id: "scopes.organizationCreate.label",
-    defaultMessage: "组织创建",
+    defaultMessage: "Create organizations",
   },
   organizationCreateDescription: {
     id: "scopes.organizationCreate.description",
-    defaultMessage: "创建组织",
+    defaultMessage: "Create organizations",
   },
   organizationReadLabel: {
     id: "scopes.organizationRead.label",
-    defaultMessage: "组织读取",
+    defaultMessage: "Read organizations",
   },
   organizationReadDescription: {
     id: "scopes.organizationRead.description",
-    defaultMessage: "读取组织信息",
+    defaultMessage: "Read organizations",
   },
   organizationWriteLabel: {
     id: "scopes.organizationWrite.label",
-    defaultMessage: "组织修改",
+    defaultMessage: "Write organizations",
   },
   organizationWriteDescription: {
     id: "scopes.organizationWrite.description",
-    defaultMessage: "修改组织信息",
+    defaultMessage: "Write to organizations",
   },
   organizationDeleteLabel: {
     id: "scopes.organizationDelete.label",
-    defaultMessage: "组织删除",
+    defaultMessage: "Delete organizations",
   },
   organizationDeleteDescription: {
     id: "scopes.organizationDelete.description",
-    defaultMessage: "删除组织",
+    defaultMessage: "Delete organizations",
   },
   sessionAccessLabel: {
     id: "scopes.sessionAccess.label",
-    defaultMessage: "会话访问",
+    defaultMessage: "Access sessions",
   },
   sessionAccessDescription: {
     id: "scopes.sessionAccess.description",
-    defaultMessage: "访问 Modrinth 提供的会话",
+    defaultMessage: "Access modrinth-issued sessions",
   },
 });
 
@@ -643,7 +643,7 @@ export const toggleScope = (scopes: bigint, scope: string) => {
 };
 
 export const useScopes = () => {
-  const {formatMessage} = useVIntl();
+  const { formatMessage } = useVIntl();
 
   const scopesToDefinitions = (scopes: bigint) => {
     const authorizedScopes = decodeScopes(scopes);

@@ -13,7 +13,7 @@
     :auth="auth"
     class="universal-card recessed"
   />
-  <p v-if="reports.length === 0">您没有任何正在处理中的举报。</p>
+  <p v-if="reports.length === 0">You don't have any active reports.</p>
 </template>
 <script setup>
 import ReportInfo from "~/components/ui/report/ReportInfo.vue";

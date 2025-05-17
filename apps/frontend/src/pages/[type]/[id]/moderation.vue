@@ -1,78 +1,83 @@
 <template>
   <div>
     <section class="universal-card">
-      <h2>资源状态</h2>
-      <Badge :type="project.status"/>
+      <h2>Project status</h2>
+      <Badge :type="project.status" />
       <p v-if="isApproved(project)">
-        您的资源已过审，您可以在
+        Your project has been approved by the moderators and you may freely change project
+        visibility in
         <router-link :to="`${getProjectLink(project)}/settings`" class="text-link"
-        >资源设置
-        </router-link
-        >
-        中修改资源的可见性
+          >your project's settings</router-link
+        >.
       </p>
       <div v-else-if="isUnderReview(project)">
         <p>
-          Modrinth
-          的审核团队一直在努力审查所有提交的资源。通常，您提交的审核会在24到48小时内被处理。请注意，较大的资源，特别是整合包，可能需要更多的时间来审核。并且某些节假日或事件也可能导致审核推迟，这具体取决于审核员的情况。如果
-          Modrinth 的审核员发现问题，他们会在下面留言。
+          Modrinth's team of content moderators work hard to review all submitted projects.
+          Typically, you can expect a new project to be reviewed within 24 to 48 hours. Please keep
+          in mind that larger projects, especially modpacks, may require more time to review.
+          Certain holidays or events may also lead to delays depending on moderator availability.
+          Modrinth's moderators will leave a message below if they have any questions or concerns
+          for you.
         </p>
         <p>
-          如果您的审核时间超过 48 小时，请查看我们关于
+          If your review has taken more than 48 hours, check our
           <a
             class="text-link"
             href="https://support.modrinth.com/en/articles/8793355-modrinth-project-review-times"
             target="_blank"
           >
-            审核时间的支持文章
+            support article on review times
           </a>
-          以了解审核延迟情况。
+          for moderation delays.
         </p>
       </div>
       <template v-else-if="isRejected(project)">
         <p>
-          您的资源目前不符合 Modrinth 的
-          <nuxt-link to="/legal/rules" class="text-link" target="_blank">内容规定</nuxt-link>
-          ，审核员要求您进行修改。请阅读以下审核员的留言，并在重新提交前处理他们的改进需求。
+          Your project does not currently meet Modrinth's
+          <nuxt-link to="/legal/rules" class="text-link" target="_blank">content rules</nuxt-link>
+          and the moderators have requested you make changes before it can be approved. Read the
+          messages from the moderators below and address their comments before resubmitting.
         </p>
         <p class="warning">
-          <IssuesIcon/>
-          重复提交而不解决审核团队的改进需求可能导致帐户封禁。
+          <IssuesIcon /> Repeated submissions without addressing the moderators' comments may result
+          in an account suspension.
         </p>
       </template>
-      <h3>当前可见性</h3>
+      <h3>Current visibility</h3>
       <ul class="visibility-info">
         <li v-if="isListed(project)">
-          <CheckIcon class="good"/>
-          可被搜索
+          <CheckIcon class="good" />
+          Listed in search results
         </li>
         <li v-else>
-          <ExitIcon class="bad"/>
-          不可被搜索
+          <ExitIcon class="bad" />
+          Not listed in search results
         </li>
         <li v-if="isListed(project)">
-          <CheckIcon class="good"/>
-          可在个人资料中看到
+          <CheckIcon class="good" />
+          Listed on the profiles of members
         </li>
         <li v-else>
-          <ExitIcon class="bad"/>
-          不可在个人资料中看到
+          <ExitIcon class="bad" />
+          Not listed on the profiles of members
         </li>
         <li v-if="isPrivate(project)">
-          <ExitIcon class="bad"/>
-          不可通过 URL 访问
+          <ExitIcon class="bad" />
+          Not accessible with a direct link
         </li>
         <li v-else>
-          <CheckIcon class="good"/>
-          可通过 URL 访问
+          <CheckIcon class="good" />
+          Accessible with a direct link
         </li>
       </ul>
     </section>
     <section id="messages" class="universal-card">
-      <h2>消息</h2>
+      <h2>Messages</h2>
       <p>
-        这是与 Modrinth 审核员的私人对话。他们可能会给您发送有关此资源问题的信息。只有当您提交审核时，该对话才会被查看。如有其他疑问，请联系
-        <a href="https://support.modrinth.com">Modrinth 支持</a>。
+        This is a private conversation thread with the Modrinth moderators. They may message you
+        with issues concerning this project. This thread is only checked when you submit your
+        project for review. For additional inquiries, contact
+        <a href="https://support.modrinth.com">Modrinth support</a>.
       </p>
       <ConversationThread
         v-if="thread"
@@ -87,8 +92,8 @@
   </div>
 </template>
 <script setup>
-import {CheckIcon, ExitIcon, IssuesIcon} from "@modrinth/assets";
-import {Badge} from "@modrinth/ui";
+import { ExitIcon, CheckIcon, IssuesIcon } from "@modrinth/assets";
+import { Badge } from "@modrinth/ui";
 import ConversationThread from "~/components/ui/thread/ConversationThread.vue";
 import {
   getProjectLink,
@@ -115,18 +120,16 @@ const props = defineProps({
   resetProject: {
     type: Function,
     required: true,
-    default: () => {
-    },
+    default: () => {},
   },
 });
 
 const app = useNuxtApp();
 const auth = await useAuth();
 
-const {data: thread} = await useAsyncData(`thread/${props.project.thread_id}`, () =>
+const { data: thread } = await useAsyncData(`thread/${props.project.thread_id}`, () =>
   useBaseFetch(`thread/${props.project.thread_id}`),
 );
-
 async function setStatus(status) {
   startLoading();
 
@@ -145,7 +148,7 @@ async function setStatus(status) {
   } catch (err) {
     app.$notify({
       group: "main",
-      title: "发生错误",
+      title: "An error occurred",
       text: err.data ? err.data.description : err,
       type: "error",
     });

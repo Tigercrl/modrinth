@@ -5,18 +5,18 @@
       <div class="adjacent-input">
         <label
           id="project-issue-tracker"
-          title="用户汇报错误、问题和提供建议的地方。"
+          title="A place for users to report bugs, issues, and concerns about your project."
         >
-          <span class="label__title">漏洞追踪器</span>
+          <span class="label__title">Issue tracker</span>
           <span class="label__description">
-            用户报告错误、问题和提供建议的地方。
+            A place for users to report bugs, issues, and concerns about your project.
           </span>
         </label>
         <input
           id="project-issue-tracker"
           v-model="issuesUrl"
           type="url"
-          placeholder="请输入 URL..."
+          placeholder="Enter a valid URL"
           maxlength="2048"
           :disabled="!hasPermission"
         />
@@ -24,11 +24,11 @@
       <div class="adjacent-input">
         <label
           id="project-source-code"
-          title="包含资源源代码的页面 / 仓库"
+          title="A page/repository containing the source code for your project"
         >
-          <span class="label__title">源代码</span>
+          <span class="label__title">Source code</span>
           <span class="label__description">
-            包含资源源代码的页面 / 仓库
+            A page/repository containing the source code for your project
           </span>
         </label>
         <input
@@ -36,18 +36,18 @@
           v-model="sourceUrl"
           type="url"
           maxlength="2048"
-          placeholder="请输入 URL..."
+          placeholder="Enter a valid URL"
           :disabled="!hasPermission"
         />
       </div>
       <div class="adjacent-input">
         <label
           id="project-wiki-page"
-          title="包含资源信息、文档和帮助的页面。"
+          title="A page containing information, documentation, and help for the project."
         >
-          <span class="label__title">Wiki</span>
+          <span class="label__title">Wiki page</span>
           <span class="label__description">
-            包含资源信息、文档和帮助的页面。
+            A page containing information, documentation, and help for the project.
           </span>
         </label>
         <input
@@ -55,28 +55,28 @@
           v-model="wikiUrl"
           type="url"
           maxlength="2048"
-          placeholder="请输入 URL..."
+          placeholder="Enter a valid URL"
           :disabled="!hasPermission"
         />
       </div>
       <div class="adjacent-input">
-        <label id="project-discord-invite" title="您的 Discord 服务器的邀请链接。">
-          <span class="label__title">Discord 服务器</span>
-          <span class="label__description"> 您的 Discord 服务器的邀请链接。 </span>
+        <label id="project-discord-invite" title="An invitation link to your Discord server.">
+          <span class="label__title">Discord invite</span>
+          <span class="label__description"> An invitation link to your Discord server. </span>
         </label>
         <input
           id="project-discord-invite"
           v-model="discordUrl"
           type="url"
           maxlength="2048"
-          placeholder="请输入 URL..."
+          placeholder="Enter a valid URL"
           :disabled="!hasPermission"
         />
       </div>
       <span class="label">
-        <span class="label__title">赞助</span>
+        <span class="label__title">Donation links</span>
         <span class="label__description">
-          一个赞助链接，让用户支持您的创作。
+          Add donation links for users to support you directly.
         </span>
       </span>
 
@@ -89,21 +89,18 @@
           v-model="donationLink.url"
           type="url"
           maxlength="2048"
-          placeholder="请输入 URL..."
+          placeholder="Enter a valid URL"
           :disabled="!hasPermission"
           @input="updateDonationLinks"
         />
         <DropdownSelect
           v-model="donationLink.id"
-          name="赞助平台选择器"
+          name="Donation platform selector"
           :options="tags.donationPlatforms.map((x) => x.short)"
           :display-name="
-            (option) => {
-              if(option === 'other') return '其他'
-              return tags.donationPlatforms.find((platform) => platform.short === option)?.name
-            }
+            (option) => tags.donationPlatforms.find((platform) => platform.short === option)?.name
           "
-          placeholder="请选择平台..."
+          placeholder="Select platform"
           render-up
           class="platform-selector"
           @update:model-value="updateDonationLinks"
@@ -117,7 +114,7 @@
           @click="saveChanges()"
         >
           <SaveIcon />
-          保存改动
+          Save changes
         </button>
       </div>
     </section>

@@ -33,19 +33,19 @@ const changelogEntries = computed(() =>
   <NavTabs
     :links="[
       {
-        label: '全部',
+        label: 'All',
         href: '',
       },
       {
-        label: '网站',
+        label: 'Website',
         href: 'web',
       },
       {
-        label: '服务器',
+        label: 'Servers',
         href: 'servers',
       },
       {
-        label: '启动器',
+        label: 'App',
         href: 'app',
       },
     ]"

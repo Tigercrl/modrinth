@@ -92,11 +92,13 @@
       </button>
     </div>
     <p>
-      PAT 可用于访问 Modrinth Api。请参阅
-      <a class="text-link" href="https://docs.modrinth.com">
-        Modrinth API 文档
-      </a>
-      以获取更多信息。您可以可以随时创建和撤销它们。
+      <IntlFormatted :message-id="messages.description">
+        <template #doc-link="{ children }">
+          <a class="text-link" href="https://docs.modrinth.com">
+            <component :is="() => children" />
+          </a>
+        </template>
+      </IntlFormatted>
     </p>
     <div v-for="(pat, index) in pats" :key="pat.id" class="universal-card recessed token">
       <div>
@@ -177,7 +179,7 @@
               editPatIndex = index;
               name = pat.name;
               scopesVal = pat.scopes;
-              expires = $dayjs(pat.expires).format('YYYY/MM/DD');
+              expires = $dayjs(pat.expires).format('YYYY-MM-DD');
               $refs.patModal.show();
             }
           "
@@ -227,42 +229,42 @@ const formatRelativeTime = useRelativeTime();
 const createModalMessages = defineMessages({
   createTitle: {
     id: "settings.pats.modal.create.title",
-    defaultMessage: "创建个人访问令牌",
+    defaultMessage: "Create personal access token",
   },
   editTitle: {
     id: "settings.pats.modal.edit.title",
-    defaultMessage: "修改个人访问令牌",
+    defaultMessage: "Edit personal access token",
   },
   nameLabel: {
     id: "settings.pats.modal.create.name.label",
-    defaultMessage: "名称",
+    defaultMessage: "Name",
   },
   namePlaceholder: {
     id: "settings.pats.modal.create.name.placeholder",
-    defaultMessage: "请输入 PAT 名称...",
+    defaultMessage: "Enter the PAT's name...",
   },
   expiresLabel: {
     id: "settings.pats.modal.create.expires.label",
-    defaultMessage: "过期时间",
+    defaultMessage: "Expires",
   },
   action: {
     id: "settings.pats.modal.create.action",
-    defaultMessage: "创建 PAT",
+    defaultMessage: "Create PAT",
   },
 });
 
 const deleteModalMessages = defineMessages({
   title: {
     id: "settings.pats.modal.delete.title",
-    defaultMessage: "您确定要删除此令牌吗？",
+    defaultMessage: "Are you sure you want to delete this token?",
   },
   description: {
     id: "settings.pats.modal.delete.description",
-    defaultMessage: "该令牌将会永久消失！（真的很久！）",
+    defaultMessage: "This will remove this token forever (like really forever).",
   },
   action: {
     id: "settings.pats.modal.delete.action",
-    defaultMessage: "删除令牌",
+    defaultMessage: "Delete this token",
   },
 });
 
@@ -270,38 +272,38 @@ const messages = defineMessages({
   description: {
     id: "settings.pats.description",
     defaultMessage:
-      "PAT 可用于访问 Modrinth Api。请参阅<doc-link>Modrinth API 文档</doc-link> 以获取更多信息。您可以可以随时创建和撤销它们。",
+      "PATs can be used to access Modrinth's API. For more information, see <doc-link>Modrinth's API documentation</doc-link>. They can be created and revoked at any time.",
   },
   create: {
     id: "settings.pats.action.create",
-    defaultMessage: "创建 PAT",
+    defaultMessage: "Create a PAT",
   },
 });
 
 const tokenMessages = defineMessages({
   edit: {
     id: "settings.pats.token.action.edit",
-    defaultMessage: "修改令牌",
+    defaultMessage: "Edit token",
   },
   revoke: {
     id: "settings.pats.token.action.revoke",
-    defaultMessage: "撤销令牌",
+    defaultMessage: "Revoke token",
   },
   lastUsed: {
     id: "settings.pats.token.last-used",
-    defaultMessage: "上次使用：{ago}",
+    defaultMessage: "Last used {ago}",
   },
   neverUsed: {
     id: "settings.pats.token.never-used",
-    defaultMessage: "从未使用",
+    defaultMessage: "Never used",
   },
   expiresIn: {
     id: "settings.pats.token.expires-in",
-    defaultMessage: "{inTime}过期",
+    defaultMessage: "Expires {inTime}",
   },
   expiredAgo: {
     id: "settings.pats.token.expired-ago",
-    defaultMessage: "{ago}过期",
+    defaultMessage: "Expired {ago}",
   },
 });
 

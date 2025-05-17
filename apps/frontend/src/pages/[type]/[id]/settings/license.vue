@@ -1,43 +1,48 @@
 <template>
   <div>
     <section class="universal-card">
-      <h2 class="label__title size-card-header">许可证</h2>
+      <h2 class="label__title size-card-header">License</h2>
       <p class="label__description">
-        为您的{{ formatProjectType(project.project_type).toLowerCase() }}选择一个合适的许可证是非常重要的。您可以从列表中选择或提供自定义许可证。您也可以为您选择的许可证提供自定义 URL，否则将显示许可证内容。有关更多信息，请参阅我们的
+        It is important to choose a proper license for your
+        {{ formatProjectType(project.project_type).toLowerCase() }}. You may choose one from our
+        list or provide a custom license. You may also provide a custom URL to your chosen license;
+        otherwise, the license text will be displayed. See our
         <a
           href="https://blog.modrinth.com/licensing-guide/"
           target="_blank"
           rel="noopener"
           class="text-link"
         >
-          许可证选择指南
-        </a>。
+          licensing guide
+        </a>
+        for more information.
       </p>
 
       <div class="adjacent-input">
         <label for="license-multiselect">
-          <span class="label__title">选择一个许可证</span>
+          <span class="label__title">Select a license</span>
           <span class="label__description">
-            允许和禁止用户使用您的资源做什么。
+            How users are and aren't allowed to use your project.
           </span>
         </label>
 
         <div class="w-1/2">
           <DropdownSelect
             v-model="license"
-            name="许可证选择"
+            name="License selector"
             :options="builtinLicenses"
             :display-name="(chosen: BuiltinLicense) => chosen.friendly"
-            placeholder="请选择许可证..."
+            placeholder="Select license..."
           />
         </div>
       </div>
 
       <div class="adjacent-input" v-if="license.requiresOnlyOrLater">
         <label for="or-later-checkbox">
-          <span class="label__title">后续版本</span>
+          <span class="label__title">Later editions</span>
           <span class="label__description">
-            您选择的许可证可以允许后续版本。如果您选中此复选框，则用户可以在许可证后续版本的规定下使用您的资源。
+            The license you selected has an "or later" clause. If you check this box, users may use
+            your project under later editions of the license.
           </span>
         </label>
 
@@ -45,21 +50,23 @@
           id="or-later-checkbox"
           v-model="allowOrLater"
           :disabled="!hasPermission"
-          description="允许后续版本"
+          description="Allow later editions"
           class="w-1/2"
         >
-          允许后续版本
+          Allow later editions
         </Checkbox>
       </div>
 
       <div class="adjacent-input">
         <label for="license-url">
-          <span class="label__title">许可证 URL</span>
-          <span class="label__description" v-if="license?.friendly !== '自定义'">
-            完整许可证文本的网站位置。如果您不提供链接，则将显示许可证文本。
+          <span class="label__title">License URL</span>
+          <span class="label__description" v-if="license?.friendly !== 'Custom'">
+            The web location of the full license text. If you don't provide a link, the license text
+            will be displayed instead.
           </span>
           <span class="label__description" v-else>
-            完整许可证文本的网站位置。您必须提供链接，因为您正在自定义许可证。
+            The web location of the full license text. You have to provide a link since this is a
+            custom license.
           </span>
         </label>
 
@@ -69,27 +76,28 @@
             v-model="licenseUrl"
             type="url"
             maxlength="2048"
-            :placeholder="license?.friendly !== '自定义' ? `许可证 URL（可选）` : `许可证 URL`"
+            :placeholder="license?.friendly !== 'Custom' ? `License URL (optional)` : `License URL`"
             :disabled="!hasPermission || licenseId === 'LicenseRef-Unknown'"
             class="w-full"
           />
         </div>
       </div>
 
-      <div class="adjacent-input" v-if="license?.friendly === '自定义'">
+      <div class="adjacent-input" v-if="license?.friendly === 'Custom'">
         <label for="license-spdx" v-if="!nonSpdxLicense">
-          <span class="label__title">SPDX 标识</span>
+          <span class="label__title">SPDX identifier</span>
           <span class="label__description">
-            如果您的许可证没有
+            If your license does not have an offical
             <a href="https://spdx.org/licenses/" target="_blank" rel="noopener" class="text-link">
-              SPDX 标识</a
-            >，只需勾选复选框并输入许可证的名称即可。
+              SPDX license identifier</a
+            >, check the box and enter the name of the license instead.
           </span>
         </label>
         <label for="license-name" v-else>
-          <span class="label__title">许可证名称</span>
+          <span class="label__title">License name</span>
           <span class="label__description"
-            >许可证的完整名称。如果许可证有SPDX标识，请取消选中复选框并使用标识。</span
+            >The full name of the license. If the license has a SPDX identifier, please uncheck the
+            checkbox and use the identifier instead.</span
           >
         </label>
 
@@ -116,12 +124,12 @@
           />
 
           <Checkbox
-            v-if="license?.friendly === '自定义'"
+            v-if="license?.friendly === 'Custom'"
             v-model="nonSpdxLicense"
             :disabled="!hasPermission"
-            description="许可证没有一个 SPDX 标识"
+            description="License does not have a SPDX identifier"
           >
-            许可证没有一个 SPDX 标识
+            License does not have a SPDX identifier
           </Checkbox>
         </div>
       </div>
@@ -137,8 +145,8 @@
           "
           @click="saveChanges()"
         >
-          <SaveIcon/>
-          保存改动
+          <SaveIcon />
+          Save changes
         </button>
       </div>
     </section>
@@ -185,7 +193,7 @@ const trimmedLicenseId = oldLicenseId
   .replaceAll("LicenseRef-", "");
 
 license.value = builtinLicenses.find((x) => x.short === trimmedLicenseId) ?? {
-  friendly: "自定义",
+  friendly: "Custom",
   short: oldLicenseId.replaceAll("LicenseRef-", ""),
   requiresOnlyOrLater: oldLicenseId.includes("-or-later"),
 };
@@ -207,7 +215,7 @@ const licenseId = computed(() => {
   let id = "";
 
   if (
-    (nonSpdxLicense && license.value.friendly === "自定义") ||
+    (nonSpdxLicense && license.value.friendly === "Custom") ||
     license.value.short === "All-Rights-Reserved" ||
     license.value.short === "Unknown"
   ) {
@@ -219,7 +227,7 @@ const licenseId = computed(() => {
     id += allowOrLater.value ? "-or-later" : "-only";
   }
 
-  if (nonSpdxLicense && license.value.friendly === "自定义") {
+  if (nonSpdxLicense && license.value.friendly === "Custom") {
     id = id.replaceAll(" ", "-");
   }
 

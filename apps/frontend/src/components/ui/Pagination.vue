@@ -4,7 +4,7 @@
       :class="{ disabled: page === 1 }"
       :tabindex="page === 1 ? -1 : 0"
       class="left-arrow paginate has-icon"
-      aria-label="上一页"
+      aria-label="Previous Page"
       :href="linkFunction(page - 1)"
       @click.prevent="page !== 1 ? switchPage(page - 1) : null"
     >
@@ -41,7 +41,7 @@
       }"
       :tabindex="page === pages[pages.length - 1] ? -1 : 0"
       class="right-arrow paginate has-icon"
-      aria-label="下一页"
+      aria-label="Next Page"
       :href="linkFunction(page + 1)"
       @click.prevent="page !== pages[pages.length - 1] ? switchPage(page + 1) : null"
     >

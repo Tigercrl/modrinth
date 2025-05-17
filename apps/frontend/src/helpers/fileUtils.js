@@ -1,10 +1,10 @@
-import { formatBytes } from "@modrinth/utils";
+import { formatBytes } from "~/plugins/shorthands.js";
 
 export const fileIsValid = (file, validationOptions) => {
   const { maxSize, alertOnInvalid } = validationOptions;
   if (maxSize !== null && maxSize !== undefined && file.size > maxSize) {
     if (alertOnInvalid) {
-      alert(`文件 ${file.name} 过大！文件大小必须小于 ${formatBytes(maxSize)}`);
+      alert(`File ${file.name} is too big! Must be less than ${formatBytes(maxSize)}`);
     }
     return false;
   }

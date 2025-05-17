@@ -12,7 +12,7 @@ definePageMeta({
 });
 
 useHead({
-  title: "数据分析 - Modrinth",
+  title: "Analytics - Modrinth",
 });
 
 const auth = await useAuth();

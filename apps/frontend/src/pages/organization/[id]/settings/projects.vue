@@ -382,7 +382,7 @@ const onProjectTransferSubmit = async (projects) => {
   } catch (err) {
     addNotification({
       group: "main",
-      title: "发生错误",
+      title: "An error occurred",
       text: err?.data?.description || err?.message || err || "Unknown error",
       type: "error",
     });

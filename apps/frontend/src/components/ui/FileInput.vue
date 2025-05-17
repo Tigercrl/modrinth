@@ -25,7 +25,7 @@ export default {
   props: {
     prompt: {
       type: String,
-      default: "选择文件",
+      default: "Select file",
     },
     multiple: {
       type: Boolean,

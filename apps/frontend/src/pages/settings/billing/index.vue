@@ -80,13 +80,13 @@
                 }}/year by switching to yearly billing!
               </span>
               <span class="text-sm text-secondary">
-                Since {{ $dayjs(midasSubscription.created).format("YYYY/MM/DD") }}
+                Since {{ $dayjs(midasSubscription.created).format("MMMM D, YYYY") }}
               </span>
               <span v-if="midasCharge.status === 'open'" class="text-sm text-secondary">
-                Renews {{ $dayjs(midasCharge.due).format("YYYY/MM/DD") }}
+                Renews {{ $dayjs(midasCharge.due).format("MMMM D, YYYY") }}
               </span>
               <span v-else-if="midasCharge.status === 'cancelled'" class="text-sm text-secondary">
-                Expires {{ $dayjs(midasCharge.due).format("YYYY/MM/DD") }}
+                Expires {{ $dayjs(midasCharge.due).format("MMMM D, YYYY") }}
               </span>
             </template>
 
@@ -296,7 +296,7 @@
                     </div>
                     <div v-if="getPyroCharge(subscription)" class="mb-4 flex flex-col items-end">
                       <span class="text-sm text-secondary">
-                        Since {{ $dayjs(subscription.created).format("YYYY/MM/DD") }}
+                        Since {{ $dayjs(subscription.created).format("MMMM D, YYYY") }}
                       </span>
                       <span
                         v-if="getPyroCharge(subscription).status === 'open'"
@@ -396,7 +396,7 @@
         (err) =>
           data.$notify({
             group: 'main',
-            title: '发生错误',
+            title: 'An error occurred',
             type: 'error',
             text: err.message ?? (err.data ? err.data.description : err),
           })
@@ -865,7 +865,7 @@ async function addPaymentMethod() {
   } catch (err) {
     data.$notify({
       group: "main",
-      title: "发生错误",
+      title: "An error occurred",
       text: err.data ? err.data.description : err,
       type: "error",
     });
@@ -888,7 +888,7 @@ async function submit() {
   if (error && error.type !== "validation_error") {
     data.$notify({
       group: "main",
-      title: "发生错误",
+      title: "An error occurred",
       text: error.message,
       type: "error",
     });
@@ -941,7 +941,7 @@ async function editPaymentMethod(index, primary) {
   } catch (err) {
     data.$notify({
       group: "main",
-      title: "发生错误",
+      title: "An error occurred",
       text: err.data ? err.data.description : err,
       type: "error",
     });
@@ -960,7 +960,7 @@ async function removePaymentMethod(index) {
   } catch (err) {
     data.$notify({
       group: "main",
-      title: "发生错误",
+      title: "An error occurred",
       text: err.data ? err.data.description : err,
       type: "error",
     });
@@ -983,7 +983,7 @@ async function cancelSubscription(id, cancelled) {
   } catch (err) {
     data.$notify({
       group: "main",
-      title: "发生错误",
+      title: "An error occurred",
       text: err.data ? err.data.description : err,
       type: "error",
     });

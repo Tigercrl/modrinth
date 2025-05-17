@@ -6,11 +6,11 @@
       <div class="iconified-input">
         <label for="search-input" hidden>{{ formatMessage(messages.searchInputLabel) }}</label>
         <SearchIcon aria-hidden="true" />
-        <input id="search-input" v-model="filterQuery" type="text" placeholder="搜索收藏夹..." />
+        <input id="search-input" v-model="filterQuery" type="text" />
         <Button
           v-if="filterQuery"
           class="r-btn"
-          aria-label="清除搜索内容"
+          aria-label="Clear search"
           @click="() => (filterQuery = '')"
         >
           <XIcon aria-hidden="true" />
@@ -115,23 +115,23 @@ const formatCompactNumber = useCompactNumber();
 const messages = defineMessages({
   createNewButton: {
     id: "dashboard.collections.button.create-new",
-    defaultMessage: "创建收藏夹",
+    defaultMessage: "Create new",
   },
   collectionsLongTitle: {
     id: "dashboard.collections.long-title",
-    defaultMessage: "您的收藏夹",
+    defaultMessage: "Your collections",
   },
   followingCollectionDescription: {
     id: "collection.description.following",
-    defaultMessage: "自动生成的您关注资源的收藏夹。",
+    defaultMessage: "Auto-generated collection of all the projects you're following.",
   },
   projectsCountLabel: {
     id: "dashboard.collections.label.projects-count",
-    defaultMessage: "资源",
+    defaultMessage: "{count, plural, one {{count} project} other {{count} projects}}",
   },
   searchInputLabel: {
     id: "dashboard.collections.label.search-input",
-    defaultMessage: "搜索您的收藏夹",
+    defaultMessage: "Search your collections",
   },
 });
 

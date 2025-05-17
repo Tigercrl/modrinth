@@ -1,41 +1,77 @@
 const projectTypeMessages = defineMessages({
   datapack: {
     id: "project-type.datapack.singular",
-    defaultMessage: "数据包",
+    defaultMessage: "Data Pack",
+  },
+  datapacks: {
+    id: "project-type.datapack.plural",
+    defaultMessage: "Data Packs",
   },
   mod: {
     id: "project-type.mod.singular",
-    defaultMessage: "模组",
+    defaultMessage: "Mod",
+  },
+  mods: {
+    id: "project-type.mod.plural",
+    defaultMessage: "Mods",
   },
   modpack: {
     id: "project-type.modpack.singular",
-    defaultMessage: "整合包",
+    defaultMessage: "Modpack",
+  },
+  modpacks: {
+    id: "project-type.modpack.plural",
+    defaultMessage: "Modpacks",
   },
   plugin: {
     id: "project-type.plugin.singular",
-    defaultMessage: "插件",
+    defaultMessage: "Plugin",
+  },
+  plugins: {
+    id: "project-type.plugin.plural",
+    defaultMessage: "Plugins",
   },
   resourcepack: {
     id: "project-type.resourcepack.singular",
-    defaultMessage: "资源包",
+    defaultMessage: "Resource Pack",
+  },
+  resourcepacks: {
+    id: "project-type.resourcepack.plural",
+    defaultMessage: "Resource Packs",
   },
   shader: {
     id: "project-type.shader.singular",
-    defaultMessage: "光影",
+    defaultMessage: "Shader",
+  },
+  shaders: {
+    id: "project-type.shader.plural",
+    defaultMessage: "Shaders",
   },
   project: {
     id: "project-type.project.singular",
-    defaultMessage: "资源",
+    defaultMessage: "Project",
+  },
+  projects: {
+    id: "project-type.project.plural",
+    defaultMessage: "Projects",
   },
   collection: {
     id: "project-type.collection.singular",
-    defaultMessage: "收藏夹",
+    defaultMessage: "Collection",
+  },
+  collections: {
+    id: "project-type.collection.plural",
+    defaultMessage: "Collections",
   },
 });
 
+type ExtractSingulars<K extends string> = K extends `${infer T}s` ? T : never;
 
-export function getProjectTypeMessage(type: keyof typeof projectTypeMessages) {
+type ProjectType = ExtractSingulars<keyof typeof projectTypeMessages>;
+
+export function getProjectTypeMessage(type: ProjectType, plural = false) {
   return (
-    projectTypeMessages[`${type}`] ?? projectTypeMessages[`project`]
+    projectTypeMessages[`${type}${plural ? "s" : ""}`] ??
+    projectTypeMessages[`project${plural ? "s" : ""}`]
   );
 }

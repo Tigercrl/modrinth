@@ -183,7 +183,7 @@
                 {{ formatMessage(messages.whatReportReason, { item: reportItem || "content" }) }}
               </span>
               <RadioButtons v-slot="{ item }" v-model="reportType" :items="reportTypes">
-                {{ item === "copyright" ? "重新上传" : capitalizeString(item) }}
+                {{ item === "copyright" ? "Reuploaded work" : capitalizeString(item) }}
               </RadioButtons>
             </div>
             <div
@@ -273,19 +273,6 @@ const router = useRouter();
 
 const auth = await useAuth();
 const { formatMessage } = useVIntl();
-
-const formatItemType = (name: string) => {
-  switch (name) {
-    case 'project':
-      return '资源'
-    case 'version':
-      return '版本'
-    case 'user':
-      return '用户'
-    default:
-      return capitalizeString(name)
-  }
-}
 
 if (!auth.value.user) {
   router.push("/auth/sign-in?redirect=" + encodeURIComponent(route.fullPath));
@@ -395,23 +382,23 @@ const canSubmit = computed(() => {
 
 const submissionValidation = () => {
   if (!canSubmit.value) {
-    throw new Error("请填写所有必填项");
+    throw new Error("Please fill out all required fields");
   }
 
   if (reportItem.value === "") {
-    throw new Error("请选择举报项目");
+    throw new Error("Please select a report item");
   }
 
   if (reportItemID.value === "") {
-    throw new Error("请输入报告项目ID");
+    throw new Error("Please enter a report item ID");
   }
 
   if (reportType.value === "") {
-    throw new Error("请选择举报原因");
+    throw new Error("Please select a report type");
   }
 
   if (reportBody.value === "") {
-    throw new Error("请提供更多信息");
+    throw new Error("Please enter a report body");
   }
 
   return true;
@@ -453,7 +440,7 @@ const submitReport = async () => {
     if (error instanceof Error) {
       addNotification({
         group: "main",
-        title: "发生错误",
+        title: "An error occurred",
         text: error.message,
         type: "error",
       });
@@ -479,7 +466,7 @@ const submitReport = async () => {
     if (error instanceof Error) {
       addNotification({
         group: "main",
-        title: "发生错误",
+        title: "An error occurred",
         text: error.message,
         type: "error",
       });
@@ -490,7 +477,7 @@ const submitReport = async () => {
 };
 
 const onImageUpload = async (file: File) => {
-  const item = await useImageUpload(file, {context: "report"});
+  const item = await useImageUpload(file, { context: "report" });
   uploadedImageIDs.value.push(item.id);
   return item.url;
 };
@@ -500,24 +487,24 @@ const warnings: Record<string, MessageDescriptor[]> = {
     defineMessage({
       id: "report.note.copyright.1",
       defaultMessage:
-        "请注意，您*不在*提交 DMCA 删除请求，而是提交重新上传内容的举报。",
+        "Please note that you are *not* submitting a DMCA takedown request, but rather a report of reuploaded content.",
     }),
     defineMessage({
       id: "report.note.copyright.2",
       defaultMessage:
-        "如果您想提交DMCA删除请求（这是一项法律行为），请参阅我们的<copyright-policy-link>版权政策</copyright-policy-link>。",
+        "If you meant to file a DMCA takedown request (which is a legal action) instead, please see our <copyright-policy-link>Copyright Policy</copyright-policy-link>.",
     }),
   ],
   malicious: [
     defineMessage({
       id: "report.note.malicious.1",
       defaultMessage:
-        "恶意或欺骗性内容的举报必须包括行为的实质性证据，例如代码片段。",
+        "Reports for malicious or deceptive content must include substantial evidence of the behavior, such as code samples.",
     }),
     defineMessage({
       id: "report.note.malicious.2",
       defaultMessage:
-        "来自 Microsoft Defender、VirusTotal 或 AI 恶意软件检测的摘要不是充分的证据形式，将不被接受。",
+        "Summaries from Microsoft Defender, VirusTotal, or AI malware detection are not sufficient forms of evidence and will not be accepted.",
     }),
   ],
 };

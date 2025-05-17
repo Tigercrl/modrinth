@@ -3,21 +3,21 @@
     <Modal
       v-if="currentMember"
       ref="modal_edit_item"
-      :header="editIndex === -1 ? '上传画廊图片' : '修改画廊图片'"
+      :header="editIndex === -1 ? 'Upload gallery image' : 'Edit gallery item'"
     >
       <div class="modal-gallery universal-labels">
         <div class="gallery-file-input">
           <div class="file-header">
             <ImageIcon aria-hidden="true" />
-            <strong>{{ editFile ? editFile.name : "当前图片" }}</strong>
+            <strong>{{ editFile ? editFile.name : "Current image" }}</strong>
             <FileInput
               v-if="editIndex === -1"
               class="iconified-button raised-button"
-              prompt="替换图片"
+              prompt="Replace"
               :accept="acceptFileTypes"
               :max-size="524288000"
               should-always-reset
-              aria-label="替换图片"
+              aria-label="Replace image"
               @change="
                 (x) => {
                   editFile = x[0];
@@ -40,39 +40,40 @@
           />
         </div>
         <label for="gallery-image-title">
-          <span class="label__title">标题</span>
+          <span class="label__title">Title</span>
         </label>
         <input
           id="gallery-image-title"
           v-model="editTitle"
           type="text"
           maxlength="64"
-          placeholder="请输入标题..."
+          placeholder="Enter title..."
         />
         <label for="gallery-image-desc">
-          <span class="label__title">描述</span>
+          <span class="label__title">Description</span>
         </label>
         <div class="textarea-wrapper">
           <textarea
             id="gallery-image-desc"
             v-model="editDescription"
             maxlength="255"
-            placeholder="请输入描述..."
+            placeholder="Enter description..."
           />
         </div>
         <label for="gallery-image-ordering">
-          <span class="label__title">排列顺序</span>
+          <span class="label__title">Order Index</span>
         </label>
         <input
           id="gallery-image-ordering"
           v-model="editOrder"
           type="number"
-          placeholder="请输入排列顺序..."
+          placeholder="Enter order index..."
         />
         <label for="gallery-image-featured">
-          <span class="label__title">展示</span>
+          <span class="label__title">Featured</span>
           <span class="label__description">
-            展示的画廊图片会显示在搜索页面和个人资料的画廊视图中。只能展示一个画廊图片。
+            A featured gallery image shows up in search and your project card. Only one gallery
+            image can be featured.
           </span>
         </label>
         <button
@@ -82,7 +83,7 @@
           @click="editFeatured = true"
         >
           <StarIcon aria-hidden="true" />
-          展示图片
+          Feature image
         </button>
         <button
           v-else
@@ -91,12 +92,12 @@
           @click="editFeatured = false"
         >
           <StarIcon fill="currentColor" aria-hidden="true" />
-          取消展示
+          Unfeature image
         </button>
         <div class="button-group">
           <button class="iconified-button" @click="$refs.modal_edit_item.hide()">
             <XIcon aria-hidden="true" />
-            取消
+            Cancel
           </button>
           <button
             v-if="editIndex === -1"
@@ -105,7 +106,7 @@
             @click="createGalleryItem"
           >
             <PlusIcon aria-hidden="true" />
-            添加画廊图片
+            Add gallery image
           </button>
           <button
             v-else
@@ -114,7 +115,7 @@
             @click="editGalleryItem"
           >
             <SaveIcon aria-hidden="true" />
-            保存改动
+            Save changes
           </button>
         </div>
       </div>
@@ -122,10 +123,10 @@
     <ConfirmModal
       v-if="currentMember"
       ref="modal_confirm"
-      title="您确定要删除此画廊图片吗？"
-      description="该画廊图片将会永久消失！（真的很久！）"
+      title="Are you sure you want to delete this gallery image?"
+      description="This will remove this gallery image forever (like really forever)."
       :has-to-type="false"
-      proceed-label="删除"
+      proceed-label="Delete"
       @proceed="deleteGalleryImage"
     />
     <div
@@ -198,8 +199,8 @@
       <FileInput
         :max-size="524288000"
         :accept="acceptFileTypes"
-        prompt="上传图片"
-        aria-label="上传图片"
+        prompt="Upload an image"
+        aria-label="Upload an image"
         class="iconified-button brand-button"
         :disabled="!isPermission(currentMember?.permissions, 1 << 2)"
         @change="handleFiles"
@@ -207,7 +208,7 @@
         <UploadIcon aria-hidden="true" />
       </FileInput>
       <span class="indicator">
-        <InfoIcon aria-hidden="true" /> 单击选择图片或将图片拖放至此页面上传
+        <InfoIcon aria-hidden="true" /> Click to choose an image or drag one onto this page
       </span>
       <DropArea
         :accept="acceptFileTypes"
@@ -235,8 +236,8 @@
         </div>
         <div class="gallery-bottom">
           <div class="gallery-created">
-            <CalendarIcon aria-hidden="true" aria-label="创建时间" />
-            {{ $dayjs(item.created).format("YYYY/MM/DD") }}
+            <CalendarIcon aria-hidden="true" aria-label="Date created" />
+            {{ $dayjs(item.created).format("MMMM D, YYYY") }}
           </div>
           <div v-if="currentMember" class="gallery-buttons input-group">
             <button
@@ -254,7 +255,7 @@
               "
             >
               <EditIcon aria-hidden="true" />
-              修改
+              Edit
             </button>
             <button
               class="iconified-button"
@@ -266,7 +267,7 @@
               "
             >
               <TrashIcon aria-hidden="true" />
-              删除
+              Remove
             </button>
           </div>
         </div>
@@ -321,8 +322,8 @@ const props = defineProps({
   },
 });
 
-const title = `${props.project.title} - 画廊`;
-const description = `在 Modrinth 上查看 ${props.project.title} 的 ${props.project.gallery.length} 个图片`;
+const title = `${props.project.title} - Gallery`;
+const description = `View ${props.project.gallery.length} images of ${props.project.title} on Modrinth.`;
 
 useSeoMeta({
   title,
@@ -449,7 +450,7 @@ export default defineNuxtComponent({
       } catch (err) {
         this.$notify({
           group: "main",
-          title: "发生错误",
+          title: "An error occurred",
           text: err.data ? err.data.description : err,
           type: "error",
         });
@@ -486,7 +487,7 @@ export default defineNuxtComponent({
       } catch (err) {
         this.$notify({
           group: "main",
-          title: "发生错误",
+          title: "An error occurred",
           text: err.data ? err.data.description : err,
           type: "error",
         });
@@ -512,7 +513,7 @@ export default defineNuxtComponent({
       } catch (err) {
         this.$notify({
           group: "main",
-          title: "发生错误",
+          title: "An error occurred",
           text: err.data ? err.data.description : err,
           type: "error",
         });

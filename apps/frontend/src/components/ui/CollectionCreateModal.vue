@@ -1,10 +1,10 @@
 <template>
-  <NewModal ref="modal" header="创建收藏夹">
+  <NewModal ref="modal" header="Creating a collection">
     <div class="flex flex-col gap-3">
       <div class="flex flex-col gap-2">
         <label for="name">
           <span class="text-lg font-semibold text-contrast">
-            名称
+            Name
             <span class="text-brand-red">*</span>
           </span>
         </label>
@@ -19,27 +19,29 @@
       </div>
       <div class="flex flex-col gap-2">
         <label for="additional-information" class="flex flex-col gap-1">
-          <span class="text-lg font-semibold text-contrast"> 简介</span>
-          <span>介绍一下此收藏夹。</span>
+          <span class="text-lg font-semibold text-contrast"> Summary </span>
+          <span>A sentence or two that describes your collection.</span>
         </label>
         <div class="textarea-wrapper">
           <textarea id="additional-information" v-model="description" maxlength="256" />
         </div>
       </div>
       <p class="m-0 max-w-[30rem]">
-        您将创建一个{{ projectIds.length > 0 ? `包含 ${projectIds.length} 个` : "不包含任何" }}资源的公共收藏夹
+        Your new collection will be created as a public collection with
+        {{ projectIds.length > 0 ? projectIds.length : "no" }}
+        {{ projectIds.length !== 1 ? "projects" : "project" }}.
       </p>
       <div class="flex gap-2">
         <ButtonStyled color="brand">
           <button @click="create">
             <PlusIcon aria-hidden="true" />
-            创建收藏夹
+            Create collection
           </button>
         </ButtonStyled>
         <ButtonStyled>
           <button @click="modal.hide()">
             <XIcon aria-hidden="true" />
-            取消
+            Cancel
           </button>
         </ButtonStyled>
       </div>
@@ -86,7 +88,7 @@ async function create() {
   } catch (err) {
     addNotification({
       group: "main",
-      title: "发生错误",
+      title: "An error occurred",
       text: err?.data?.description || err?.message || err,
       type: "error",
     });

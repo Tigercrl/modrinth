@@ -1,5 +1,3 @@
-<!-- TODO: 汉化 -->
-<!-- 此梗在国内不流传 -->
 <script setup lang="ts">
 import { useRelativeTime } from "@modrinth/ui";
 
@@ -21,7 +19,7 @@ const messages = defineMessages({
   },
   frogSinceOpened: {
     id: "frog.sinceOpened",
-    defaultMessage: "页面打开时间：{ago}",
+    defaultMessage: "This page was opened {ago}",
   },
   frogFroggedPeople: {
     id: "frog.froggedPeople",

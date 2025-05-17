@@ -69,32 +69,32 @@ const formatRelativeTime = useRelativeTime();
 const messages = defineMessages({
   currentSessionLabel: {
     id: "settings.sessions.current-session",
-    defaultMessage: "当前会话",
+    defaultMessage: "Current session",
   },
   revokeSessionButton: {
     id: "settings.sessions.action.revoke-session",
-    defaultMessage: "移除会话",
+    defaultMessage: "Revoke session",
   },
   createdAgoLabel: {
     id: "settings.sessions.created-ago",
-    defaultMessage: "创建时间：{ago}",
+    defaultMessage: "Created {ago}",
   },
   sessionsDescription: {
     id: "settings.sessions.description",
     defaultMessage:
-      "以下是所有当前已登录 Modrinth 账户的设备。\n\n如果您看到不认识的设备，请立即移除该会话并修改您的 Modrinth 账户密码。",
+      "Here are all the devices that are currently logged in with your Modrinth account. You can log out of each one individually.\n\nIf you see an entry you don't recognize, log out of that device and change your Modrinth account password immediately.",
   },
   lastAccessedAgoLabel: {
     id: "settings.sessions.last-accessed-ago",
-    defaultMessage: "上次上线：{ago}",
+    defaultMessage: "Last accessed {ago}",
   },
   unknownOsLabel: {
     id: "settings.sessions.unknown-os",
-    defaultMessage: "未知系统",
+    defaultMessage: "Unknown OS",
   },
   unknownPlatformLabel: {
     id: "settings.sessions.unknown-platform",
-    defaultMessage: "未知平台",
+    defaultMessage: "Unknown platform",
   },
 });
 

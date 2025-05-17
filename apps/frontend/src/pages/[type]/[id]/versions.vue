@@ -2,10 +2,10 @@
   <ConfirmModal
     v-if="currentMember"
     ref="deleteVersionModal"
-    title="您确定要删除这个版本吗？"
-    description="这个版本将会永久消失！（真的很久！）"
+    title="Are you sure you want to delete this version?"
+    description="This will remove this version forever (like really forever)."
     :has-to-type="false"
-    proceed-label="删除"
+    proceed-label="Delete"
     @proceed="deleteVersion()"
   />
   <section class="experimental-styles-within overflow-visible">
@@ -16,15 +16,15 @@
       <FileInput
         :max-size="524288000"
         :accept="acceptFileFromProjectType(project.project_type)"
-        prompt="上传版本"
+        prompt="Upload a version"
         class="btn btn-primary"
-        aria-label="上传版本"
+        aria-label="Upload a version"
         @change="handleFiles"
       >
         <UploadIcon aria-hidden="true" />
       </FileInput>
       <span class="flex items-center gap-2">
-        <InfoIcon aria-hidden="true" /> 单击选择文件或将文件拖放至此页面上传
+        <InfoIcon aria-hidden="true" /> Click to choose a file or drag one onto this page
       </span>
       <DropArea :accept="acceptFileFromProjectType(project.project_type)" @change="handleFiles" />
     </div>
@@ -46,10 +46,10 @@
       <template #actions="{ version }">
         <ButtonStyled circular type="transparent">
           <a
-            v-tooltip="`下载`"
+            v-tooltip="`Download`"
             :href="getPrimaryFile(version).url"
             class="group-hover:!bg-brand group-hover:[&>svg]:!text-brand-inverted"
-            aria-label="下载"
+            aria-label="Download"
             @click="emit('onDownload')"
           >
             <DownloadIcon aria-hidden="true" />
@@ -132,36 +132,36 @@
                 shown: currentMember,
               },
             ]"
-            aria-label="更多选项"
+            aria-label="More options"
           >
             <MoreVerticalIcon aria-hidden="true" />
             <template #download>
               <DownloadIcon aria-hidden="true" />
-              下载
+              Download
             </template>
             <template #new-tab>
               <ExternalIcon aria-hidden="true" />
-              在新标签页中打开
+              Open in new tab
             </template>
             <template #copy-link>
               <LinkIcon aria-hidden="true" />
-              复制链接
+              Copy link
             </template>
             <template #share>
               <ShareIcon aria-hidden="true" />
-              分享
+              Share
             </template>
             <template #report>
               <ReportIcon aria-hidden="true" />
-              举报
+              Report
             </template>
             <template #edit>
               <EditIcon aria-hidden="true" />
-              修改
+              Edit
             </template>
             <template #delete>
               <TrashIcon aria-hidden="true" />
-              删除
+              Delete
             </template>
             <template #copy-id>
               <ClipboardCopyIcon aria-hidden="true" />

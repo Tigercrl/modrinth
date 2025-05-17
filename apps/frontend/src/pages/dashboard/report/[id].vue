@@ -2,7 +2,7 @@
   <ReportView
     :auth="auth"
     :report-id="route.params.id"
-    :breadcrumbs-stack="[{ href: '/dashboard/reports', label: '处理中举报' }]"
+    :breadcrumbs-stack="[{ href: '/dashboard/reports', label: 'Active reports' }]"
   />
 </template>
 <script setup>
@@ -12,6 +12,6 @@ const route = useNativeRoute();
 const auth = await useAuth();
 
 useHead({
-  title: `举报 ${route.params.id} - Modrinth`,
+  title: `Report ${route.params.id} - Modrinth`,
 });
 </script>

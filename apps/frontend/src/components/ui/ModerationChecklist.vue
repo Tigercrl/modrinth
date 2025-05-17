@@ -1,5 +1,3 @@
-<!-- TODO: 汉化 -->
-<!-- 不会真有中国人当上审核员了吧？ -->
 <template>
   <div
     class="moderation-checklist flex w-[600px] max-w-full flex-col rounded-2xl border-[1px] border-solid border-orange bg-bg-raised p-4 transition-all delay-200 duration-200 ease-in-out"
@@ -864,7 +862,7 @@ async function initializeModPackData() {
     const app = useNuxtApp();
     app.$notify({
       group: "main",
-      title: "发生错误",
+      title: "An error occurred",
       text: err.data ? err.data.description : err,
       type: "error",
     });
@@ -983,7 +981,7 @@ async function generateMessage() {
         const app = useNuxtApp();
         app.$notify({
           group: "main",
-          title: "发生错误",
+          title: "An error occurred",
           text: err.data ? err.data.description : err,
           type: "error",
         });
@@ -1071,7 +1069,7 @@ async function sendMessage(status) {
     const app = useNuxtApp();
     app.$notify({
       group: "main",
-      title: "发生错误",
+      title: "An error occurred",
       text: err.data ? err.data.description : err,
       type: "error",
     });

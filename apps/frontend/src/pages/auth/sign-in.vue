@@ -19,8 +19,7 @@
       />
 
       <button class="btn btn-primary continue-btn" @click="begin2FASignIn">
-        {{ formatMessage(commonMessages.signInButton) }}
-        <RightArrowIcon/>
+        {{ formatMessage(commonMessages.signInButton) }} <RightArrowIcon />
       </button>
     </template>
     <template v-else>
@@ -28,27 +27,27 @@
 
       <section class="third-party">
         <a class="btn" :href="getAuthUrl('discord', redirectTarget)">
-          <SSODiscordIcon/>
+          <SSODiscordIcon />
           <span>Discord</span>
         </a>
         <a class="btn" :href="getAuthUrl('github', redirectTarget)">
-          <SSOGitHubIcon/>
+          <SSOGitHubIcon />
           <span>GitHub</span>
         </a>
         <a class="btn" :href="getAuthUrl('microsoft', redirectTarget)">
-          <SSOMicrosoftIcon/>
-          <span>微软</span>
+          <SSOMicrosoftIcon />
+          <span>Microsoft</span>
         </a>
         <a class="btn" :href="getAuthUrl('google', redirectTarget)">
-          <SSOGoogleIcon/>
-          <span>谷歌</span>
+          <SSOGoogleIcon />
+          <span>Google</span>
         </a>
         <a class="btn" :href="getAuthUrl('steam', redirectTarget)">
-          <SSOSteamIcon/>
+          <SSOSteamIcon />
           <span>Steam</span>
         </a>
         <a class="btn" :href="getAuthUrl('gitlab', redirectTarget)">
-          <SSOGitLabIcon/>
+          <SSOGitLabIcon />
           <span>GitLab</span>
         </a>
       </section>
@@ -58,7 +57,7 @@
       <section class="auth-form">
         <div class="iconified-input">
           <label for="email" hidden>{{ formatMessage(messages.emailUsernameLabel) }}</label>
-          <MailIcon/>
+          <MailIcon />
           <input
             id="email"
             v-model="email"
@@ -71,7 +70,7 @@
 
         <div class="iconified-input">
           <label for="password" hidden>{{ formatMessage(messages.passwordLabel) }}</label>
-          <KeyIcon/>
+          <KeyIcon />
           <input
             id="password"
             v-model="password"
@@ -82,39 +81,41 @@
           />
         </div>
 
-        <HCaptcha ref="captcha" v-model="token"/>
+        <HCaptcha ref="captcha" v-model="token" />
 
         <button
           class="btn btn-primary continue-btn centered-btn"
           :disabled="!token"
           @click="beginPasswordSignIn()"
         >
-          {{ formatMessage(commonMessages.signInButton) }}
-          <RightArrowIcon/>
+          {{ formatMessage(commonMessages.signInButton) }} <RightArrowIcon />
         </button>
 
-        <p>
-          <IssuesIcon/>
-          电脑端请先下载并运行
-          <a class="text-link" href="/patch.jar"
-             download="ModrinthCnLoginPatch-1.0.0.jar">
-            汉化站修复补丁
-          </a>
-          以进行登录。手机端暂不支持登录。
-        </p>
-
         <div class="auth-form__additional-options">
-          <NuxtLink
-            class="text-link"
-            :to="{path: '/auth/reset-password', query: route.query}">
-            忘记密码？
-          </NuxtLink>
-          •
-          <NuxtLink
-            class="text-link"
-            :to="{path: '/auth/sign-up', query: route.query}">
-            创建账户
-          </NuxtLink>
+          <IntlFormatted :message-id="messages.additionalOptionsLabel">
+            <template #forgot-password-link="{ children }">
+              <NuxtLink
+                class="text-link"
+                :to="{
+                  path: '/auth/reset-password',
+                  query: route.query,
+                }"
+              >
+                <component :is="() => children" />
+              </NuxtLink>
+            </template>
+            <template #create-account-link="{ children }">
+              <NuxtLink
+                class="text-link"
+                :to="{
+                  path: '/auth/sign-up',
+                  query: route.query,
+                }"
+              >
+                <component :is="() => children" />
+              </NuxtLink>
+            </template>
+          </IntlFormatted>
         </div>
       </section>
     </template>
@@ -123,59 +124,58 @@
 
 <script setup>
 import {
-  IssuesIcon,
-  KeyIcon,
-  MailIcon,
   RightArrowIcon,
-  SSODiscordIcon,
   SSOGitHubIcon,
-  SSOGitLabIcon,
-  SSOGoogleIcon,
   SSOMicrosoftIcon,
   SSOSteamIcon,
+  SSOGoogleIcon,
+  SSODiscordIcon,
+  SSOGitLabIcon,
+  KeyIcon,
+  MailIcon,
 } from "@modrinth/assets";
-import {commonMessages} from "@modrinth/ui";
+import { commonMessages } from "@modrinth/ui";
 import HCaptcha from "@/components/ui/HCaptcha.vue";
 
-const {formatMessage} = useVIntl();
+const { formatMessage } = useVIntl();
 
 const messages = defineMessages({
   additionalOptionsLabel: {
     id: "auth.sign-in.additional-options",
     defaultMessage:
-      "<forgot-password-link>忘记密码？</forgot-password-link> • <create-account-link>创建账户</create-account-link>",
+      "<forgot-password-link>Forgot password?</forgot-password-link> • <create-account-link>Create an account</create-account-link>",
   },
   emailUsernameLabel: {
     id: "auth.sign-in.email-username.label",
-    defaultMessage: "用户名或密码",
+    defaultMessage: "Email or username",
   },
   passwordLabel: {
     id: "auth.sign-in.password.label",
-    defaultMessage: "密码",
+    defaultMessage: "Password",
   },
   signInWithLabel: {
     id: "auth.sign-in.sign-in-with",
-    defaultMessage: "使用第三方平台登录",
+    defaultMessage: "Sign in with",
   },
   signInTitle: {
     id: "auth.sign-in.title",
-    defaultMessage: "登录",
+    defaultMessage: "Sign In",
   },
   twoFactorCodeInputPlaceholder: {
     id: "auth.sign-in.2fa.placeholder",
-    defaultMessage: "请输入代码...",
+    defaultMessage: "Enter code...",
   },
   twoFactorCodeLabel: {
     id: "auth.sign-in.2fa.label",
-    defaultMessage: "请输入两部验证代码",
+    defaultMessage: "Enter two-factor code",
   },
   twoFactorCodeLabelDescription: {
     id: "auth.sign-in.2fa.description",
-    defaultMessage: "请输入两部验证代码以继续",
+    defaultMessage: "Please enter a two-factor code to proceed.",
   },
   usePasswordLabel: {
     id: "auth.sign-in.use-password",
-    defaultMessage: "或使用密码",
+    defaultMessage: "Or use a password",
   },
 });
 
@@ -236,7 +236,6 @@ async function beginPasswordSignIn() {
 }
 
 const twoFactorCode = ref(null);
-
 async function begin2FASignIn() {
   startLoading();
   try {
@@ -263,7 +262,7 @@ async function begin2FASignIn() {
 
 async function finishSignIn(token) {
   if (route.query.launcher) {
-    await navigateTo(`https://launcher-files.modrinth.com/?code=${token}`, {external: true});
+    await navigateTo(`https://launcher-files.modrinth.com/?code=${token}`, { external: true });
     return;
   }
 

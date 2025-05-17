@@ -2,26 +2,26 @@
   <div class="normal-page">
     <div class="normal-page__sidebar">
       <aside class="universal-card">
-        <h1>仪表盘</h1>
+        <h1>Dashboard</h1>
         <NavStack>
-          <NavStackItem link="/dashboard" label="概览">
+          <NavStackItem link="/dashboard" label="Overview">
             <DashboardIcon aria-hidden="true" />
           </NavStackItem>
-          <NavStackItem link="/dashboard/notifications" label="通知">
+          <NavStackItem link="/dashboard/notifications" label="Notifications">
             <NotificationsIcon aria-hidden="true" />
           </NavStackItem>
-          <NavStackItem link="/dashboard/reports" label="处理中举报">
+          <NavStackItem link="/dashboard/reports" label="Active reports">
             <ReportIcon aria-hidden="true" />
           </NavStackItem>
-          <NavStackItem link="/dashboard/analytics" label="数据分析">
+          <NavStackItem link="/dashboard/analytics" label="Analytics">
             <ChartIcon aria-hidden="true" />
           </NavStackItem>
 
-          <h3>管理</h3>
-          <NavStackItem v-if="true" link="/dashboard/projects" label="资源">
+          <h3>Manage</h3>
+          <NavStackItem v-if="true" link="/dashboard/projects" label="Projects">
             <ListIcon aria-hidden="true" />
           </NavStackItem>
-          <NavStackItem v-if="true" link="/dashboard/organizations" label="组织">
+          <NavStackItem v-if="true" link="/dashboard/organizations" label="Organizations">
             <OrganizationIcon aria-hidden="true" />
           </NavStackItem>
           <NavStackItem
@@ -30,7 +30,7 @@
           >
             <LibraryIcon aria-hidden="true" />
           </NavStackItem>
-          <NavStackItem link="/dashboard/revenue" label="收益">
+          <NavStackItem link="/dashboard/revenue" label="Revenue">
             <CurrencyIcon aria-hidden="true" />
           </NavStackItem>
         </NavStack>

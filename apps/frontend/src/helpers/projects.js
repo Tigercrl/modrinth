@@ -235,15 +235,15 @@ function groupConsecutiveIndices(versions, referenceList) {
 function validateRange(range) {
   switch (range) {
     case "rd-132211–b1.8.1":
-      return "所有远古版本";
+      return "All legacy versions";
     case "a1.0.4–b1.8.1":
-      return "所有 Alpha 和 Beta 版本";
+      return "All alpha and beta versions";
     case "a1.0.4–a1.2.6":
-      return "所有 Alpha 版本";
+      return "All alpha versions";
     case "b1.0–b1.8.1":
-      return "所有 Beta 版本";
+      return "All beta versions";
     case "rd-132211–inf20100618":
-      return "所有 Pre-Alpha 版本";
+      return "All pre-alpha versions";
   }
   const splitRange = range.split("–");
   if (splitRange && splitRange[0] === splitRange[1]) {

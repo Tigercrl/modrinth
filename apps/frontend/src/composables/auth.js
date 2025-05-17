@@ -131,7 +131,7 @@ export const removeAuthProvider = async (provider) => {
     const data = useNuxtApp();
     data.$notify({
       group: "main",
-      title: "发生错误",
+      title: "An error occurred",
       text: err.data.description,
       type: "error",
     });

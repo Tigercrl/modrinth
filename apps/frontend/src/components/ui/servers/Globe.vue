@@ -51,11 +51,11 @@ const showLabels = ref(false);
 
 const locations = ref([
   // Active locations
-  { name: "纽约", lat: 40.7128, lng: -74.006, active: true, clicked: false },
-  { name: "洛杉矶", lat: 34.0522, lng: -118.2437, active: true, clicked: false },
-  { name: "迈阿密", lat: 25.7617, lng: -80.1918, active: true, clicked: false },
-  { name: "斯波坎", lat: 47.667309, lng: -117.411922, active: true, clicked: false },
-  { name: "达拉斯", lat: 32.78372, lng: -96.7947, active: true, clicked: false },
+  { name: "New York", lat: 40.7128, lng: -74.006, active: true, clicked: false },
+  { name: "Los Angeles", lat: 34.0522, lng: -118.2437, active: true, clicked: false },
+  { name: "Miami", lat: 25.7617, lng: -80.1918, active: true, clicked: false },
+  { name: "Spokane", lat: 47.667309, lng: -117.411922, active: true, clicked: false },
+  { name: "Dallas", lat: 32.78372, lng: -96.7947, active: true, clicked: false },
   // Future Locations
   // { name: "London", lat: 51.5074, lng: -0.1278, active: false, clicked: false },
   // { name: "Frankfurt", lat: 50.1109, lng: 8.6821, active: false, clicked: false },

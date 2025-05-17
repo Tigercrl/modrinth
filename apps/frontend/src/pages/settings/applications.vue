@@ -376,7 +376,7 @@ async function createApp() {
   } catch (err) {
     data.$notify({
       group: "main",
-      title: "发生错误",
+      title: "An error occurred",
       text: err.data ? err.data.description : err,
       type: "error",
     });
@@ -445,7 +445,7 @@ async function editApp() {
   } catch (err) {
     data.$notify({
       group: "main",
-      title: "发生错误",
+      title: "An error occurred",
       text: err.data ? err.data.description : err,
       type: "error",
     });
@@ -469,7 +469,7 @@ async function removeApp() {
   } catch (err) {
     data.$notify({
       group: "main",
-      title: "发生错误",
+      title: "An error occurred",
       text: err.data ? err.data.description : err,
       type: "error",
     });

@@ -3,11 +3,13 @@
     <section class="card">
       <h2 class="text-2xl">{{ formatMessage(messages.title) }}</h2>
       <p class="mb-4">
-        您的个人资料信息可在 Modrinth 或通过
-        <a href="https://docs.modrinth.com/" target="_blank" class="text-link">
-          Modrinth API
-        </a>
-        被公开访问。
+        <IntlFormatted :message-id="messages.description">
+          <template #docs-link="{ children }">
+            <a href="https://docs.modrinth.com/" target="_blank" class="text-link">
+              <component :is="() => children" />
+            </a>
+          </template>
+        </IntlFormatted>
       </p>
       <label>
         <span class="label__title">{{ formatMessage(messages.profilePicture) }}</span>
@@ -92,7 +94,7 @@ import { UserIcon, SaveIcon, UploadIcon, UndoIcon, XIcon, TrashIcon } from "@mod
 import { Avatar, FileInput, Button, commonMessages } from "@modrinth/ui";
 
 useHead({
-  title: "个人资料设置 - Modrinth",
+  title: "Profile settings - Modrinth",
 });
 
 definePageMeta({
@@ -104,36 +106,36 @@ const { formatMessage } = useVIntl();
 const messages = defineMessages({
   title: {
     id: "settings.profile.profile-info",
-    defaultMessage: "个人信息",
+    defaultMessage: "Profile information",
   },
   description: {
     id: "settings.profile.description",
     defaultMessage:
-      "您的个人资料信息可在 Modrinth 或通过 <docs-link>Modrinth API</docs-link> 被公开访问。",
+      "Your profile information is publicly viewable on Modrinth and through the <docs-link>Modrinth API</docs-link>.",
   },
   profilePicture: {
     id: "settings.profile.profile-picture.title",
-    defaultMessage: "头像",
+    defaultMessage: "Profile picture",
   },
   profilePictureReset: {
     id: "settings.profile.profile-picture.reset",
-    defaultMessage: "重置",
+    defaultMessage: "Reset",
   },
   usernameTitle: {
     id: "settings.profile.username.title",
-    defaultMessage: "用户名",
+    defaultMessage: "Username",
   },
   usernameDescription: {
     id: "settings.profile.username.description",
-    defaultMessage: "不区分大小写的唯一名称，用于辨识您的身份。",
+    defaultMessage: "A unique case-insensitive name to identify your profile.",
   },
   bioTitle: {
     id: "settings.profile.bio.title",
-    defaultMessage: "个人简介",
+    defaultMessage: "Bio",
   },
   bioDescription: {
     id: "settings.profile.bio.description",
-    defaultMessage: "一个简短描述，向大家介绍您自己。",
+    defaultMessage: "A short description to tell everyone a little bit about you.",
   },
 });
 
@@ -221,7 +223,7 @@ async function saveChanges() {
   } catch (err) {
     addNotification({
       group: "main",
-      title: "发生错误",
+      title: "An error occurred",
       text: err
         ? err.data
           ? err.data.description

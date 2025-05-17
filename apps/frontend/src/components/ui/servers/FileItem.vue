@@ -216,12 +216,28 @@ const subText = computed(() => {
 
 const formattedModifiedDate = computed(() => {
   const date = new Date(props.modified * 1000);
-  return `${date.toLocaleDateString("zh-CN")}, ${date.toLocaleTimeString("zh-CN")}`;
+  return `${date.toLocaleDateString("en-US", {
+    month: "2-digit",
+    day: "2-digit",
+    year: "2-digit",
+  })}, ${date.toLocaleTimeString("en-US", {
+    hour: "numeric",
+    minute: "numeric",
+    hour12: true,
+  })}`;
 });
 
 const formattedCreationDate = computed(() => {
   const date = new Date(props.created * 1000);
-  return `${date.toLocaleDateString("zh-CN")}, ${date.toLocaleTimeString("zh-CN")}`;
+  return `${date.toLocaleDateString("en-US", {
+    month: "2-digit",
+    day: "2-digit",
+    year: "2-digit",
+  })}, ${date.toLocaleTimeString("en-US", {
+    hour: "numeric",
+    minute: "numeric",
+    hour12: true,
+  })}`;
 });
 
 const isEditableFile = computed(() => {

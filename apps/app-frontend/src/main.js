@@ -5,8 +5,8 @@ import { createPinia } from 'pinia'
 import FloatingVue from 'floating-vue'
 import 'floating-vue/dist/style.css'
 import { createPlugin } from '@vintl/vintl/plugin'
-import * as Sentry from '@sentry/vue'
 import { VueScanPlugin } from '@taijased/vue-render-tracker'
+import dayjs from "dayjs";
 
 const VIntlPlugin = createPlugin({
   controllerOpts: {

@@ -20,9 +20,6 @@
       }
     }
   },
-  "build": {
-    "features": ["updater"]
-  },
   "app": {
     "security": {
       "capabilities": ["ads", "core", "plugins"]

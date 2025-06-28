@@ -1,6 +1,0 @@
-{
-  "identifier": "updater",
-  "description": "",
-  "local": true,
-  "windows": ["main"]
-}

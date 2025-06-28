@@ -1,6 +1,5 @@
 {
   "bundle": {
-    "createUpdaterArtifacts": "v1Compatible",
     "windows": {
       "signCommand": {
         "cmd": "jsign",

@@ -438,7 +438,7 @@ struct LegacySettings {
 }
 
 fn default_settings_dir() -> Option<PathBuf> {
-    Some(dirs::config_dir()?.join("com.modrinth.theseus"))
+    Some(dirs::config_dir()?.join("com.modrinth.theseus.offline"))
 }
 
 #[derive(Debug, Clone, Copy, Deserialize)]

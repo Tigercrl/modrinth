@@ -20,6 +20,29 @@
     </div>
     <DropdownIcon class="w-5 h-5 shrink-0" />
   </div>
+
+  <Modal ref="chooseAccountTypeModal" header="请选择账户类型">
+    <div class="choose-account-modal">
+      <div class="account-types">
+        <Button @click="login()">
+          <SSOMicrosoftIcon />微软账户
+        </Button>
+        <Button @click="$refs.chooseAccountTypeModal.hide(); $refs.chooseOfflineUsernameModal.show()">
+          <ClientIcon />离线账户
+        </Button>
+      </div>
+    </div>
+  </Modal>
+
+  <Modal ref="chooseOfflineUsernameModal" header="请为离线账户设置用户名">
+    <div class="choose-offline-username-modal">
+      <input type="text" placeholder="用户名" v-model="offlineUsername" />
+      <Button icon-only color="primary" @click="offlineLogin(offlineUsername)">
+        <LogInIcon />
+      </Button>
+    </div>
+  </Modal>
+
   <transition name="fade">
     <Card
       v-if="showCard || mode === 'isolated'"
@@ -39,7 +62,8 @@
       </div>
       <div v-else class="logged-out account">
         <h4>未登录</h4>
-        <Button v-tooltip="'登录'" icon-only color="primary" @click="login()">
+        <Button v-tooltip="'登录'" icon-only color="primary"
+            @click="$refs.chooseAccountTypeModal.show()">
           <LogInIcon />
         </Button>
       </div>
@@ -54,7 +78,7 @@
           </Button>
         </div>
       </div>
-      <Button v-if="accounts.length > 0" @click="login()">
+      <Button v-if="accounts.length > 0" @click="$refs.chooseAccountTypeModal.show()">
         <PlusIcon />
         添加账户
       </Button>
@@ -63,14 +87,15 @@
 </template>
 
 <script setup>
-import { DropdownIcon, PlusIcon, TrashIcon, LogInIcon } from '@modrinth/assets'
-import { Avatar, Button, Card } from '@modrinth/ui'
+import { DropdownIcon, PlusIcon, TrashIcon, LogInIcon, SSOMicrosoftIcon, ClientIcon } from '@modrinth/assets'
+import { Avatar, Button, Card, Modal } from '@modrinth/ui'
 import { ref, computed, onMounted, onBeforeUnmount, onUnmounted } from 'vue'
 import {
   users,
   remove_user,
   set_default_user,
   login as login_flow,
+  offline_login,
   get_default_user,
 } from '@/helpers/auth'
 import { handleError } from '@/store/state.js'
@@ -88,8 +113,12 @@ defineProps({
 
 const emit = defineEmits(['change'])
 
+const chooseAccountTypeModal = ref(null)
+const chooseOfflineUsernameModal = ref(null)
+
 const accounts = ref({})
 const defaultUser = ref()
+const offlineUsername = ref('')
 
 async function refreshValues() {
   defaultUser.value = await get_default_user().catch(handleError)
@@ -116,6 +145,22 @@ async function setAccount(account) {
 
 async function login() {
   const loggedIn = await login_flow().catch(handleSevereError)
+
+  if (loggedIn) {
+    await setAccount(loggedIn)
+    await refreshValues()
+  }
+
+  mixpanel_track('AccountLogIn')
+}
+
+async function offlineLogin(username) {
+  if (username.length == 0) {
+    return
+  }
+
+  chooseOfflineUsernameModal.value.hide()
+  const loggedIn = await offline_login(username).catch(handleSevereError)
 
   if (loggedIn) {
     await setAccount(loggedIn)
@@ -405,5 +450,28 @@ onUnmounted(() => {
     color: var(--color-contrast);
     padding: 0.5rem 1rem;
   }
+}
+
+.choose-account-modal {
+  display: flex;
+  flex-direction: column;
+  padding: 2rem 0.1rem;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  gap: 1.5rem;
+}
+
+.account-types {
+  display: flex;
+  gap: 1rem;
+}
+
+.choose-offline-username-modal {
+  display: flex;
+  padding: 2rem;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
 }
 </style>

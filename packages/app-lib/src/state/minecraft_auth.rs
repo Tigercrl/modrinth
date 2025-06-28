@@ -141,6 +141,24 @@ pub async fn login_begin(
 }
 
 #[tracing::instrument]
+pub async fn offline_login(
+    username: &str,
+    exec: impl sqlx::Executor<'_, Database = sqlx::Sqlite> + Copy,
+) -> crate::Result<Credentials> {
+    let credentials = Credentials {
+        id: Uuid::new_v4(),
+        username: username.to_owned(),
+        access_token: String::new(),
+        refresh_token: String::new(),
+        expires: DateTime::<Utc>::MAX_UTC,
+        active: true,
+    };
+
+    credentials.upsert(exec).await?;
+    Ok(credentials)
+}
+
+#[tracing::instrument]
 pub async fn login_finish(
     code: &str,
     flow: MinecraftLoginFlow,

@@ -12,8 +12,15 @@ pub fn init<R: Runtime>() -> TauriPlugin<R> {
             get_default_user,
             set_default_user,
             get_users,
+            offline_auth_login,
         ])
         .build()
+}
+
+#[tauri::command]
+pub async fn offline_auth_login(username: &str) -> Result<Option<Credentials>> {
+    let creds = minecraft_auth::offline_login(username).await?;
+    Ok(Some(creds))
 }
 
 /// Authenticate a user with Hydra - part 1

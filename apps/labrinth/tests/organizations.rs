@@ -10,6 +10,7 @@ use crate::common::{
     },
 };
 use actix_http::StatusCode;
+use ariadne::ids::UserId;
 use common::{
     api_v3::ApiV3,
     database::{FRIEND_USER_ID, FRIEND_USER_PAT, USER_USER_PAT},
@@ -18,13 +19,10 @@ use common::{
     },
     permissions::{PermissionsTest, PermissionsTestContext},
 };
-use labrinth::models::{
-    teams::{OrganizationPermissions, ProjectPermissions},
-    users::UserId,
-};
+use labrinth::models::teams::{OrganizationPermissions, ProjectPermissions};
 use serde_json::json;
 
-mod common;
+pub mod common;
 
 #[actix_rt::test]
 async fn create_organization() {
@@ -585,9 +583,7 @@ async fn add_remove_organization_project_ownership_to_user() {
                 .await;
             assert_eq!(members.len(), 1);
             assert_eq!(members[0].user.id.to_string(), FRIEND_USER_ID);
-            let user_member =
-                members.iter().filter(|m| m.is_owner).collect::<Vec<_>>();
-            assert_eq!(user_member.len(), 0);
+            assert_eq!(members.iter().filter(|m| m.is_owner).count(), 0);
 
             // Beta project should have:
             // - No members
@@ -838,9 +834,7 @@ async fn delete_organization_means_all_projects_to_org_owner() {
                 .api
                 .get_team_members_deserialized(alpha_team_id, USER_USER_PAT)
                 .await;
-            let user_member =
-                members.iter().filter(|m| m.is_owner).collect::<Vec<_>>();
-            assert_eq!(user_member.len(), 0);
+            assert_eq!(members.iter().filter(|m| m.is_owner).count(), 0);
 
             // Transfer ownership of zeta organization to FRIEND
             let resp = test_env
@@ -858,9 +852,7 @@ async fn delete_organization_means_all_projects_to_org_owner() {
                 .api
                 .get_team_members_deserialized(alpha_team_id, USER_USER_PAT)
                 .await;
-            let user_member =
-                members.iter().filter(|m| m.is_owner).collect::<Vec<_>>();
-            assert_eq!(user_member.len(), 0);
+            assert_eq!(members.iter().filter(|m| m.is_owner).count(), 0);
 
             // Delete organization
             let resp = test_env

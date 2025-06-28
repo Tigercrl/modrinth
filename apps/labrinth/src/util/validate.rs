@@ -1,4 +1,4 @@
-use std::sync::LazyLock;
+use std::{fmt::Write, sync::LazyLock};
 
 use itertools::Itertools;
 use regex::Regex;
@@ -44,15 +44,17 @@ pub fn validation_errors_to_string(
                 ValidationErrorsKind::Field(errors) => {
                     if let Some(error) = errors.first() {
                         if let Some(adder) = adder {
-                            output.push_str(&format!(
-                                "Field {} {} failed validation with error: {}",
-                                field, adder, error.code
-                            ));
+                            write!(
+                                &mut output,
+                                "Field {field} {adder} failed validation with error: {}",
+                                error.code
+                            ).unwrap();
                         } else {
-                            output.push_str(&format!(
-                                "Field {} failed validation with error: {}",
-                                field, error.code
-                            ));
+                            write!(
+                                &mut output,
+                                "Field {field} failed validation with error: {}",
+                                error.code
+                            ).unwrap();
                         }
                     }
 
@@ -73,10 +75,8 @@ pub fn validate_deps(
         .duplicates_by(|x| {
             format!(
                 "{}-{}-{}",
-                x.version_id
-                    .unwrap_or(crate::models::projects::VersionId(0)),
-                x.project_id
-                    .unwrap_or(crate::models::projects::ProjectId(0)),
+                x.version_id.unwrap_or(crate::models::ids::VersionId(0)),
+                x.project_id.unwrap_or(crate::models::ids::ProjectId(0)),
                 x.file_name.as_deref().unwrap_or_default()
             )
         })

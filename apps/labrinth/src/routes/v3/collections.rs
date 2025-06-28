@@ -4,7 +4,7 @@ use crate::database::models::{
     collection_item, generate_collection_id, project_item,
 };
 use crate::database::redis::RedisPool;
-use crate::file_hosting::FileHost;
+use crate::file_hosting::{FileHost, FileHostPublicity};
 use crate::models::collections::{Collection, CollectionStatus};
 use crate::models::ids::{CollectionId, ProjectId};
 use crate::models::pats::Scopes;
@@ -12,7 +12,7 @@ use crate::queue::session::AuthQueue;
 use crate::routes::ApiError;
 use crate::routes::v3::project_creation::CreateError;
 use crate::util::img::delete_old_images;
-use crate::util::routes::read_from_payload;
+use crate::util::routes::read_limited_from_payload;
 use crate::util::validate::validation_errors_to_string;
 use crate::{database, models};
 use actix_web::web::Data;
@@ -71,7 +71,7 @@ pub async fn collection_create(
         &**client,
         &redis,
         &session_queue,
-        Some(&[Scopes::COLLECTION_CREATE]),
+        Scopes::COLLECTION_CREATE,
     )
     .await?
     .1;
@@ -85,7 +85,7 @@ pub async fn collection_create(
     let collection_id: CollectionId =
         generate_collection_id(&mut transaction).await?.into();
 
-    let initial_project_ids = project_item::Project::get_many(
+    let initial_project_ids = project_item::DBProject::get_many(
         &collection_create_data.projects,
         &mut *transaction,
         &redis,
@@ -144,19 +144,19 @@ pub async fn collections_get(
     let ids = ids
         .into_iter()
         .map(|x| {
-            parse_base62(x).map(|x| database::models::CollectionId(x as i64))
+            parse_base62(x).map(|x| database::models::DBCollectionId(x as i64))
         })
         .collect::<Result<Vec<_>, _>>()?;
 
     let collections_data =
-        database::models::Collection::get_many(&ids, &**pool, &redis).await?;
+        database::models::DBCollection::get_many(&ids, &**pool, &redis).await?;
 
     let user_option = get_user_from_headers(
         &req,
         &**pool,
         &redis,
         &session_queue,
-        Some(&[Scopes::COLLECTION_READ]),
+        Scopes::COLLECTION_READ,
     )
     .await
     .map(|x| x.1)
@@ -177,15 +177,15 @@ pub async fn collection_get(
 ) -> Result<HttpResponse, ApiError> {
     let string = info.into_inner().0;
 
-    let id = database::models::CollectionId(parse_base62(&string)? as i64);
+    let id = database::models::DBCollectionId(parse_base62(&string)? as i64);
     let collection_data =
-        database::models::Collection::get(id, &**pool, &redis).await?;
+        database::models::DBCollection::get(id, &**pool, &redis).await?;
     let user_option = get_user_from_headers(
         &req,
         &**pool,
         &redis,
         &session_queue,
-        Some(&[Scopes::COLLECTION_READ]),
+        Scopes::COLLECTION_READ,
     )
     .await
     .map(|x| x.1)
@@ -231,7 +231,7 @@ pub async fn collection_edit(
         &**pool,
         &redis,
         &session_queue,
-        Some(&[Scopes::COLLECTION_WRITE]),
+        Scopes::COLLECTION_WRITE,
     )
     .await?
     .1;
@@ -241,8 +241,9 @@ pub async fn collection_edit(
     })?;
 
     let string = info.into_inner().0;
-    let id = database::models::CollectionId(parse_base62(&string)? as i64);
-    let result = database::models::Collection::get(id, &**pool, &redis).await?;
+    let id = database::models::DBCollectionId(parse_base62(&string)? as i64);
+    let result =
+        database::models::DBCollection::get(id, &**pool, &redis).await?;
 
     if let Some(collection_item) = result {
         if !can_modify_collection(&collection_item, &user) {
@@ -261,7 +262,7 @@ pub async fn collection_edit(
                 WHERE (id = $2)
                 ",
                 name.trim(),
-                id as database::models::ids::CollectionId,
+                id as database::models::ids::DBCollectionId,
             )
             .execute(&mut *transaction)
             .await?;
@@ -275,7 +276,7 @@ pub async fn collection_edit(
                 WHERE (id = $2)
                 ",
                 description.as_ref(),
-                id as database::models::ids::CollectionId,
+                id as database::models::ids::DBCollectionId,
             )
             .execute(&mut *transaction)
             .await?;
@@ -298,7 +299,7 @@ pub async fn collection_edit(
                 WHERE (id = $2)
                 ",
                 status.to_string(),
-                id as database::models::ids::CollectionId,
+                id as database::models::ids::DBCollectionId,
             )
             .execute(&mut *transaction)
             .await?;
@@ -311,7 +312,7 @@ pub async fn collection_edit(
                 DELETE FROM collections_mods
                 WHERE collection_id = $1
                 ",
-                collection_item.id as database::models::ids::CollectionId,
+                collection_item.id as database::models::ids::DBCollectionId,
             )
             .execute(&mut *transaction)
             .await?;
@@ -322,7 +323,7 @@ pub async fn collection_edit(
                 .collect_vec();
             let mut validated_project_ids = Vec::new();
             for project_id in new_project_ids {
-                let project = database::models::Project::get(
+                let project = database::models::DBProject::get(
                     project_id, &**pool, &redis,
                 )
                 .await?
@@ -352,14 +353,14 @@ pub async fn collection_edit(
                 SET updated = NOW()
                 WHERE id = $1
                 ",
-                collection_item.id as database::models::ids::CollectionId,
+                collection_item.id as database::models::ids::DBCollectionId,
             )
             .execute(&mut *transaction)
             .await?;
         }
 
         transaction.commit().await?;
-        database::models::Collection::clear_cache(collection_item.id, &redis)
+        database::models::DBCollection::clear_cache(collection_item.id, &redis)
             .await?;
 
         Ok(HttpResponse::NoContent().body(""))
@@ -389,15 +390,15 @@ pub async fn collection_icon_edit(
         &**pool,
         &redis,
         &session_queue,
-        Some(&[Scopes::COLLECTION_WRITE]),
+        Scopes::COLLECTION_WRITE,
     )
     .await?
     .1;
 
     let string = info.into_inner().0;
-    let id = database::models::CollectionId(parse_base62(&string)? as i64);
+    let id = database::models::DBCollectionId(parse_base62(&string)? as i64);
     let collection_item =
-        database::models::Collection::get(id, &**pool, &redis)
+        database::models::DBCollection::get(id, &**pool, &redis)
             .await?
             .ok_or_else(|| {
                 ApiError::InvalidInput(
@@ -412,11 +413,12 @@ pub async fn collection_icon_edit(
     delete_old_images(
         collection_item.icon_url,
         collection_item.raw_icon_url,
+        FileHostPublicity::Public,
         &***file_host,
     )
     .await?;
 
-    let bytes = read_from_payload(
+    let bytes = read_limited_from_payload(
         &mut payload,
         262144,
         "Icons must be smaller than 256KiB",
@@ -426,6 +428,7 @@ pub async fn collection_icon_edit(
     let collection_id: CollectionId = collection_item.id.into();
     let upload_result = crate::util::img::upload_image_optimized(
         &format!("data/{collection_id}"),
+        FileHostPublicity::Public,
         bytes.freeze(),
         &ext.ext,
         Some(96),
@@ -445,13 +448,13 @@ pub async fn collection_icon_edit(
         upload_result.url,
         upload_result.raw_url,
         upload_result.color.map(|x| x as i32),
-        collection_item.id as database::models::ids::CollectionId,
+        collection_item.id as database::models::ids::DBCollectionId,
     )
     .execute(&mut *transaction)
     .await?;
 
     transaction.commit().await?;
-    database::models::Collection::clear_cache(collection_item.id, &redis)
+    database::models::DBCollection::clear_cache(collection_item.id, &redis)
         .await?;
 
     Ok(HttpResponse::NoContent().body(""))
@@ -470,15 +473,15 @@ pub async fn delete_collection_icon(
         &**pool,
         &redis,
         &session_queue,
-        Some(&[Scopes::COLLECTION_WRITE]),
+        Scopes::COLLECTION_WRITE,
     )
     .await?
     .1;
 
     let string = info.into_inner().0;
-    let id = database::models::CollectionId(parse_base62(&string)? as i64);
+    let id = database::models::DBCollectionId(parse_base62(&string)? as i64);
     let collection_item =
-        database::models::Collection::get(id, &**pool, &redis)
+        database::models::DBCollection::get(id, &**pool, &redis)
             .await?
             .ok_or_else(|| {
                 ApiError::InvalidInput(
@@ -492,6 +495,7 @@ pub async fn delete_collection_icon(
     delete_old_images(
         collection_item.icon_url,
         collection_item.raw_icon_url,
+        FileHostPublicity::Public,
         &***file_host,
     )
     .await?;
@@ -503,13 +507,13 @@ pub async fn delete_collection_icon(
         SET icon_url = NULL, raw_icon_url = NULL, color = NULL
         WHERE (id = $1)
         ",
-        collection_item.id as database::models::ids::CollectionId,
+        collection_item.id as database::models::ids::DBCollectionId,
     )
     .execute(&mut *transaction)
     .await?;
 
     transaction.commit().await?;
-    database::models::Collection::clear_cache(collection_item.id, &redis)
+    database::models::DBCollection::clear_cache(collection_item.id, &redis)
         .await?;
 
     Ok(HttpResponse::NoContent().body(""))
@@ -527,14 +531,14 @@ pub async fn collection_delete(
         &**pool,
         &redis,
         &session_queue,
-        Some(&[Scopes::COLLECTION_DELETE]),
+        Scopes::COLLECTION_DELETE,
     )
     .await?
     .1;
 
     let string = info.into_inner().0;
-    let id = database::models::CollectionId(parse_base62(&string)? as i64);
-    let collection = database::models::Collection::get(id, &**pool, &redis)
+    let id = database::models::DBCollectionId(parse_base62(&string)? as i64);
+    let collection = database::models::DBCollection::get(id, &**pool, &redis)
         .await?
         .ok_or_else(|| {
             ApiError::InvalidInput(
@@ -546,7 +550,7 @@ pub async fn collection_delete(
     }
     let mut transaction = pool.begin().await?;
 
-    let result = database::models::Collection::remove(
+    let result = database::models::DBCollection::remove(
         collection.id,
         &mut transaction,
         &redis,
@@ -554,7 +558,7 @@ pub async fn collection_delete(
     .await?;
 
     transaction.commit().await?;
-    database::models::Collection::clear_cache(collection.id, &redis).await?;
+    database::models::DBCollection::clear_cache(collection.id, &redis).await?;
 
     if result.is_some() {
         Ok(HttpResponse::NoContent().body(""))
@@ -564,7 +568,7 @@ pub async fn collection_delete(
 }
 
 fn can_modify_collection(
-    collection: &database::models::Collection,
+    collection: &database::models::DBCollection,
     user: &models::users::User,
 ) -> bool {
     collection.user_id == user.id.into() || user.role.is_mod()

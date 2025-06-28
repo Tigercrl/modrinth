@@ -296,10 +296,23 @@ export const formatCategory = (name) => {
       return '土豆服务器'
     case 'screenshot':
       return '别人的世界'
+    case 'bta-babric':
+      return 'BTA (Babric)'
+    case 'legacy-fabric':
+      return 'Legacy Fabric'
+    case 'java-agent':
+      return 'Java Agent'
+    case 'nilloader':
+      return 'NilLoader'
+    case 'mrpack':
+      return '整合包'
+    case 'minecraft':
+      return '资源包'
+    case 'vanilla':
+      return '原版着色器'
     default:
       break;
   }
-
   return capitalizeString(name)
 }
 
@@ -485,5 +498,19 @@ export const getArrayOrString = (x: string[] | string): string[] => {
     return [x]
   } else {
     return x
+  }
+}
+
+export function getPingLevel(ping: number) {
+  if (ping < 120) {
+    return 5
+  } else if (ping < 200) {
+    return 4
+  } else if (ping < 300) {
+    return 3
+  } else if (ping < 400) {
+    return 2
+  } else {
+    return 1
   }
 }

@@ -160,8 +160,11 @@ pub async fn paypal_webhook(
 
                 transaction.commit().await?;
 
-                crate::database::models::user_item::User::clear_caches(
-                    &[(crate::database::models::UserId(result.user_id), None)],
+                crate::database::models::user_item::DBUser::clear_caches(
+                    &[(
+                        crate::database::models::DBUserId(result.user_id),
+                        None,
+                    )],
                     &redis,
                 )
                 .await?;
@@ -267,8 +270,11 @@ pub async fn tremendous_webhook(
 
                 transaction.commit().await?;
 
-                crate::database::models::user_item::User::clear_caches(
-                    &[(crate::database::models::UserId(result.user_id), None)],
+                crate::database::models::user_item::DBUser::clear_caches(
+                    &[(
+                        crate::database::models::DBUserId(result.user_id),
+                        None,
+                    )],
                     &redis,
                 )
                 .await?;
@@ -307,18 +313,18 @@ pub async fn user_payouts(
         &**pool,
         &redis,
         &session_queue,
-        Some(&[Scopes::PAYOUTS_READ]),
+        Scopes::PAYOUTS_READ,
     )
     .await?
     .1;
 
     let payout_ids =
-        crate::database::models::payout_item::Payout::get_all_for_user(
+        crate::database::models::payout_item::DBPayout::get_all_for_user(
             user.id.into(),
             &**pool,
         )
         .await?;
-    let payouts = crate::database::models::payout_item::Payout::get_many(
+    let payouts = crate::database::models::payout_item::DBPayout::get_many(
         &payout_ids,
         &**pool,
     )
@@ -471,7 +477,7 @@ pub async fn create_payout(
             }
 
             let mut payout_item =
-                crate::database::models::payout_item::Payout {
+                crate::database::models::payout_item::DBPayout {
                     id: payout_id,
                     user_id: user.id,
                     created: Utc::now(),
@@ -544,7 +550,7 @@ pub async fn create_payout(
             if let Some(email) = user.email {
                 if user.email_verified {
                     let mut payout_item =
-                        crate::database::models::payout_item::Payout {
+                        crate::database::models::payout_item::DBPayout {
                             id: payout_id,
                             user_id: user.id,
                             created: Utc::now(),
@@ -627,7 +633,7 @@ pub async fn create_payout(
     payout_item.insert(&mut transaction).await?;
 
     transaction.commit().await?;
-    crate::database::models::User::clear_caches(&[(user.id, None)], &redis)
+    crate::database::models::DBUser::clear_caches(&[(user.id, None)], &redis)
         .await?;
 
     Ok(HttpResponse::NoContent().finish())
@@ -647,14 +653,14 @@ pub async fn cancel_payout(
         &**pool,
         &redis,
         &session_queue,
-        Some(&[Scopes::PAYOUTS_WRITE]),
+        Scopes::PAYOUTS_WRITE,
     )
     .await?
     .1;
 
     let id = info.into_inner().0;
     let payout =
-        crate::database::models::payout_item::Payout::get(id.into(), &**pool)
+        crate::database::models::payout_item::DBPayout::get(id.into(), &**pool)
             .await?;
 
     if let Some(payout) = payout {
@@ -777,7 +783,7 @@ pub async fn get_balance(
         &**pool,
         &redis,
         &session_queue,
-        Some(&[Scopes::PAYOUTS_READ]),
+        Scopes::PAYOUTS_READ,
     )
     .await?
     .1;
@@ -788,7 +794,7 @@ pub async fn get_balance(
 }
 
 async fn get_user_balance(
-    user_id: crate::database::models::ids::UserId,
+    user_id: crate::database::models::ids::DBUserId,
     pool: &PgPool,
 ) -> Result<UserBalance, sqlx::Error> {
     let payouts = sqlx::query!(
@@ -824,14 +830,13 @@ async fn get_user_balance(
     .fetch_optional(pool)
     .await?;
 
-    let (withdrawn, fees) = withdrawn
-        .map(|x| {
+    let (withdrawn, fees) =
+        withdrawn.map_or((Decimal::ZERO, Decimal::ZERO), |x| {
             (
                 x.amount.unwrap_or(Decimal::ZERO),
                 x.fee.unwrap_or(Decimal::ZERO),
             )
-        })
-        .unwrap_or((Decimal::ZERO, Decimal::ZERO));
+        });
 
     Ok(UserBalance {
         available: available.round_dp(16)

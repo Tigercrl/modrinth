@@ -1,9 +1,10 @@
 use crate::auth::email::send_email;
 use crate::auth::validate::get_user_record_from_bearer_token;
 use crate::auth::{AuthProvider, AuthenticationError, get_user_from_headers};
-use crate::database::models::flow_item::Flow;
+use crate::database::models::DBUser;
+use crate::database::models::flow_item::DBFlow;
 use crate::database::redis::RedisPool;
-use crate::file_hosting::FileHost;
+use crate::file_hosting::{FileHost, FileHostPublicity};
 use crate::models::pats::Scopes;
 use crate::models::users::{Badges, Role};
 use crate::queue::session::AuthQueue;
@@ -74,9 +75,9 @@ impl TempUser {
         client: &PgPool,
         file_host: &Arc<dyn FileHost + Send + Sync>,
         redis: &RedisPool,
-    ) -> Result<crate::database::models::UserId, AuthenticationError> {
+    ) -> Result<crate::database::models::DBUserId, AuthenticationError> {
         if let Some(email) = &self.email {
-            if crate::database::models::User::get_email(email, client)
+            if crate::database::models::DBUser::get_by_email(email, client)
                 .await?
                 .is_some()
             {
@@ -101,7 +102,7 @@ impl TempUser {
                 }
             );
 
-            let new_id = crate::database::models::User::get(
+            let new_id = crate::database::models::DBUser::get(
                 &test_username,
                 client,
                 redis,
@@ -115,50 +116,49 @@ impl TempUser {
             }
         }
 
-        let (avatar_url, raw_avatar_url) =
-            if let Some(avatar_url) = self.avatar_url {
-                let res = reqwest::get(&avatar_url).await?;
-                let headers = res.headers().clone();
+        let (avatar_url, raw_avatar_url) = if let Some(avatar_url) =
+            self.avatar_url
+        {
+            let res = reqwest::get(&avatar_url).await?;
+            let headers = res.headers().clone();
 
-                let img_data = if let Some(content_type) = headers
-                    .get(reqwest::header::CONTENT_TYPE)
-                    .and_then(|ct| ct.to_str().ok())
-                {
-                    get_image_ext(content_type)
-                } else {
-                    avatar_url.rsplit('.').next()
-                };
+            let img_data = if let Some(content_type) = headers
+                .get(reqwest::header::CONTENT_TYPE)
+                .and_then(|ct| ct.to_str().ok())
+            {
+                get_image_ext(content_type)
+            } else {
+                avatar_url.rsplit('.').next()
+            };
 
-                if let Some(ext) = img_data {
-                    let bytes = res.bytes().await?;
+            if let Some(ext) = img_data {
+                let bytes = res.bytes().await?;
 
-                    let upload_result = upload_image_optimized(
-                        &format!(
-                            "user/{}",
-                            crate::models::users::UserId::from(user_id)
-                        ),
-                        bytes,
-                        ext,
-                        Some(96),
-                        Some(1.0),
-                        &**file_host,
-                    )
-                    .await;
+                let upload_result = upload_image_optimized(
+                    &format!("user/{}", ariadne::ids::UserId::from(user_id)),
+                    FileHostPublicity::Public,
+                    bytes,
+                    ext,
+                    Some(96),
+                    Some(1.0),
+                    &**file_host,
+                )
+                .await;
 
-                    if let Ok(upload_result) = upload_result {
-                        (Some(upload_result.url), Some(upload_result.raw_url))
-                    } else {
-                        (None, None)
-                    }
+                if let Ok(upload_result) = upload_result {
+                    (Some(upload_result.url), Some(upload_result.raw_url))
                 } else {
                     (None, None)
                 }
             } else {
                 (None, None)
-            };
+            }
+        } else {
+            (None, None)
+        };
 
         if let Some(username) = username {
-            crate::database::models::User {
+            crate::database::models::DBUser {
                 id: user_id,
                 github_id: if provider == AuthProvider::GitHub {
                     Some(
@@ -823,7 +823,7 @@ impl AuthProvider {
         &self,
         id: &str,
         executor: E,
-    ) -> Result<Option<crate::database::models::UserId>, AuthenticationError>
+    ) -> Result<Option<crate::database::models::DBUserId>, AuthenticationError>
     where
         E: sqlx::Executor<'a, Database = sqlx::Postgres>,
     {
@@ -837,7 +837,7 @@ impl AuthProvider {
                 .fetch_optional(executor)
                 .await?;
 
-                value.map(|x| crate::database::models::UserId(x.id))
+                value.map(|x| crate::database::models::DBUserId(x.id))
             }
             AuthProvider::Discord => {
                 let value = sqlx::query!(
@@ -848,7 +848,7 @@ impl AuthProvider {
                 .fetch_optional(executor)
                 .await?;
 
-                value.map(|x| crate::database::models::UserId(x.id))
+                value.map(|x| crate::database::models::DBUserId(x.id))
             }
             AuthProvider::Microsoft => {
                 let value = sqlx::query!(
@@ -858,7 +858,7 @@ impl AuthProvider {
                 .fetch_optional(executor)
                 .await?;
 
-                value.map(|x| crate::database::models::UserId(x.id))
+                value.map(|x| crate::database::models::DBUserId(x.id))
             }
             AuthProvider::GitLab => {
                 let value = sqlx::query!(
@@ -869,7 +869,7 @@ impl AuthProvider {
                 .fetch_optional(executor)
                 .await?;
 
-                value.map(|x| crate::database::models::UserId(x.id))
+                value.map(|x| crate::database::models::DBUserId(x.id))
             }
             AuthProvider::Google => {
                 let value = sqlx::query!(
@@ -879,7 +879,7 @@ impl AuthProvider {
                 .fetch_optional(executor)
                 .await?;
 
-                value.map(|x| crate::database::models::UserId(x.id))
+                value.map(|x| crate::database::models::DBUserId(x.id))
             }
             AuthProvider::Steam => {
                 let value = sqlx::query!(
@@ -890,7 +890,7 @@ impl AuthProvider {
                 .fetch_optional(executor)
                 .await?;
 
-                value.map(|x| crate::database::models::UserId(x.id))
+                value.map(|x| crate::database::models::DBUserId(x.id))
             }
             AuthProvider::PayPal => {
                 let value = sqlx::query!(
@@ -900,14 +900,14 @@ impl AuthProvider {
                 .fetch_optional(executor)
                 .await?;
 
-                value.map(|x| crate::database::models::UserId(x.id))
+                value.map(|x| crate::database::models::DBUserId(x.id))
             }
         })
     }
 
     pub async fn update_user_id(
         &self,
-        user_id: crate::database::models::UserId,
+        user_id: crate::database::models::DBUserId,
         id: Option<&str>,
         transaction: &mut sqlx::Transaction<'_, sqlx::Postgres>,
     ) -> Result<(), AuthenticationError> {
@@ -919,7 +919,7 @@ impl AuthProvider {
                     SET github_id = $2
                     WHERE (id = $1)
                     ",
-                    user_id as crate::database::models::UserId,
+                    user_id as crate::database::models::DBUserId,
                     id.and_then(|x| x.parse::<i64>().ok())
                 )
                 .execute(&mut **transaction)
@@ -932,7 +932,7 @@ impl AuthProvider {
                     SET discord_id = $2
                     WHERE (id = $1)
                     ",
-                    user_id as crate::database::models::UserId,
+                    user_id as crate::database::models::DBUserId,
                     id.and_then(|x| x.parse::<i64>().ok())
                 )
                 .execute(&mut **transaction)
@@ -945,7 +945,7 @@ impl AuthProvider {
                     SET microsoft_id = $2
                     WHERE (id = $1)
                     ",
-                    user_id as crate::database::models::UserId,
+                    user_id as crate::database::models::DBUserId,
                     id,
                 )
                 .execute(&mut **transaction)
@@ -958,7 +958,7 @@ impl AuthProvider {
                     SET gitlab_id = $2
                     WHERE (id = $1)
                     ",
-                    user_id as crate::database::models::UserId,
+                    user_id as crate::database::models::DBUserId,
                     id.and_then(|x| x.parse::<i64>().ok())
                 )
                 .execute(&mut **transaction)
@@ -971,7 +971,7 @@ impl AuthProvider {
                     SET google_id = $2
                     WHERE (id = $1)
                     ",
-                    user_id as crate::database::models::UserId,
+                    user_id as crate::database::models::DBUserId,
                     id,
                 )
                 .execute(&mut **transaction)
@@ -984,7 +984,7 @@ impl AuthProvider {
                     SET steam_id = $2
                     WHERE (id = $1)
                     ",
-                    user_id as crate::database::models::UserId,
+                    user_id as crate::database::models::DBUserId,
                     id.and_then(|x| x.parse::<i64>().ok())
                 )
                 .execute(&mut **transaction)
@@ -998,7 +998,7 @@ impl AuthProvider {
                         SET paypal_country = NULL, paypal_email = NULL, paypal_id = NULL
                         WHERE (id = $1)
                         ",
-                        user_id as crate::database::models::UserId,
+                        user_id as crate::database::models::DBUserId,
                     )
                     .execute(&mut **transaction)
                     .await?;
@@ -1009,7 +1009,7 @@ impl AuthProvider {
                         SET paypal_id = $2
                         WHERE (id = $1)
                         ",
-                        user_id as crate::database::models::UserId,
+                        user_id as crate::database::models::DBUserId,
                         id,
                     )
                     .execute(&mut **transaction)
@@ -1085,7 +1085,7 @@ pub async fn init(
         None
     };
 
-    let state = Flow::OAuth {
+    let state = DBFlow::OAuth {
         user_id,
         url: info.url,
         provider: info.provider,
@@ -1114,16 +1114,16 @@ pub async fn auth_callback(
 
     let state = state_string.clone();
     let res: Result<HttpResponse, AuthenticationError> = async move {
-        let flow = Flow::get(&state, &redis).await?;
+        let flow = DBFlow::get(&state, &redis).await?;
 
         // Extract cookie header from request
-        if let Some(Flow::OAuth {
+        if let Some(DBFlow::OAuth {
                         user_id,
                         provider,
                         url,
                     }) = flow
         {
-            Flow::remove(&state, &redis).await?;
+            DBFlow::remove(&state, &redis).await?;
 
             let token = provider.get_token(query).await?;
             let oauth_user = provider.get_user(&token).await?;
@@ -1140,7 +1140,7 @@ pub async fn auth_callback(
                     .update_user_id(id, Some(&oauth_user.id), &mut transaction)
                     .await?;
 
-                let user = crate::database::models::User::get_id(id, &**client, &redis).await?;
+                let user = crate::database::models::DBUser::get_id(id, &**client, &redis).await?;
 
                 if provider == AuthProvider::PayPal  {
                     sqlx::query!(
@@ -1152,7 +1152,7 @@ pub async fn auth_callback(
                         oauth_user.country,
                         oauth_user.email,
                         oauth_user.id,
-                        id as crate::database::models::ids::UserId,
+                        id as crate::database::models::ids::DBUserId,
                     )
                         .execute(&mut *transaction)
                         .await?;
@@ -1167,19 +1167,19 @@ pub async fn auth_callback(
                 }
 
                 transaction.commit().await?;
-                crate::database::models::User::clear_caches(&[(id, None)], &redis).await?;
+                crate::database::models::DBUser::clear_caches(&[(id, None)], &redis).await?;
 
                 Ok(HttpResponse::TemporaryRedirect()
                     .append_header(("Location", &*url))
                     .json(serde_json::json!({ "url": url })))
             } else {
                 let user_id = if let Some(user_id) = user_id_opt {
-                    let user = crate::database::models::User::get_id(user_id, &**client, &redis)
+                    let user = crate::database::models::DBUser::get_id(user_id, &**client, &redis)
                         .await?
                         .ok_or_else(|| AuthenticationError::InvalidCredentials)?;
 
                     if user.totp_secret.is_some() {
-                        let flow = Flow::Login2FA { user_id: user.id }
+                        let flow = DBFlow::Login2FA { user_id: user.id }
                             .insert(Duration::minutes(30), &redis)
                             .await?;
 
@@ -1245,12 +1245,12 @@ pub async fn delete_auth_provider(
         &**pool,
         &redis,
         &session_queue,
-        Some(&[Scopes::USER_AUTH_WRITE]),
+        Scopes::USER_AUTH_WRITE,
     )
     .await?
     .1;
 
-    if !user.auth_providers.map(|x| x.len() > 1).unwrap_or(false)
+    if user.auth_providers.is_none_or(|x| x.len() <= 1)
         && !user.has_password.unwrap_or(false)
     {
         return Err(ApiError::InvalidInput(
@@ -1281,7 +1281,7 @@ pub async fn delete_auth_provider(
     }
 
     transaction.commit().await?;
-    crate::database::models::User::clear_caches(
+    crate::database::models::DBUser::clear_caches(
         &[(user.id.into(), None)],
         &redis,
     )
@@ -1295,6 +1295,11 @@ pub async fn sign_up_sendy(email: &str) -> Result<(), AuthenticationError> {
     let id = dotenvy::var("SENDY_LIST_ID")?;
     let api_key = dotenvy::var("SENDY_API_KEY")?;
     let site_url = dotenvy::var("SITE_URL")?;
+
+    if url.is_empty() || url == "none" {
+        tracing::info!("Sendy URL not set, skipping signup");
+        return Ok(());
+    }
 
     let mut form = HashMap::new();
 
@@ -1343,7 +1348,7 @@ pub async fn create_account_with_password(
         return Err(ApiError::Turnstile);
     }
 
-    if crate::database::models::User::get(
+    if crate::database::models::DBUser::get(
         &new_account.username,
         &**pool,
         &redis,
@@ -1382,16 +1387,19 @@ pub async fn create_account_with_password(
         .hash_password(new_account.password.as_bytes(), &salt)?
         .to_string();
 
-    if crate::database::models::User::get_email(&new_account.email, &**pool)
-        .await?
-        .is_some()
+    if crate::database::models::DBUser::get_by_email(
+        &new_account.email,
+        &**pool,
+    )
+    .await?
+    .is_some()
     {
         return Err(ApiError::InvalidInput(
             "Email is already registered on Modrinth!".to_string(),
         ));
     }
 
-    crate::database::models::User {
+    crate::database::models::DBUser {
         id: user_id,
         github_id: None,
         discord_id: None,
@@ -1423,7 +1431,7 @@ pub async fn create_account_with_password(
     let session = issue_session(req, user_id, &mut transaction, &redis).await?;
     let res = crate::models::sessions::Session::from(session, true, None);
 
-    let flow = Flow::ConfirmEmail {
+    let flow = DBFlow::ConfirmEmail {
         user_id,
         confirm_email: new_account.email.clone(),
     }
@@ -1447,7 +1455,8 @@ pub async fn create_account_with_password(
 
 #[derive(Deserialize, Validate)]
 pub struct Login {
-    pub username: String,
+    #[serde(rename = "username")]
+    pub username_or_email: String,
     pub password: String,
     pub challenge: String,
 }
@@ -1463,18 +1472,23 @@ pub async fn login_password(
         return Err(ApiError::Turnstile);
     }
 
-    let user = if let Some(user) =
-        crate::database::models::User::get(&login.username, &**pool, &redis)
-            .await?
+    let user = if let Some(user) = crate::database::models::DBUser::get(
+        &login.username_or_email,
+        &**pool,
+        &redis,
+    )
+    .await?
     {
         user
     } else {
-        let user =
-            crate::database::models::User::get_email(&login.username, &**pool)
-                .await?
-                .ok_or_else(|| AuthenticationError::InvalidCredentials)?;
+        let user = crate::database::models::DBUser::get_by_email(
+            &login.username_or_email,
+            &**pool,
+        )
+        .await?
+        .ok_or_else(|| AuthenticationError::InvalidCredentials)?;
 
-        crate::database::models::User::get_id(user, &**pool, &redis)
+        crate::database::models::DBUser::get_id(user, &**pool, &redis)
             .await?
             .ok_or_else(|| AuthenticationError::InvalidCredentials)?
     };
@@ -1492,7 +1506,7 @@ pub async fn login_password(
         .map_err(|_| AuthenticationError::InvalidCredentials)?;
 
     if user.totp_secret.is_some() {
-        let flow = Flow::Login2FA { user_id: user.id }
+        let flow = DBFlow::Login2FA { user_id: user.id }
             .insert(Duration::minutes(30), &redis)
             .await?;
 
@@ -1522,7 +1536,7 @@ async fn validate_2fa_code(
     input: String,
     secret: String,
     allow_backup: bool,
-    user_id: crate::database::models::UserId,
+    user_id: crate::database::models::DBUserId,
     redis: &RedisPool,
     pool: &PgPool,
     transaction: &mut sqlx::Transaction<'_, sqlx::Postgres>,
@@ -1565,7 +1579,7 @@ async fn validate_2fa_code(
         Ok(true)
     } else if allow_backup {
         let backup_codes =
-            crate::database::models::User::get_backup_codes(user_id, pool)
+            crate::database::models::DBUser::get_backup_codes(user_id, pool)
                 .await?;
 
         if !backup_codes.contains(&input) {
@@ -1578,13 +1592,13 @@ async fn validate_2fa_code(
                     DELETE FROM user_backup_codes
                     WHERE user_id = $1 AND code = $2
                     ",
-                user_id as crate::database::models::ids::UserId,
+                user_id as crate::database::models::ids::DBUserId,
                 code as i64,
             )
             .execute(&mut **transaction)
             .await?;
 
-            crate::database::models::User::clear_caches(
+            crate::database::models::DBUser::clear_caches(
                 &[(user_id, None)],
                 redis,
             )
@@ -1604,13 +1618,13 @@ pub async fn login_2fa(
     redis: Data<RedisPool>,
     login: web::Json<Login2FA>,
 ) -> Result<HttpResponse, ApiError> {
-    let flow = Flow::get(&login.flow, &redis)
+    let flow = DBFlow::get(&login.flow, &redis)
         .await?
         .ok_or_else(|| AuthenticationError::InvalidCredentials)?;
 
-    if let Flow::Login2FA { user_id } = flow {
+    if let DBFlow::Login2FA { user_id } = flow {
         let user =
-            crate::database::models::User::get_id(user_id, &**pool, &redis)
+            crate::database::models::DBUser::get_id(user_id, &**pool, &redis)
                 .await?
                 .ok_or_else(|| AuthenticationError::InvalidCredentials)?;
 
@@ -1631,7 +1645,7 @@ pub async fn login_2fa(
                 AuthenticationError::InvalidCredentials,
             ));
         }
-        Flow::remove(&login.flow, &redis).await?;
+        DBFlow::remove(&login.flow, &redis).await?;
 
         let session =
             issue_session(req, user_id, &mut transaction, &redis).await?;
@@ -1658,7 +1672,7 @@ pub async fn begin_2fa_flow(
         &**pool,
         &redis,
         &session_queue,
-        Some(&[Scopes::USER_AUTH_WRITE]),
+        Scopes::USER_AUTH_WRITE,
     )
     .await?
     .1;
@@ -1667,7 +1681,7 @@ pub async fn begin_2fa_flow(
         let string = totp_rs::Secret::generate_secret();
         let encoded = string.to_encoded();
 
-        let flow = Flow::Initialize2FA {
+        let flow = DBFlow::Initialize2FA {
             user_id: user.id.into(),
             secret: encoded.to_string(),
         }
@@ -1693,17 +1707,17 @@ pub async fn finish_2fa_flow(
     login: web::Json<Login2FA>,
     session_queue: Data<AuthQueue>,
 ) -> Result<HttpResponse, ApiError> {
-    let flow = Flow::get(&login.flow, &redis)
+    let flow = DBFlow::get(&login.flow, &redis)
         .await?
         .ok_or_else(|| AuthenticationError::InvalidCredentials)?;
 
-    if let Flow::Initialize2FA { user_id, secret } = flow {
+    if let DBFlow::Initialize2FA { user_id, secret } = flow {
         let user = get_user_from_headers(
             &req,
             &**pool,
             &redis,
             &session_queue,
-            Some(&[Scopes::USER_AUTH_WRITE]),
+            Scopes::USER_AUTH_WRITE,
         )
         .await?
         .1;
@@ -1732,7 +1746,7 @@ pub async fn finish_2fa_flow(
             ));
         }
 
-        Flow::remove(&login.flow, &redis).await?;
+        DBFlow::remove(&login.flow, &redis).await?;
 
         sqlx::query!(
             "
@@ -1741,7 +1755,7 @@ pub async fn finish_2fa_flow(
             WHERE (id = $2)
             ",
             secret,
-            user_id as crate::database::models::ids::UserId,
+            user_id as crate::database::models::ids::DBUserId,
         )
         .execute(&mut *transaction)
         .await?;
@@ -1751,7 +1765,7 @@ pub async fn finish_2fa_flow(
             DELETE FROM user_backup_codes
             WHERE user_id = $1
             ",
-            user_id as crate::database::models::ids::UserId,
+            user_id as crate::database::models::ids::DBUserId,
         )
         .execute(&mut *transaction)
         .await?;
@@ -1771,7 +1785,7 @@ pub async fn finish_2fa_flow(
                     $1, $2
                 )
                 ",
-                user_id as crate::database::models::ids::UserId,
+                user_id as crate::database::models::ids::DBUserId,
                 val as i64,
             )
             .execute(&mut *transaction)
@@ -1791,7 +1805,7 @@ pub async fn finish_2fa_flow(
         }
 
         transaction.commit().await?;
-        crate::database::models::User::clear_caches(
+        crate::database::models::DBUser::clear_caches(
             &[(user.id.into(), None)],
             &redis,
         )
@@ -1864,7 +1878,7 @@ pub async fn remove_2fa(
         SET totp_secret = NULL
         WHERE (id = $1)
         ",
-        user.id as crate::database::models::ids::UserId,
+        user.id as crate::database::models::ids::DBUserId,
     )
     .execute(&mut *transaction)
     .await?;
@@ -1874,7 +1888,7 @@ pub async fn remove_2fa(
         DELETE FROM user_backup_codes
         WHERE user_id = $1
         ",
-        user.id as crate::database::models::ids::UserId,
+        user.id as crate::database::models::ids::DBUserId,
     )
     .execute(&mut *transaction)
     .await?;
@@ -1890,7 +1904,7 @@ pub async fn remove_2fa(
     }
 
     transaction.commit().await?;
-    crate::database::models::User::clear_caches(&[(user.id, None)], &redis)
+    crate::database::models::DBUser::clear_caches(&[(user.id, None)], &redis)
         .await?;
 
     Ok(HttpResponse::NoContent().finish())
@@ -1898,7 +1912,8 @@ pub async fn remove_2fa(
 
 #[derive(Deserialize)]
 pub struct ResetPassword {
-    pub username: String,
+    #[serde(rename = "username")]
+    pub username_or_email: String,
     pub challenge: String,
 }
 
@@ -1913,44 +1928,77 @@ pub async fn reset_password_begin(
         return Err(ApiError::Turnstile);
     }
 
-    let user = if let Some(user_id) = crate::database::models::User::get_email(
-        &reset_password.username,
-        &**pool,
-    )
-    .await?
-    {
-        crate::database::models::User::get_id(user_id, &**pool, &redis).await?
-    } else {
-        crate::database::models::User::get(
-            &reset_password.username,
+    let user =
+        match crate::database::models::DBUser::get_by_case_insensitive_email(
+            &reset_password.username_or_email,
             &**pool,
-            &redis,
         )
-        .await?
-    };
+        .await?[..]
+        {
+            [] => {
+                // Try finding by username or ID
+                crate::database::models::DBUser::get(
+                    &reset_password.username_or_email,
+                    &**pool,
+                    &redis,
+                )
+                .await?
+            }
+            [user_id] => {
+                // If there is only one user with the given email, ignoring case,
+                // we can assume it's the user we want to reset the password for
+                crate::database::models::DBUser::get_id(
+                    user_id, &**pool, &redis,
+                )
+                .await?
+            }
+            _ => {
+                // When several users use variations of the same email with
+                // different cases, we cannot reliably tell which user should
+                // receive the password reset email, so fall back to case sensitive
+                // search to avoid spamming multiple users
+                if let Some(user_id) =
+                    crate::database::models::DBUser::get_by_email(
+                        &reset_password.username_or_email,
+                        &**pool,
+                    )
+                    .await?
+                {
+                    crate::database::models::DBUser::get_id(
+                        user_id, &**pool, &redis,
+                    )
+                    .await?
+                } else {
+                    None
+                }
+            }
+        };
 
-    if let Some(user) = user {
-        let flow = Flow::ForgotPassword { user_id: user.id }
+    if let Some(DBUser {
+        id: user_id,
+        email: Some(email),
+        ..
+    }) = user
+    {
+        let flow = DBFlow::ForgotPassword { user_id }
             .insert(Duration::hours(24), &redis)
             .await?;
 
-        if let Some(email) = user.email {
-            send_email(
-                email,
-                "Reset your password",
-                "Please visit the following link below to reset your password. If the button does not work, you can copy the link and paste it into your browser.",
-                "If you did not request for your password to be reset, you can safely ignore this email.",
-                Some((
-                    "Reset password",
-                    &format!(
-                        "{}/{}?flow={}",
-                        dotenvy::var("SITE_URL")?,
-                        dotenvy::var("SITE_RESET_PASSWORD_PATH")?,
-                        flow
-                    ),
-                )),
-            )?;
-        }
+        send_email(
+            email,
+            "Reset your password",
+            "Please visit the following link below to reset your password. If the button does not work, you can copy the link and paste it into your browser.",
+            "If you did not request for your password to be reset, you can safely ignore this email.",
+            Some((
+                "Reset password",
+                &format!(
+                    "{}/{}?flow={}",
+                    dotenvy::var("SITE_URL")?,
+                    dotenvy::var("SITE_RESET_PASSWORD_PATH")?,
+                    flow
+                ),
+            )),
+        )?;
     }
 
     Ok(HttpResponse::Ok().finish())
@@ -1972,17 +2020,20 @@ pub async fn change_password(
     session_queue: Data<AuthQueue>,
 ) -> Result<HttpResponse, ApiError> {
     let user = if let Some(flow) = &change_password.flow {
-        let flow = Flow::get(flow, &redis).await?;
+        let flow = DBFlow::get(flow, &redis).await?;
 
-        if let Some(Flow::ForgotPassword { user_id }) = flow {
-            let user =
-                crate::database::models::User::get_id(user_id, &**pool, &redis)
-                    .await?
-                    .ok_or_else(|| AuthenticationError::InvalidCredentials)?;
+        if let Some(DBFlow::ForgotPassword { user_id }) = flow {
+            let user = crate::database::models::DBUser::get_id(
+                user_id, &**pool, &redis,
+            )
+            .await?
+            .ok_or_else(|| AuthenticationError::InvalidCredentials)?;
 
             Some(user)
         } else {
-            None
+            return Err(ApiError::CustomAuthentication(
+                "The password change flow code is invalid or has expired. Did you copy it promptly and correctly?".to_string(),
+            ));
         }
     } else {
         None
@@ -2076,13 +2127,13 @@ pub async fn change_password(
         WHERE (id = $2)
         ",
         update_password,
-        user.id as crate::database::models::ids::UserId,
+        user.id as crate::database::models::ids::DBUserId,
     )
     .execute(&mut *transaction)
     .await?;
 
     if let Some(flow) = &change_password.flow {
-        Flow::remove(flow, &redis).await?;
+        DBFlow::remove(flow, &redis).await?;
     }
 
     if let Some(email) = user.email {
@@ -2102,7 +2153,7 @@ pub async fn change_password(
     }
 
     transaction.commit().await?;
-    crate::database::models::User::clear_caches(&[(user.id, None)], &redis)
+    crate::database::models::DBUser::clear_caches(&[(user.id, None)], &redis)
         .await?;
 
     Ok(HttpResponse::Ok().finish())
@@ -2132,7 +2183,7 @@ pub async fn set_email(
         &**pool,
         &redis,
         &session_queue,
-        Some(&[Scopes::USER_AUTH_WRITE]),
+        Scopes::USER_AUTH_WRITE,
     )
     .await?
     .1;
@@ -2180,7 +2231,7 @@ pub async fn set_email(
         .await?;
     }
 
-    let flow = Flow::ConfirmEmail {
+    let flow = DBFlow::ConfirmEmail {
         user_id: user.id.into(),
         confirm_email: email.email.clone(),
     }
@@ -2194,7 +2245,7 @@ pub async fn set_email(
     )?;
 
     transaction.commit().await?;
-    crate::database::models::User::clear_caches(
+    crate::database::models::DBUser::clear_caches(
         &[(user.id.into(), None)],
         &redis,
     )
@@ -2215,7 +2266,7 @@ pub async fn resend_verify_email(
         &**pool,
         &redis,
         &session_queue,
-        Some(&[Scopes::USER_AUTH_WRITE]),
+        Scopes::USER_AUTH_WRITE,
     )
     .await?
     .1;
@@ -2227,7 +2278,7 @@ pub async fn resend_verify_email(
             ));
         }
 
-        let flow = Flow::ConfirmEmail {
+        let flow = DBFlow::ConfirmEmail {
             user_id: user.id.into(),
             confirm_email: email.clone(),
         }
@@ -2259,15 +2310,15 @@ pub async fn verify_email(
     redis: Data<RedisPool>,
     email: web::Json<VerifyEmail>,
 ) -> Result<HttpResponse, ApiError> {
-    let flow = Flow::get(&email.flow, &redis).await?;
+    let flow = DBFlow::get(&email.flow, &redis).await?;
 
-    if let Some(Flow::ConfirmEmail {
+    if let Some(DBFlow::ConfirmEmail {
         user_id,
         confirm_email,
     }) = flow
     {
         let user =
-            crate::database::models::User::get_id(user_id, &**pool, &redis)
+            crate::database::models::DBUser::get_id(user_id, &**pool, &redis)
                 .await?
                 .ok_or_else(|| AuthenticationError::InvalidCredentials)?;
 
@@ -2286,15 +2337,18 @@ pub async fn verify_email(
             SET email_verified = TRUE
             WHERE (id = $1)
             ",
-            user.id as crate::database::models::ids::UserId,
+            user.id as crate::database::models::ids::DBUserId,
         )
         .execute(&mut *transaction)
         .await?;
 
-        Flow::remove(&email.flow, &redis).await?;
+        DBFlow::remove(&email.flow, &redis).await?;
         transaction.commit().await?;
-        crate::database::models::User::clear_caches(&[(user.id, None)], &redis)
-            .await?;
+        crate::database::models::DBUser::clear_caches(
+            &[(user.id, None)],
+            &redis,
+        )
+        .await?;
 
         Ok(HttpResponse::NoContent().finish())
     } else {
@@ -2317,7 +2371,7 @@ pub async fn subscribe_newsletter(
         &**pool,
         &redis,
         &session_queue,
-        Some(&[Scopes::USER_AUTH_WRITE]),
+        Scopes::USER_AUTH_WRITE,
     )
     .await?
     .1;

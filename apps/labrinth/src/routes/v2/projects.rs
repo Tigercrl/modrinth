@@ -83,7 +83,7 @@ pub async fn project_search(
                                     val
                                 )
                             } else {
-                                facet.to_string()
+                                facet
                             }
                         })
                         .collect::<Vec<_>>()
@@ -229,7 +229,7 @@ pub async fn project_get(
         Ok(project) => {
             let version_item = match project.versions.first() {
                 Some(vid) => {
-                    version_item::Version::get((*vid).into(), &**pool, &redis)
+                    version_item::DBVersion::get((*vid).into(), &**pool, &redis)
                         .await?
                 }
                 None => None,
@@ -469,7 +469,7 @@ pub async fn project_edit(
     if let Some(donation_urls) = v2_new_project.donation_urls {
         // Fetch current donation links from project so we know what to delete
         let fetched_example_project =
-            project_item::Project::get(&info.0, &**pool, &redis).await?;
+            project_item::DBProject::get(&info.0, &**pool, &redis).await?;
         let donation_links = fetched_example_project
             .map(|x| {
                 x.urls
@@ -511,6 +511,7 @@ pub async fn project_edit(
         moderation_message: v2_new_project.moderation_message,
         moderation_message_body: v2_new_project.moderation_message_body,
         monetization_status: v2_new_project.monetization_status,
+        side_types_migration_review_status: None, // Not to be exposed in v2
     };
 
     // This returns 204 or failure so we don't need to do anything with it
@@ -533,7 +534,7 @@ pub async fn project_edit(
     if response.status().is_success()
         && (client_side.is_some() || server_side.is_some())
     {
-        let project_item = project_item::Project::get(
+        let project_item = project_item::DBProject::get(
             &new_slug.unwrap_or(project_id),
             &**pool,
             &redis,
@@ -541,16 +542,18 @@ pub async fn project_edit(
         .await?;
         let version_ids = project_item.map(|x| x.versions).unwrap_or_default();
         let versions =
-            version_item::Version::get_many(&version_ids, &**pool, &redis)
+            version_item::DBVersion::get_many(&version_ids, &**pool, &redis)
                 .await?;
         for version in versions {
             let version = Version::from(version);
             let mut fields = version.fields;
             let (current_client_side, current_server_side) =
-                v2_reroute::convert_side_types_v2(&fields, None);
+                v2_reroute::convert_v3_side_types_to_v2_side_types(
+                    &fields, None,
+                );
             let client_side = client_side.unwrap_or(current_client_side);
             let server_side = server_side.unwrap_or(current_server_side);
-            fields.extend(v2_reroute::convert_side_types_v3(
+            fields.extend(v2_reroute::convert_v2_side_types_to_v3_side_types(
                 client_side,
                 server_side,
             ));

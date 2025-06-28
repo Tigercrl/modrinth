@@ -18,6 +18,7 @@ use actix_web::{HttpRequest, HttpResponse, get, patch, post, web};
 use serde::Deserialize;
 use sqlx::PgPool;
 use std::collections::HashMap;
+use std::fmt::Write;
 use std::net::Ipv4Addr;
 use std::sync::Arc;
 use tracing::info;
@@ -71,7 +72,7 @@ pub async fn count_download(
     .ok()
     .flatten();
 
-    let project_id: crate::database::models::ids::ProjectId =
+    let project_id: crate::database::models::ids::DBProjectId =
         download_body.project_id.into();
 
     let id_option =
@@ -97,7 +98,7 @@ pub async fn count_download(
         WHERE ((version_number = $1 OR id = $3) AND mod_id = $2)
         ",
         download_body.version_name,
-        project_id as crate::database::models::ids::ProjectId,
+        project_id as crate::database::models::ids::DBProjectId,
         id_option
     )
     .fetch_optional(pool.as_ref())
@@ -204,7 +205,7 @@ pub async fn delphi_result_ingest(
 
     let webhook_url = dotenvy::var("DELPHI_SLACK_WEBHOOK")?;
 
-    let project = crate::database::models::Project::get_id(
+    let project = crate::database::models::DBProject::get_id(
         body.project_id.into(),
         &**pool,
         &redis,
@@ -221,9 +222,11 @@ pub async fn delphi_result_ingest(
 
     for (issue, trace) in &body.issues {
         for (path, code) in trace {
-            header.push_str(&format!(
+            write!(
+                &mut header,
                 "\n issue {issue} found at file {path}: \n ```\n{code}\n```"
-            ));
+            )
+            .unwrap();
         }
     }
 
@@ -244,18 +247,21 @@ pub async fn delphi_result_ingest(
 
     for (issue, trace) in &body.issues {
         for path in trace.keys() {
-            thread_header
-                .push_str(&format!("\n\n- issue {issue} found at file {path}"));
+            write!(
+                &mut thread_header,
+                "\n\n- issue {issue} found at file {path}"
+            )
+            .unwrap();
         }
 
         if trace.is_empty() {
-            thread_header.push_str(&format!("\n\n- issue {issue} found",));
+            write!(&mut thread_header, "\n\n- issue {issue} found").unwrap();
         }
     }
 
     let mut transaction = pool.begin().await?;
     ThreadMessageBuilder {
-        author_id: Some(crate::database::models::UserId(AUTOMOD_ID)),
+        author_id: Some(crate::database::models::DBUserId(AUTOMOD_ID)),
         body: MessageBody::Text {
             body: thread_header,
             private: true,

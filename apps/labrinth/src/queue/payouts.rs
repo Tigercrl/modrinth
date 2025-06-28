@@ -193,9 +193,12 @@ impl PayoutsQueue {
                 pub error_description: String,
             }
 
-            if let Ok(error) =
+            if let Ok(mut error) =
                 serde_json::from_value::<PayPalError>(value.clone())
             {
+                if error.name == "INSUFFICIENT_FUNDS" {
+                    error.message = "We're currently transferring funds to our PayPal account. Please try again in a couple days.".to_string();
+                }
                 return Err(ApiError::Payments(format!(
                     "error name: {}, message: {}",
                     error.name, error.message
@@ -387,6 +390,7 @@ impl PayoutsQueue {
                     "bank",
                     "ach",
                     "visa_card",
+                    "charity",
                 ];
 
                 if !SUPPORTED_METHODS.contains(&&*product.category)
@@ -437,8 +441,8 @@ impl PayoutsQueue {
                         }
                     } else {
                         PayoutMethodFee {
-                            percentage: Default::default(),
-                            min: Default::default(),
+                            percentage: Decimal::default(),
+                            min: Decimal::default(),
                             max: None,
                         }
                     },
@@ -735,6 +739,18 @@ pub async fn process_payout(
     pool: &PgPool,
     client: &clickhouse::Client,
 ) -> Result<(), ApiError> {
+    sqlx::query!(
+        "
+        UPDATE payouts
+        SET status = $1
+        WHERE status = $2 AND created < NOW() - INTERVAL '30 days'
+        ",
+        crate::models::payouts::PayoutStatus::Failed.as_str(),
+        crate::models::payouts::PayoutStatus::InTransit.as_str(),
+    )
+    .execute(pool)
+    .await?;
+
     let start: DateTime<Utc> = DateTime::from_naive_utc_and_offset(
         (Utc::now() - Duration::days(1))
             .date_naive()
@@ -817,7 +833,7 @@ pub async fn process_payout(
         .map(|x| (x.project_id, x.page_views))
         .collect::<HashMap<u64, u64>>();
 
-    for (key, value) in downloads_values.iter() {
+    for (key, value) in &downloads_values {
         let counter = views_values.entry(*key).or_insert(0);
         *counter += *value;
     }

@@ -43,7 +43,14 @@
         </div>
         <div v-else class="min-h-[20px]"></div>
 
+        <div
+          v-if="isConfiguring"
+          class="flex min-w-0 items-center gap-2 truncate text-sm font-semibold text-brand"
+        >
+          <SparklesIcon class="size-5 shrink-0" /> New server
+        </div>
         <UiServersServerInfoLabels
+          v-else
           :server-data="{ game, mc_version, loader, loader_version, net }"
           :show-game-label="showGameLabel"
           :show-loader-label="showLoaderLabel"
@@ -60,15 +67,7 @@
       Your server's hardware is currently being upgraded and will be back online shortly.
     </div>
     <div
-      v-if="status === 'suspended' && suspension_reason === 'support'"
-      class="relative -mt-4 flex w-full flex-row items-center gap-2 rounded-b-3xl bg-bg-blue p-4 text-sm font-bold text-contrast"
-    >
-      <HammerIcon />
-      You recently requested support for your server and we are actively working on it. It will be
-      back online shortly.
-    </div>
-    <div
-      v-else-if="status === 'suspended' && suspension_reason !== 'upgrading'"
+      v-else-if="status === 'suspended'"
       class="relative -mt-4 flex w-full flex-col gap-2 rounded-b-3xl bg-bg-red p-4 text-sm font-bold text-contrast"
     >
       <div class="flex flex-row gap-2">
@@ -81,13 +80,14 @@
 </template>
 
 <script setup lang="ts">
-import { ChevronRightIcon, HammerIcon, LockIcon } from "@modrinth/assets";
-import type { Project, Server } from "~/types/servers";
+import { ChevronRightIcon, LockIcon, SparklesIcon } from "@modrinth/assets";
+import type { Project, Server } from "@modrinth/utils";
+import { useModrinthServers } from "~/composables/servers/modrinth-servers.ts";
 
 const props = defineProps<Partial<Server>>();
 
 if (props.server_id) {
-  await usePyroServer(props.server_id, ["general"]);
+  await useModrinthServers(props.server_id, ["general"]);
 }
 
 const showGameLabel = computed(() => !!props.game);
@@ -110,8 +110,9 @@ if (props.upstream) {
 const image = useState<string | undefined>(`server-icon-${props.server_id}`, () => undefined);
 
 if (import.meta.server && projectData.value?.icon_url) {
-  await usePyroServer(props.server_id!, ["general"]);
+  await useModrinthServers(props.server_id!, ["general"]);
 }
 
 const iconUrl = computed(() => projectData.value?.icon_url || undefined);
+const isConfiguring = computed(() => props.flows?.intro);
 </script>

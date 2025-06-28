@@ -16,6 +16,7 @@ export { default as DoubleIcon } from './base/DoubleIcon.vue'
 export { default as DropArea } from './base/DropArea.vue'
 export { default as DropdownSelect } from './base/DropdownSelect.vue'
 export { default as EnvironmentIndicator } from './base/EnvironmentIndicator.vue'
+export { default as ErrorInformationCard } from './base/ErrorInformationCard.vue'
 export { default as FileInput } from './base/FileInput.vue'
 export { default as FilterBar } from './base/FilterBar.vue'
 export type { FilterBarOption } from './base/FilterBar.vue'
@@ -96,6 +97,8 @@ export { default as SearchSidebarFilter } from './search/SearchSidebarFilter.vue
 
 // Billing
 export { default as PurchaseModal } from './billing/PurchaseModal.vue'
+export { default as AddPaymentMethodModal } from './billing/AddPaymentMethodModal.vue'
+export { default as ModrinthServersPurchaseModal } from './billing/ModrinthServersPurchaseModal.vue'
 
 // Version
 export { default as VersionChannelIndicator } from './version/VersionChannelIndicator.vue'
@@ -106,4 +109,6 @@ export { default as VersionSummary } from './version/VersionSummary.vue'
 export { default as ThemeSelector } from './settings/ThemeSelector.vue'
 
 // Servers
+export { default as ServersPromo } from './servers/ServersPromo.vue'
 export { default as BackupWarning } from './servers/backups/BackupWarning.vue'
+export { default as ServersSpecs } from './billing/ServersSpecs.vue'

@@ -44,9 +44,7 @@ All packages in this repository are licensed under their respective licenses. Re
 
 ## 致谢
 
-感谢 [Arian8j2](https://github.com/Arian8j2) 编写的离线登录代码
-
-源仓库：[Arian8j2/modrinth-offline](https://github.com/Arian8j2/modrinth-offline)
+感谢 [Arian8j2](https://github.com/Arian8j2) 编写并[开源](https://github.com/Arian8j2/modrinth-offline)的的离线登录模块
 
 ## TO MODRINTH  对 Modrinth 的话
 

@@ -146,7 +146,7 @@ function devModeCount() {
               <ModrinthIcon class="w-6 h-6" />
             </button>
             <div>
-              <p class="m-0">Modrinth App {{ version }} （由 Tigercrl 汉化）</p>
+              <p class="m-0">Modrinth App 汉化版 {{ version }}</p>
               <p class="m-0">
                 <span v-if="osPlatform === 'macos'">MacOS</span>
                 <span v-else class="capitalize">{{ osPlatform }}</span>

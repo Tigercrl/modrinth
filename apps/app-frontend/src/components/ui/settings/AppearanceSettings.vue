@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import {TeleportDropdownMenu, ThemeSelector, Toggle} from '@modrinth/ui'
-import {useTheming} from '@/store/state'
-import {get, set} from '@/helpers/settings.ts'
-import {ref, watch} from 'vue'
-import {getOS} from '@/helpers/utils'
-import type {ColorTheme} from '@/store/theme.ts'
+import { TeleportDropdownMenu, ThemeSelector, Toggle } from '@modrinth/ui'
+import { useTheming } from '@/store/state'
+import { get, set } from '@/helpers/settings.ts'
+import { ref, watch } from 'vue'
+import { getOS } from '@/helpers/utils'
+import type { ColorTheme } from '@/store/theme.ts'
 
 const themeStore = useTheming()
 
@@ -16,7 +16,7 @@ watch(
   async () => {
     await set(settings.value)
   },
-  {deep: true},
+  { deep: true },
 )
 </script>
 <template>
@@ -38,9 +38,7 @@ watch(
   <div class="mt-4 flex items-center justify-between">
     <div>
       <h2 class="m-0 text-lg font-extrabold text-contrast">高级渲染</h2>
-      <p class="m-0 mt-1">
-        启用高级渲染，例如模糊效果（没有硬件加速时可能导致性能问题）。
-      </p>
+      <p class="m-0 mt-1">启用高级渲染，例如模糊效果（没有硬件加速时可能导致性能问题）。</p>
     </div>
 
     <Toggle
@@ -60,7 +58,7 @@ watch(
       <h2 class="m-0 text-lg font-extrabold text-contrast">原生窗口</h2>
       <p class="m-0 mt-1">使用系统窗口框。（需要重启应用生效）</p>
     </div>
-    <Toggle id="native-decorations" v-model="settings.native_decorations"/>
+    <Toggle id="native-decorations" v-model="settings.native_decorations" />
   </div>
 
   <div class="mt-4 flex items-center justify-between">
@@ -68,7 +66,7 @@ watch(
       <h2 class="m-0 text-lg font-extrabold text-contrast">最小化启动器</h2>
       <p class="m-0 mt-1">当 Minecraft 启动时最小化启动器。</p>
     </div>
-    <Toggle id="minimize-launcher" v-model="settings.hide_on_process_start"/>
+    <Toggle id="minimize-launcher" v-model="settings.hide_on_process_start" />
   </div>
 
   <div class="mt-4 flex items-center justify-between">
@@ -81,15 +79,17 @@ watch(
       v-model="settings.default_page"
       name="登录页下拉菜单"
       class="w-40"
-      :display-name="(option: string) => {
-        switch (option) {
-          case 'Home':
-            return '主页'
-          case 'Library':
-            return '实例管理'
+      :display-name="
+        (option: string) => {
+          switch (option) {
+            case 'Home':
+              return '主页'
+            case 'Library':
+              return '实例管理'
+          }
+          return option
         }
-        return option
-      }"
+      "
       :options="['Home', 'Library']"
     />
   </div>
@@ -131,7 +131,9 @@ watch(
   <div class="mt-4 flex items-center justify-between">
     <div>
       <h2 class="m-0 text-lg font-extrabold text-contrast">开发者模式（开关由汉化版添加）</h2>
-      <p class="m-0 mt-1">Modrinth App 隐藏了开发者模式的开关，但您可以通过此选项启用开发者模式。</p>
+      <p class="m-0 mt-1">
+        Modrinth App 隐藏了开发者模式的开关，但您可以通过此选项启用开发者模式。
+      </p>
     </div>
     <Toggle
       id="toggle-sidebar"
@@ -143,5 +145,18 @@ watch(
         }
       "
     />
+  </div>
+
+  <div class="mt-4 flex items-center justify-between">
+    <div>
+      <h2 class="m-0 text-lg font-extrabold text-contrast">致谢</h2>
+      <p class="m-0 mt-1">Modrinth App 由 <a href="https://github.com/Tigercrl">Tigercrl</a> 汉化！</p>
+      <p class="m-0">
+        感谢 <a href="https://github.com/Arian8j2">Arian8j2</a> 编写并<a
+          href="https://github.com/Arian8j2/modrinth-offline"
+          >开源</a
+        >的离线登录模块！
+      </p>
+    </div>
   </div>
 </template>

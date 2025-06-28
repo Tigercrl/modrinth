@@ -23,7 +23,7 @@
     <DropdownIcon class="w-5 h-5 shrink-0" />
   </div>
 
-  <Modal ref="chooseAccountTypeModal" header="选择账户类型">
+  <NewModal ref="chooseAccountTypeModal" header="选择账户类型">
     <div class="choose-account-modal">
       <div class="account-types">
         <Button @click="login">
@@ -36,9 +36,9 @@
         </Button>
       </div>
     </div>
-  </Modal>
+  </NewModal>
 
-  <Modal ref="chooseOfflineUsernameModal" header="设置离线账户">
+  <NewModal ref="chooseOfflineUsernameModal" header="设置离线账户">
     <div class="choose-offline-username-modal">
       <input v-model="offlineUsername" type="text" placeholder="用户名" />
       <br />
@@ -53,7 +53,7 @@
         创建账户
       </Button>
     </div>
-  </Modal>
+  </NewModal>
 
   <transition name="fade">
     <Card
@@ -111,7 +111,7 @@ import {
   SSOMicrosoftIcon,
   TrashIcon,
 } from '@modrinth/assets'
-import { Avatar, Button, Card, Modal } from '@modrinth/ui'
+import { Avatar, Button, Card, NewModal } from '@modrinth/ui'
 import { computed, onBeforeUnmount, onMounted, onUnmounted, ref } from 'vue'
 import {
   get_default_user,
@@ -485,13 +485,7 @@ onUnmounted(() => {
 }
 
 .choose-account-modal {
-  display: flex;
-  flex-direction: column;
-  padding: 2rem 0.1rem;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  gap: 1.5rem;
+  padding: 1rem;
 }
 
 .account-types {
@@ -502,7 +496,6 @@ onUnmounted(() => {
 .choose-offline-username-modal {
   display: flex;
   flex-direction: column;
-  padding: 2rem;
   justify-content: center;
   align-items: center;
 }

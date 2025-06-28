@@ -1,6 +1,6 @@
 [package]
 name = "theseus"
-version = "0.9.5"
+version = "0.9.5.1"
 authors = ["Jai A <jaiagr+gpg@pm.me>"]
 edition.workspace = true
 
@@ -72,6 +72,8 @@ quartz_nbt = { workspace = true, features = ["serde"] }
 hickory-resolver.workspace = true
 
 ariadne.workspace = true
+
+md5 = "0.8.0"
 
 [target.'cfg(windows)'.dependencies]
 winreg.workspace = true

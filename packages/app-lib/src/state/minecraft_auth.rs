@@ -1,17 +1,17 @@
-use crate::ErrorKind;
 use crate::util::fetch::REQWEST_CLIENT;
-use base64::Engine;
+use crate::ErrorKind;
 use base64::prelude::{BASE64_STANDARD, BASE64_URL_SAFE_NO_PAD};
+use base64::Engine;
 use chrono::{DateTime, Duration, TimeZone, Utc};
 use dashmap::DashMap;
 use futures::TryStreamExt;
 use p256::ecdsa::signature::Signer;
 use p256::ecdsa::{Signature, SigningKey, VerifyingKey};
 use p256::pkcs8::{DecodePrivateKey, EncodePrivateKey, LineEnding};
-use rand::Rng;
 use rand::rngs::OsRng;
-use reqwest::Response;
+use rand::Rng;
 use reqwest::header::HeaderMap;
+use reqwest::Response;
 use serde::de::DeserializeOwned;
 use serde::{Deserialize, Serialize};
 use serde_json::json;
@@ -140,15 +140,34 @@ pub async fn login_begin(
     }
 }
 
+pub fn name_uuid_from_bytes(name: &[u8]) -> Result<Uuid, uuid::Error> {
+    let digest = md5::compute(name);
+    let mut bytes = digest.0;
+
+    bytes[6] = (bytes[6] & 0x0F) | 0x30;
+    bytes[8] = (bytes[8] & 0x3F) | 0x80;
+
+    Ok(Uuid::from_bytes(bytes))
+}
+
 #[tracing::instrument]
 pub async fn offline_login(
     username: &str,
+    uuid_str: &str,
     exec: impl sqlx::Executor<'_, Database = sqlx::Sqlite> + Copy,
 ) -> crate::Result<Credentials> {
+    let uuid = if uuid_str.is_empty() {
+        // HMCL等启动器的生成方法
+        name_uuid_from_bytes(format!("OfflinePlayer:{}", username).as_bytes())
+    } else {
+        Uuid::parse_str(uuid_str)
+    }
+    .map_err(|err| ErrorKind::UUIDError(err))?;
+
     let credentials = Credentials {
-        id: Uuid::new_v4(),
+        id: uuid,
         username: username.to_owned(),
-        access_token: String::new(),
+        access_token: "offline".to_string(),
         refresh_token: String::new(),
         expires: DateTime::<Utc>::MAX_UTC,
         active: true,

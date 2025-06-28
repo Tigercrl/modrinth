@@ -40,12 +40,16 @@ All packages in this repository are licensed under their respective licenses. Re
 
 ## 汉化版TODO
 
-* 汉化托管服务器页面
-* 汉化部分管理员页面（不会真有中国管理员吧）
-* 汉化部分梗
+* 汉化网站
 
-## TO MODRINTH 对 Modrinth 的话
+## 致谢
+
+感谢 [Arian8j2](https://github.com/Arian8j2) 编写的离线登录代码
+
+源仓库：[Arian8j2/modrinth-offline](https://github.com/Arian8j2/modrinth-offline)
+
+## TO MODRINTH  对 Modrinth 的话
 
 If you have a problem with this idc
 
-如果你们对此有异议，关我屁事有本事封...（划掉）我不关心
+如果你们对此有异议，关我屁事有本事 DMCA

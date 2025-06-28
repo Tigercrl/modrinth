@@ -37,15 +37,11 @@ pub enum TheseusSerializableError {
     #[error("{0}")]
     Theseus(#[from] theseus::Error),
 
-    #[error("IO error: {0}")]
+    #[error("输入/输出错误：{0}")]
     IO(#[from] std::io::Error),
 
-    #[error("Tauri error: {0}")]
+    #[error("Tauri错误：{0}")]
     Tauri(#[from] tauri::Error),
-
-    #[cfg(feature = "updater")]
-    #[error("Tauri updater error: {0}")]
-    TauriUpdater(#[from] tauri_plugin_updater::Error),
 }
 
 // Generic implementation of From<T> for ErrorTypeA
@@ -93,15 +89,7 @@ macro_rules! impl_serialize {
 }
 
 // Use the macro to implement Serialize for TheseusSerializableError
-#[cfg(not(feature = "updater"))]
 impl_serialize! {
     IO,
     Tauri,
-}
-
-#[cfg(feature = "updater")]
-impl_serialize! {
-    IO,
-    Tauri,
-    TauriUpdater,
 }

@@ -308,8 +308,6 @@ export const formatCategory = (name) => {
       return '整合包'
     case 'minecraft':
       return '资源包'
-    case 'vanilla':
-      return '原版着色器'
     default:
       break;
   }

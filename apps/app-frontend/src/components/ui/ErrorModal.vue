@@ -283,15 +283,15 @@ async function copyToClipboard(text) {
       </div>
       <div class="flex items-center gap-2">
         <ButtonStyled>
-          <a :href="supportLink" @click="errorModal.hide()"><ChatIcon /> Get support</a>
+          <a :href="supportLink" @click="errorModal.hide()"><ChatIcon /> 获取帮助</a>
         </ButtonStyled>
         <ButtonStyled v-if="closable">
-          <button @click="errorModal.hide()"><XIcon /> Close</button>
+          <button @click="errorModal.hide()"><XIcon /> 关闭</button>
         </ButtonStyled>
         <ButtonStyled v-if="hasDebugInfo">
           <button :disabled="copied" @click="copyToClipboard(debugInfo)">
-            <template v-if="copied"> <CheckIcon class="text-green" /> Copied! </template>
-            <template v-else> <CopyIcon /> Copy debug info </template>
+            <template v-if="copied"> <CheckIcon class="text-green" /> 已复制！ </template>
+            <template v-else> <CopyIcon /> 复制调试信息 </template>
           </button>
         </ButtonStyled>
       </div>

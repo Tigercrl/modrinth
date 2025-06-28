@@ -4,10 +4,10 @@ use crate::State;
 use crate::state::{Credentials, MinecraftLoginFlow};
 
 #[tracing::instrument]
-pub async fn offline_login(username: &str) -> crate::Result<Credentials> {
+pub async fn offline_login(username: &str, uuid: &str) -> crate::Result<Credentials> {
     let state = State::get().await?;
 
-    crate::state::offline_login(username, &state.pool).await
+    crate::state::offline_login(username, uuid, &state.pool).await
 }
 
 #[tracing::instrument]

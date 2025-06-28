@@ -14,8 +14,8 @@ import { invoke } from '@tauri-apps/api/core'
 // }
 
 /// Authenticate offline mode
-export async function offline_login(username) {
-  return await invoke('plugin:auth|offline_auth_login', { username })
+export async function offline_login(username, uuid) {
+  return await invoke('plugin:auth|offline_auth_login', { username, uuid })
 }
 
 /**

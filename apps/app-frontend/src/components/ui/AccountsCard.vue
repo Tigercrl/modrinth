@@ -9,36 +9,48 @@
     <Avatar
       size="36px"
       :src="
-        selectedAccount
+        selectedAccount && selectedAccount.access_token !== 'offline'
           ? `https://minotar.net/helm/${selectedAccount.id}/128.png`
           : 'https://launcher-files.modrinth.com/assets/steve_head.png'
       "
     />
     <div class="flex flex-col w-full">
       <span>{{ selectedAccount ? selectedAccount.username : '请选择账户' }}</span>
-      <span class="text-secondary text-xs">Minecraft 账户</span>
+      <span class="text-secondary text-xs">{{
+        selectedAccount?.access_token !== 'offline' ? '微软账户' : '离线账户'
+      }}</span>
     </div>
     <DropdownIcon class="w-5 h-5 shrink-0" />
   </div>
 
-  <Modal ref="chooseAccountTypeModal" header="请选择账户类型">
+  <Modal ref="chooseAccountTypeModal" header="选择账户类型">
     <div class="choose-account-modal">
       <div class="account-types">
-        <Button @click="login()">
-          <SSOMicrosoftIcon />微软账户
+        <Button @click="login">
+          <SSOMicrosoftIcon />
+          微软账户
         </Button>
-        <Button @click="$refs.chooseAccountTypeModal.hide(); $refs.chooseOfflineUsernameModal.show()">
-          <ClientIcon />离线账户
+        <Button @click="showOfflineLogin">
+          <ClientIcon />
+          离线账户
         </Button>
       </div>
     </div>
   </Modal>
 
-  <Modal ref="chooseOfflineUsernameModal" header="请为离线账户设置用户名">
+  <Modal ref="chooseOfflineUsernameModal" header="设置离线账户">
     <div class="choose-offline-username-modal">
-      <input type="text" placeholder="用户名" v-model="offlineUsername" />
-      <Button icon-only color="primary" @click="offlineLogin(offlineUsername)">
+      <input v-model="offlineUsername" type="text" placeholder="用户名" />
+      <br />
+      <input
+        v-model="offlineUUID"
+        type="text"
+        placeholder="UUID（如果你不知道这是什么请不要填写）"
+      />
+      <br />
+      <Button icon-only color="primary" @click="offlineLogin(offlineUsername, offlineUUID)">
         <LogInIcon />
+        创建账户
       </Button>
     </div>
   </Modal>
@@ -62,8 +74,12 @@
       </div>
       <div v-else class="logged-out account">
         <h4>未登录</h4>
-        <Button v-tooltip="'登录'" icon-only color="primary"
-            @click="$refs.chooseAccountTypeModal.show()">
+        <Button
+          v-tooltip="'登录'"
+          icon-only
+          color="primary"
+          @click="$refs.chooseAccountTypeModal.show()"
+        >
           <LogInIcon />
         </Button>
       </div>
@@ -87,16 +103,23 @@
 </template>
 
 <script setup>
-import { DropdownIcon, PlusIcon, TrashIcon, LogInIcon, SSOMicrosoftIcon, ClientIcon } from '@modrinth/assets'
-import { Avatar, Button, Card, Modal } from '@modrinth/ui'
-import { ref, computed, onMounted, onBeforeUnmount, onUnmounted } from 'vue'
 import {
-  users,
-  remove_user,
-  set_default_user,
+  ClientIcon,
+  DropdownIcon,
+  LogInIcon,
+  PlusIcon,
+  SSOMicrosoftIcon,
+  TrashIcon,
+} from '@modrinth/assets'
+import { Avatar, Button, Card, Modal } from '@modrinth/ui'
+import { computed, onBeforeUnmount, onMounted, onUnmounted, ref } from 'vue'
+import {
+  get_default_user,
   login as login_flow,
   offline_login,
-  get_default_user,
+  remove_user,
+  set_default_user,
+  users,
 } from '@/helpers/auth'
 import { handleError } from '@/store/state.js'
 import { trackEvent } from '@/helpers/analytics'
@@ -119,11 +142,13 @@ const chooseOfflineUsernameModal = ref(null)
 const accounts = ref({})
 const defaultUser = ref()
 const offlineUsername = ref('')
+const offlineUUID = ref('')
 
 async function refreshValues() {
   defaultUser.value = await get_default_user().catch(handleError)
   accounts.value = await users().catch(handleError)
 }
+
 defineExpose({
   refreshValues,
 })
@@ -144,6 +169,7 @@ async function setAccount(account) {
 }
 
 async function login() {
+  chooseAccountTypeModal.value.hide()
   const loggedIn = await login_flow().catch(handleSevereError)
 
   if (loggedIn) {
@@ -154,13 +180,19 @@ async function login() {
   mixpanel_track('AccountLogIn')
 }
 
-async function offlineLogin(username) {
-  if (username.length == 0) {
+async function showOfflineLogin() {
+  chooseAccountTypeModal.value.hide()
+  chooseOfflineUsernameModal.value.show()
+}
+
+async function offlineLogin(username, uuid) {
+  username = username.trim()
+  if (username === '') {
     return
   }
 
   chooseOfflineUsernameModal.value.hide()
-  const loggedIn = await offline_login(username).catch(handleSevereError)
+  const loggedIn = await offline_login(username, uuid).catch(handleSevereError)
 
   if (loggedIn) {
     await setAccount(loggedIn)
@@ -469,9 +501,13 @@ onUnmounted(() => {
 
 .choose-offline-username-modal {
   display: flex;
+  flex-direction: column;
   padding: 2rem;
   justify-content: center;
   align-items: center;
-  gap: 0.5rem;
+}
+
+.choose-offline-username-modal > input {
+  width: 25rem;
 }
 </style>

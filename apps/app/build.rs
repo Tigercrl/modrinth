@@ -17,6 +17,7 @@ fn main() {
                         "get_default_user",
                         "set_default_user",
                         "get_users",
+                        "offline_auth_login"
                     ])
                     .default_permission(
                         DefaultPermissionRule::AllowAllCommands,

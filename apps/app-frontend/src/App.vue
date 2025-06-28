@@ -68,6 +68,7 @@ import { hide_ads_window, init_ads_window } from '@/helpers/ads.js'
 import FriendsList from '@/components/ui/friends/FriendsList.vue'
 import { openUrl } from '@tauri-apps/plugin-opener'
 import QuickInstanceSwitcher from '@/components/ui/QuickInstanceSwitcher.vue'
+import ZhAnnouncementModel from '@/components/ui/modal/ZhAnnouncementModel.vue'
 
 const formatRelativeTime = useRelativeTime()
 
@@ -93,6 +94,8 @@ const os = ref('')
 const stateInitialized = ref(false)
 
 const criticalErrorMessage = ref()
+
+const zhAnnouncementMessage = ref()
 
 const isMaximized = ref(false)
 
@@ -191,6 +194,26 @@ async function setupApp() {
   useFetch(`https://modrinth.com/blog/news.json`, 'news', true).then((res) => {
     if (res && res.articles) {
       news.value = res.articles
+    }
+  })
+
+  const onFetchAnnouncement = (res) => {
+    zhAnnouncementMessage.value = res
+  }
+
+  useFetch(
+    `https://raw.bgithub.xyz/Tigercrl/modrinth/refs/heads/zhcn/apps/app-frontend/announcement.json`,
+    'zhAnnouncements',
+    true,
+  ).then((res) => {
+    if (res && res.content) {
+      onFetchAnnouncement(res)
+    } else {
+      useFetch(
+        `https://raw.githubusercontent.com/Tigercrl/modrinth/refs/heads/zhcn/apps/app-frontend/announcement.json`,
+        'zhAnnouncements',
+        true,
+      ).then(onFetchAnnouncement)
     }
   })
 
@@ -301,6 +324,7 @@ onMounted(() => {
 const accounts = ref(null)
 
 command_listener(handleCommand)
+
 async function handleCommand(e) {
   if (!e) return
 
@@ -319,6 +343,7 @@ async function handleCommand(e) {
 }
 
 const updateAvailable = ref(false)
+
 async function checkUpdates() {
   const update = await check()
   updateAvailable.value = !!update
@@ -441,7 +466,10 @@ function handleAuxClick(e) {
             size="32px"
             circle
           />
-          <template #sign-out> <LogOutIcon /> 登出 </template>
+          <template #sign-out>
+            <LogOutIcon />
+            登出
+          </template>
         </OverflowMenu>
       </ButtonStyled>
       <NavButton v-else v-tooltip.right="'登录'" :to="() => signIn()">
@@ -611,7 +639,8 @@ function handleAuxClick(e) {
           class="absolute bottom-[250px] w-full flex justify-center items-center gap-1 px-4 py-3 text-purple font-medium hover:underline z-10"
           target="_blank"
         >
-          <ArrowBigUpDashIcon class="text-2xl" /> 升级到 Modrinth+（汉化已有）
+          <ArrowBigUpDashIcon class="text-2xl" />
+          升级到 Modrinth+（汉化已有）
         </a>
         <PromotionWrapper />
       </template>
@@ -623,6 +652,7 @@ function handleAuxClick(e) {
   <ModInstallModal ref="modInstallModal" />
   <IncompatibilityWarningModal ref="incompatibilityWarningModal" />
   <InstallConfirmModal ref="installConfirmModal" />
+  <ZhAnnouncementModel v-if="zhAnnouncementMessage" :message="zhAnnouncementMessage" />
 </template>
 
 <style lang="scss" scoped>

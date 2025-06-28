@@ -11,8 +11,8 @@
       }
     "
   />
-  <EditServerModal ref="editServerModal" :instance="instance" @submit="editServer"/>
-  <EditWorldModal ref="editWorldModal" :instance="instance" @submit="editWorld"/>
+  <EditServerModal ref="editServerModal" :instance="instance" @submit="editServer" />
+  <EditWorldModal ref="editWorldModal" :instance="instance" @submit="editWorld" />
   <ConfirmModalWrapper
     ref="removeServerModal"
     :title="`你确定要删除${` ${serverToRemove?.name} ` ?? '这个服务器'}吗？`"
@@ -29,7 +29,7 @@
   <div v-if="worlds.length > 0" class="flex flex-col gap-4">
     <div class="flex flex-wrap gap-2 items-center">
       <div class="iconified-input flex-grow">
-        <SearchIcon/>
+        <SearchIcon />
         <input
           v-model="searchFilter"
           type="text"
@@ -38,29 +38,29 @@
           autocomplete="off"
         />
         <Button v-if="searchFilter" class="r-btn" @click="() => (searchFilter = '')">
-          <XIcon/>
+          <XIcon />
         </Button>
       </div>
       <ButtonStyled>
         <button :disabled="refreshingAll" @click="refreshAllWorlds">
           <template v-if="refreshingAll">
-            <SpinnerIcon class="animate-spin"/>
+            <SpinnerIcon class="animate-spin" />
             刷新中...
           </template>
           <template v-else>
-            <UpdatedIcon/>
+            <UpdatedIcon />
             刷新
           </template>
         </button>
       </ButtonStyled>
       <ButtonStyled>
         <button @click="addServerModal?.show()">
-          <PlusIcon/>
+          <PlusIcon />
           添加服务器
         </button>
       </ButtonStyled>
     </div>
-    <FilterBar v-model="filters" :options="filterOptions" show-all-options/>
+    <FilterBar v-model="filters" :options="filterOptions" show-all-options />
     <div class="flex flex-col w-full gap-2">
       <WorldItem
         v-for="world in filteredWorlds"
@@ -93,25 +93,25 @@
   <div v-else class="w-full max-w-[48rem] mx-auto flex flex-col mt-6">
     <RadialHeader class="">
       <div class="flex items-center gap-6 w-[32rem] mx-auto">
-        <img src="@/assets/sad-modrinth-bot.webp" alt="" aria-hidden="true" class="h-24"/>
+        <img src="@/assets/sad-modrinth-bot.webp" alt="" aria-hidden="true" class="h-24" />
         <span class="text-contrast font-bold text-xl"> 此实例当前没有安装任何世界 </span>
       </div>
     </RadialHeader>
     <div class="flex gap-2 mt-4 mx-auto">
       <ButtonStyled>
         <button @click="addServerModal?.show()">
-          <PlusIcon aria-hidden="true"/>
+          <PlusIcon aria-hidden="true" />
           添加服务器
         </button>
       </ButtonStyled>
       <ButtonStyled>
         <button :disabled="refreshingAll" @click="refreshAllWorlds">
           <template v-if="refreshingAll">
-            <SpinnerIcon aria-hidden="true" class="animate-spin"/>
+            <SpinnerIcon aria-hidden="true" class="animate-spin" />
             刷新中...
           </template>
           <template v-else>
-            <UpdatedIcon aria-hidden="true"/>
+            <UpdatedIcon aria-hidden="true" />
             刷新
           </template>
         </button>
@@ -120,9 +120,9 @@
   </div>
 </template>
 <script setup lang="ts">
-import {computed, onUnmounted, ref, watch} from 'vue'
-import {useRoute} from 'vue-router'
-import type {GameInstance} from '@/helpers/types'
+import { computed, onUnmounted, ref, watch } from 'vue'
+import { useRoute } from 'vue-router'
+import type { GameInstance } from '@/helpers/types'
 import {
   Button,
   ButtonStyled,
@@ -132,7 +132,7 @@ import {
   type GameVersion,
   RadialHeader,
 } from '@modrinth/ui'
-import {PlusIcon, SearchIcon, SpinnerIcon, UpdatedIcon, XIcon} from '@modrinth/assets'
+import { PlusIcon, SearchIcon, SpinnerIcon, UpdatedIcon, XIcon } from '@modrinth/assets'
 import {
   delete_world,
   get_profile_protocol_version,
@@ -147,13 +147,9 @@ import {
   remove_server_from_profile,
   type ServerData,
   type ServerWorld,
+  showWorldInFolder,
   type SingleplayerWorld,
   sortWorlds,
-  refreshServers,
-  hasQuickPlaySupport,
-  refreshWorlds,
-  handleDefaultProfileUpdateEvent,
-  showWorldInFolder,
 } from '@/helpers/worlds.ts'
 import AddServerModal from '@/components/ui/world/modal/AddServerModal.vue'
 import EditServerModal from '@/components/ui/world/modal/EditServerModal.vue'
@@ -161,12 +157,12 @@ import EditWorldModal from '@/components/ui/world/modal/EditSingleplayerWorldMod
 import WorldItem from '@/components/ui/world/WorldItem.vue'
 
 import ConfirmModalWrapper from '@/components/ui/modal/ConfirmModalWrapper.vue'
-import {handleError} from '@/store/notifications'
+import { handleError } from '@/store/notifications'
 import type ContextMenu from '@/components/ui/ContextMenu.vue'
-import type {Version} from '@modrinth/utils'
-import {profile_listener} from '@/helpers/events'
-import {get_game_versions} from '@/helpers/tags'
-import {defineMessages} from '@vintl/vintl'
+import type { Version } from '@modrinth/utils'
+import { profile_listener } from '@/helpers/events'
+import { get_game_versions } from '@/helpers/tags'
+import { defineMessages } from '@vintl/vintl'
 
 const route = useRoute()
 

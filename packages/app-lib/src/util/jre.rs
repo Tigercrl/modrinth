@@ -349,7 +349,7 @@ pub enum JREError {
     #[error("Invalid JRE version string: {0}")]
     InvalidJREVersion(String),
 
-    #[error("Parsing error: {0}")]
+    #[error("解析错误：{0}")]
     ParseError(#[from] std::num::ParseIntError),
 
     #[error("Join error: {0}")]
@@ -358,6 +358,6 @@ pub enum JREError {
     #[error("No stored tag for Minecraft version {0}")]
     NoMinecraftVersionFound(String),
 
-    #[error("Error getting launcher state")]
+    #[error("无法获取启动器状态")]
     StateError,
 }

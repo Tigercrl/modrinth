@@ -57,7 +57,6 @@ import { get_opening_command, initialize_state } from '@/helpers/state'
 import { saveWindowState, StateFlags } from '@tauri-apps/plugin-window-state'
 import { renderString } from '@modrinth/utils'
 import { useFetch } from '@/helpers/fetch.js'
-import { check } from '@tauri-apps/plugin-updater'
 import NavButton from '@/components/ui/NavButton.vue'
 import { get as getCreds, login, logout } from '@/helpers/mr_auth.js'
 import { get_user } from '@/helpers/cache.js'
@@ -218,7 +217,6 @@ async function setupApp() {
   })
 
   get_opening_command().then(handleCommand)
-  checkUpdates()
   fetchCredentials()
 }
 
@@ -342,20 +340,6 @@ async function handleCommand(e) {
   }
 }
 
-const updateAvailable = ref(false)
-
-async function checkUpdates() {
-  const update = await check()
-  updateAvailable.value = !!update
-
-  setTimeout(
-    () => {
-      checkUpdates()
-    },
-    5 * 1000 * 60,
-  )
-}
-
 function handleClick(e) {
   let target = e.target
   while (target != null) {
@@ -443,9 +427,6 @@ function handleAuxClick(e) {
         <PlusIcon />
       </NavButton>
       <div class="flex flex-grow"></div>
-      <NavButton v-if="updateAvailable" v-tooltip.right="'安装更新'" :to="() => restartApp()">
-        <DownloadIcon />
-      </NavButton>
       <NavButton v-tooltip.right="'设置'" :to="() => $refs.settingsModal.show()">
         <SettingsIcon />
       </NavButton>

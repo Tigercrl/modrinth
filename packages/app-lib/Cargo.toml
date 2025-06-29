@@ -1,6 +1,6 @@
 [package]
 name = "theseus"
-version = "0.9.5-b"
+version = "0.9.5-c"
 authors = ["Jai A <jaiagr+gpg@pm.me>"]
 edition.workspace = true
 

@@ -21,14 +21,14 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        platform: [macos-latest, windows-latest, ubuntu-22.04]
+        platform: [ macos-latest, windows-latest, ubuntu-22.04 ]
 
     runs-on: ${{ matrix.platform }}
 
     steps:
       - uses: actions/checkout@v4
 
-      - name: Rust setup (mac)
+      - name: Rust setup (macOS)
         if: startsWith(matrix.platform, 'macos')
         uses: actions-rust-lang/setup-rust-toolchain@v1
         with:
@@ -104,14 +104,19 @@ jobs:
       - name: Install frontend dependencies
         run: pnpm install
 
-      - name: build app (macos)
+      - name: build app (macOS)
         run: pnpm --filter=@modrinth/app run tauri build --target universal-apple-darwin --config tauri-release.conf.json
         if: startsWith(matrix.platform, 'macos')
 
-      - name: build app
-        run: pnpm --filter=@modrinth/app run tauri build --config "tauri-release.conf.json"
-        id: build_os
-        if: "!startsWith(matrix.platform, 'macos')"
+      - name: build app (Linux)
+        run: pnpm --filter=@modrinth/app run tauri build --config tauri-release.conf.json
+        if: startsWith(matrix.platform, 'ubuntu')
+
+      - name: build app (Windows)
+        run: |
+          $env:JAVA_HOME = "$env:JAVA_HOME_11_X64"
+          pnpm --filter=@modrinth/app run tauri build --config tauri-release.conf.json --verbose
+        if: startsWith(matrix.platform, 'windows')
 
       - name: upload ${{ matrix.platform }}
         uses: actions/upload-artifact@v4

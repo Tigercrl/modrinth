@@ -6,14 +6,7 @@
     :class="{ expanded: mode === 'expanded' }"
     @click="toggleMenu"
   >
-    <Avatar
-      size="36px"
-      :src="
-        selectedAccount && selectedAccount.access_token !== 'offline'
-          ? `https://minotar.net/helm/${selectedAccount.id}/128.png`
-          : 'https://launcher-files.modrinth.com/assets/steve_head.png'
-      "
-    />
+    <Avatar size="36px" :src="getAvatar(selectedAccount)" />
     <div class="flex flex-col w-full">
       <span>{{ selectedAccount ? selectedAccount.username : '请选择账户' }}</span>
       <span class="text-secondary text-xs">{{
@@ -63,7 +56,7 @@
       :class="{ expanded: mode === 'expanded', isolated: mode === 'isolated' }"
     >
       <div v-if="selectedAccount" class="selected account">
-        <Avatar size="xs" :src="`https://minotar.net/helm/${selectedAccount.id}/128.png`" />
+        <Avatar size="xs" :src="getAvatar(selectedAccount)" />
         <div>
           <h4>{{ selectedAccount.username }}</h4>
           <p>已选</p>
@@ -86,7 +79,7 @@
       <div v-if="displayAccounts.length > 0" class="account-group">
         <div v-for="account in displayAccounts" :key="account.id" class="account-row">
           <Button class="option account" @click="setAccount(account)">
-            <Avatar :src="`https://minotar.net/helm/${account.id}/128.png`" class="icon" />
+            <Avatar :src="getAvatar(account)" class="icon" />
             <p>{{ account.username }}</p>
           </Button>
           <Button v-tooltip="'登出'" icon-only @click="logout(account.id)">
@@ -147,6 +140,12 @@ const offlineUUID = ref('')
 async function refreshValues() {
   defaultUser.value = await get_default_user().catch(handleError)
   accounts.value = await users().catch(handleError)
+}
+
+function getAvatar(account) {
+  return account && account.access_token !== 'offline'
+    ? `https://minotar.net/helm/${account.id}/128.png`
+    : 'https://launcher-files.modrinth.com/assets/steve_head.png'
 }
 
 defineExpose({

@@ -236,7 +236,7 @@ impl DirectoryInfo {
                         new: move_dir.clone(),
                     },
                     100.0,
-                    "Moving launcher directory",
+                    "移动启动器文件夹中",
                 )
                 .await?;
 

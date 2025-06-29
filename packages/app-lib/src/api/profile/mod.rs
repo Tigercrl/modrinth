@@ -262,7 +262,7 @@ pub async fn update_all_projects(
                 profile_name: profile.name.clone(),
             },
             100.0,
-            "Updating profile",
+            "更新实例中",
         )
         .await?;
 
@@ -515,7 +515,7 @@ pub async fn export_mrpack(
             profile_name: profile.name.clone(),
         },
         path_list.len() as f64,
-        "Exporting profile to .mrpack",
+        "导出 .mrpack 文件中",
     )
     .await?;
 

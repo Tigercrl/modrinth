@@ -44,17 +44,17 @@ export default new createRouter({
       children: [
         {
           path: '',
-          name: '概览',
+          name: '实例管理概览',
           component: Library.Overview,
         },
         {
           path: 'downloaded',
-          name: '已下载',
+          name: '实例管理已下载',
           component: Library.Downloaded,
         },
         {
           path: 'custom',
-          name: '自定义',
+          name: '实例管理自定义',
           component: Library.Custom,
         },
       ],
@@ -67,7 +67,7 @@ export default new createRouter({
       children: [
         {
           path: '',
-          name: '简介',
+          name: '资源简介',
           component: Project.Description,
           meta: {
             useContext: true,
@@ -76,7 +76,7 @@ export default new createRouter({
         },
         {
           path: 'versions',
-          name: '版本列表',
+          name: '资源版本列表',
           component: Project.Versions,
           meta: {
             useContext: true,
@@ -85,7 +85,7 @@ export default new createRouter({
         },
         {
           path: 'version/:version',
-          name: '版本',
+          name: '资源版本',
           component: Project.Version,
           props: true,
           meta: {
@@ -99,7 +99,7 @@ export default new createRouter({
         },
         {
           path: 'gallery',
-          name: '画廊',
+          name: '资源画廊',
           component: Project.Gallery,
           meta: {
             useContext: true,
@@ -125,7 +125,7 @@ export default new createRouter({
         // },
         {
           path: 'worlds',
-          name: '世界',
+          name: '实例世界',
           component: Instance.Worlds,
           meta: {
             useRootContext: true,
@@ -134,7 +134,7 @@ export default new createRouter({
         },
         {
           path: '',
-          name: '资源',
+          name: '实例资源',
           component: Instance.Mods,
           meta: {
             useRootContext: true,
@@ -143,7 +143,7 @@ export default new createRouter({
         },
         {
           path: 'projects/:type',
-          name: '资源筛选',
+          name: '实例资源筛选',
           component: Instance.Mods,
           meta: {
             useRootContext: true,
@@ -152,7 +152,7 @@ export default new createRouter({
         },
         {
           path: 'logs',
-          name: '日志',
+          name: '实例日志',
           component: Instance.Logs,
           meta: {
             useRootContext: true,

@@ -202,7 +202,7 @@ pub async fn generate_pack_from_version_id(
                 pack_version: version_id.clone(),
             },
             100.0,
-            "Downloading pack file",
+            "下载资源中",
         )
         .await?
     };

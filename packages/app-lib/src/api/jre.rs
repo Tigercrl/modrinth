@@ -59,7 +59,7 @@ pub async fn auto_install_java(java_version: u32) -> crate::Result<PathBuf> {
             version: java_version,
         },
         100.0,
-        "Downloading java version",
+        "下载 Java 中",
     )
     .await?;
 

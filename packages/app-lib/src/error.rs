@@ -111,7 +111,7 @@ pub enum ErrorKind {
     OtherError(String),
 
     #[cfg(feature = "tauri")]
-    #[error("Tauri error：{0}")]
+    #[error("Tauri 错误：{0}")]
     TauriError(#[from] tauri::Error),
 
     #[error("无法与数据库进行交互：{0}")]

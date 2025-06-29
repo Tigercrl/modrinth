@@ -4,7 +4,6 @@ import { RouterView, useRoute, useRouter } from 'vue-router'
 import {
   ArrowBigUpDashIcon,
   CompassIcon,
-  DownloadIcon,
   HomeIcon,
   LeftArrowIcon,
   LibraryIcon,
@@ -40,7 +39,7 @@ import ModrinthLoadingIndicator from '@/components/LoadingIndicatorBar.vue'
 import { handleError, useNotifications } from '@/store/notifications.js'
 import { command_listener, warning_listener } from '@/helpers/events.js'
 import { type } from '@tauri-apps/plugin-os'
-import { getOS, isDev, restartApp } from '@/helpers/utils.js'
+import { getOS, isDev } from '@/helpers/utils.js'
 import { debugAnalytics, initAnalytics, optOutAnalytics, trackEvent } from '@/helpers/analytics'
 import { getCurrentWindow } from '@tauri-apps/api/window'
 import { getVersion } from '@tauri-apps/api/app'
@@ -68,6 +67,7 @@ import FriendsList from '@/components/ui/friends/FriendsList.vue'
 import { openUrl } from '@tauri-apps/plugin-opener'
 import QuickInstanceSwitcher from '@/components/ui/QuickInstanceSwitcher.vue'
 import ZhAnnouncementModel from '@/components/ui/modal/ZhAnnouncementModel.vue'
+import ZhUpdateModel from '@/components/ui/modal/ZhUpdateModel.vue'
 
 const formatRelativeTime = useRelativeTime()
 
@@ -95,6 +95,7 @@ const stateInitialized = ref(false)
 const criticalErrorMessage = ref()
 
 const zhAnnouncementMessage = ref()
+const zhUpdateMessage = ref()
 
 const isMaximized = ref(false)
 
@@ -196,23 +197,19 @@ async function setupApp() {
     }
   })
 
-  const onFetchAnnouncement = (res) => {
-    zhAnnouncementMessage.value = res
-  }
-
   useFetch(
-    `https://raw.bgithub.xyz/Tigercrl/modrinth/refs/heads/zhcn/apps/app-frontend/announcement.json`,
+    `https://modrinthapp.tigercrl.top/announcements.json`,
     'zhAnnouncements',
     true,
   ).then((res) => {
-    if (res && res.content) {
-      onFetchAnnouncement(res)
-    } else {
-      useFetch(
-        `https://raw.githubusercontent.com/Tigercrl/modrinth/refs/heads/zhcn/apps/app-frontend/announcement.json`,
-        'zhAnnouncements',
-        true,
-      ).then(onFetchAnnouncement)
+    if (res) {
+      zhAnnouncementMessage.value = res
+    }
+  })
+
+  useFetch(`https://modrinth.tigercrl.top/launcher/updates.json`, 'updates', true).then((res) => {
+    if (res) {
+      zhUpdateMessage.value = res
     }
   })
 
@@ -633,6 +630,7 @@ function handleAuxClick(e) {
   <ModInstallModal ref="modInstallModal" />
   <IncompatibilityWarningModal ref="incompatibilityWarningModal" />
   <InstallConfirmModal ref="installConfirmModal" />
+  <ZhUpdateModel v-if="zhUpdateMessage" :message="zhUpdateMessage" />
   <ZhAnnouncementModel v-if="zhAnnouncementMessage" :message="zhAnnouncementMessage" />
 </template>
 

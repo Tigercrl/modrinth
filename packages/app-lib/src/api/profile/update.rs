@@ -133,7 +133,7 @@ async fn replace_managed_modrinth(
                 pack_version: version_id.clone(),
             },
             200.0, // These two downloads will share the same loading bar
-            "Downloading pack file",
+            "下载资源中",
         )
         .await?;
 

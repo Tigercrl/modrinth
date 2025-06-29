@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { renderString } from '@modrinth/utils'
+import { renderHighlightedString } from '@modrinth/utils'
 import { onMounted, ref } from 'vue'
 import { ButtonStyled, NewModal } from '@modrinth/ui'
 
@@ -33,13 +33,13 @@ onMounted(() => {
       <span class="font-extrabold text-contrast text-lg">汉化版公告</span>
     </template>
     <div class="flex flex-col gap-4">
-      <div class="markdown-body max-w-[35rem]" v-html="renderString(message.content)" />
+      <div class="markdown-body w-[35rem] mb-4" v-html="renderHighlightedString(message.content)" />
       <div class="flex gap-2">
         <ButtonStyled>
           <button @click="modal.hide()">关闭</button>
         </ButtonStyled>
         <ButtonStyled>
-          <button @click="ignore">关闭并不再显示</button>
+          <button v-if="message.canIgnore" @click="ignore">关闭并不再显示</button>
         </ButtonStyled>
       </div>
     </div>

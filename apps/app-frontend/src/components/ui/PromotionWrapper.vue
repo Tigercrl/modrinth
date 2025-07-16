@@ -32,8 +32,18 @@ function updateAdPosition() {
 
 <template>
   <div ref="adsWrapper" class="ad-parent relative flex w-full justify-center cursor-pointer bg-bg">
-    <div class="flex max-h-[250px] min-h-[250px] min-w-[300px] max-w-[300px] flex-col gap-4 p-6">
-      <p class="m-0 text-2xl font-bold text-contrast">75% 的广告收入用于创作者激励</p>
-    </div>
+    <!--  此处广告已被删 -->
   </div>
 </template>
+<style lang="scss" scoped>
+.light,
+.light-mode {
+  .dark-image {
+    display: none;
+  }
+
+  .light-image {
+    display: block;
+  }
+}
+</style>

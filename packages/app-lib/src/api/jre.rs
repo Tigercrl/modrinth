@@ -135,7 +135,7 @@ pub async fn auto_install_java(java_version: u32) -> crate::Result<PathBuf> {
         #[cfg(target_os = "macos")]
         {
             base_path = base_path
-                .join(format!("zulu-{}.jre", java_version))
+                .join(format!("zulu-{java_version}.jre"))
                 .join("Contents")
                 .join("Home")
                 .join("bin")
@@ -166,10 +166,18 @@ pub async fn test_jre(
     path: PathBuf,
     major_version: u32,
 ) -> crate::Result<bool> {
-    let Ok(jre) = jre::check_java_at_filepath(&path).await else {
-        return Ok(false);
+    let jre = match jre::check_java_at_filepath(&path).await {
+        Ok(jre) => jre,
+        Err(e) => {
+            tracing::warn!("Invalid Java at {}: {e}", path.display());
+            return Ok(false);
+        }
     };
     let version = extract_java_version(&jre.version)?;
+    tracing::info!(
+        "Expected Java version {major_version}, and found {version} at {}",
+        path.display()
+    );
     Ok(version == major_version)
 }
 

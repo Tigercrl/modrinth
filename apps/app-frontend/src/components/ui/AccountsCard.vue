@@ -6,12 +6,15 @@
     :class="{ expanded: mode === 'expanded' }"
     @click="toggleMenu"
   >
-    <Avatar size="36px" :src="getAvatar(selectedAccount)" />
+    <Avatar
+      size="36px"
+      :src="
+        selectedAccount ? avatarUrl : 'https://launcher-files.modrinth.com/assets/steve_head.png'
+      "
+    />
     <div class="flex flex-col w-full">
-      <span>{{ selectedAccount ? selectedAccount.username : '请选择账户' }}</span>
-      <span class="text-secondary text-xs">{{
-        selectedAccount?.access_token !== 'offline' ? '微软账户' : '离线账户'
-      }}</span>
+      <span>{{ selectedAccount ? selectedAccount.profile.name : 'Select account' }}</span>
+      <span class="text-secondary text-xs">Minecraft account</span>
     </div>
     <DropdownIcon class="w-5 h-5 shrink-0" />
   </div>
@@ -56,12 +59,17 @@
       :class="{ expanded: mode === 'expanded', isolated: mode === 'isolated' }"
     >
       <div v-if="selectedAccount" class="selected account">
-        <Avatar size="xs" :src="getAvatar(selectedAccount)" />
+        <Avatar size="xs" :src="avatarUrl" />
         <div>
-          <h4>{{ selectedAccount.username }}</h4>
+          <h4>{{ selectedAccount.profile.name }}</h4>
           <p>已选</p>
         </div>
-        <Button v-tooltip="'登出'" icon-only color="raised" @click="logout(selectedAccount.id)">
+        <Button
+          v-tooltip="'登出'"
+          icon-only
+          color="raised"
+          @click="logout(selectedAccount.profile.id)"
+        >
           <TrashIcon />
         </Button>
       </div>
@@ -69,20 +77,22 @@
         <h4>未登录</h4>
         <Button
           v-tooltip="'登录'"
+          :disabled="loginDisabled"
           icon-only
           color="primary"
-          @click="$refs.chooseAccountTypeModal.show()"
+          @click="login()"
         >
-          <LogInIcon />
+          <LogInIcon v-if="!loginDisabled" />
+          <SpinnerIcon v-else class="animate-spin" />
         </Button>
       </div>
       <div v-if="displayAccounts.length > 0" class="account-group">
-        <div v-for="account in displayAccounts" :key="account.id" class="account-row">
+        <div v-for="account in displayAccounts" :key="account.profile.id" class="account-row">
           <Button class="option account" @click="setAccount(account)">
-            <Avatar :src="getAvatar(account)" class="icon" />
-            <p>{{ account.username }}</p>
+            <Avatar :src="getAccountAvatarUrl(account)" class="icon" />
+            <p>{{ account.profile.name }}</p>
           </Button>
-          <Button v-tooltip="'登出'" icon-only @click="logout(account.id)">
+          <Button v-tooltip="'登出'" icon-only @click="logout(account.profile.id)">
             <TrashIcon />
           </Button>
         </div>
@@ -96,6 +106,9 @@
 </template>
 
 <script setup>
+import { DropdownIcon, PlusIcon, TrashIcon, LogInIcon, SpinnerIcon } from '@modrinth/assets'
+import { Avatar, Button, Card } from '@modrinth/ui'
+import { ref, computed, onMounted, onBeforeUnmount, onUnmounted } from 'vue'
 import {
   ClientIcon,
   DropdownIcon,
@@ -118,6 +131,8 @@ import { handleError } from '@/store/state.js'
 import { trackEvent } from '@/helpers/analytics'
 import { process_listener } from '@/helpers/events'
 import { handleSevereError } from '@/store/error.js'
+import { get_available_skins } from '@/helpers/skins'
+import { getPlayerHeadUrl } from '@/helpers/rendering/batch-skin-renderer.ts'
 
 defineProps({
   mode: {
@@ -133,13 +148,32 @@ const chooseAccountTypeModal = ref(null)
 const chooseOfflineUsernameModal = ref(null)
 
 const accounts = ref({})
+const loginDisabled = ref(false)
 const defaultUser = ref()
 const offlineUsername = ref('')
 const offlineUUID = ref('')
+const equippedSkin = ref(null)
+const headUrlCache = ref(new Map())
 
 async function refreshValues() {
   defaultUser.value = await get_default_user().catch(handleError)
   accounts.value = await users().catch(handleError)
+
+  try {
+    const skins = await get_available_skins()
+    equippedSkin.value = skins.find((skin) => skin.is_equipped)
+
+    if (equippedSkin.value) {
+      try {
+        const headUrl = await getPlayerHeadUrl(equippedSkin.value)
+        headUrlCache.value.set(equippedSkin.value.texture_key, headUrl)
+      } catch (error) {
+        console.warn('Failed to get head render for equipped skin:', error)
+      }
+    }
+  } catch {
+    equippedSkin.value = null
+  }
 }
 
 function getAvatar(account) {
@@ -148,26 +182,61 @@ function getAvatar(account) {
     : 'https://launcher-files.modrinth.com/assets/steve_head.png'
 }
 
+
+function setLoginDisabled(value) {
+  loginDisabled.value = value
+}
+
 defineExpose({
   refreshValues,
+  setLoginDisabled,
+  loginDisabled,
 })
 await refreshValues()
 
 const displayAccounts = computed(() =>
-  accounts.value.filter((account) => defaultUser.value !== account.id),
+  accounts.value.filter((account) => defaultUser.value !== account.profile.id),
 )
 
+const avatarUrl = computed(() => {
+  if (equippedSkin.value?.texture_key) {
+    const cachedUrl = headUrlCache.value.get(equippedSkin.value.texture_key)
+    if (cachedUrl) {
+      return cachedUrl
+    }
+    return `https://mc-heads.net/avatar/${equippedSkin.value.texture_key}/128`
+  }
+  if (selectedAccount.value?.profile?.id) {
+    return `https://mc-heads.net/avatar/${selectedAccount.value.profile.id}/128`
+  }
+  return 'https://launcher-files.modrinth.com/assets/steve_head.png'
+})
+
+function getAccountAvatarUrl(account) {
+  if (
+    account.profile.id === selectedAccount.value?.profile?.id &&
+    equippedSkin.value?.texture_key
+  ) {
+    const cachedUrl = headUrlCache.value.get(equippedSkin.value.texture_key)
+    if (cachedUrl) {
+      return cachedUrl
+    }
+  }
+  return `https://mc-heads.net/avatar/${account.profile.id}/128`
+}
+
 const selectedAccount = computed(() =>
-  accounts.value.find((account) => account.id === defaultUser.value),
+  accounts.value.find((account) => account.profile.id === defaultUser.value),
 )
 
 async function setAccount(account) {
-  defaultUser.value = account.id
-  await set_default_user(account.id).catch(handleError)
+  defaultUser.value = account.profile.id
+  await set_default_user(account.profile.id).catch(handleError)
   emit('change')
 }
 
 async function login() {
+  loginDisabled.value = true
   chooseAccountTypeModal.value.hide()
   const loggedIn = await login_flow().catch(handleSevereError)
 
@@ -199,6 +268,7 @@ async function offlineLogin(username, uuid) {
   }
 
   trackEvent('AccountLogIn')
+  loginDisabled.value = false
 }
 
 const logout = async (id) => {

@@ -114,7 +114,7 @@ const messages = defineMessages({
   },
   cantConnect: {
     id: 'instance.worlds.cant_connect',
-    defaultMessage: "无法连接至服务器",
+    defaultMessage: '无法连接至服务器',
   },
   aMinecraftServer: {
     id: 'instance.worlds.a_minecraft_server',
@@ -127,6 +127,14 @@ const messages = defineMessages({
   gameAlreadyOpen: {
     id: 'instance.worlds.game_already_open',
     defaultMessage: '实例已启动',
+  },
+  noContact: {
+    id: 'instance.worlds.no_contact',
+    defaultMessage: '无法连接至服务器',
+  },
+  incompatibleServer: {
+    id: 'instance.worlds.incompatible_server',
+    defaultMessage: '服务器版本不兼容',
   },
   copyAddress: {
     id: 'instance.worlds.copy_address',
@@ -201,9 +209,7 @@ const messages = defineMessages({
             <template v-else-if="serverStatus">
               <template v-if="serverIncompatible">
                 <IssuesIcon class="shrink-0 text-orange" aria-hidden="true" />
-                <span class="text-orange">
-                  不兼容的版本 {{ serverStatus.version?.name }}
-                </span>
+                <span class="text-orange"> 不兼容的版本 {{ serverStatus.version?.name }} </span>
               </template>
               <template v-else>
                 <SignalIcon
@@ -231,7 +237,8 @@ const messages = defineMessages({
               </template>
             </template>
             <template v-else>
-              <NoSignalIcon aria-hidden="true" stroke-width="3px" class="shrink-0" /> 离线
+              <NoSignalIcon aria-hidden="true" stroke-width="3px" class="shrink-0" />
+              离线
             </template>
           </div>
         </div>
@@ -250,7 +257,7 @@ const messages = defineMessages({
                 })
               }}
             </template>
-            <template v-else> 暂未游玩过 </template>
+            <template v-else> 暂未游玩过</template>
           </div>
           <template v-if="instancePath">
             •
@@ -302,39 +309,33 @@ const messages = defineMessages({
         </template>
       </div>
       <div class="flex gap-1 justify-end smart-clickable:allow-pointer-events">
-        <template v-if="world.type === 'singleplayer' || serverStatus">
-          <ButtonStyled
-            v-if="(playingWorld || (locked && playingInstance)) && !startingInstance"
-            color="red"
-          >
-            <button @click="emit('stop')">
-              <StopCircleIcon aria-hidden="true" />
-              {{ formatMessage(commonMessages.stopButton) }}
-            </button>
-          </ButtonStyled>
-          <ButtonStyled v-else>
-            <button
-              v-tooltip="
-                serverIncompatible
-                  ? '服务器版本不兼容'
+        <ButtonStyled
+          v-if="(playingWorld || (locked && playingInstance)) && !startingInstance"
+          color="red"
+        >
+          <button @click="emit('stop')">
+            <StopCircleIcon aria-hidden="true" />
+            {{ formatMessage(commonMessages.stopButton) }}
+          </button>
+        </ButtonStyled>
+        <ButtonStyled v-else>
+          <button
+            v-tooltip="
+              !serverStatus
+                ? formatMessage(messages.noContact)
+                : serverIncompatible
+                  ? formatMessage(messages.incompatibleServer)
                   : !supportsQuickPlay
                     ? formatMessage(messages.noQuickPlay)
                     : playingOtherWorld || locked
                       ? formatMessage(messages.gameAlreadyOpen)
                       : null
-              "
-              :disabled="!supportsQuickPlay || playingOtherWorld || startingInstance"
-              @click="emit('play')"
-            >
-              <SpinnerIcon v-if="startingInstance && playingWorld" class="animate-spin" />
-              <PlayIcon v-else aria-hidden="true" />
-              {{ formatMessage(commonMessages.playButton) }}
-            </button>
-          </ButtonStyled>
-        </template>
-        <ButtonStyled v-else>
-          <button class="invisible">
-            <PlayIcon aria-hidden="true" />
+            "
+            :disabled="!supportsQuickPlay || playingOtherWorld || startingInstance"
+            @click="emit('play')"
+          >
+            <SpinnerIcon v-if="startingInstance && playingWorld" class="animate-spin" />
+            <PlayIcon v-else aria-hidden="true" />
             {{ formatMessage(commonMessages.playButton) }}
           </button>
         </ButtonStyled>
@@ -426,17 +427,20 @@ const messages = defineMessages({
               {{ formatMessage(messages.viewInstance) }}
             </template>
             <template #edit>
-              <EditIcon aria-hidden="true" /> {{ formatMessage(commonMessages.editButton) }}
+              <EditIcon aria-hidden="true" />
+              {{ formatMessage(commonMessages.editButton) }}
             </template>
             <template #open-folder>
               <FolderOpenIcon aria-hidden="true" />
               {{ formatMessage(commonMessages.openFolderButton) }}
             </template>
             <template #copy-address>
-              <ClipboardCopyIcon aria-hidden="true" /> {{ formatMessage(messages.copyAddress) }}
+              <ClipboardCopyIcon aria-hidden="true" />
+              {{ formatMessage(messages.copyAddress) }}
             </template>
             <template #refresh>
-              <UpdatedIcon aria-hidden="true" /> {{ formatMessage(commonMessages.refreshButton) }}
+              <UpdatedIcon aria-hidden="true" />
+              {{ formatMessage(commonMessages.refreshButton) }}
             </template>
             <template #dont-show-on-home>
               <XIcon aria-hidden="true" />

@@ -8,11 +8,11 @@
         :format-label="(x) => (x === 'all' ? 'All' : formatProjectType(x) + 's')"
       />
       <button v-if="oldestFirst" class="iconified-button push-right" @click="oldestFirst = false">
-        <SortDescendingIcon />
+        <SortDescIcon />
         Sorting by oldest
       </button>
       <button v-else class="iconified-button push-right" @click="oldestFirst = true">
-        <SortAscendingIcon />
+        <SortAscIcon />
         Sorting by newest
       </button>
       <button
@@ -109,8 +109,8 @@ import { Avatar, ProjectStatusBadge, Chips, useRelativeTime } from "@modrinth/ui
 import {
   UnknownIcon,
   EyeIcon,
-  SortAscendingIcon,
-  SortDescendingIcon,
+  SortAscIcon,
+  SortDescIcon,
   IssuesIcon,
   ScaleIcon,
 } from "@modrinth/assets";
@@ -212,6 +212,10 @@ if (projects.value) {
 
 async function goToProjects() {
   const project = projectsFiltered.value[0];
+  const remainingProjectIds = projectsFiltered.value.slice(1).map((p) => p.id);
+
+  localStorage.setItem("moderation-future-projects", JSON.stringify(remainingProjectIds));
+
   await router.push({
     name: "type-id",
     params: {
@@ -220,7 +224,6 @@ async function goToProjects() {
     },
     state: {
       showChecklist: true,
-      projects: projectsFiltered.value.slice(1).map((x) => (x.slug ? x.slug : x.id)),
     },
   });
 }

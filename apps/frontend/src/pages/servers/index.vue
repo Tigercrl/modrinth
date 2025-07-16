@@ -427,11 +427,8 @@
                 Do Modrinth Servers have DDoS protection?
               </summary>
               <p class="m-0 ml-6 leading-[160%]">
-                Yes. All Modrinth Servers come with DDoS protection powered by
-                <a href="https://us.ovhcloud.com/security/anti-ddos/" target="_blank"
-                  >OVHcloud® Anti-DDoS infrastructure</a
-                >
-                which has over 17Tbps capacity. Your server is safe on Modrinth.
+                Yes. All Modrinth Servers come with DDoS protection, with up to 17Tbps capacity in
+                some locations.
               </p>
             </details>
 
@@ -443,8 +440,9 @@
                 Where are Modrinth Servers located? Can I choose a region?
               </summary>
               <p class="m-0 ml-6 leading-[160%]">
-                We have servers in both North America in Vint Hill, Virginia, and Europe in Limburg,
-                Germany. More regions to come in the future!
+                We have servers available in North America and Europe at the moment that you can
+                choose upon purchase. More regions to come in the future! If you'd like to switch
+                your region, please contact support.
               </p>
             </details>
 
@@ -719,31 +717,32 @@ async function fetchCapacityStatuses(customProduct = null) {
             product.metadata.ram < min.metadata.ram ? product : min,
           ),
         ];
-    const capacityChecks = productsToCheck.map((product) =>
-      useServersFetch("stock", {
-        method: "POST",
-        body: {
-          cpu: product.metadata.cpu,
-          memory_mb: product.metadata.ram,
-          swap_mb: product.metadata.swap,
-          storage_mb: product.metadata.storage,
-        },
-        bypassAuth: true,
-      }),
-    );
-
-    const results = await Promise.all(capacityChecks);
+    const capacityChecks = [];
+    for (const product of productsToCheck) {
+      capacityChecks.push(
+        useServersFetch("stock", {
+          method: "POST",
+          body: {
+            cpu: product.metadata.cpu,
+            memory_mb: product.metadata.ram,
+            swap_mb: product.metadata.swap,
+            storage_mb: product.metadata.storage,
+          },
+          bypassAuth: true,
+        }),
+      );
+    }
 
     if (customProduct?.metadata) {
       return {
-        custom: results[0],
+        custom: await capacityChecks[0],
       };
     } else {
       return {
-        small: results[0],
-        medium: results[1],
-        large: results[2],
-        custom: results[3],
+        small: await capacityChecks[0],
+        medium: await capacityChecks[1],
+        large: await capacityChecks[2],
+        custom: await capacityChecks[3],
       };
     }
   } catch (error) {
@@ -760,6 +759,11 @@ async function fetchCapacityStatuses(customProduct = null) {
 const { data: capacityStatuses, refresh: refreshCapacity } = await useAsyncData(
   "ServerCapacityAll",
   fetchCapacityStatuses,
+  {
+    getCachedData() {
+      return null; // Dont cache stock data.
+    },
+  },
 );
 
 const isSmallAtCapacity = computed(() => capacityStatuses.value?.small?.available === 0);

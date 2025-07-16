@@ -619,6 +619,12 @@ pub async fn launch_minecraft(
         .into_iter(),
     );
 
+    // The java launcher requires access to java.lang.reflect in order to force access in to
+    // whatever module the main class is in
+    if java_version.parsed_version >= 9 {
+        command.arg("--add-opens=java.base/java.lang.reflect=ALL-UNNAMED");
+    }
+
     // The java launcher code requires internal JDK code in Java 25+ in order to support JEP 512
     if java_version.parsed_version >= 25 {
         command.arg("--add-opens=jdk.internal/jdk.internal.misc=ALL-UNNAMED");
@@ -641,7 +647,8 @@ pub async fn launch_minecraft(
                 *resolution,
                 &java_version.architecture,
                 quick_play_type,
-            )?
+            )
+            .await?
             .into_iter(),
         )
         .current_dir(instance_path.clone());
@@ -651,7 +658,7 @@ pub async fn launch_minecraft(
     if std::env::var("CARGO").is_ok() {
         command.env_remove("DYLD_FALLBACK_LIBRARY_PATH");
     }
-    // Java options should be set in instance options (the existence of _JAVA_OPTIONS overwites them)
+    // Java options should be set in instance options (the existence of _JAVA_OPTIONS overwrites them)
     command.env_remove("_JAVA_OPTIONS");
 
     command.envs(env_args);

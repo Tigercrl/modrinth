@@ -1,5 +1,5 @@
 <template>
-  <ModalWrapper ref="incompatibleModal" header="Incompatibility warning" :on-hide="onInstall">
+  <ModalWrapper ref="incompatibleModal" header="不兼容警告" :on-hide="onInstall">
     <div class="modal-body">
       <p>
         该{{ versions?.length > 0 ? '资源' : '版本' }}与您尝试安装它的实例不兼容。

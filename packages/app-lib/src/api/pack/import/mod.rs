@@ -263,7 +263,7 @@ pub async fn copy_dotminecraft(
             profile_name: profile_path_id.to_string(),
         },
         total_subfiles as f64,
-        "Copying files in profile",
+        "复制实例文件中",
     )
     .await?;
 

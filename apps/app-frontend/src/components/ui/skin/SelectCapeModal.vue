@@ -77,7 +77,7 @@ defineExpose({
   <ModalWrapper ref="modal" @on-hide="onModalHide">
     <template #title>
       <div class="flex flex-col">
-        <span class="text-lg font-extrabold text-heading">Change cape</span>
+        <span class="text-lg font-extrabold text-heading">选择披风</span>
       </div>
     </template>
     <div class="flex flex-col md:flex-row gap-6">
@@ -100,14 +100,14 @@ defineExpose({
         <ScrollablePanel class="max-h-[20rem] max-w-[30rem] mb-5 h-full">
           <div class="flex flex-wrap gap-2 justify-center content-start overflow-y-auto h-full">
             <CapeLikeTextButton
-              tooltip="No Cape"
+              tooltip="无披风"
               :highlighted="!currentCape"
               @click="updateSelectedCape(undefined)"
             >
               <template #icon>
                 <XIcon />
               </template>
-              <span>None</span>
+              <span>无</span>
             </CapeLikeTextButton>
             <CapeButton
               v-for="cape in sortedCapes"
@@ -126,13 +126,13 @@ defineExpose({
       <ButtonStyled color="brand">
         <button @click="select">
           <CheckIcon />
-          Select
+          选择
         </button>
       </ButtonStyled>
       <ButtonStyled>
         <button @click="hide">
           <XIcon />
-          Cancel
+          取消
         </button>
       </ButtonStyled>
     </div>

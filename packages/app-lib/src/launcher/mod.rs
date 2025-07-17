@@ -200,7 +200,7 @@ pub async fn install_minecraft(
             profile_path: profile.path.clone(),
         },
         100.0,
-        "Downloading Minecraft",
+        "下载 Minecraft 中",
     )
     .await?;
 

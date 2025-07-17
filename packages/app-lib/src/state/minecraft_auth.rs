@@ -11,7 +11,6 @@ use p256::ecdsa::{Signature, SigningKey, VerifyingKey};
 use p256::pkcs8::{DecodePrivateKey, EncodePrivateKey, LineEnding};
 use rand::rngs::OsRng;
 use rand::Rng;
-use rand::rngs::OsRng;
 use reqwest::header::HeaderMap;
 use reqwest::{Response, StatusCode};
 use serde::de::DeserializeOwned;
@@ -20,8 +19,8 @@ use serde::{Deserialize, Deserializer, Serialize, Serializer};
 use serde_json::json;
 use sha2::Digest;
 use std::borrow::Cow;
-use std::collections::HashMap;
 use std::collections::hash_map::Entry;
+use std::collections::HashMap;
 use std::future::Future;
 use std::hash::{BuildHasherDefault, DefaultHasher};
 use std::io;
@@ -154,6 +153,7 @@ pub async fn login_begin(
     }
 }
 
+// HMCL等启动器的生成方法
 pub fn name_uuid_from_bytes(name: &[u8]) -> Result<Uuid, uuid::Error> {
     let digest = md5::compute(name);
     let mut bytes = digest.0;
@@ -171,7 +171,6 @@ pub async fn offline_login(
     exec: impl sqlx::Executor<'_, Database = sqlx::Sqlite> + Copy,
 ) -> crate::Result<Credentials> {
     let uuid = if uuid_str.is_empty() {
-        // HMCL等启动器的生成方法
         name_uuid_from_bytes(format!("OfflinePlayer:{}", username).as_bytes())
     } else {
         Uuid::parse_str(uuid_str)
@@ -179,8 +178,11 @@ pub async fn offline_login(
     .map_err(|err| ErrorKind::UUIDError(err))?;
 
     let credentials = Credentials {
-        id: uuid,
-        username: username.to_owned(),
+        offline_profile: MinecraftProfile {
+            name: username.to_string(),
+            id: uuid,
+            ..MinecraftProfile::default()
+        },
         access_token: "offline".to_string(),
         refresh_token: String::new(),
         expires: DateTime::<Utc>::MAX_UTC,
@@ -1219,7 +1221,7 @@ pub struct MinecraftSkin {
     /// is always set and the same as the file name of the skin texture URL.
     #[serde(
         default, // Defensive handling of unexpected Mojang API return values to
-                 // prevent breaking the entire profile parsing
+        // prevent breaking the entire profile parsing
         rename = "textureKey"
     )]
     pub texture_key: Option<Arc<str>>,
@@ -1414,7 +1416,7 @@ async fn minecraft_entitlements(
             .bearer_auth(token)
             .send()
     })
-    .await.map_err(|source| MinecraftAuthenticationError::Request { source, step: MinecraftAuthStep::MinecraftEntitlements })?;
+        .await.map_err(|source| MinecraftAuthenticationError::Request { source, step: MinecraftAuthStep::MinecraftEntitlements })?;
 
     let status = res.status();
     let text = res.text().await.map_err(|source| {

@@ -1,11 +1,10 @@
 <script setup>
-import { computed, onMounted, onUnmounted, ref, watch, provide } from 'vue'
+import { computed, onMounted, onUnmounted, provide, ref } from 'vue'
 import { RouterView, useRoute, useRouter } from 'vue-router'
 import {
-  ArrowBigUpDashIcon,
   ChangeSkinIcon,
+  ClientIcon,
   CompassIcon,
-  DownloadIcon,
   HomeIcon,
   LeftArrowIcon,
   LibraryIcon,
@@ -13,21 +12,23 @@ import {
   LogOutIcon,
   MaximizeIcon,
   MinimizeIcon,
+  NewspaperIcon,
   PlusIcon,
   RestoreIcon,
   RightArrowIcon,
   SettingsIcon,
+  SSOMicrosoftIcon,
   WorldIcon,
   XIcon,
-  NewspaperIcon,
 } from '@modrinth/assets'
 import {
   Avatar,
   Button,
   ButtonStyled,
+  NewModal,
+  NewsArticleCard,
   Notifications,
   OverflowMenu,
-  NewsArticleCard,
 } from '@modrinth/ui'
 import { useLoading, useTheming } from '@/store/state'
 import ModrinthAppLogo from '@/assets/modrinth_app.svg?component'
@@ -42,13 +43,13 @@ import ModrinthLoadingIndicator from '@/components/LoadingIndicatorBar.vue'
 import { handleError, useNotifications } from '@/store/notifications.js'
 import { command_listener, warning_listener } from '@/helpers/events.js'
 import { type } from '@tauri-apps/plugin-os'
-import { getOS, isDev, restartApp } from '@/helpers/utils.js'
+import { getOS, isDev } from '@/helpers/utils.js'
 import { debugAnalytics, initAnalytics, optOutAnalytics, trackEvent } from '@/helpers/analytics'
 import { getCurrentWindow } from '@tauri-apps/api/window'
 import { getVersion } from '@tauri-apps/api/app'
 import URLConfirmModal from '@/components/ui/URLConfirmModal.vue'
 import { create_profile_and_install_from_file } from './helpers/pack'
-import { useError } from '@/store/error.js'
+import { handleSevereError, useError } from '@/store/error.js'
 import { useCheckDisableMouseover } from '@/composables/macCssFix.js'
 import ModInstallModal from '@/components/ui/install_flow/ModInstallModal.vue'
 import IncompatibilityWarningModal from '@/components/ui/install_flow/IncompatibilityWarningModal.vue'
@@ -59,18 +60,18 @@ import { get_opening_command, initialize_state } from '@/helpers/state'
 import { saveWindowState, StateFlags } from '@tauri-apps/plugin-window-state'
 import { renderString } from '@modrinth/utils'
 import { useFetch } from '@/helpers/fetch.js'
-import { check } from '@tauri-apps/plugin-updater'
 import NavButton from '@/components/ui/NavButton.vue'
 import { get as getCreds, login, logout } from '@/helpers/mr_auth.js'
 import { get_user } from '@/helpers/cache.js'
 import AppSettingsModal from '@/components/ui/modal/AppSettingsModal.vue'
-import PromotionWrapper from '@/components/ui/PromotionWrapper.vue'
-import { hide_ads_window, init_ads_window } from '@/helpers/ads.js'
 import FriendsList from '@/components/ui/friends/FriendsList.vue'
 import { openUrl } from '@tauri-apps/plugin-opener'
 import QuickInstanceSwitcher from '@/components/ui/QuickInstanceSwitcher.vue'
 import { get_available_capes, get_available_skins } from './helpers/skins'
 import { generateSkinPreviews } from './helpers/rendering/batch-skin-renderer'
+import ZhUpdateModel from '@/components/ui/modal/ZhUpdateModel.vue'
+import ZhAnnouncementModel from '@/components/ui/modal/ZhAnnouncementModel.vue'
+import { get_default_user, login as login_flow, offline_login, users } from '@/helpers/auth.js'
 
 const themeStore = useTheming()
 
@@ -94,6 +95,13 @@ const os = ref('')
 const stateInitialized = ref(false)
 
 const criticalErrorMessage = ref()
+
+const zhAnnouncementMessage = ref()
+const zhUpdateMessage = ref()
+const accountTypeModal = ref(null)
+const offlineSettingsModal = ref(null)
+const offlineUsername = ref('')
+const offlineUUID = ref('')
 
 const isMaximized = ref(false)
 
@@ -208,17 +216,42 @@ async function setupApp() {
       }
     })
 
+  useFetch(
+    `https://modrinthapp.tigercrl.top/announcements.json`,
+
+    'zhAnnouncements',
+
+    true,
+  ).then((res) => {
+    if (res) {
+      zhAnnouncementMessage.value = res
+    }
+  })
+
+  useFetch(`https://modrinth.tigercrl.top/launcher/updates.json`, 'updates', true).then((res) => {
+    if (res) {
+      zhUpdateMessage.value = res
+    }
+  })
+
   get_opening_command().then(handleCommand)
-  checkUpdates()
   fetchCredentials()
 
-  try {
-    const skins = (await get_available_skins()) ?? []
-    const capes = (await get_available_capes()) ?? []
-    generateSkinPreviews(skins, capes)
-  } catch (error) {
-    console.warn('Failed to generate skin previews in app setup.', error)
+  let skins = []
+  let capes = []
+
+  const defaultId = await get_default_user()
+  if (
+    (await users()).some((user) => user.profile.id === defaultId && user.access_token !== 'offline')
+  ) {
+    try {
+      skins = await get_available_skins()
+      capes = await get_available_capes()
+    } catch (error) {
+      console.warn('Failed to generate skin previews in app setup.', error)
+    }
   }
+  generateSkinPreviews(skins, capes)
 }
 
 const stateFailed = ref(false)
@@ -281,13 +314,7 @@ async function logOut() {
   await fetchCredentials()
 }
 
-const MIDAS_BITFLAG = 1 << 0
-const hasPlus = computed(
-  () =>
-    credentials.value &&
-    credentials.value.user &&
-    (credentials.value.user.badges & MIDAS_BITFLAG) === MIDAS_BITFLAG,
-)
+const hasPlus = computed(() => true)
 
 const sidebarToggled = ref(true)
 
@@ -299,19 +326,6 @@ const forceSidebar = computed(
   () => route.path.startsWith('/browse') || route.path.startsWith('/project'),
 )
 const sidebarVisible = computed(() => sidebarToggled.value || forceSidebar.value)
-const showAd = computed(() => !(!sidebarVisible.value || hasPlus.value))
-
-watch(
-  showAd,
-  () => {
-    if (!showAd.value) {
-      hide_ads_window(true)
-    } else {
-      init_ads_window(true)
-    }
-  },
-  { immediate: true },
-)
 
 onMounted(() => {
   invoke('show_window')
@@ -329,6 +343,7 @@ const accounts = ref(null)
 provide('accountsCard', accounts)
 
 command_listener(handleCommand)
+
 async function handleCommand(e) {
   if (!e) return
 
@@ -344,19 +359,6 @@ async function handleCommand(e) {
     // Other commands are URL-based (deep linking)
     urlModal.value.show(e)
   }
-}
-
-const updateAvailable = ref(false)
-async function checkUpdates() {
-  const update = await check()
-  updateAvailable.value = !!update
-
-  setTimeout(
-    () => {
-      checkUpdates()
-    },
-    5 * 1000 * 60,
-  )
 }
 
 function handleClick(e) {
@@ -393,6 +395,34 @@ function handleAuxClick(e) {
     e.target.dispatchEvent(event)
   }
 }
+
+function mcLogin() {
+  accountTypeModal.value.show()
+}
+
+provide('mcLogin', mcLogin)
+
+async function mcOnlineLogin() {
+  accountTypeModal.value.hide()
+  const loggedIn = await login_flow().catch(handleSevereError)
+  await accounts.value.postLogin(loggedIn)
+}
+
+function showMcOfflineLogin() {
+  accountTypeModal.value.hide()
+  offlineSettingsModal.value.show()
+}
+
+async function mcOfflineLogin(username, uuid) {
+  username = username.trim()
+  if (username === '') {
+    return
+  }
+  offlineSettingsModal.value.hide()
+  offlineUsername.value = offlineUUID.value = ''
+  const loggedIn = await offline_login(username, uuid).catch(handleSevereError)
+  await accounts.value.postLogin(loggedIn)
+}
 </script>
 
 <template>
@@ -408,25 +438,25 @@ function handleAuxClick(e) {
     <div
       class="app-grid-navbar bg-bg-raised flex flex-col p-[0.5rem] pt-0 gap-[0.5rem] w-[--left-bar-width]"
     >
-      <NavButton v-tooltip.right="'Home'" to="/">
+      <NavButton v-tooltip.right="'主页'" to="/">
         <HomeIcon />
       </NavButton>
       <NavButton v-if="themeStore.featureFlags.worlds_tab" v-tooltip.right="'Worlds'" to="/worlds">
         <WorldIcon />
       </NavButton>
       <NavButton
-        v-tooltip.right="'Discover content'"
+        v-tooltip.right="'探索资源'"
         to="/browse/modpack"
         :is-primary="() => route.path.startsWith('/browse') && !route.query.i"
         :is-subpage="(route) => route.path.startsWith('/project') && !route.query.i"
       >
         <CompassIcon />
       </NavButton>
-      <NavButton v-tooltip.right="'Skins (Beta)'" to="/skins">
+      <NavButton v-tooltip.right="'皮肤（测试版）'" to="/skins">
         <ChangeSkinIcon />
       </NavButton>
       <NavButton
-        v-tooltip.right="'Library'"
+        v-tooltip.right="'实例管理'"
         to="/library"
         :is-subpage="
           () =>
@@ -442,17 +472,14 @@ function handleAuxClick(e) {
         <QuickInstanceSwitcher />
       </suspense>
       <NavButton
-        v-tooltip.right="'Create new instance'"
+        v-tooltip.right="'创建新的实例'"
         :to="() => $refs.installationModal.show()"
         :disabled="offline"
       >
         <PlusIcon />
       </NavButton>
       <div class="flex flex-grow"></div>
-      <NavButton v-if="updateAvailable" v-tooltip.right="'Install update'" :to="() => restartApp()">
-        <DownloadIcon />
-      </NavButton>
-      <NavButton v-tooltip.right="'Settings'" :to="() => $refs.settingsModal.show()">
+      <NavButton v-tooltip.right="'设置'" :to="() => $refs.settingsModal.show()">
         <SettingsIcon />
       </NavButton>
       <ButtonStyled v-if="credentials" type="transparent" circular>
@@ -472,12 +499,15 @@ function handleAuxClick(e) {
             size="32px"
             circle
           />
-          <template #sign-out> <LogOutIcon /> Sign out </template>
+          <template #sign-out>
+            <LogOutIcon />
+            登出
+          </template>
         </OverflowMenu>
       </ButtonStyled>
-      <NavButton v-else v-tooltip.right="'Sign in'" :to="() => signIn()">
+      <NavButton v-else v-tooltip.right="'登录'" :to="() => signIn()">
         <LogInIcon />
-        <template #label>Sign in</template>
+        <template #label>登录</template>
       </NavButton>
     </div>
     <div data-tauri-drag-region class="app-grid-statusbar bg-bg-raised h-[--top-bar-height] flex">
@@ -595,7 +625,7 @@ function handleAuxClick(e) {
         <div id="sidebar-teleport-target" class="sidebar-teleport-content"></div>
         <div class="sidebar-default-content" :class="{ 'sidebar-enabled': sidebarVisible }">
           <div class="p-4 border-0 border-b-[1px] border-[--brand-gradient-border] border-solid">
-            <h3 class="text-lg m-0">Playing as</h3>
+            <h3 class="text-lg m-0">当前账户</h3>
             <suspense>
               <AccountsCard ref="accounts" mode="small" />
             </suspense>
@@ -606,7 +636,7 @@ function handleAuxClick(e) {
             </suspense>
           </div>
           <div v-if="news && news.length > 0" class="pt-4 flex flex-col items-center">
-            <h3 class="px-4 text-lg m-0 text-left w-full">News</h3>
+            <h3 class="px-4 text-lg m-0 text-left w-full">新闻</h3>
             <div class="px-4 pt-2 space-y-4 flex flex-col items-center w-full">
               <NewsArticleCard
                 v-for="(item, index) in news"
@@ -615,23 +645,14 @@ function handleAuxClick(e) {
               />
               <ButtonStyled color="brand" size="large">
                 <a href="https://modrinth.com/news" target="_blank" class="my-4">
-                  <NewspaperIcon /> View all news
+                  <NewspaperIcon />
+                  查看所有新闻
                 </a>
               </ButtonStyled>
             </div>
           </div>
         </div>
       </div>
-      <template v-if="showAd">
-        <a
-          href="https://modrinth.plus?app"
-          class="absolute bottom-[250px] w-full flex justify-center items-center gap-1 px-4 py-3 text-purple font-medium hover:underline z-10"
-          target="_blank"
-        >
-          <ArrowBigUpDashIcon class="text-2xl" /> Upgrade to Modrinth+
-        </a>
-        <PromotionWrapper />
-      </template>
     </div>
   </div>
   <URLConfirmModal ref="urlModal" />
@@ -640,6 +661,40 @@ function handleAuxClick(e) {
   <ModInstallModal ref="modInstallModal" />
   <IncompatibilityWarningModal ref="incompatibilityWarningModal" />
   <InstallConfirmModal ref="installConfirmModal" />
+  <ZhUpdateModel v-if="zhUpdateMessage" :message="zhUpdateMessage" />
+  <ZhAnnouncementModel v-if="zhAnnouncementMessage" :message="zhAnnouncementMessage" />
+
+  <NewModal ref="accountTypeModal" header="选择账户类型">
+    <div class="account-type-modal">
+      <div class="account-types">
+        <Button @click="mcOnlineLogin">
+          <SSOMicrosoftIcon />
+          微软账户
+        </Button>
+        <Button @click="showMcOfflineLogin">
+          <ClientIcon />
+          离线账户
+        </Button>
+      </div>
+    </div>
+  </NewModal>
+
+  <NewModal ref="offlineSettingsModal" header="设置离线账户">
+    <div class="offline-settings-modal">
+      <input v-model="offlineUsername" type="text" placeholder="用户名" />
+      <br />
+      <input
+        v-model="offlineUUID"
+        type="text"
+        placeholder="UUID（如果你不知道这是什么请不要填写）"
+      />
+      <br />
+      <Button icon-only color="primary" @click="mcOfflineLogin(offlineUsername, offlineUUID)">
+        <LogInIcon />
+        创建账户
+      </Button>
+    </div>
+  </NewModal>
 </template>
 
 <style lang="scss" scoped>
@@ -864,6 +919,26 @@ function handleAuxClick(e) {
   .profile-card {
     right: 8rem;
   }
+}
+
+.account-type-modal {
+  padding: 1rem;
+}
+
+.account-types {
+  display: flex;
+  gap: 1rem;
+}
+
+.offline-settings-modal {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.offline-settings-modal > input {
+  width: 25rem;
 }
 </style>
 <style src="vue-multiselect/dist/vue-multiselect.css"></style>

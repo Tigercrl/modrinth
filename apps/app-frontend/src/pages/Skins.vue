@@ -4,7 +4,6 @@ import {
   ExcitedRinthbot,
   LogInIcon,
   PlusIcon,
-  SpinnerIcon,
   TrashIcon,
   UpdatedIcon,
 } from '@modrinth/assets'
@@ -25,24 +24,23 @@ import UploadSkinModal from '@/components/ui/skin/UploadSkinModal.vue'
 import { handleError, useNotifications } from '@/store/notifications'
 import type { Cape, Skin } from '@/helpers/skins.ts'
 import {
-  normalize_skin_texture,
   equip_skin,
   filterDefaultSkins,
   filterSavedSkins,
   get_available_capes,
   get_available_skins,
   get_normalized_skin_texture,
+  normalize_skin_texture,
   remove_custom_skin,
   set_default_cape,
 } from '@/helpers/skins.ts'
 import { get as getSettings } from '@/helpers/settings.ts'
-import { get_default_user, login as login_flow, users } from '@/helpers/auth'
+import { get_default_user, users } from '@/helpers/auth'
 import type { RenderResult } from '@/helpers/rendering/batch-skin-renderer.ts'
 import { generateSkinPreviews, skinBlobUrlMap } from '@/helpers/rendering/batch-skin-renderer.ts'
-import { handleSevereError } from '@/store/error'
-import { trackEvent } from '@/helpers/analytics'
 import type AccountsCard from '@/components/ui/AccountsCard.vue'
 import { arrayBufferToBase64 } from '@modrinth/utils'
+
 const editSkinModal = useTemplateRef('editSkinModal')
 const selectCapeModal = useTemplateRef('selectCapeModal')
 const uploadSkinModal = useTemplateRef('uploadSkinModal')
@@ -94,6 +92,8 @@ let userCheckInterval: number | null = null
 
 const deleteSkinModal = ref()
 const skinToDelete = ref<Skin | null>(null)
+
+const login = inject('mcLogin')
 
 function confirmDeleteSkin(skin: Skin) {
   skinToDelete.value = skin
@@ -205,7 +205,9 @@ async function loadCurrentUser() {
     currentUserId.value = defaultId
 
     const allAccounts = await users()
-    currentUser.value = allAccounts.find((acc) => acc.profile.id === defaultId)
+    currentUser.value = allAccounts.find(
+      (acc) => acc.profile.id === defaultId && acc.access_token !== 'offline',
+    )
   } catch (e) {
     handleError(e)
     currentUser.value = undefined
@@ -216,18 +218,6 @@ async function loadCurrentUser() {
 function getBakedSkinTextures(skin: Skin): RenderResult | undefined {
   const key = `${skin.texture_key}+${skin.variant}+${skin.cape_id ?? 'no-cape'}`
   return skinBlobUrlMap.get(key)
-}
-
-async function login() {
-  accountsCard.value.setLoginDisabled(true)
-  const loggedIn = await login_flow().catch(handleSevereError)
-
-  if (loggedIn && accountsCard) {
-    await accountsCard.value.refreshValues()
-  }
-
-  trackEvent('AccountLogIn')
-  accountsCard.value.setLoginDisabled(false)
 }
 
 function openUploadSkinModal(e: MouseEvent) {
@@ -302,17 +292,19 @@ await Promise.all([loadCapes(), loadSkins(), loadCurrentUser()])
   />
   <ConfirmModal
     ref="deleteSkinModal"
-    title="Are you sure you want to delete this skin?"
-    description="This will permanently delete the selected skin. This action cannot be undone."
-    proceed-label="Delete"
+    title="你确定要删除这个皮肤吗？"
+    description="这个皮肤将被永久删除，并且将无法恢复。"
+    proceed-label="删除"
     @proceed="deleteSkin"
   />
 
   <div v-if="currentUser" class="p-4 skin-layout">
     <div class="preview-panel">
       <h1 class="m-0 text-2xl font-bold flex items-center gap-2">
-        Skins
-        <span class="text-sm font-bold px-2 bg-brand-highlight text-brand rounded-full">Beta</span>
+        皮肤
+        <span class="text-sm font-bold px-2 bg-brand-highlight text-brand rounded-full"
+          >测试版</span
+        >
       </h1>
       <div class="preview-container">
         <SkinPreviewRenderer
@@ -325,11 +317,7 @@ await Promise.all([loadCapes(), loadSkins(), loadCurrentUser()])
           <template #subtitle>
             <ButtonStyled :disabled="!!selectedSkin?.cape_id">
               <button
-                v-tooltip="
-                  selectedSkin?.cape_id
-                    ? 'The equipped skin is overriding the default cape.'
-                    : undefined
-                "
+                v-tooltip="selectedSkin?.cape_id ? '使用皮肤的披风已覆盖默认披风。' : undefined"
                 :disabled="!!selectedSkin?.cape_id"
                 @click="
                   (e: MouseEvent) =>
@@ -343,7 +331,7 @@ await Promise.all([loadCapes(), loadSkins(), loadCurrentUser()])
                 "
               >
                 <UpdatedIcon />
-                Change cape
+                切换披风
               </button>
             </ButtonStyled>
           </template>
@@ -353,13 +341,13 @@ await Promise.all([loadCapes(), loadSkins(), loadCurrentUser()])
 
     <div class="skins-container">
       <section class="flex flex-col gap-2 mt-1">
-        <h2 class="text-lg font-bold m-0 text-primary">Saved skins</h2>
+        <h2 class="text-lg font-bold m-0 text-primary">已保存的皮肤</h2>
         <div class="skin-card-grid">
           <SkinLikeTextButton class="skin-card" @click="openUploadSkinModal">
             <template #icon>
               <PlusIcon class="size-8" />
             </template>
-            <span>Add a skin</span>
+            <span>添加皮肤</span>
           </SkinLikeTextButton>
 
           <SkinButton
@@ -374,16 +362,17 @@ await Promise.all([loadCapes(), loadSkins(), loadCurrentUser()])
             <template #overlay-buttons>
               <Button
                 color="green"
-                aria-label="Edit skin"
+                aria-label="修改皮肤"
                 class="pointer-events-auto"
                 @click.stop="(e) => editSkinModal?.show(e, skin)"
               >
-                <EditIcon /> Edit
+                <EditIcon />
+                修改
               </Button>
               <Button
                 v-show="!skin.is_equipped"
-                v-tooltip="'Delete skin'"
-                aria-label="Delete skin"
+                v-tooltip="'删除皮肤'"
+                aria-label="删除皮肤"
                 color="red"
                 class="!rounded-[100%] pointer-events-auto"
                 icon-only
@@ -397,7 +386,7 @@ await Promise.all([loadCapes(), loadSkins(), loadCurrentUser()])
       </section>
 
       <section class="flex flex-col gap-2 mt-6">
-        <h2 class="text-lg font-bold m-0 text-primary">Default skins</h2>
+        <h2 class="text-lg font-bold m-0 text-primary">默认皮肤</h2>
         <div class="skin-card-grid">
           <SkinButton
             v-for="skin in defaultSkins"
@@ -437,16 +426,12 @@ await Promise.all([loadCapes(), loadSkins(), loadCurrentUser()])
       ></div>
 
       <div class="flex flex-col gap-5">
-        <h1 class="text-3xl font-extrabold m-0">Please sign-in</h1>
-        <p class="text-lg m-0">
-          Please sign into your Minecraft account to use the skin management features of the
-          Modrinth app.
-        </p>
-        <ButtonStyled v-show="accountsCard" color="brand" :disabled="accountsCard.loginDisabled">
-          <button :disabled="accountsCard.loginDisabled" @click="login">
-            <LogInIcon v-if="!accountsCard.loginDisabled" />
-            <SpinnerIcon v-else class="animate-spin" />
-            Sign In
+        <h1 class="text-3xl font-extrabold m-0">请使用微软账户</h1>
+        <p class="text-lg m-0">请选择或登录一个微软帐户以使用 Modrinth App 的皮肤管理功能。</p>
+        <ButtonStyled v-show="login" color="brand">
+          <button @click="login()">
+            <LogInIcon />
+            登录
           </button>
         </ButtonStyled>
       </div>

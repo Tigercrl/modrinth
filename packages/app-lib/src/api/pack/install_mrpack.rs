@@ -131,7 +131,7 @@ pub async fn install_zipped_mrpack_files(
                 pack_version: version_id,
             },
             100.0,
-            "Downloading modpack",
+            "下载整合包中",
         )
         .await?;
 

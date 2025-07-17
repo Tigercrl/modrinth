@@ -3,7 +3,7 @@
   <ModalWrapper ref="modal" @on-hide="resetState">
     <template #title>
       <span class="text-lg font-extrabold text-contrast">
-        {{ mode === 'edit' ? 'Editing skin' : 'Adding a skin' }}
+        {{ mode === 'edit' ? '修改皮肤' : '添加皮肤' }}
       </span>
     </template>
 
@@ -24,21 +24,24 @@
 
       <div class="flex flex-col gap-4 w-full min-h-[20rem]">
         <section>
-          <h2 class="text-base font-semibold mb-2">Texture</h2>
-          <Button @click="openUploadSkinModal"> <UploadIcon /> Replace texture </Button>
+          <h2 class="text-base font-semibold mb-2">材质</h2>
+          <Button @click="openUploadSkinModal">
+            <UploadIcon />
+            替换材质
+          </Button>
         </section>
 
         <section>
-          <h2 class="text-base font-semibold mb-2">Arm style</h2>
+          <h2 class="text-base font-semibold mb-2">皮肤模型</h2>
           <RadioButtons v-model="variant" :items="['CLASSIC', 'SLIM']">
             <template #default="{ item }">
-              {{ item === 'CLASSIC' ? 'Wide' : 'Slim' }}
+              {{ item === 'CLASSIC' ? '经典' : '纤细' }}
             </template>
           </RadioButtons>
         </section>
 
         <section>
-          <h2 class="text-base font-semibold mb-2">Cape</h2>
+          <h2 class="text-base font-semibold mb-2">披风</h2>
           <div class="flex gap-2">
             <CapeButton
               v-if="defaultCape"
@@ -49,10 +52,10 @@
               faded
               @select="selectCape(undefined)"
             >
-              <span>Use default cape</span>
+              <span>使用默认披风</span>
             </CapeButton>
             <CapeLikeTextButton v-else :highlighted="!selectedCape" @click="selectCape(undefined)">
-              <span>Use default cape</span>
+              <span>使用默认披风</span>
             </CapeLikeTextButton>
 
             <CapeButton
@@ -60,18 +63,20 @@
               :id="cape.id"
               :key="cape.id"
               :texture="cape.texture"
-              :name="cape.name || 'Cape'"
+              :name="cape.name || '披风'"
               :selected="selectedCape?.id === cape.id"
               @select="selectCape(cape)"
             />
 
             <CapeLikeTextButton
               v-if="(capes?.length ?? 0) > 2"
-              tooltip="View more capes"
+              tooltip="查看更多披风"
               @mouseup="openSelectCapeModal"
             >
-              <template #icon><ChevronRightIcon /></template>
-              <span>More</span>
+              <template #icon>
+                <ChevronRightIcon />
+              </template>
+              <span>更多</span>
             </CapeLikeTextButton>
           </div>
         </section>
@@ -84,10 +89,13 @@
           <SpinnerIcon v-if="isSaving" class="animate-spin" />
           <CheckIcon v-else-if="mode === 'new'" />
           <SaveIcon v-else />
-          {{ mode === 'new' ? 'Add skin' : 'Save skin' }}
+          {{ mode === 'new' ? '添加皮肤' : '保存皮肤' }}
         </button>
       </ButtonStyled>
-      <Button :disabled="isSaving" @click="hide"><XIcon />Cancel</Button>
+      <Button :disabled="isSaving" @click="hide">
+        <XIcon />
+        取消
+      </Button>
     </div>
   </ModalWrapper>
 
@@ -100,33 +108,33 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch, useTemplateRef } from 'vue'
+import { computed, ref, useTemplateRef, watch } from 'vue'
 import SelectCapeModal from '@/components/ui/skin/SelectCapeModal.vue'
 import {
-  SkinPreviewRenderer,
   Button,
-  RadioButtons,
+  ButtonStyled,
   CapeButton,
   CapeLikeTextButton,
-  ButtonStyled,
+  RadioButtons,
+  SkinPreviewRenderer,
 } from '@modrinth/ui'
 import {
   add_and_equip_custom_skin,
-  remove_custom_skin,
-  unequip_skin,
-  type Skin,
   type Cape,
-  type SkinModel,
   get_normalized_skin_texture,
+  remove_custom_skin,
+  type Skin,
+  type SkinModel,
+  unequip_skin,
 } from '@/helpers/skins.ts'
 import { handleError } from '@/store/notifications'
 import {
-  UploadIcon,
   CheckIcon,
-  SaveIcon,
-  XIcon,
   ChevronRightIcon,
+  SaveIcon,
   SpinnerIcon,
+  UploadIcon,
+  XIcon,
 } from '@modrinth/assets'
 import ModalWrapper from '@/components/ui/modal/ModalWrapper.vue'
 import UploadSkinModal from '@/components/ui/skin/UploadSkinModal.vue'
@@ -213,9 +221,9 @@ const disableSave = computed(
 )
 
 const saveTooltip = computed(() => {
-  if (isSaving.value) return 'Saving...'
-  if (mode.value === 'new' && !uploadedTextureUrl.value) return 'Upload a skin first!'
-  if (mode.value === 'edit' && !hasEdits.value) return 'Make an edit to the skin first!'
+  if (isSaving.value) return '保存中...'
+  if (mode.value === 'new' && !uploadedTextureUrl.value) return '请先上传皮肤！'
+  if (mode.value === 'edit' && !hasEdits.value) return '请先修改皮肤！'
   return undefined
 })
 

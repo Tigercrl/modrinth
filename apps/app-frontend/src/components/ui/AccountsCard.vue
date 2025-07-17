@@ -13,43 +13,17 @@
       "
     />
     <div class="flex flex-col w-full">
-      <span>{{ selectedAccount ? selectedAccount.profile.name : 'Select account' }}</span>
-      <span class="text-secondary text-xs">Minecraft account</span>
+      <span>{{ selectedAccount ? selectedAccount.profile.name : '选择账户️' }}</span>
+      <span class="text-secondary text-xs">{{
+        selectedAccount
+          ? selectedAccount.access_token == 'offline'
+            ? '离线账户'
+            : '微软账户'
+          : 'Minecraft 账户'
+      }}</span>
     </div>
     <DropdownIcon class="w-5 h-5 shrink-0" />
   </div>
-
-  <NewModal ref="chooseAccountTypeModal" header="选择账户类型">
-    <div class="choose-account-modal">
-      <div class="account-types">
-        <Button @click="login">
-          <SSOMicrosoftIcon />
-          微软账户
-        </Button>
-        <Button @click="showOfflineLogin">
-          <ClientIcon />
-          离线账户
-        </Button>
-      </div>
-    </div>
-  </NewModal>
-
-  <NewModal ref="chooseOfflineUsernameModal" header="设置离线账户">
-    <div class="choose-offline-username-modal">
-      <input v-model="offlineUsername" type="text" placeholder="用户名" />
-      <br />
-      <input
-        v-model="offlineUUID"
-        type="text"
-        placeholder="UUID（如果你不知道这是什么请不要填写）"
-      />
-      <br />
-      <Button icon-only color="primary" @click="offlineLogin(offlineUsername, offlineUUID)">
-        <LogInIcon />
-        创建账户
-      </Button>
-    </div>
-  </NewModal>
 
   <transition name="fade">
     <Card
@@ -75,15 +49,8 @@
       </div>
       <div v-else class="logged-out account">
         <h4>未登录</h4>
-        <Button
-          v-tooltip="'登录'"
-          :disabled="loginDisabled"
-          icon-only
-          color="primary"
-          @click="login()"
-        >
-          <LogInIcon v-if="!loginDisabled" />
-          <SpinnerIcon v-else class="animate-spin" />
+        <Button v-tooltip="'登录'" icon-only color="primary" @click="login()">
+          <LogInIcon />
         </Button>
       </div>
       <div v-if="displayAccounts.length > 0" class="account-group">
@@ -97,7 +64,7 @@
           </Button>
         </div>
       </div>
-      <Button v-if="accounts.length > 0" @click="$refs.chooseAccountTypeModal.show()">
+      <Button v-if="accounts.length > 0" @click="login()">
         <PlusIcon />
         添加账户
       </Button>
@@ -106,31 +73,13 @@
 </template>
 
 <script setup>
-import { DropdownIcon, PlusIcon, TrashIcon, LogInIcon, SpinnerIcon } from '@modrinth/assets'
+import { DropdownIcon, LogInIcon, PlusIcon, TrashIcon } from '@modrinth/assets'
 import { Avatar, Button, Card } from '@modrinth/ui'
-import { ref, computed, onMounted, onBeforeUnmount, onUnmounted } from 'vue'
-import {
-  ClientIcon,
-  DropdownIcon,
-  LogInIcon,
-  PlusIcon,
-  SSOMicrosoftIcon,
-  TrashIcon,
-} from '@modrinth/assets'
-import { Avatar, Button, Card, NewModal } from '@modrinth/ui'
-import { computed, onBeforeUnmount, onMounted, onUnmounted, ref } from 'vue'
-import {
-  get_default_user,
-  login as login_flow,
-  offline_login,
-  remove_user,
-  set_default_user,
-  users,
-} from '@/helpers/auth'
+import { computed, inject, onBeforeUnmount, onMounted, onUnmounted, ref } from 'vue'
+import { get_default_user, remove_user, set_default_user, users } from '@/helpers/auth'
 import { handleError } from '@/store/state.js'
 import { trackEvent } from '@/helpers/analytics'
 import { process_listener } from '@/helpers/events'
-import { handleSevereError } from '@/store/error.js'
 import { get_available_skins } from '@/helpers/skins'
 import { getPlayerHeadUrl } from '@/helpers/rendering/batch-skin-renderer.ts'
 
@@ -144,54 +93,44 @@ defineProps({
 
 const emit = defineEmits(['change'])
 
-const chooseAccountTypeModal = ref(null)
-const chooseOfflineUsernameModal = ref(null)
-
 const accounts = ref({})
-const loginDisabled = ref(false)
 const defaultUser = ref()
-const offlineUsername = ref('')
-const offlineUUID = ref('')
 const equippedSkin = ref(null)
 const headUrlCache = ref(new Map())
+const login = inject('mcLogin')
 
 async function refreshValues() {
   defaultUser.value = await get_default_user().catch(handleError)
   accounts.value = await users().catch(handleError)
 
-  try {
-    const skins = await get_available_skins()
-    equippedSkin.value = skins.find((skin) => skin.is_equipped)
+  if (
+    accounts.value.some(
+      (user) => user.profile.id === defaultUser.value && user.access_token !== 'offline',
+    )
+  ) {
+    try {
+      const skins = await get_available_skins()
+      equippedSkin.value = skins.find((skin) => skin.is_equipped)
 
-    if (equippedSkin.value) {
-      try {
-        const headUrl = await getPlayerHeadUrl(equippedSkin.value)
-        headUrlCache.value.set(equippedSkin.value.texture_key, headUrl)
-      } catch (error) {
-        console.warn('Failed to get head render for equipped skin:', error)
+      if (equippedSkin.value) {
+        try {
+          const headUrl = await getPlayerHeadUrl(equippedSkin.value)
+          headUrlCache.value.set(equippedSkin.value.texture_key, headUrl)
+        } catch (error) {
+          console.warn('Failed to get head render for equipped skin:', error)
+        }
       }
+    } catch {
+      equippedSkin.value = null
     }
-  } catch {
-    equippedSkin.value = null
   }
-}
-
-function getAvatar(account) {
-  return account && account.access_token !== 'offline'
-    ? `https://minotar.net/helm/${account.id}/128.png`
-    : 'https://launcher-files.modrinth.com/assets/steve_head.png'
-}
-
-
-function setLoginDisabled(value) {
-  loginDisabled.value = value
 }
 
 defineExpose({
   refreshValues,
-  setLoginDisabled,
-  loginDisabled,
+  postLogin,
 })
+
 await refreshValues()
 
 const displayAccounts = computed(() =>
@@ -199,6 +138,8 @@ const displayAccounts = computed(() =>
 )
 
 const avatarUrl = computed(() => {
+  if (selectedAccount.value.access_token === 'offline')
+    return 'https://launcher-files.modrinth.com/assets/steve_head.png'
   if (equippedSkin.value?.texture_key) {
     const cachedUrl = headUrlCache.value.get(equippedSkin.value.texture_key)
     if (cachedUrl) {
@@ -213,6 +154,8 @@ const avatarUrl = computed(() => {
 })
 
 function getAccountAvatarUrl(account) {
+  if (account.access_token === 'offline')
+    return 'https://launcher-files.modrinth.com/assets/steve_head.png'
   if (
     account.profile.id === selectedAccount.value?.profile?.id &&
     equippedSkin.value?.texture_key
@@ -235,40 +178,13 @@ async function setAccount(account) {
   emit('change')
 }
 
-async function login() {
-  loginDisabled.value = true
-  chooseAccountTypeModal.value.hide()
-  const loggedIn = await login_flow().catch(handleSevereError)
-
+async function postLogin(loggedIn) {
   if (loggedIn) {
     await setAccount(loggedIn)
     await refreshValues()
   }
 
   mixpanel_track('AccountLogIn')
-}
-
-async function showOfflineLogin() {
-  chooseAccountTypeModal.value.hide()
-  chooseOfflineUsernameModal.value.show()
-}
-
-async function offlineLogin(username, uuid) {
-  username = username.trim()
-  if (username === '') {
-    return
-  }
-
-  chooseOfflineUsernameModal.value.hide()
-  const loggedIn = await offline_login(username, uuid).catch(handleSevereError)
-
-  if (loggedIn) {
-    await setAccount(loggedIn)
-    await refreshValues()
-  }
-
-  trackEvent('AccountLogIn')
-  loginDisabled.value = false
 }
 
 const logout = async (id) => {
@@ -551,25 +467,5 @@ onUnmounted(() => {
     color: var(--color-contrast);
     padding: 0.5rem 1rem;
   }
-}
-
-.choose-account-modal {
-  padding: 1rem;
-}
-
-.account-types {
-  display: flex;
-  gap: 1rem;
-}
-
-.choose-offline-username-modal {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-
-.choose-offline-username-modal > input {
-  width: 25rem;
 }
 </style>

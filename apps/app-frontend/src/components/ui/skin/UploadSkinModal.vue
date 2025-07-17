@@ -1,7 +1,7 @@
 <template>
   <ModalWrapper ref="modal" @on-hide="hide(true)">
     <template #title>
-      <span class="text-lg font-extrabold text-contrast"> Upload skin texture </span>
+      <span class="text-lg font-extrabold text-contrast"> 上传皮肤纹理 </span>
     </template>
     <div class="relative">
       <div
@@ -9,10 +9,11 @@
         @click="triggerFileInput"
       >
         <p class="mx-auto mb-0 text-primary font-bold text-lg text-center flex items-center gap-2">
-          <UploadIcon /> Select skin texture file
+          <UploadIcon />
+          选择皮肤文件
         </p>
         <p class="mx-auto mt-0 text-secondary text-sm text-center">
-          Drag and drop or click here to browse
+          单击选择文件或将文件拖放至此处上传
         </p>
         <input
           ref="fileInput"
@@ -27,7 +28,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onBeforeUnmount, watch } from 'vue'
+import { onBeforeUnmount, ref, watch } from 'vue'
 import { UploadIcon } from '@modrinth/assets'
 import { useNotifications } from '@/store/state'
 import { getCurrentWebview } from '@tauri-apps/api/webview'

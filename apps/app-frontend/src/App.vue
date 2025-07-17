@@ -216,19 +216,15 @@ async function setupApp() {
       }
     })
 
-  useFetch(
-    `https://modrinthapp.tigercrl.top/announcements.json`,
+  useFetch(`https://app.modrinth.tigercrl.top/announcements.json`, 'zhAnnouncements', true).then(
+    (res) => {
+      if (res) {
+        zhAnnouncementMessage.value = res
+      }
+    },
+  )
 
-    'zhAnnouncements',
-
-    true,
-  ).then((res) => {
-    if (res) {
-      zhAnnouncementMessage.value = res
-    }
-  })
-
-  useFetch(`https://modrinth.tigercrl.top/launcher/updates.json`, 'updates', true).then((res) => {
+  useFetch(`https://app.modrinth.tigercrl.top/updates.json`, 'updates', true).then((res) => {
     if (res) {
       zhUpdateMessage.value = res
     }

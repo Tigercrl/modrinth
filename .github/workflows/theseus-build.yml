@@ -1,5 +1,8 @@
 name: Modrinth App build
 on:
+  create:
+    tags:
+      - 'v*-zhcn'
   push:
     branches:
       - zhcn

@@ -1,7 +1,10 @@
 {
   "app": {
     "security": {
-      "capabilities": ["ads", "core", "plugins"]
+      "capabilities": [
+        "core",
+        "plugins"
+      ]
     }
   }
 }
